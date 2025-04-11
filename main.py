@@ -88,7 +88,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # logger.setLevel(logging.DEBUG)
-    pygame.mixer.init(frequency=48000, size=-16, channels=2)
+    pygame.mixer.init(frequency=24000, size=-16, channels=2)
     hub75.init()
     dictionary = Dictionary(tiles.MIN_LETTERS, tiles.MAX_LETTERS, open=my_open)
     dictionary.read(f"{BUNDLE_TEMP_DIR}/sowpods.txt", f"{BUNDLE_TEMP_DIR}/bingos.txt")
