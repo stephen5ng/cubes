@@ -105,11 +105,11 @@ class RackMetrics():
         return pygame.Rect(0, 0, self.letter_width*select_count, self.letter_height)
 
 class Letter():
-    DROP_TIME_MS = 10000
+    DROP_TIME_MS = 15000
     NEXT_COLUMN_MS = 1000
     ANTIALIAS = 1
-    ACCELERATION = 1.01
-    INITIAL_SPEED = 0.020
+    ACCELERATION = 1.02
+    INITIAL_SPEED = 0.040
     ROUNDS = 15
     Y_INCREMENT = SCREEN_HEIGHT // ROUNDS
     COLUMN_SHIFT_INTERVAL_MS = 10000
