@@ -6,6 +6,7 @@ import io
 import json
 from io import StringIO
 import unittest
+from unittest.mock import Mock, patch, AsyncMock
 
 import app
 import cubes_to_game
@@ -36,9 +37,6 @@ class TestCubesToGame(unittest.IsolatedAsyncioTestCase):
             "line",
             "search",
             "online" # eilnno
-        ])) if filename == "sowpods.txt" else StringIO("\n".join([
-            "search", # ACEHRS
-            "online"
         ]))
 
         self.publish_queue: asyncio.Queue = asyncio.Queue()
@@ -56,14 +54,12 @@ class TestCubesToGame(unittest.IsolatedAsyncioTestCase):
             "TAG_2": "BLOCK_2",
             "TAG_3": "BLOCK_3",
             "TAG_4": "BLOCK_4",
-            "TAG_5": "BLOCK_5",
-            "TAG_6": "BLOCK_6",
+            "TAG_5": "BLOCK_5"
         }
         cubes_to_game.cube_chain = {}
         cubes_to_game.cubes_to_letters = {}
         cubes_to_game.last_guess_tiles = []
         events.on("game.current_score")(nop)
-        tiles.MAX_LETTERS = 5
         self.client = Client([])
 
         a_dictionary = dictionary.Dictionary(3, 6, my_open)
@@ -140,7 +136,8 @@ class TestCubesToGame(unittest.IsolatedAsyncioTestCase):
              ('cube/BLOCK_3/letter', 'D', True),
              ('cube/BLOCK_4/border_line', ' ', True),
              ('cube/BLOCK_4/letter', 'E', True),
-             ('cube/BLOCK_5/letter', 'F', True),
+             ('cube/BLOCK_5/border_line', ' ', True),
+             ('cube/BLOCK_5/letter', 'F', True)
              ],
             sorted(list(self.publish_queue._queue)))
 
@@ -174,27 +171,155 @@ class TestCubesToGame(unittest.IsolatedAsyncioTestCase):
             ('cube/BLOCK_1/border_line', ']', True),
             ('cube/BLOCK_2/border_line', ' ', True),
             ('cube/BLOCK_3/border_line', ' ', True),
-            ('cube/BLOCK_4/border_line', ' ', True)]
+            ('cube/BLOCK_4/border_line', ' ', True),
+            ('cube/BLOCK_5/border_line', ' ', True)]
         self.assertEqual(expected, sorted(list(self.publish_queue._queue)))
 
-    async def test_guess_last_tiles(self):
+    async def test_guess_last_tiles_empty(self):
+        """Test guess_last_tiles with empty last_guess_tiles."""
+        # Mock the callback
+        self.mock_callback = AsyncMock()
+        cubes_to_game.guess_tiles_callback = self.mock_callback
+        
         cubes_to_game.tiles_to_cubes = {
-            "0" : "cube_0",
-            "1" : "cube_1",
-            "2" : "cube_2",
-            "3" : "cube_3",
-            "4" : "cube_4",
-            "5" : "cube_5",
+            "0": "cube_0",
+            "1": "cube_1",
+            "2": "cube_2",
+            "3": "cube_3",
+            "4": "cube_4",
+            "5": "cube_5"
         }
-        cubes_to_game.last_guess_tiles = ["123"]
+        cubes_to_game.last_guess_tiles = []
         await cubes_to_game.guess_last_tiles(self.publish_queue)
+        
+        # All cubes should get space markers
         expected = [
             ('cube/cube_0/border_line', ' ', True),
-            ('cube/cube_1/border_line', '[', True),
-            ('cube/cube_2/border_line', '-', True),
-            ('cube/cube_3/border_line', ']', True),
-            ('cube/cube_4/border_line', ' ', True)]
+            ('cube/cube_1/border_line', ' ', True),
+            ('cube/cube_2/border_line', ' ', True),
+            ('cube/cube_3/border_line', ' ', True),
+            ('cube/cube_4/border_line', ' ', True),
+            ('cube/cube_5/border_line', ' ', True)
+        ]
         self.assertEqual(expected, sorted(list(self.publish_queue._queue)))
+        self.assertEqual(0, self.mock_callback.call_count)
+
+    async def test_guess_last_tiles_single_letter(self):
+        """Test guess_last_tiles with a single-letter word."""
+        # Mock the callback
+        self.mock_callback = AsyncMock()
+        cubes_to_game.guess_tiles_callback = self.mock_callback
+        
+        cubes_to_game.tiles_to_cubes = {
+            "0": "cube_0",
+            "1": "cube_1",
+            "2": "cube_2",
+            "3": "cube_3",
+            "4": "cube_4",
+            "5": "cube_5"
+        }
+        cubes_to_game.last_guess_tiles = ["0"]
+        await cubes_to_game.guess_last_tiles(self.publish_queue)
+        
+        expected = [
+            ('cube/cube_0/border_line', '[', True),  # Start marker
+            ('cube/cube_0/border_line', ']', True),  # End marker (same cube)
+            ('cube/cube_1/border_line', ' ', True),
+            ('cube/cube_2/border_line', ' ', True),
+            ('cube/cube_3/border_line', ' ', True),
+            ('cube/cube_4/border_line', ' ', True),
+            ('cube/cube_5/border_line', ' ', True)
+        ]
+        self.assertEqual(expected, sorted(list(self.publish_queue._queue)))
+        self.mock_callback.assert_called_once_with("0", True)
+
+    async def test_guess_last_tiles_two_letters(self):
+        """Test guess_last_tiles with a two-letter word."""
+        # Mock the callback
+        self.mock_callback = AsyncMock()
+        cubes_to_game.guess_tiles_callback = self.mock_callback
+        
+        cubes_to_game.tiles_to_cubes = {
+            "0": "cube_0",
+            "1": "cube_1",
+            "2": "cube_2",
+            "3": "cube_3",
+            "4": "cube_4",
+            "5": "cube_5"
+        }
+        cubes_to_game.last_guess_tiles = ["01"]
+        await cubes_to_game.guess_last_tiles(self.publish_queue)
+        
+        expected = [
+            ('cube/cube_0/border_line', '[', True),  # Start marker
+            ('cube/cube_1/border_line', ']', True),  # End marker
+            ('cube/cube_2/border_line', ' ', True),
+            ('cube/cube_3/border_line', ' ', True),
+            ('cube/cube_4/border_line', ' ', True),
+            ('cube/cube_5/border_line', ' ', True)
+        ]
+        self.assertEqual(expected, sorted(list(self.publish_queue._queue)))
+        self.mock_callback.assert_called_once_with("01", True)
+
+    async def test_guess_last_tiles_long_word(self):
+        """Test guess_last_tiles with a word longer than 2 letters."""
+        # Mock the callback
+        self.mock_callback = AsyncMock()
+        cubes_to_game.guess_tiles_callback = self.mock_callback
+        
+        cubes_to_game.tiles_to_cubes = {
+            "0": "cube_0",
+            "1": "cube_1",
+            "2": "cube_2",
+            "3": "cube_3",
+            "4": "cube_4",
+            "5": "cube_5"
+        }
+        cubes_to_game.last_guess_tiles = ["0123"]
+        await cubes_to_game.guess_last_tiles(self.publish_queue)
+        
+        expected = [
+            ('cube/cube_0/border_line', '[', True),  # Start marker
+            ('cube/cube_1/border_line', '-', True),  # Middle marker
+            ('cube/cube_2/border_line', '-', True),  # Middle marker
+            ('cube/cube_3/border_line', ']', True),  # End marker
+            ('cube/cube_4/border_line', ' ', True),
+            ('cube/cube_5/border_line', ' ', True)
+        ]
+        self.assertEqual(expected, sorted(list(self.publish_queue._queue)))
+        self.mock_callback.assert_called_once_with("0123", True)
+
+    async def test_guess_last_tiles_multiple_words(self):
+        """Test guess_last_tiles with multiple words of different lengths."""
+        # Mock the callback
+        self.mock_callback = AsyncMock()
+        cubes_to_game.guess_tiles_callback = self.mock_callback
+        
+        cubes_to_game.tiles_to_cubes = {
+            "0": "cube_0",
+            "1": "cube_1",
+            "2": "cube_2",
+            "3": "cube_3",
+            "4": "cube_4",
+            "5": "cube_5"
+        }
+        cubes_to_game.last_guess_tiles = ["01", "234"]  # One 2-letter word and one 3-letter word
+        await cubes_to_game.guess_last_tiles(self.publish_queue)
+        
+        expected = [
+            ('cube/cube_0/border_line', '[', True),  # First word start
+            ('cube/cube_1/border_line', ']', True),  # First word end
+            ('cube/cube_2/border_line', '[', True),  # Second word start
+            ('cube/cube_3/border_line', '-', True),  # Second word middle
+            ('cube/cube_4/border_line', ']', True),  # Second word end
+            ('cube/cube_5/border_line', ' ', True)   # Unused
+        ]
+        self.assertEqual(expected, sorted(list(self.publish_queue._queue)))
+        
+        # Verify callback called for each word
+        self.assertEqual(2, self.mock_callback.call_count)
+        self.mock_callback.assert_any_call("01", True)
+        self.mock_callback.assert_any_call("234", True)
 
     async def test_flash_good_words(self):
         cubes_to_game.tiles_to_cubes = {
