@@ -222,8 +222,7 @@ class TestCubesToGame(unittest.IsolatedAsyncioTestCase):
         await cubes_to_game.guess_last_tiles(self.publish_queue)
         
         expected = [
-            ('cube/cube_0/border_line', '[', True),  # Start marker
-            ('cube/cube_0/border_line', ']', True),  # End marker (same cube)
+            ('cube/cube_0/border_line', ' ', True),  # Single letter treated as unused
             ('cube/cube_1/border_line', ' ', True),
             ('cube/cube_2/border_line', ' ', True),
             ('cube/cube_3/border_line', ' ', True),

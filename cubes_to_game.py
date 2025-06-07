@@ -221,14 +221,15 @@ async def guess_last_tiles(publish_queue) -> None:
     logging.info(f"guess_last_tiles last_guess_tiles {last_guess_tiles} {unused_tiles}")
     for guess in last_guess_tiles:
         logging.info(f"guess_last_tiles: {guess}")
-        await publish_queue.put((f"cube/{tiles_to_cubes[guess[0]]}/border_line", "[", True))
-        await publish_queue.put((f"cube/{tiles_to_cubes[guess[-1]]}/border_line", ']', True))
-        unused_tiles.remove(guess[0])
-        if len(guess) > 1:
-            unused_tiles.remove(guess[-1])
-        for g in guess[1:-1]:
-            await publish_queue.put((f"cube/{tiles_to_cubes[g]}/border_line", '-', True))
-            unused_tiles.remove(g)
+        # Skip single-tile guesses
+        if len(guess) <= 1:
+            continue
+            
+        for i, tile in enumerate(guess):
+            unused_tiles.remove(tile)
+            marker = '[' if i == 0 else ']' if i == len(guess)-1 else '-'
+            await publish_queue.put((f"cube/{tiles_to_cubes[tile]}/border_line", marker, True))
+
     for g in unused_tiles:
         await publish_queue.put((f"cube/{tiles_to_cubes[g]}/border_line", ' ', True))
 
