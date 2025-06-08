@@ -391,9 +391,7 @@ class LastGuessFader():
         ix = previous_guesses.index(last_guess)
         up_thru_last_guess = ' '.join(previous_guesses[:ix+1])
         last_line_rect = self.textrect.get_last_rect(up_thru_last_guess)
-        font_surf = self.font.render(last_guess, self.color)[0]
-        self.last_guess_surface = pygame.Surface(font_surf.size, pygame.SRCALPHA)
-        self.last_guess_surface.blit(font_surf, (0, 0), special_flags=pygame.BLEND_RGBA_ADD)
+        self.last_guess_surface = self.font.render(last_guess, self.color)[0]
         self.last_guess_position = (
             last_line_rect.x + last_line_rect.width - last_guess_rect.width, last_line_rect.y)
 
