@@ -25,6 +25,7 @@ class Blitter():
         self._font = font
         self._color = color
         self._rect = rect
+        self._empty_surface = pygame.Surface(rect.size, pygame.SRCALPHA)
 
     def _render_blit(self, surface: pygame.Surface, line: str, height: int) -> pygame.Surface:
         surface.blit(self._font.render(line, self._color)[0], (0, height))
@@ -32,13 +33,13 @@ class Blitter():
 
     @functools.lru_cache(maxsize=64)
     def blit(self, lines: tuple[str], heights: tuple[int]) -> pygame.Surface:
-        if len(lines) == 0:
-            return pygame.Surface(self._rect.size, pygame.SRCALPHA)
-        if len(lines) == 1:
-            return self._render_blit(self.blit((), ()).copy(), lines[0], heights[0])
-
-        previous_lines_surface = self.blit(tuple(lines[:-1]), tuple(heights[:-1])).copy()
-        return self._render_blit(previous_lines_surface, lines[-1], heights[-1])
+        if not lines:
+            return self._empty_surface.copy()
+            
+        surface = self._empty_surface.copy()
+        for line, height in zip(lines, heights):
+            self._render_blit(surface, line, height)
+        return surface
 
 class TextRectRenderer():
     def __init__(self, font: pygame.freetype.Font, rect: pygame.Rect, color: pygame.Color) -> None:
