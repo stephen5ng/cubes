@@ -2,6 +2,7 @@
 
 import functools
 import pygame
+import pygame.freetype
 # https://www.pygame.org/pcr/text_rect/index.php
 
 class TextRectException(BaseException):
