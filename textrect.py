@@ -58,18 +58,19 @@ class TextRectRenderer():
 
 def wrap_lines(words: list[str], rect_width: int, rect_getter: FontRectGetter) -> list[str]:
     final_lines = []
-    accumulated_line = ""
-    for word in words:
-        test_line = accumulated_line + word + " "
+    accumulated_line = words[0] if words else ""
+    
+    for word in words[1:]:
+        test_line = accumulated_line + " " + word
 
         # Build the line while the words fit.
         if rect_getter.get_rect(test_line).width < rect_width:
             accumulated_line = test_line
         else:
             # Start a new line.
-            final_lines.append(accumulated_line[:-1])
-            accumulated_line = word + " "
-    final_lines.append(accumulated_line[:-1])
+            final_lines.append(accumulated_line)
+            accumulated_line = word
+    final_lines.append(accumulated_line)
     return final_lines
 
 def calculate_line_heights(lines: list[str], rect_height: int, rect_getter: FontRectGetter) -> list[int]:

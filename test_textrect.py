@@ -115,6 +115,22 @@ class TestPrerenderTextrect(unittest.TestCase):
         rect = self.renderer.get_last_rect(text)
         self.assertIsInstance(rect, pygame.Rect)
 
+    def test_word_wrap_no_trailing_space(self):
+        """Test that lines don't wrap unnecessarily due to trailing spaces"""
+        rect = pygame.Rect(0, 0, 200, 500)
+        # First get a line that would previously wrap due to trailing space
+        test_line = "A" * 10 + " " + "B" * 10  # Create a line that's close to the width limit
+        
+        # Get the width that would be used for comparison
+        line_width = self.rect_getter.get_rect(test_line).width
+        # Make the rect just slightly wider than the actual text
+        rect.width = line_width + 1
+        
+        last_rect, lines, heights = prerender_textrect(test_line, rect, self.rect_getter)
+        
+        self.assertEqual(len(lines), 1, "Text should fit on one line without trailing space")
+        self.assertEqual(lines[0], test_line)
+
     def tearDown(self):
         pygame.quit()
 
