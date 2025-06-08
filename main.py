@@ -38,7 +38,7 @@ async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.
                 pass
 
 async def trigger_events_from_mqtt(
-    subscribe_client: aiomqtt.Client, publish_queue: asyncio.Queue, block_words: pygamegameasync.BlockWordsPygame) -> None:
+    subscribe_client: aiomqtt.Client, publish_queue: asyncio.Queue, block_words: pygamegameasync.BlockWordsPygame, the_app: app.App) -> None:
 
     global last_cube_id, last_cube_time
     try:
@@ -50,6 +50,8 @@ async def trigger_events_from_mqtt(
                 last_cube_time = now
                 last_cube_id = cube_id
                 await cubes_to_game.handle_mqtt_message(publish_queue, message)
+            elif message.topic.matches("game/guess"):
+                await the_app.guess_word_keyboard(message.payload.decode())
             else:
                 await block_words.handle_mqtt_message(message.topic)
 
@@ -65,9 +67,10 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
             publish_queue: asyncio.Queue = asyncio.Queue()
             the_app = app.App(publish_queue, dictionary)
             await cubes_to_game.init(subscribe_client, args.cubes, args.tags)
+            await subscribe_client.subscribe("game/guess")
 
             subscribe_task = asyncio.create_task(
-                trigger_events_from_mqtt(subscribe_client, publish_queue, block_words),
+                trigger_events_from_mqtt(subscribe_client, publish_queue, block_words, the_app),
                 name="mqtt subscribe handler")
             publish_task = asyncio.create_task(publish_tasks_in_queue(publish_client, publish_queue),
                 name="mqtt publish handler")
