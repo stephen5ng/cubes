@@ -22,6 +22,7 @@ import sys
 import textrect
 import time
 from typing import cast
+import functools
 
 import app
 from pygame.image import tobytes as image_to_string
@@ -376,7 +377,6 @@ class LastGuessFader():
 
     def __init__(self, last_update_ms: int, duration: int,
         font: pygame.freetype.Font, tr: textrect.TextRectRenderer, color: pygame.Color) -> None:
-        self.alpha = 255
         self.font = font
         self.textrect = tr
         self.last_update_ms = last_update_ms
@@ -384,6 +384,14 @@ class LastGuessFader():
         self.easing = easing_functions.QuinticEaseInOut(start=0, end = 255, duration = 1)
         self.last_guess = ""
         self.color = color
+        self.last_guess_surface = None
+        self.last_guess_position = None
+        self.alpha = 255
+
+    @staticmethod
+    @functools.lru_cache(maxsize=64)
+    def _cached_render(font: pygame.freetype.Font, text: str, color_rgba: tuple[int, int, int, int]) -> pygame.Surface:
+        return font.render(text, pygame.Color(color_rgba))[0]
 
     def render(self, previous_guesses: list[str], last_guess: str) -> None:
         self.last_guess = last_guess
@@ -391,7 +399,7 @@ class LastGuessFader():
         ix = previous_guesses.index(last_guess)
         up_thru_last_guess = ' '.join(previous_guesses[:ix+1])
         last_line_rect = self.textrect.get_last_rect(up_thru_last_guess)
-        self.last_guess_surface = self.font.render(last_guess, self.color)[0]
+        self.last_guess_surface = self._cached_render(self.font, last_guess, (self.color.r, self.color.g, self.color.b, self.color.a))
         self.last_guess_position = (
             last_line_rect.x + last_line_rect.width - last_guess_rect.width, last_line_rect.y)
 
