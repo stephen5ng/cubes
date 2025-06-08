@@ -57,34 +57,28 @@ class TextRectRenderer():
 def prerender_textrect(string: str, rect: pygame.Rect, rect_getter: FontRectGetter) -> tuple[pygame.Rect, tuple[str, ...], tuple[int, ...]]:
     final_lines = []
     last_rect = pygame.Rect()
+    words = string.split(' ') if rect_getter.get_rect(string).width > rect.width else [string]
 
-    if rect_getter.get_rect(string).width > rect.width:
-        words = string.split(' ')
+    # if any of our words are too long to fit, return.
+    for word in words:
+        last_rect = rect_getter.get_rect(word)
+        if last_rect.width >= rect.width:
+            raise TextRectException("The word " + word + " is too long to fit in the rect passed.")
 
-        # if any of our words are too long to fit, return.
-        for word in words:
-            last_rect = rect_getter.get_rect(word)
-            if last_rect.width >= rect.width:
-                raise TextRectException("The word " + word + " is too long to fit in the rect passed.")
+    # Start a new line
+    accumulated_line = ""
+    for word in words:
+        test_line = accumulated_line + word + " "
 
-        # Start a new line
-        accumulated_line = ""
-        for word in words:
-            test_line = accumulated_line + word + " "
-
-            # Build the line while the words fit.
-            if rect_getter.get_rect(test_line).width < rect.width:
-                accumulated_line = test_line
-            else:
-                # Start a new line.
-                final_lines.append(accumulated_line[:-1])
-                last_rect = rect_getter.get_rect(accumulated_line[:-1])
-                accumulated_line = word + " "
-        final_lines.append(accumulated_line[:-1])
-        last_rect = rect_getter.get_rect(accumulated_line[:-1])
-    else:
-        final_lines.append(string)
-        last_rect = rect_getter.get_rect(string)
+        # Build the line while the words fit.
+        if rect_getter.get_rect(test_line).width < rect.width:
+            accumulated_line = test_line
+        else:
+            final_lines.append(accumulated_line[:-1])
+            last_rect = rect_getter.get_rect(accumulated_line[:-1])
+            accumulated_line = word + " "
+    final_lines.append(accumulated_line[:-1])
+    last_rect = rect_getter.get_rect(accumulated_line[:-1])
 
     accumulated_height = 0
     accumulated_lines = []
