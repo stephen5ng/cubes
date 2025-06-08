@@ -192,19 +192,19 @@ async def guess_tiles(publish_queue, word_tiles_list):
     last_guess_tiles = word_tiles_list
     await guess_last_tiles(publish_queue)
 
-last_guess_time = time.time()
+last_guess_time_s = time.time()
 last_guess_tiles: List[str] = []
-DEBOUNCE_TIME = 10
+DEBOUNCE_TIME_S = 10
 async def guess_word_based_on_cubes(sender: str, tag: str, publish_queue):
-    global last_guess_time, last_guess_tiles
-    now = time.time()
+    global last_guess_time_s, last_guess_tiles
+    now_s = time.time()
     word_tiles_list = process_tag(sender, tag)
     logging.info(f"WORD_TILES: {word_tiles_list}")
-    if word_tiles_list == last_guess_tiles and now - last_guess_time < DEBOUNCE_TIME:
+    if word_tiles_list == last_guess_tiles and now_s - last_guess_time_s < DEBOUNCE_TIME_S:
         logging.info(f"debounce ignoring guess")
-        last_guess_time = now
+        last_guess_time_s = now_s
         return
-    last_guess_time = now
+    last_guess_time_s = now_s
     await guess_tiles(publish_queue, word_tiles_list)
 
 guess_tiles_callback: Callable[[str, bool], Coroutine[None, None, None]]
