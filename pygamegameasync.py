@@ -374,12 +374,13 @@ class Score():
 class LastGuessFader():
     FADE_DURATION_MS = 2000
 
-    def __init__(self, last_update_ms: int,
+    def __init__(self, last_update_ms: int, duration: int,
         font: pygame.freetype.Font, tr: textrect.TextRectRenderer, color: pygame.Color) -> None:
         self.alpha = 255
         self.font = font
         self.textrect = tr
         self.last_update_ms = last_update_ms
+        self.duration = duration
         self.easing = easing_functions.QuinticEaseInOut(start=0, end = 255, duration = 1)
         self.last_guess = ""
         self.color = color
@@ -397,9 +398,7 @@ class LastGuessFader():
             last_line_rect.x + last_line_rect.width - last_guess_rect.width, last_line_rect.y)
 
     def blit(self, target) -> None:
-        self.alpha = get_alpha(self.easing,
-            self.last_update_ms,
-            LastGuessFader.FADE_DURATION_MS/2 if self.color == PREVIOUS_GUESSES_COLOR else LastGuessFader.FADE_DURATION_MS)
+        self.alpha = get_alpha(self.easing, self.last_update_ms, self.duration)
         if self.alpha:
             self.last_guess_surface.set_alpha(self.alpha)
             target.blit(self.last_guess_surface, self.last_guess_position)
@@ -431,7 +430,7 @@ class PreviousGuesses(PreviousGuessesBase):
     FONT_SIZE = 30
     POSITION_TOP = 24
     FADE_DURATION_NEW_GUESS = 2000
-    FADE_DURATION_OLD_GUESS = 1000
+    FADE_DURATION_OLD_GUESS = 500
     def __init__(self, font_size=FONT_SIZE, previous_guesses_instance=None) -> None:
         if previous_guesses_instance:
             super(PreviousGuesses, self).__init__(
@@ -464,9 +463,9 @@ class PreviousGuesses(PreviousGuessesBase):
 
     def recreate_faders(self) -> None:
         self.faders = []
-        for last_guess, last_update_ms, color, _ in self.fader_inputs:
+        for last_guess, last_update_ms, color, duration in self.fader_inputs:
             if last_guess in self.previous_guesses:
-                fader = LastGuessFader(last_update_ms, self.font, self.textrect, color)
+                fader = LastGuessFader(last_update_ms, duration, self.font, self.textrect, color)
                 fader.render(self.previous_guesses, last_guess)
                 self.faders.append(fader)
 
@@ -638,7 +637,7 @@ class Game:
     def resize_previous_guesses(self) -> None:
         font_size = (cast(float, self.previous_guesses.font.size)*4.0)/5.0
         self.previous_guesses = PreviousGuesses(
-            max(12, font_size), previous_guesses_instance=self.previous_guesses)
+            max(1, font_size), previous_guesses_instance=self.previous_guesses)
         self.remaining_previous_guesses = RemainingPreviousGuesses(font_size-2,
             remaining_previous_guesses_instance=self.remaining_previous_guesses)
         self.previous_guesses.draw()
@@ -649,7 +648,7 @@ class Game:
         while True:
             try:
                 retry_count += 1
-                if retry_count > 4:
+                if retry_count > 2:
                     raise Exception("too many TextRectException")
                 return f()
             except textrect.TextRectException:
