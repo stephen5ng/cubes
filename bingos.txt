@@ -694,7 +694,6 @@ deputy
 sealed
 loaded
 scenes
-tranny
 finger
 locate
 wooden
