@@ -85,10 +85,10 @@ class App:
             # TODO(sng): needs to check both rack sets.
             await self.guess_tiles(self._last_guess, False, 0)
 
-    def add_guess(self, guess: str) -> None:
-        self._score_card.add_guess(guess)
+    def add_guess(self, guess: str, player: int) -> None:
+        self._score_card.add_guess(guess, player)
         events.trigger("input.add_guess",
-            self._score_card.get_previous_guesses(), guess)
+            self._score_card.get_previous_guesses(), guess, player)
 
         self._update_previous_guesses()
 

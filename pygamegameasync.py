@@ -452,8 +452,8 @@ class PreviousGuesses(PreviousGuessesBase):
         self.update_previous_guesses(self.previous_guesses)
         pygame.mixer.Sound.play(self.bloop_sound)
 
-    def add_guess(self, previous_guesses: list[str], guess: str) -> None:
-        shield_color = SHIELD_COLOR if len(guess) % 2 == 0 else Color("blue")
+    def add_guess(self, previous_guesses: list[str], guess: str, player: int) -> None:
+        shield_color = SHIELD_COLOR if player == 0 else Color("blue")
         self.fader_inputs.append(
             [guess, pygame.time.get_ticks(), shield_color, PreviousGuesses.FADE_DURATION_NEW_GUESS])
         self.update_previous_guesses(previous_guesses)
@@ -644,8 +644,8 @@ class Game:
             except textrect.TextRectException:
                 self.resize_previous_guesses()
 
-    async def add_guess(self, previous_guesses: list[str], guess: str) -> None:
-        self.exec_with_resize(lambda: self.previous_guesses.add_guess(previous_guesses, guess))
+    async def add_guess(self, previous_guesses: list[str], guess: str, player: int) -> None:
+        self.exec_with_resize(lambda: self.previous_guesses.add_guess(previous_guesses, guess, player))
 
     async def update_previous_guesses(self, previous_guesses: list[str]) -> None:
         self.exec_with_resize(lambda: self.previous_guesses.update_previous_guesses(previous_guesses))
@@ -678,7 +678,7 @@ class Game:
                 shield.letter_collision()
                 self.letter.shield_collision()
                 self.score.update_score(shield.score)
-                self._app.add_guess(shield.letters)
+                self._app.add_guess(shield.letters, shield.player)
                 pygame.mixer.Sound.play(self.crash_sound)
 
         self.shields[:] = [s for s in self.shields if s.active]

@@ -40,7 +40,7 @@ class ScoreCard:
 
         return True
 
-    def add_guess(self, guess: str) -> None:
+    def add_guess(self, guess: str, player: int) -> None:
         logging.info(f"guessing {guess}")
         self.player_rack.guess(guess)
         self.previous_guesses.add(guess)
