@@ -398,7 +398,8 @@ class LastGuessFader():
 
     def blit(self, target) -> None:
         self.alpha = get_alpha(self.easing,
-            self.last_update_ms, LastGuessFader.FADE_DURATION_MS if self.color == SHIELD_COLOR else 1000)
+            self.last_update_ms,
+            LastGuessFader.FADE_DURATION_MS/2 if self.color == PREVIOUS_GUESSES_COLOR else LastGuessFader.FADE_DURATION_MS)
         if self.alpha:
             self.last_guess_surface.set_alpha(self.alpha)
             target.blit(self.last_guess_surface, self.last_guess_position)
