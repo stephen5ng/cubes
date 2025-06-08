@@ -446,6 +446,9 @@ class PreviousGuesses(PreviousGuessesBase):
             self.bloop_sound.set_volume(0.2)
 
         self.faders: list[LastGuessFader] = []
+        # Create initial faders if we have previous guesses
+        if self.previous_guesses and self.fader_inputs:
+            self.recreate_faders()
 
     def old_guess(self, old_guess: str) -> None:
         self.fader_inputs.append(
@@ -459,14 +462,18 @@ class PreviousGuesses(PreviousGuessesBase):
             [guess, pygame.time.get_ticks(), shield_color, PreviousGuesses.FADE_DURATION_NEW_GUESS])
         self.update_previous_guesses(previous_guesses)
 
-    def update_previous_guesses(self, previous_guesses: list[str]) -> None:
+    def recreate_faders(self) -> None:
         self.faders = []
         for last_guess, last_update_ms, color, _ in self.fader_inputs:
-            if last_guess in previous_guesses:
+            if last_guess in self.previous_guesses:
                 fader = LastGuessFader(last_update_ms, self.font, self.textrect, color)
-                fader.render(previous_guesses, last_guess)
+                fader.render(self.previous_guesses, last_guess)
                 self.faders.append(fader)
+
+    def update_previous_guesses(self, previous_guesses: list[str]) -> None:
         super(PreviousGuesses, self).update_previous_guesses(previous_guesses)
+        # Recreate faders after updating the text layout
+        self.recreate_faders()
 
     def update(self, window: pygame.Surface) -> None:
         self.draw()
@@ -628,7 +635,8 @@ class Game:
 
     def resize_previous_guesses(self) -> None:
         font_size = (cast(float, self.previous_guesses.font.size)*4.0)/5.0
-        self.previous_guesses = PreviousGuesses(max(12, font_size), previous_guesses_instance=self.previous_guesses)
+        self.previous_guesses = PreviousGuesses(
+            max(12, font_size), previous_guesses_instance=self.previous_guesses)
         self.remaining_previous_guesses = RemainingPreviousGuesses(font_size-2,
             remaining_previous_guesses_instance=self.remaining_previous_guesses)
         self.previous_guesses.draw()
