@@ -3,7 +3,7 @@
 import unittest
 import pygame
 import pygame.freetype
-from textrect import prerender_textrect, TextRectException, FontRectGetter, get_last_textrect, Blitter, TextRectRenderer
+from textrect import prerender_textrect, TextRectException, FontRectGetter, Blitter, TextRectRenderer
 
 class TestPrerenderTextrect(unittest.TestCase):
     def setUp(self):
@@ -112,7 +112,7 @@ class TestPrerenderTextrect(unittest.TestCase):
     def test_get_last_textrect(self):
         """Test the get_last_textrect function"""
         text = "Test text"
-        rect = get_last_textrect(text, self.rect, self.rect_getter)
+        rect = self.renderer.get_last_rect(text)
         self.assertIsInstance(rect, pygame.Rect)
 
     def tearDown(self):

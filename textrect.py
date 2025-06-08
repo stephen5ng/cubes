@@ -53,7 +53,34 @@ class TextRectRenderer():
         return self._blitter.blit(accumulated_lines, heights)
 
     def get_last_rect(self, string: str) -> pygame.Rect:
-        return get_last_textrect(string, self._rect, self._font_rect_getter)
+        return prerender_textrect(string, self._rect, self._font_rect_getter)[0]
+
+def wrap_lines(words: list[str], rect_width: int, rect_getter: FontRectGetter) -> list[str]:
+    final_lines = []
+    accumulated_line = ""
+    for word in words:
+        test_line = accumulated_line + word + " "
+
+        # Build the line while the words fit.
+        if rect_getter.get_rect(test_line).width < rect_width:
+            accumulated_line = test_line
+        else:
+            # Start a new line.
+            final_lines.append(accumulated_line[:-1])
+            accumulated_line = word + " "
+    final_lines.append(accumulated_line[:-1])
+    return final_lines
+
+def calculate_line_heights(lines: list[str], rect_height: int, rect_getter: FontRectGetter) -> list[int]:
+    accumulated_height = 0
+    heights = []
+    for line in lines:
+        heights.append(accumulated_height)
+        line_rect = rect_getter.get_rect(line)
+        if accumulated_height + line_rect.height >= rect_height:
+            raise TextRectException("Once word-wrapped, the text string was too tall to fit in the rect.")
+        accumulated_height += line_rect.height + int(line_rect.height/3)
+    return heights
 
 def prerender_textrect(string: str, rect: pygame.Rect, rect_getter: FontRectGetter) -> tuple[pygame.Rect, tuple[str, ...], tuple[int, ...]]:
     words = string.split(' ') if rect_getter.get_rect(string).width > rect.width else [string]
@@ -63,37 +90,14 @@ def prerender_textrect(string: str, rect: pygame.Rect, rect_getter: FontRectGett
         if rect_getter.get_rect(word).width >= rect.width:
             raise TextRectException("The word " + word + " is too long to fit in the rect passed.")
 
-    final_lines = []
-    accumulated_line = ""
-    for word in words:
-        test_line = accumulated_line + word + " "
-
-        # Build the line while the words fit.
-        if rect_getter.get_rect(test_line).width < rect.width:
-            accumulated_line = test_line
-        else:
-            # Start a new line.
-            final_lines.append(accumulated_line[:-1])
-            accumulated_line = word + " "
-    final_lines.append(accumulated_line[:-1])
-
-    accumulated_height = 0
-    heights = []
-    for line in final_lines:
-        heights.append(accumulated_height)
-        line_rect = rect_getter.get_rect(line)
-        if accumulated_height + line_rect.height >= rect.height:
-            raise TextRectException("Once word-wrapped, the text string was too tall to fit in the rect.")
-        accumulated_height += line_rect.height + int(line_rect.height/3)
+    final_lines = wrap_lines(words, rect.width, rect_getter)
+    heights = calculate_line_heights(final_lines, rect.height, rect_getter)
 
     # Calculate final rect from last line
     last_rect = rect_getter.get_rect(final_lines[-1])
     last_rect.y = heights[-1]
     last_rect.x = 0
     return last_rect, tuple(final_lines), tuple(heights)
-
-def get_last_textrect(string: str, rect: pygame.Rect, rg: FontRectGetter) -> pygame.Rect:
-    return prerender_textrect(string, rect, rg)[0]
 
 def textrect_loop(trr, my_string):
     for i in range(1000):
