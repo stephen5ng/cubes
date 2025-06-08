@@ -108,8 +108,6 @@ class Letter():
     DROP_TIME_MS = 15000
     NEXT_COLUMN_MS = 1000
     ANTIALIAS = 1
-    ACCELERATION = 1.02
-    INITIAL_SPEED = 0.040
     ROUNDS = 15
     Y_INCREMENT = SCREEN_HEIGHT // ROUNDS
     COLUMN_SHIFT_INTERVAL_MS = 10000
@@ -138,6 +136,7 @@ class Letter():
         self.letter = ""
         self.letter_ix = 0
         self.start_fall_y = 0
+        self.new_start_fall_y = 0
         self.column_move_direction = 1
         self.next_column_move_time_ms = pygame.time.get_ticks()
         self.top_bottom_percent = 0
@@ -173,7 +172,7 @@ class Letter():
         now_ms = pygame.time.get_ticks()
         fall_percent = (now_ms - self.start_fall_time_ms)/self.total_fall_time_ms
         fall_easing = self.top_bottom_easing(fall_percent)
-        self.pos[1] = int(self.start_fall_y + fall_easing * self.height)
+        self.pos[1] = int(self.new_start_fall_y + fall_easing * self.height)
         distance_from_top = self.pos[1] / SCREEN_HEIGHT
         distance_from_bottom = 1 - distance_from_top
         if now_ms > self.last_beep_time_ms + (distance_from_bottom*distance_from_bottom)*7000:
@@ -198,6 +197,7 @@ class Letter():
     def shield_collision(self) -> None:
         # logger.debug(f"---------- {self.start_fall_y}, {self.pos[1]}, {new_pos}, {self.pos[1] - new_pos}")
         self.pos[1] = int(self.start_fall_y + (self.pos[1] - self.start_fall_y)/2)
+        self.new_start_fall_y = int(self.start_fall_y + (self.pos[1] - self.start_fall_y)/2)
         self.start_fall_time_ms = pygame.time.get_ticks()
 
     def change_letter(self, new_letter: str) -> None:
@@ -601,6 +601,7 @@ class Game:
         self.rack.start()
         self.running = True
         now_s = pygame.time.get_ticks() / 1000
+        self.stop_time_s = -1000
         self.last_letter_time_s = now_s
         self.start_time_s = now_s
         await self._app.start()
@@ -622,8 +623,9 @@ class Game:
         self.rack.stop()
         self.running = False
         now_s = pygame.time.get_ticks() / 1000
+        self.stop_time_s = now_s
         self.duration_log_f.write(
-            f"{Letter.ACCELERATION},{Letter.INITIAL_SPEED},{self.score.score},{now_s-self.start_time_s}\n")
+            f"{self.score.score},{now_s-self.start_time_s}\n")
         self.duration_log_f.flush()
         await self._app.stop()
         logger.info("GAME OVER OVER")
@@ -748,7 +750,8 @@ class BlockWordsPygame():
         game = Game(the_app, self.letter_font)
 
         while True:
-            if start and not game.running:
+            current_time_s = pygame.time.get_ticks() / 1000
+            if start and not game.running and current_time_s - game.stop_time_s > 120:
                 await game.start()
             if game.aborted:
                 return
