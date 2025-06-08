@@ -317,7 +317,7 @@ class Rack():
 class Shield():
     ACCELERATION = 1.05
 
-    def __init__(self, base_pos: tuple[int, int], letters: str, score: int) -> None:
+    def __init__(self, base_pos: tuple[int, int], letters: str, score: int, player: int) -> None:
         self.font = pygame.freetype.SysFont("Arial", int(2+math.log(1+score)*8))
         self.letters = letters
         self.pos = [base_pos[0], float(base_pos[1])]
@@ -326,10 +326,11 @@ class Shield():
         self.speed = -math.log(1+score) / 10
         self.score = score
         self.active = True
+        self.player = player
         self.draw()
 
     def draw(self) -> None:
-        self.surface = self.font.render(self.letters, SHIELD_COLOR)[0]
+        self.surface = self.font.render(self.letters, SHIELD_COLOR if self.player == 0 else Color("blue"))[0]
         self.pos[0] = int(SCREEN_WIDTH/2 - self.surface.get_width()/2)
 
     def update(self, window: pygame.Surface) -> None:
@@ -452,8 +453,9 @@ class PreviousGuesses(PreviousGuessesBase):
         pygame.mixer.Sound.play(self.bloop_sound)
 
     def add_guess(self, previous_guesses: list[str], guess: str) -> None:
+        shield_color = SHIELD_COLOR if len(guess) % 2 == 0 else Color("blue")
         self.fader_inputs.append(
-            [guess, pygame.time.get_ticks(), SHIELD_COLOR, PreviousGuesses.FADE_DURATION_NEW_GUESS])
+            [guess, pygame.time.get_ticks(), shield_color, PreviousGuesses.FADE_DURATION_NEW_GUESS])
         self.update_previous_guesses(previous_guesses)
 
     def update_previous_guesses(self, previous_guesses: list[str]) -> None:
@@ -596,10 +598,10 @@ class Game:
         await self._app.start()
         pygame.mixer.Sound.play(self.start_sound)
 
-    async def stage_guess(self, score: int, last_guess: str) -> None:
+    async def stage_guess(self, score: int, last_guess: str, player: int) -> None:
         await self.sound_queue.put(f"word_sounds/{last_guess.lower()}.wav")
         self.rack.guess_type = GuessType.GOOD
-        self.shields.append(Shield(self.rack_metrics.get_rect().topleft, last_guess, score))
+        self.shields.append(Shield(self.rack_metrics.get_rect().topleft, last_guess, score, player))
 
     async def accept_letter(self) -> None:
         await self._app.accept_new_letter(self.letter.letter, self.letter.letter_index())
@@ -770,7 +772,7 @@ class BlockWordsPygame():
                             remaining_letters = list(game.rack.letters())
                         if key in remaining_letters:
                             keyboard_guess += key
-                            await the_app.guess_word_keyboard(keyboard_guess)
+                            await the_app.guess_word_keyboard(keyboard_guess, 0)
                             game.rack.select_count = len(keyboard_guess)
                             logger.info(f"key: {str(key)} {keyboard_guess}")
 

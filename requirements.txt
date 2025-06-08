@@ -6,6 +6,7 @@ paho-mqtt
 pillow
 psutil
 pygame-ce
+requests
 RGBMatrixEmulator
 types-aiofiles
 types-psutil

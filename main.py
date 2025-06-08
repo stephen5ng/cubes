@@ -51,7 +51,7 @@ async def trigger_events_from_mqtt(
                 last_cube_id = cube_id
                 await cubes_to_game.handle_mqtt_message(publish_queue, message)
             elif message.topic.matches("game/guess"):
-                await the_app.guess_word_keyboard(message.payload.decode())
+                await the_app.guess_word_keyboard(message.payload.decode(), 1)
             else:
                 await block_words.handle_mqtt_message(message.topic)
 

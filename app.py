@@ -38,9 +38,9 @@ SCRABBLE_LETTER_SCORES = {
 
 class App:
     def __init__(self, publish_queue: asyncio.Queue, dictionary: Dictionary) -> None:
-        def make_guess_tiles_callback(the_app: App) -> Callable[[list[str], bool],  Coroutine[Any, Any, None]]:
-            async def guess_tiles_callback(guess: list[str], move_tiles: bool) -> None:
-                await the_app.guess_tiles(guess, move_tiles)
+        def make_guess_tiles_callback(the_app: App) -> Callable[[list[str], bool, int],  Coroutine[Any, Any, None]]:
+            async def guess_tiles_callback(guess: list[str], move_tiles: bool, player: int) -> None:
+                await the_app.guess_tiles(guess, move_tiles, player)
             return guess_tiles_callback
 
         self._dictionary = dictionary
@@ -59,7 +59,8 @@ class App:
         self._update_rack_display(0, 0)
         self._update_previous_guesses()
         self._update_remaining_previous_guesses()
-        await cubes_to_game.guess_last_tiles(self._publish_queue)
+        # TODO(sng): needs to check both rack sets.
+        await cubes_to_game.guess_last_tiles(self._publish_queue, 0)
         self._running = True
 
     async def stop(self) -> None:
@@ -90,7 +91,7 @@ class App:
 
         self._update_previous_guesses()
 
-    async def guess_tiles(self, word_tile_ids: list[str], move_tiles: bool) -> None:
+    async def guess_tiles(self, word_tile_ids: list[str], move_tiles: bool, player: int) -> None:
         self._last_guess = word_tile_ids
         logger.info(f"guess_tiles: word_tile_ids {word_tile_ids}")
         if not self._running:
@@ -115,7 +116,8 @@ class App:
         elif self._score_card.is_good_guess(guess):
             await cubes_to_game.good_guess(self._publish_queue, word_tile_ids)
             self._score_card.add_staged_guess(guess)
-            events.trigger("game.stage_guess", self._score_card.calculate_score(guess), guess)
+            events.trigger("game.stage_guess", 
+                           self._score_card.calculate_score(guess), guess, player)
             good_guess_highlight = len(guess_tiles)
             tiles_dirty = True
         else:
@@ -125,9 +127,9 @@ class App:
         if tiles_dirty:
             self._update_rack_display(good_guess_highlight, len(guess))
 
-    async def guess_word_keyboard(self, guess: str) -> None:
+    async def guess_word_keyboard(self, guess: str, player: int) -> None:
         await cubes_to_game.guess_tiles(self._publish_queue,
-            [self._player_rack.letters_to_ids(guess)])
+            [self._player_rack.letters_to_ids(guess)], player)
 
     def _update_next_tile(self, next_tile: str) -> None:
         events.trigger("game.next_tile", next_tile)

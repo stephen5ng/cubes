@@ -184,13 +184,14 @@ async def load_rack(publish_queue, tiles_with_letters: list[tiles.Tile]):
         # Some of the tiles changed. Make a guess, just in case one of them
         # was in our last guess (which is overkill).
         logging.info(f"LOAD RACK guessing")
-        await guess_last_tiles(publish_queue)
+        # TODO(sng): needs to check both rack sets.
+        await guess_last_tiles(publish_queue, 0)
         last_tiles_with_letters = tiles_with_letters
 
-async def guess_tiles(publish_queue, word_tiles_list):
+async def guess_tiles(publish_queue, word_tiles_list, player: int):
     global last_guess_tiles
     last_guess_tiles = word_tiles_list
-    await guess_last_tiles(publish_queue)
+    await guess_last_tiles(publish_queue, player)
 
 last_guess_time_s = time.time()
 last_guess_tiles: List[str] = []
@@ -205,7 +206,7 @@ async def guess_word_based_on_cubes(sender: str, tag: str, publish_queue):
         last_guess_time_s = now_s
         return
     last_guess_time_s = now_s
-    await guess_tiles(publish_queue, word_tiles_list)
+    await guess_tiles(publish_queue, word_tiles_list, 0)
 
 guess_tiles_callback: Callable[[str, bool], Coroutine[None, None, None]]
 
@@ -216,7 +217,7 @@ def set_guess_tiles_callback(f):
 def get_cubeids_from_tiles(word_tiles):
     return [tiles_to_cubes[t] for t in word_tiles]
 
-async def guess_last_tiles(publish_queue) -> None:
+async def guess_last_tiles(publish_queue, player: int) -> None:
     unused_tiles = set((str(i) for i in range(tiles.MAX_LETTERS)))
     logging.info(f"guess_last_tiles last_guess_tiles {last_guess_tiles} {unused_tiles}")
     for guess in last_guess_tiles:
@@ -234,7 +235,7 @@ async def guess_last_tiles(publish_queue) -> None:
         await publish_queue.put((f"cube/{tiles_to_cubes[g]}/border_line", ' ', True))
 
     for guess in last_guess_tiles:
-        await guess_tiles_callback(guess, True)
+        await guess_tiles_callback(guess, True, player)
 
 async def good_guess(publish_queue, tiles: list[str]):
     for t in tiles:
