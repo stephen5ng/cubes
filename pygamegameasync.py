@@ -461,7 +461,7 @@ class PreviousGuesses(PreviousGuessesBase):
 
     def update_previous_guesses(self, previous_guesses: list[str]) -> None:
         self.faders = []
-        for last_guess, last_update_ms, color, duration in self.fader_inputs:
+        for last_guess, last_update_ms, color, _ in self.fader_inputs:
             if last_guess in previous_guesses:
                 fader = LastGuessFader(last_update_ms, self.font, self.textrect, color)
                 fader.render(previous_guesses, last_guess)

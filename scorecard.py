@@ -15,7 +15,7 @@ Play = Enum("Play", ["GOOD", "MISSING_LETTERS", "DUPE_WORD", "BAD_WORD"])
 
 class ScoreCard:
     def __init__(self, player_rack:tiles.Rack, dictionary: dictionary.Dictionary) -> None:
-        self.previous_guesses: set[str] = set()
+        self._previous_guesses: set[tuple[int, str]] = set()
         self.staged_guesses: set[str] = set()
         self.possible_guessed_words: set[str] = set()
         self.remaining_previous_guesses: set[str] = set() # After possible have been removed
@@ -43,15 +43,18 @@ class ScoreCard:
     def add_guess(self, guess: str, player: int) -> None:
         logging.info(f"guessing {guess}")
         self.player_rack.guess(guess)
-        self.previous_guesses.add(guess)
+        self._previous_guesses.add((player, guess))
         self.possible_guessed_words.add(guess)
 
     def update_previous_guesses(self) -> None:
-        self.possible_guessed_words = set([word for word in self.previous_guesses if not self.player_rack.missing_letters(word)])
-        self.remaining_previous_guesses = self.previous_guesses - self.possible_guessed_words
+        words = [word for _, word in self._previous_guesses]
+        self.possible_guessed_words = set(
+            [word for word in words
+             if not self.player_rack.missing_letters(word)])
+        self.remaining_previous_guesses = set(words) - self.possible_guessed_words
 
     def get_previous_guesses(self) -> list[str]:
-        return sorted(list(self.possible_guessed_words))
+        return sorted([word for _, word in self._previous_guesses])
 
     def get_remaining_previous_guesses(self) -> list[str]:
         return sorted(list(self.remaining_previous_guesses))
