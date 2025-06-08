@@ -82,7 +82,8 @@ class App:
         events.trigger("rack.update_letter", changed_tile, position)
         self._update_next_tile(self._player_rack.next_letter())
         if changed_tile.id in self._last_guess:
-            await self.guess_tiles(self._last_guess, False)
+            # TODO(sng): needs to check both rack sets.
+            await self.guess_tiles(self._last_guess, False, 0)
 
     def add_guess(self, guess: str) -> None:
         self._score_card.add_guess(guess)
