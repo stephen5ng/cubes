@@ -57,37 +57,34 @@ class TextRectRenderer():
 def prerender_textrect(string: str, rect: pygame.Rect, rect_getter: FontRectGetter) -> tuple[pygame.Rect, tuple[str, ...], tuple[int, ...]]:
     final_lines = []
     last_rect = pygame.Rect()
-    requested_lines = string.splitlines()
 
-    for requested_line in requested_lines:
-        if rect_getter.get_rect(requested_line).width > rect.width:
-            words = requested_line.split(' ')
+    if rect_getter.get_rect(string).width > rect.width:
+        words = string.split(' ')
 
-            # if any of our words are too long to fit, return.
-            for word in words:
-                last_rect = rect_getter.get_rect(word)
-                if last_rect.width >= rect.width:
-                    raise TextRectException("The word " + word + " is too long to fit in the rect passed.")
+        # if any of our words are too long to fit, return.
+        for word in words:
+            last_rect = rect_getter.get_rect(word)
+            if last_rect.width >= rect.width:
+                raise TextRectException("The word " + word + " is too long to fit in the rect passed.")
 
-            # Start a new line
-            accumulated_line = ""
-            for word in words:
-                test_line = accumulated_line + word + " "
+        # Start a new line
+        accumulated_line = ""
+        for word in words:
+            test_line = accumulated_line + word + " "
 
-                # Build the line while the words fit.
-                if rect_getter.get_rect(test_line).width < rect.width:
-                    accumulated_line = test_line
-                else:
-                    # Start a new line.
-                    final_lines.append(accumulated_line[:-1])
-                    last_rect = rect_getter.get_rect(accumulated_line[:-1])
-                    accumulated_line = word + " "
-            final_lines.append(accumulated_line[:-1])
-            last_rect = rect_getter.get_rect(accumulated_line[:-1])
-        else:
-            final_lines.append(requested_line)
-            last_rect = rect_getter.get_rect(requested_line)
-
+            # Build the line while the words fit.
+            if rect_getter.get_rect(test_line).width < rect.width:
+                accumulated_line = test_line
+            else:
+                # Start a new line.
+                final_lines.append(accumulated_line[:-1])
+                last_rect = rect_getter.get_rect(accumulated_line[:-1])
+                accumulated_line = word + " "
+        final_lines.append(accumulated_line[:-1])
+        last_rect = rect_getter.get_rect(accumulated_line[:-1])
+    else:
+        final_lines.append(string)
+        last_rect = rect_getter.get_rect(string)
 
     accumulated_height = 0
     accumulated_lines = []
@@ -129,7 +126,7 @@ if __name__ == '__main__':
 
     my_font = pygame.freetype.Font(None, 22)
 
-    my_string = "Hi there! I'm a nice bit of wordwrapped text. Won't you be my friend? Honestly, wordwrapping is easy, with David's fancy new render_textrect () function.\nThis is a new line.\n\nThis is another one.\n\n\nAnother line, you lucky dog."
+    my_string = "Hi there! I'm a nice bit of wordwrapped text. Won't you be my friend? Honestly, wordwrapping is easy, with David's fancy new render_textrect () function. This is a new line. This is another one. Another line, you lucky dog."
 
     my_rect = pygame.Rect((40, 40, 300, 400))
     trr = TextRectRenderer(my_font, my_rect, pygame.Color(216, 216, 216))

@@ -40,7 +40,7 @@ class TestPrerenderTextrect(unittest.TestCase):
 
     def test_word_wrap_exact_width(self):
         """Test word wrapping when a line exactly fits the width"""
-        rect = pygame.Rect(0, 0, 200, 500)
+        rect = pygame.Rect(0, 0, 200, 500)  # Wider rect
         # First get a line that fits exactly
         text = "A " * 20  # Start with something that will need to wrap
         test_line = ""
@@ -53,21 +53,6 @@ class TestPrerenderTextrect(unittest.TestCase):
         self.assertEqual(len(lines), 1)
         self.assertEqual(lines[0], test_line)
 
-    def test_newlines(self):
-        """Test text with explicit newlines"""
-        rect = pygame.Rect(0, 0, 200, 200)
-        text = "Line 1\nLine 2\nLine 3"
-        
-        last_rect, lines, heights = prerender_textrect(text, rect, self.rect_getter)
-        
-        self.assertEqual(len(lines), 3)
-        self.assertEqual(lines[0], "Line 1")
-        self.assertEqual(lines[1], "Line 2")
-        self.assertEqual(lines[2], "Line 3")
-        # Test that heights are properly incremented
-        self.assertLess(heights[0], heights[1])
-        self.assertLess(heights[1], heights[2])
-
     def test_too_long_word(self):
         """Test handling of words that are too long to fit"""
         rect = pygame.Rect(0, 0, 50, 100)  # Very narrow rect
@@ -79,7 +64,7 @@ class TestPrerenderTextrect(unittest.TestCase):
     def test_too_tall_text(self):
         """Test handling of text that's too tall for the rect"""
         rect = pygame.Rect(0, 0, 100, 10)  # Very short rect
-        text = "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
+        text = "This is a very long text that will wrap many times and become too tall"
         
         with self.assertRaises(TextRectException):
             prerender_textrect(text, rect, self.rect_getter)
@@ -91,22 +76,10 @@ class TestPrerenderTextrect(unittest.TestCase):
         
         last_rect, lines, heights = prerender_textrect(text, rect, self.rect_getter)
         
-        self.assertEqual(len(lines), 0)
-        self.assertEqual(len(heights), 0)
+        self.assertEqual(len(lines), 1)  # Empty string should be treated as one empty line
+        self.assertEqual(lines[0], "")
+        self.assertEqual(len(heights), 1)
         self.assertIsInstance(last_rect, pygame.Rect)
-
-    def test_multiple_consecutive_newlines(self):
-        """Test handling of multiple consecutive newlines"""
-        rect = pygame.Rect(0, 0, 200, 200)
-        text = "Line 1\n\n\nLine 2"
-        
-        last_rect, lines, heights = prerender_textrect(text, rect, self.rect_getter)
-        
-        self.assertEqual(len(lines), 4)
-        self.assertEqual(lines[0], "Line 1")
-        self.assertEqual(lines[1], "")
-        self.assertEqual(lines[2], "")
-        self.assertEqual(lines[3], "Line 2")
 
     def test_word_wrap_with_multiple_spaces(self):
         """Test word wrapping with multiple spaces between words"""
