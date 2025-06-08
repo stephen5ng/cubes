@@ -78,6 +78,7 @@ def prerender_textrect(string: str, rect: pygame.Rect, rect_getter: FontRectGett
                 if rect_getter.get_rect(test_line).width < rect.width:
                     accumulated_line = test_line
                 else:
+                    # Start a new line.
                     final_lines.append(accumulated_line[:-1])
                     last_rect = rect_getter.get_rect(accumulated_line[:-1])
                     accumulated_line = word + " "
