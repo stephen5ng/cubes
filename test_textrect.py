@@ -3,7 +3,7 @@
 import unittest
 import pygame
 import pygame.freetype
-from textrect import prerender_textrect, TextRectException, FontRectGetter, render_textrect, get_last_textrect, Blitter
+from textrect import prerender_textrect, TextRectException, FontRectGetter, get_last_textrect, Blitter, TextRectRenderer
 
 class TestPrerenderTextrect(unittest.TestCase):
     def setUp(self):
@@ -11,7 +11,8 @@ class TestPrerenderTextrect(unittest.TestCase):
         self.font = pygame.freetype.SysFont(None, 24)  # Using default font for testing
         self.rect_getter = FontRectGetter(self.font)
         self.rect = pygame.Rect(0, 0, 200, 500)
-        self.blitter = Blitter(self.font, pygame.Color(255, 255, 255), self.rect)
+        self.color = pygame.Color(255, 255, 255)
+        self.renderer = TextRectRenderer(self.font, self.rect, self.color)
         
     def test_simple_text(self):
         """Test basic text that fits within bounds"""
@@ -102,10 +103,10 @@ class TestPrerenderTextrect(unittest.TestCase):
         self.assertGreater(len(lines), 1)  # Should wrap to at least 2 lines
         self.assertEqual(lines[-1], "End")  # Last word should be on its own line
 
-    def test_render_textrect(self):
-        """Test the render_textrect function"""
+    def test_renderer(self):
+        """Test the TextRectRenderer"""
         text = "Test text"
-        surface = render_textrect(text, self.blitter, self.rect, self.rect_getter)
+        surface = self.renderer.render(text)
         self.assertIsInstance(surface, pygame.Surface)
 
     def test_get_last_textrect(self):

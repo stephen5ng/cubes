@@ -49,13 +49,13 @@ class TextRectRenderer():
         self._blitter = Blitter(font, color, rect)
 
     def render(self, string: str) -> pygame.Surface:
-        return render_textrect(string, self._blitter,self._rect, self._font_rect_getter)
+        _, accumulated_lines, heights = prerender_textrect(string, self._rect, self._font_rect_getter)
+        return self._blitter.blit(accumulated_lines, heights)
 
     def get_last_rect(self, string: str) -> pygame.Rect:
         return get_last_textrect(string, self._rect, self._font_rect_getter)
 
 def prerender_textrect(string: str, rect: pygame.Rect, rect_getter: FontRectGetter) -> tuple[pygame.Rect, tuple[str, ...], tuple[int, ...]]:
-    final_lines = []
     words = string.split(' ') if rect_getter.get_rect(string).width > rect.width else [string]
 
     # if any of our words are too long to fit, return.
@@ -63,7 +63,7 @@ def prerender_textrect(string: str, rect: pygame.Rect, rect_getter: FontRectGett
         if rect_getter.get_rect(word).width >= rect.width:
             raise TextRectException("The word " + word + " is too long to fit in the rect passed.")
 
-    # Start a new line
+    final_lines = []
     accumulated_line = ""
     for word in words:
         test_line = accumulated_line + word + " "
@@ -72,15 +72,14 @@ def prerender_textrect(string: str, rect: pygame.Rect, rect_getter: FontRectGett
         if rect_getter.get_rect(test_line).width < rect.width:
             accumulated_line = test_line
         else:
+            # Start a new line.
             final_lines.append(accumulated_line[:-1])
             accumulated_line = word + " "
     final_lines.append(accumulated_line[:-1])
 
     accumulated_height = 0
-    accumulated_lines = []
     heights = []
     for line in final_lines:
-        accumulated_lines.append(line)
         heights.append(accumulated_height)
         line_rect = rect_getter.get_rect(line)
         if accumulated_height + line_rect.height >= rect.height:
@@ -88,14 +87,10 @@ def prerender_textrect(string: str, rect: pygame.Rect, rect_getter: FontRectGett
         accumulated_height += line_rect.height + int(line_rect.height/3)
 
     # Calculate final rect from last line
-    last_rect = rect_getter.get_rect(accumulated_lines[-1])
+    last_rect = rect_getter.get_rect(final_lines[-1])
     last_rect.y = heights[-1]
     last_rect.x = 0
-    return last_rect, tuple(accumulated_lines), tuple(heights)
-
-def render_textrect(string: str, blitter: Blitter, rect: pygame.Rect, rg: FontRectGetter) -> pygame.Surface:
-    _, accumulated_lines, heights = prerender_textrect(string, rect, rg)
-    return blitter.blit(accumulated_lines, heights)
+    return last_rect, tuple(final_lines), tuple(heights)
 
 def get_last_textrect(string: str, rect: pygame.Rect, rg: FontRectGetter) -> pygame.Rect:
     return prerender_textrect(string, rect, rg)[0]
