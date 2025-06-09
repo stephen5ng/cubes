@@ -77,19 +77,8 @@ class Rack:
         return ''.join([t.letter for t in self.ids_to_tiles(ids)])
 
     def guess(self, guess: str) -> None:
-        # Assumes all the letters of guess are in the rack.
-
-        guess_letters = list(guess)
-        self._last_guess = []
-        unused_tiles = list(self._tiles)
-        for guess_letter in guess_letters:
-            for tile in unused_tiles:
-                if guess_letter == tile.letter:
-                    self._last_guess.append(tile)
-                    unused_tiles.remove(tile)
-                    break
-
         logging.info(f"guess({guess})")
+        self._last_guess = self.ids_to_tiles(self.letters_to_ids(guess))
 
     def missing_letters(self, word: str) -> str:
         rack_hash = Counter(_tiles_to_letters(self._tiles))
