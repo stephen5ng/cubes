@@ -88,7 +88,7 @@ class TextRectRenderer():
                 pos_dict[word] = (next_x, last_rect.y)
                 word_rect.x, word_rect.y = next_x, last_rect.y
             else:
-                new_y = last_rect.y + last_rect.height + int(self._space_height/3)
+                new_y = last_rect.y + self._space_height + int(self._space_height/4)
                 pos_dict[word] = (0, new_y)
                 word_rect.x, word_rect.y = 0, new_y
                 
