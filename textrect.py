@@ -71,24 +71,22 @@ class TextRectRenderer():
                 raise TextRectException("The word " + word + " is too long to fit in the rect passed.")
             
         # Position first word at origin
+        last_rect = self._font_rect_getter.get_rect(words[0])
         pos_dict[words[0]] = (0, 0)
-        last_x, last_y = 0, 0
-        last_width = self._font_rect_getter.get_rect(words[0]).width
-        last_height = self._font_rect_getter.get_rect(words[0]).height
         
         for word in words[1:]:
             word_rect = self._font_rect_getter.get_rect(word)
-            next_x = last_x + last_width + self._space_width
+            next_x = last_rect.x + last_rect.width + self._space_width
+            
             if next_x + word_rect.width < self._rect.width:
-                pos_dict[word] = (next_x, last_y)
-                last_x = next_x
-                last_width = word_rect.width
+                pos_dict[word] = (next_x, last_rect.y)
+                word_rect.x, word_rect.y = next_x, last_rect.y
             else:
-                pos_dict[word] = (0, last_y + last_height + int(self._space_height/3))
-                last_x = 0
-                last_y = pos_dict[word][1]
-                last_width = word_rect.width
-            last_height = word_rect.height
+                new_y = last_rect.y + last_rect.height + int(self._space_height/3)
+                pos_dict[word] = (0, new_y)
+                word_rect.x, word_rect.y = 0, new_y
+                
+            last_rect = word_rect
                 
         return pos_dict
 
