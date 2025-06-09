@@ -50,48 +50,47 @@ class TextRectRenderer():
         self._font_rect_getter = FontRectGetter(font)
         self._blitter = Blitter(font, color, rect)
         self._pos_dict = {}
+        self._space_width = self._font_rect_getter.get_rect(" ").width
+        self._space_height = self._font_rect_getter.get_rect("X").height
 
     def render(self, words: list[str]) -> pygame.Surface:
-        self._pos_dict = prerender_textrect(words, self._rect, self._font_rect_getter)
+        self._pos_dict = self._prerender_textrect(words)
         return self._blitter.blit_words(tuple(words), self._pos_dict)
 
     def get_pos(self, word: str) -> tuple[int, int]:
         return self._pos_dict[word]
 
-def prerender_textrect(words: list[str], rect: pygame.Rect, rect_getter: FontRectGetter) -> dict[str, tuple[int, int]]:
-    pos_dict = {}
-    if not words:
-        return pos_dict
+    def _prerender_textrect(self, words: list[str]) -> dict[str, tuple[int, int]]:
+        pos_dict = {}
+        if not words:
+            return pos_dict
 
-    # Check if any words are too long
-    for word in words:
-        if rect_getter.get_rect(word).width >= rect.width:
-            raise TextRectException("The word " + word + " is too long to fit in the rect passed.")
-        
-    space_width = rect_getter.get_rect(" ").width
-    space_height = rect_getter.get_rect("X").height
-    
-    # Position first word at origin
-    pos_dict[words[0]] = (0, 0)
-    last_x, last_y = 0, 0
-    last_width = rect_getter.get_rect(words[0]).width
-    last_height = rect_getter.get_rect(words[0]).height
-    
-    for word in words[1:]:
-        word_rect = rect_getter.get_rect(word)
-        next_x = last_x + last_width + space_width
-        if next_x + word_rect.width < rect.width:
-            pos_dict[word] = (next_x, last_y)
-            last_x = next_x
-            last_width = word_rect.width
-        else:
-            pos_dict[word] = (0, last_y + last_height + int(space_height/3))
-            last_x = 0
-            last_y = pos_dict[word][1]
-            last_width = word_rect.width
-        last_height = word_rect.height
+        # Check if any words are too long
+        for word in words:
+            if self._font_rect_getter.get_rect(word).width >= self._rect.width:
+                raise TextRectException("The word " + word + " is too long to fit in the rect passed.")
             
-    return pos_dict
+        # Position first word at origin
+        pos_dict[words[0]] = (0, 0)
+        last_x, last_y = 0, 0
+        last_width = self._font_rect_getter.get_rect(words[0]).width
+        last_height = self._font_rect_getter.get_rect(words[0]).height
+        
+        for word in words[1:]:
+            word_rect = self._font_rect_getter.get_rect(word)
+            next_x = last_x + last_width + self._space_width
+            if next_x + word_rect.width < self._rect.width:
+                pos_dict[word] = (next_x, last_y)
+                last_x = next_x
+                last_width = word_rect.width
+            else:
+                pos_dict[word] = (0, last_y + last_height + int(self._space_height/3))
+                last_x = 0
+                last_y = pos_dict[word][1]
+                last_width = word_rect.width
+            last_height = word_rect.height
+                
+        return pos_dict
 
 def textrect_loop(trr, my_string):
     for i in range(1000):

@@ -3,13 +3,12 @@
 import unittest
 import pygame
 import pygame.freetype
-from textrect import prerender_textrect, TextRectException, FontRectGetter, Blitter, TextRectRenderer
+from textrect import TextRectException, FontRectGetter, Blitter, TextRectRenderer
 
 class TestPrerenderTextrect(unittest.TestCase):
     def setUp(self):
         pygame.init()
         self.font = pygame.freetype.SysFont(None, 24)  # Using default font for testing
-        self.rect_getter = FontRectGetter(self.font)
         self.rect = pygame.Rect(0, 0, 200, 500)
         self.color = pygame.Color(255, 255, 255)
         self.renderer = TextRectRenderer(self.font, self.rect, self.color)
@@ -19,7 +18,8 @@ class TestPrerenderTextrect(unittest.TestCase):
         rect = pygame.Rect(0, 0, 200, 100)
         words = ["Hello", "World"]
         
-        pos_dict = prerender_textrect(words, rect, self.rect_getter)
+        self.renderer._rect = rect
+        pos_dict = self.renderer._prerender_textrect(words)
         
         self.assertEqual(len(pos_dict), 2)
         self.assertIn("Hello", pos_dict)
@@ -33,13 +33,14 @@ class TestPrerenderTextrect(unittest.TestCase):
         rect = pygame.Rect(0, 0, 100, 500)  # Increased height to accommodate wrapped text
         words = "This is a long text that should wrap to multiple lines".split()
         
-        pos_dict = prerender_textrect(words, rect, self.rect_getter)
+        self.renderer._rect = rect
+        pos_dict = self.renderer._prerender_textrect(words)
         
         # Verify all words have positions
         self.assertEqual(len(pos_dict), len(words))
         # Verify all words fit within width
         for word in words:
-            word_rect = self.rect_getter.get_rect(word)
+            word_rect = self.renderer._font_rect_getter.get_rect(word)
             self.assertLessEqual(pos_dict[word][0] + word_rect.width, rect.width)
 
     def test_word_wrap_exact_width(self):
@@ -47,19 +48,20 @@ class TestPrerenderTextrect(unittest.TestCase):
         rect = pygame.Rect(0, 0, 200, 500)  # Wider rect
         words = ["A1", "A2", "A3", "A4", "A5"]  # Multiple unique short words
         
-        pos_dict = prerender_textrect(words, rect, self.rect_getter)
+        self.renderer._rect = rect
+        pos_dict = self.renderer._prerender_textrect(words)
         
         # Verify all words have positions
         self.assertEqual(len(pos_dict), len(words))
         # Verify all words fit
         for word in words:
-            word_rect = self.rect_getter.get_rect(word)
+            word_rect = self.renderer._font_rect_getter.get_rect(word)
             self.assertLessEqual(pos_dict[word][0] + word_rect.width, rect.width)
         # Verify words are properly spaced
         for i in range(1, len(words)):
             prev_word = words[i-1]
             curr_word = words[i]
-            prev_rect = self.rect_getter.get_rect(prev_word)
+            prev_rect = self.renderer._font_rect_getter.get_rect(prev_word)
             self.assertGreater(pos_dict[curr_word][0], pos_dict[prev_word][0] + prev_rect.width)
 
     def test_too_long_word(self):
@@ -67,15 +69,17 @@ class TestPrerenderTextrect(unittest.TestCase):
         rect = pygame.Rect(0, 0, 50, 100)  # Very narrow rect
         words = ["Supercalifragilisticexpialidocious"]
         
+        self.renderer._rect = rect
         with self.assertRaises(TextRectException):
-            prerender_textrect(words, rect, self.rect_getter)
+            self.renderer._prerender_textrect(words)
 
     def test_empty_words(self):
         """Test handling of empty word list"""
         rect = pygame.Rect(0, 0, 100, 100)
         words = []
         
-        pos_dict = prerender_textrect(words, rect, self.rect_getter)
+        self.renderer._rect = rect
+        pos_dict = self.renderer._prerender_textrect(words)
         
         self.assertEqual(len(pos_dict), 0)  # Should return empty dict
 
@@ -84,12 +88,13 @@ class TestPrerenderTextrect(unittest.TestCase):
         rect = pygame.Rect(0, 0, 100, 500)
         words = "This is a text with multiple spaces".split()
         
-        pos_dict = prerender_textrect(words, rect, self.rect_getter)
+        self.renderer._rect = rect
+        pos_dict = self.renderer._prerender_textrect(words)
         
         # Verify all words have positions and fit within width
         self.assertEqual(len(pos_dict), len(words))
         for word in words:
-            word_rect = self.rect_getter.get_rect(word)
+            word_rect = self.renderer._font_rect_getter.get_rect(word)
             self.assertLessEqual(pos_dict[word][0] + word_rect.width, rect.width)
 
     def test_word_wrap_last_word(self):
@@ -97,7 +102,8 @@ class TestPrerenderTextrect(unittest.TestCase):
         rect = pygame.Rect(0, 0, 200, 500)  # Wider rect
         words = ["A"] * 15 + ["End"]  # Multiple words plus end word
         
-        pos_dict = prerender_textrect(words, rect, self.rect_getter)
+        self.renderer._rect = rect
+        pos_dict = self.renderer._prerender_textrect(words)
         
         # Verify last word is properly placed
         self.assertEqual(pos_dict["End"][0], 0)  # Should start at beginning of line
