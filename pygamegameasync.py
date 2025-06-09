@@ -1,6 +1,5 @@
 # From https://python-forum.io/thread-23029.html
 
-import platform
 import hub75
 import aiofiles
 import aiomqtt
@@ -9,18 +8,13 @@ import asyncio
 from datetime import datetime
 import easing_functions
 from enum import Enum
-import json
 import logging
 import math
-import os
-from PIL import Image
 import pygame
 import pygame.freetype
 from pygame import Color
 import random
-import sys
 import textrect
-import time
 from typing import cast
 import functools
 
