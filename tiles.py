@@ -27,8 +27,8 @@ class Tile:
     letter: str
     id: str
 
-def _tiles_to_letters(tiles: Sequence[Tile]):
-    return ''.join([t.letter for t in tiles])
+def _tiles_to_letters(tiles: Sequence[Tile]) -> str:
+    return ''.join(t.letter for t in tiles)
 
 class Rack:
     def __init__(self, letters: str) -> None:
@@ -74,7 +74,7 @@ class Rack:
         return tiles
 
     def ids_to_letters(self, ids: list[str]) -> str:
-        return ''.join([t.letter for t in self.ids_to_tiles(ids)])
+        return _tiles_to_letters(self.ids_to_tiles(ids))
 
     def guess(self, guess: str) -> None:
         logging.info(f"guess({guess})")
@@ -89,7 +89,7 @@ class Rack:
             return "".join([l for l in word_hash if word_hash[l] > rack_hash[l]])
 
     def letters(self) -> str:
-        return ''.join([l.letter for l in self._tiles])
+        return _tiles_to_letters(self._tiles)
 
     def next_letter(self) -> str:
         return self._next_letter
