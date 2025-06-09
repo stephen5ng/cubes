@@ -366,9 +366,13 @@ class Shield():
         self.pos[1] = SCREEN_HEIGHT
 
 class Score():
-    def __init__(self) -> None:
+    def __init__(self, player: int) -> None:
         self.font = pygame.freetype.SysFont(FONT, RackMetrics.LETTER_SIZE)
         self.pos = [0, 0]
+        if player == -1:
+            self.x = SCREEN_WIDTH/2
+        else:
+            self.x = SCREEN_WIDTH/3 * (player+1)
         self.start()
         self.draw()
 
@@ -381,7 +385,7 @@ class Score():
 
     def draw(self) -> None:
         self.surface = self.font.render(str(self.score), SCORE_COLOR)[0]
-        self.pos[0] = int(SCREEN_WIDTH/2 - self.surface.get_width()/2)
+        self.pos[0] = int(self.x - self.surface.get_width()/2)
 
     def update_score(self, score: int) -> None:
         self.score += score
@@ -584,8 +588,11 @@ class Game:
     DELAY_BETWEEN_WORD_SOUNDS_S = 0.3
     def __init__(self, the_app: app.App, letter_font: pygame.freetype.Font) -> None:
         self._app = the_app
-        self.score = Score()
-        letter_y = self.score.get_size()[1] + 4
+        if PLAYER_COUNT == 1:
+            self.scores = [Score(-1)]
+        else:
+            self.scores = [Score(player) for player in range(PLAYER_COUNT)]
+        letter_y = self.scores[0].get_size()[1] + 4
         self.rack_metrics = RackMetrics()
         self.letter = Letter(letter_font, letter_y, self.rack_metrics)
         if PLAYER_COUNT == 1:
@@ -646,7 +653,8 @@ class Game:
         self.previous_guesses = PreviousGuesses()
         self.remaining_previous_guesses = RemainingPreviousGuesses()
         self.letter.start()
-        self.score.start()
+        for score in self.scores:
+            score.start()
         for rack in self.racks:
             rack.start()
         self.running = True
@@ -676,7 +684,7 @@ class Game:
         now_s = pygame.time.get_ticks() / 1000
         self.stop_time_s = now_s
         self.duration_log_f.write(
-            f"{self.score.score},{now_s-self.start_time_s}\n")
+            f"{self.scores[0].score},{now_s-self.start_time_s}\n")
         self.duration_log_f.flush()
         await self._app.stop()
         logger.info("GAME OVER OVER")
@@ -729,7 +737,8 @@ class Game:
         self.letter_source.update(window)
 
         if self.running:
-            self.letter.update(window, self.score.score)
+            for score in self.scores:
+                self.letter.update(window, score.score)
 
         for rack in self.racks:
             rack.update(window)
@@ -740,12 +749,13 @@ class Game:
                 # print(f"collided: {shield.letters}")
                 shield.letter_collision()
                 self.letter.shield_collision()
-                self.score.update_score(shield.score)
+                self.scores[shield.player].update_score(shield.score)
                 self._app.add_guess(shield.letters, shield.player)
                 pygame.mixer.Sound.play(self.crash_sound)
 
         self.shields[:] = [s for s in self.shields if s.active]
-        self.score.update(window)
+        for score in self.scores:
+            score.update(window)
 
         # letter collide with rack
         if self.running and self.letter.get_screen_bottom_y() > self.rack_metrics.get_rect().y:
