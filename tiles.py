@@ -52,14 +52,19 @@ class Rack:
         return _tiles_to_letters(self._last_guess)
 
     def letters_to_ids(self, letters: str) -> list[str]:
-        ids: list[str]  = []
-        tiles = self._tiles.copy()
+        # Create a lookup of available tiles by letter
+        available_tiles = {}
+        for tile in self._tiles:
+            if tile.letter not in available_tiles:
+                available_tiles[tile.letter] = []
+            available_tiles[tile.letter].append(tile)
+        
+        # Build the result list
+        ids = []
         for letter in letters:
-            for tile in tiles:
-                if tile.letter == letter:
-                    tiles.remove(tile)
-                    ids += tile.id
-                    break
+            if letter in available_tiles and available_tiles[letter]:
+                tile = available_tiles[letter].pop()  # Get and remove the first available tile
+                ids.append(tile.id)
         return ids
 
     def ids_to_tiles(self, ids: list[str]) -> list[Tile]:
