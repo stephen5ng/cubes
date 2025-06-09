@@ -54,7 +54,7 @@ class ScoreCard:
         self.remaining_previous_guesses = set(words) - self.possible_guessed_words
 
     def get_previous_guesses(self) -> list[str]:
-        return sorted([word for _, word in self._previous_guesses])
+        return sorted(list(self.possible_guessed_words))
 
     def get_remaining_previous_guesses(self) -> list[str]:
         return sorted(list(self.remaining_previous_guesses))
