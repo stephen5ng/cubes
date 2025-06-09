@@ -28,10 +28,6 @@ class Blitter():
         self._rect = rect
         self._empty_surface = pygame.Surface(rect.size, pygame.SRCALPHA)
 
-    def _render_blit(self, surface: pygame.Surface, line: str, height: int) -> pygame.Surface:
-        surface.blit(self._font.render(line, self._color)[0], (0, height))
-        return surface
-
     @functools.lru_cache(maxsize=64)
     def _render_blit_xy(self, surface: pygame.Surface, line: str, x: int, y: int):
         surface.blit(self._font.render(line, self._color)[0], (x, y))
@@ -61,10 +57,11 @@ class TextRectRenderer():
     def get_rect(self, word: str) -> pygame.Rect:
         return self._rect_dict[word]
 
-def wrap_lines(words: list[str], rect_width: int, rect_getter: FontRectGetter) -> list[str]:
+def wrap_lines(words: list[str], rect_width: int, rect_getter: FontRectGetter) -> dict[str, pygame.Rect]:
     rect_dict = {}
     if not words:
         return rect_dict
+        
     space_width = rect_getter.get_rect(" ").width
     space_height = rect_getter.get_rect("X").height
     
@@ -72,24 +69,20 @@ def wrap_lines(words: list[str], rect_width: int, rect_getter: FontRectGetter) -
     rect_dict[words[0]] = last_rect
     
     for word in words[1:]:
-        # Build the line while the words fit.
         word_rect = rect_getter.get_rect(word).copy()
         last_x = last_rect.x + last_rect.width + space_width
         if last_x + word_rect.width < rect_width:
             word_rect.x = last_x
             word_rect.y = last_rect.y
-            rect_dict[word] = word_rect
-            last_rect = word_rect
         else:
-            # Start a new line.
             word_rect.x = 0
             word_rect.y = last_rect.y + last_rect.height + int(space_height/3)
-            rect_dict[word] = word_rect
-            last_rect = word_rect
+        rect_dict[word] = word_rect
+        last_rect = word_rect
             
     return rect_dict
 
-def prerender_textrect(words: list[str], rect: pygame.Rect, rect_getter: FontRectGetter):
+def prerender_textrect(words: list[str], rect: pygame.Rect, rect_getter: FontRectGetter) -> dict[str, pygame.Rect]:
     for word in words:
         if rect_getter.get_rect(word).width >= rect.width:
             raise TextRectException("The word " + word + " is too long to fit in the rect passed.")
@@ -119,7 +112,7 @@ if __name__ == '__main__':
     my_rect = pygame.Rect((40, 40, 300, 400))
     trr = TextRectRenderer(my_font, my_rect, pygame.Color(216, 216, 216))
     cProfile.run('textrect_loop(trr, my_string)')
-    rendered_text = trr.render(my_string)
+    rendered_text = trr.render(my_string.split())
 
     display.blit(rendered_text, my_rect.topleft)
     pygame.image.save(rendered_text, "textrect.png")
