@@ -395,10 +395,13 @@ class LastGuessFader():
         return font.render(text, pygame.Color(color_rgba))[0]
 
     def render(self, previous_guesses: list[str], last_guess: str) -> None:
-        self.textrect.render(previous_guesses)
         self.last_guess = last_guess
+        # Need to render all words to get proper positioning
+        self.textrect.render(previous_guesses)
+        # Get position for this specific word
+        x, y = self.textrect.get_pos(last_guess)
         self.last_guess_surface = self._cached_render(self.font, last_guess, (self.color.r, self.color.g, self.color.b, self.color.a))
-        self.last_guess_position = self.textrect.get_rect(last_guess).topleft
+        self.last_guess_position = (x, y)
 
     def blit(self, target) -> None:
         self.alpha = get_alpha(self.easing, self.last_update_ms, self.duration)

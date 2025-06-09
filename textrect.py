@@ -17,7 +17,7 @@ class FontRectGetter():
         self._font = font
 
     @functools.lru_cache(maxsize=64)
-    def get_rect(self, text: str):
+    def get_rect(self, text: str) -> pygame.Rect:
         r = self._font.get_rect(text)
         return pygame.Rect(0, 0, r.width, r.height)
 
@@ -32,13 +32,14 @@ class Blitter():
     def _render_blit_xy(self, surface: pygame.Surface, line: str, x: int, y: int):
         surface.blit(self._font.render(line, self._color)[0], (x, y))
 
-    def blit_words(self, words: tuple[str], rect_dict: dict[str, pygame.Rect]) -> pygame.Surface:
+    def blit_words(self, words: tuple[str], pos_dict: dict[str, tuple[int, int]]) -> pygame.Surface:
         if not words:
             return self._empty_surface.copy()
             
         surface = self._empty_surface.copy()
         for word in words:
-            self._render_blit_xy(surface, word, rect_dict[word].x, rect_dict[word].y)
+            x, y = pos_dict[word]
+            self._render_blit_xy(surface, word, x, y)
         return surface
 
 class TextRectRenderer():
@@ -48,19 +49,19 @@ class TextRectRenderer():
         self._color = color
         self._font_rect_getter = FontRectGetter(font)
         self._blitter = Blitter(font, color, rect)
-        self._rect_dict = {}
+        self._pos_dict = {}
 
     def render(self, words: list[str]) -> pygame.Surface:
-        self._rect_dict = prerender_textrect(words, self._rect, self._font_rect_getter)
-        return self._blitter.blit_words(tuple(words), self._rect_dict)
+        self._pos_dict = prerender_textrect(words, self._rect, self._font_rect_getter)
+        return self._blitter.blit_words(tuple(words), self._pos_dict)
 
-    def get_rect(self, word: str) -> pygame.Rect:
-        return self._rect_dict[word]
+    def get_pos(self, word: str) -> tuple[int, int]:
+        return self._pos_dict[word]
 
-def prerender_textrect(words: list[str], rect: pygame.Rect, rect_getter: FontRectGetter) -> dict[str, pygame.Rect]:
-    rect_dict = {}
+def prerender_textrect(words: list[str], rect: pygame.Rect, rect_getter: FontRectGetter) -> dict[str, tuple[int, int]]:
+    pos_dict = {}
     if not words:
-        return rect_dict
+        return pos_dict
 
     # Check if any words are too long
     for word in words:
@@ -70,22 +71,27 @@ def prerender_textrect(words: list[str], rect: pygame.Rect, rect_getter: FontRec
     space_width = rect_getter.get_rect(" ").width
     space_height = rect_getter.get_rect("X").height
     
-    last_rect = rect_getter.get_rect(words[0]).copy()
-    rect_dict[words[0]] = last_rect
+    # Position first word at origin
+    pos_dict[words[0]] = (0, 0)
+    last_x, last_y = 0, 0
+    last_width = rect_getter.get_rect(words[0]).width
+    last_height = rect_getter.get_rect(words[0]).height
     
     for word in words[1:]:
-        word_rect = rect_getter.get_rect(word).copy()
-        last_x = last_rect.x + last_rect.width + space_width
-        if last_x + word_rect.width < rect.width:
-            word_rect.x = last_x
-            word_rect.y = last_rect.y
+        word_rect = rect_getter.get_rect(word)
+        next_x = last_x + last_width + space_width
+        if next_x + word_rect.width < rect.width:
+            pos_dict[word] = (next_x, last_y)
+            last_x = next_x
+            last_width = word_rect.width
         else:
-            word_rect.x = 0
-            word_rect.y = last_rect.y + last_rect.height + int(space_height/3)
-        rect_dict[word] = word_rect
-        last_rect = word_rect
+            pos_dict[word] = (0, last_y + last_height + int(space_height/3))
+            last_x = 0
+            last_y = pos_dict[word][1]
+            last_width = word_rect.width
+        last_height = word_rect.height
             
-    return rect_dict
+    return pos_dict
 
 def textrect_loop(trr, my_string):
     for i in range(1000):
