@@ -57,10 +57,15 @@ class TextRectRenderer():
     def get_rect(self, word: str) -> pygame.Rect:
         return self._rect_dict[word]
 
-def wrap_lines(words: list[str], rect_width: int, rect_getter: FontRectGetter) -> dict[str, pygame.Rect]:
+def prerender_textrect(words: list[str], rect: pygame.Rect, rect_getter: FontRectGetter) -> dict[str, pygame.Rect]:
     rect_dict = {}
     if not words:
         return rect_dict
+
+    # Check if any words are too long
+    for word in words:
+        if rect_getter.get_rect(word).width >= rect.width:
+            raise TextRectException("The word " + word + " is too long to fit in the rect passed.")
         
     space_width = rect_getter.get_rect(" ").width
     space_height = rect_getter.get_rect("X").height
@@ -71,7 +76,7 @@ def wrap_lines(words: list[str], rect_width: int, rect_getter: FontRectGetter) -
     for word in words[1:]:
         word_rect = rect_getter.get_rect(word).copy()
         last_x = last_rect.x + last_rect.width + space_width
-        if last_x + word_rect.width < rect_width:
+        if last_x + word_rect.width < rect.width:
             word_rect.x = last_x
             word_rect.y = last_rect.y
         else:
@@ -81,13 +86,6 @@ def wrap_lines(words: list[str], rect_width: int, rect_getter: FontRectGetter) -
         last_rect = word_rect
             
     return rect_dict
-
-def prerender_textrect(words: list[str], rect: pygame.Rect, rect_getter: FontRectGetter) -> dict[str, pygame.Rect]:
-    for word in words:
-        if rect_getter.get_rect(word).width >= rect.width:
-            raise TextRectException("The word " + word + " is too long to fit in the rect passed.")
-
-    return wrap_lines(words, rect.width, rect_getter)
 
 def textrect_loop(trr, my_string):
     for i in range(1000):
