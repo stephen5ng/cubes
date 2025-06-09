@@ -29,17 +29,19 @@ class Blitter():
         self._empty_surface = pygame.Surface(rect.size, pygame.SRCALPHA)
 
     @functools.lru_cache(maxsize=64)
-    def _render_blit_xy(self, surface: pygame.Surface, line: str, x: int, y: int):
-        surface.blit(self._font.render(line, self._color)[0], (x, y))
+    def _render_blit_xy(self, surface: pygame.Surface, line: str, x: int, y: int, color_tuple: tuple[int, int, int, int]) -> None:
+        surface.blit(self._font.render(line, pygame.Color(color_tuple))[0], (x, y))
 
-    def blit_words(self, words: tuple[str], pos_dict: dict[str, tuple[int, int]]) -> pygame.Surface:
+    def blit_words(self, words: tuple[str], pos_dict: dict[str, tuple[int, int]], colors: list[pygame.Color]) -> pygame.Surface:
         if not words:
             return self._empty_surface.copy()
             
         surface = self._empty_surface.copy()
-        for word in words:
+        for word, color in zip(words, colors):
             x, y = pos_dict[word]
-            self._render_blit_xy(surface, word, x, y)
+            # Convert Color to hashable tuple
+            color_tuple = (color.r, color.g, color.b, color.a)
+            self._render_blit_xy(surface, word, x, y, color_tuple)
         return surface
 
 class TextRectRenderer():
@@ -53,9 +55,9 @@ class TextRectRenderer():
         self._space_width = self._font_rect_getter.get_rect(" ").width
         self._space_height = self._font_rect_getter.get_rect("X").height
 
-    def render(self, words: list[str]) -> pygame.Surface:
+    def render(self, words: list[str], colors: list[pygame.Color]) -> pygame.Surface:
         self._pos_dict = self._prerender_textrect(words)
-        return self._blitter.blit_words(tuple(words), self._pos_dict)
+        return self._blitter.blit_words(words, self._pos_dict, colors)
 
     def get_pos(self, word: str) -> tuple[int, int]:
         return self._pos_dict[word]

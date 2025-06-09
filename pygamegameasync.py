@@ -49,11 +49,12 @@ GOOD_GUESS_COLOR=Color("Green")
 OLD_GUESS_COLOR=Color("Cyan")
 LETTER_SOURCE_COLOR=Color("Red")
 
-RACK_COLOR=Color("Orange")
-SHIELD_COLOR_P0=Color("Green")
-SHIELD_COLOR_P1=Color("Blue")
+RACK_COLOR=Color("LightGrey")
+SHIELD_COLOR_P0=Color("DarkOrange4")
+SHIELD_COLOR_P1=Color("DarkSlateBlue")
 SCORE_COLOR=Color("White")
-
+FADER_COLOR_P0=Color("orange")
+FADER_COLOR_P1=Color("lightblue")
 REMAINING_PREVIOUS_GUESSES_COLOR = Color("grey")
 PREVIOUS_GUESSES_COLOR = Color("orange")
 
@@ -332,7 +333,7 @@ class Shield():
         self.draw()
 
     def draw(self) -> None:
-        self.surface = self.font.render(self.letters, SHIELD_COLOR_P0 if self.player == 0 else Color("blue"))[0]
+        self.surface = self.font.render(self.letters, PreviousGuesses.FADER_PLAYER_COLORS[self.player])[0]
         self.pos[0] = int(SCREEN_WIDTH/2 - self.surface.get_width()/2)
 
     def update(self, window: pygame.Surface) -> None:
@@ -391,17 +392,16 @@ class LastGuessFader():
 
     @staticmethod
     @functools.lru_cache(maxsize=64)
-    def _cached_render(font: pygame.freetype.Font, text: str, color_rgba: tuple[int, int, int, int]) -> pygame.Surface:
-        return font.render(text, pygame.Color(color_rgba))[0]
+    def _cached_render(font: pygame.freetype.Font, text: str, color_rgb: tuple[int, int, int]) -> pygame.Surface:
+        return font.render(text, pygame.Color(*color_rgb))[0]
 
     def render(self, previous_guesses: list[str], last_guess: str) -> None:
         self.last_guess = last_guess
         # Need to render all words to get proper positioning
-        self.textrect.render(previous_guesses)
-        # Get position for this specific word
-        x, y = self.textrect.get_pos(last_guess)
-        self.last_guess_surface = self._cached_render(self.font, last_guess, (self.color.r, self.color.g, self.color.b, self.color.a))
-        self.last_guess_position = (x, y)
+        self.textrect.render(previous_guesses, [self.color] * len(previous_guesses))
+
+        self.last_guess_surface = self._cached_render(self.font, last_guess, (self.color.r, self.color.g, self.color.b))
+        self.last_guess_position = self.textrect.get_pos(last_guess)
 
     def blit(self, target) -> None:
         self.alpha = get_alpha(self.easing, self.last_update_ms, self.duration)
@@ -415,6 +415,8 @@ class PreviousGuesses():
     POSITION_TOP = 24
     FADE_DURATION_NEW_GUESS = 2000
     FADE_DURATION_OLD_GUESS = 500
+    PLAYER_COLORS = [SHIELD_COLOR_P0, SHIELD_COLOR_P1]  # Static array for player colors
+    FADER_PLAYER_COLORS = [FADER_COLOR_P0, FADER_COLOR_P1]
 
     def __init__(self, font_size=FONT_SIZE, previous_guesses_instance=None) -> None:
         if previous_guesses_instance:
@@ -422,12 +424,14 @@ class PreviousGuesses():
             self.color = previous_guesses_instance.color
             self.fader_inputs = previous_guesses_instance.fader_inputs
             self.bloop_sound = previous_guesses_instance.bloop_sound
+            self.guess_to_player = previous_guesses_instance.guess_to_player
         else:
             self.previous_guesses = []
             self.color = PREVIOUS_GUESSES_COLOR
             self.fader_inputs = []
             self.bloop_sound = pygame.mixer.Sound("./sounds/bloop.wav")
             self.bloop_sound.set_volume(0.2)
+            self.guess_to_player = {}
 
         self.font = pygame.freetype.SysFont(PreviousGuesses.FONT, font_size)
         self.font.kerning = True
@@ -440,7 +444,9 @@ class PreviousGuesses():
         self.draw()
 
     def draw(self) -> None:
-        self.surface = self.textrect.render(self.previous_guesses)
+        self.surface = self.textrect.render(
+            self.previous_guesses,
+            [self.PLAYER_COLORS[self.guess_to_player.get(guess, 0)] for guess in self.previous_guesses])
 
     def old_guess(self, old_guess: str) -> None:
         self.fader_inputs.append(
@@ -449,9 +455,9 @@ class PreviousGuesses():
         pygame.mixer.Sound.play(self.bloop_sound)
 
     def add_guess(self, previous_guesses: list[str], guess: str, player: int) -> None:
-        shield_color = SHIELD_COLOR_P0 if player == 0 else SHIELD_COLOR_P1
+        self.guess_to_player[guess] = player
         self.fader_inputs.append(
-            [guess, pygame.time.get_ticks(), shield_color, PreviousGuesses.FADE_DURATION_NEW_GUESS])
+            [guess, pygame.time.get_ticks(), self.FADER_PLAYER_COLORS[player], PreviousGuesses.FADE_DURATION_NEW_GUESS])
         self.update_previous_guesses(previous_guesses)
 
     def recreate_faders(self) -> None:
