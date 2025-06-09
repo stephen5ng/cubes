@@ -15,10 +15,10 @@ Play = Enum("Play", ["GOOD", "MISSING_LETTERS", "DUPE_WORD", "BAD_WORD"])
 
 class ScoreCard:
     def __init__(self, player_rack:tiles.Rack, dictionary: dictionary.Dictionary) -> None:
-        self._previous_guesses: set[tuple[int, str]] = set()
-        self.staged_guesses: set[str] = set()
-        self.possible_guessed_words: set[str] = set()
-        self.remaining_previous_guesses: set[str] = set() # After possible have been removed
+        self.guesses: set[tuple[int, str]] = set()  # (player, word) tuples
+        self.staged_words: set[str] = set()  # Words being staged before final acceptance
+        self.possible_words: set[str] = set()  # Words that can still be made with current letters
+        self.remaining_words: set[str] = set()  # Words that can't be made with current letters
         self.player_rack = player_rack
         self.dictionary = dictionary
 
@@ -26,35 +26,27 @@ class ScoreCard:
         return len(word) + (10 if len(word) == tiles.MAX_LETTERS else 0)
 
     def is_old_guess(self, guess: str) -> bool:
-        return guess in self.staged_guesses
+        return guess in self.staged_words
 
     def add_staged_guess(self, guess: str) -> None:
-        self.staged_guesses.add(guess)
+        self.staged_words.add(guess)
 
     def is_good_guess(self, guess: str) -> bool:
-        if not self.dictionary.is_word(guess):
-            return False
-
-        if guess in self.staged_guesses:
-            return False
-
-        return True
+        return self.dictionary.is_word(guess) and guess not in self.staged_words
 
     def add_guess(self, guess: str, player: int) -> None:
         logging.info(f"guessing {guess}")
         self.player_rack.guess(guess)
-        self._previous_guesses.add((player, guess))
-        self.possible_guessed_words.add(guess)
+        self.guesses.add((player, guess))
+        self.update_previous_guesses()
 
     def update_previous_guesses(self) -> None:
-        words = [word for _, word in self._previous_guesses]
-        self.possible_guessed_words = set(
-            [word for word in words
-             if not self.player_rack.missing_letters(word)])
-        self.remaining_previous_guesses = set(words) - self.possible_guessed_words
+        self.possible_words = {word for _, word in self.guesses 
+                             if not self.player_rack.missing_letters(word)}
+        self.remaining_words = {word for _, word in self.guesses} - self.possible_words
 
     def get_previous_guesses(self) -> list[str]:
-        return sorted(list(self.possible_guessed_words))
+        return sorted(list(self.possible_words))
 
     def get_remaining_previous_guesses(self) -> list[str]:
-        return sorted(list(self.remaining_previous_guesses))
+        return sorted(list(self.remaining_words))
