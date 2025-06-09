@@ -550,8 +550,63 @@ class LetterSource():
         self.pos = [self.x, self.initial_y + self.letter.start_fall_y - self.height]
         window.blit(self.surface, self.pos)
 
-class Game:
+class SoundManager:
     DELAY_BETWEEN_WORD_SOUNDS_S = 0.3
+
+    def __init__(self):
+        self.sound_queue: asyncio.Queue = asyncio.Queue()
+        self.start_sound = pygame.mixer.Sound("./sounds/start.wav")
+        self.crash_sound = pygame.mixer.Sound("./sounds/ping.wav")
+        self.crash_sound.set_volume(0.8)
+        self.chunk_sound = pygame.mixer.Sound("./sounds/chunk.wav")
+        self.game_over_sound = pygame.mixer.Sound("./sounds/game_over.wav")
+        self.bloop_sound = pygame.mixer.Sound("./sounds/bloop.wav")
+        self.bloop_sound.set_volume(0.2)
+        
+        for n in range(11):
+            letter_beeps.append(pygame.mixer.Sound(f"sounds/{n}.wav"))
+            
+        self.sound_queue_task = asyncio.create_task(self.play_sounds_in_queue(), name="word sound player")
+
+    async def play_sounds_in_queue(self) -> None:
+        try:
+            pygame.mixer.set_reserved(2)
+            delay_between_words_s = self.DELAY_BETWEEN_WORD_SOUNDS_S
+            last_sound_time = datetime(year=1, month=1, day=1)
+            while True:
+                soundfile = await self.sound_queue.get()
+                async with aiofiles.open(soundfile, mode='rb') as f:
+                    s = pygame.mixer.Sound(buffer=await f.read())
+                    now = datetime.now()
+                    time_since_last_sound_s = (now - last_sound_time).total_seconds()
+                    time_to_sleep_s = delay_between_words_s - time_since_last_sound_s
+                    await asyncio.sleep(time_to_sleep_s)
+                    channel = pygame.mixer.find_channel(force=True)
+                    channel.queue(s)
+                    last_sound_time = datetime.now()
+        except Exception as e:
+            print(f"error playing sound {e}")
+            raise e
+
+    async def queue_word_sound(self, word: str) -> None:
+        await self.sound_queue.put(f"word_sounds/{word.lower()}.wav")
+
+    def play_start(self) -> None:
+        pygame.mixer.Sound.play(self.start_sound)
+
+    def play_crash(self) -> None:
+        pygame.mixer.Sound.play(self.crash_sound)
+
+    def play_chunk(self) -> None:
+        pygame.mixer.Sound.play(self.chunk_sound)
+
+    def play_game_over(self) -> None:
+        pygame.mixer.Sound.play(self.game_over_sound)
+
+    def play_bloop(self) -> None:
+        pygame.mixer.Sound.play(self.bloop_sound)
+
+class Game:
     def __init__(self, the_app: app.App, letter_font: pygame.freetype.Font) -> None:
         self._app = the_app
         self.score = Score()
@@ -573,17 +628,8 @@ class Game:
         self.aborted = False
         self.game_log_f = open("gamelog.csv", "a+")
         self.duration_log_f = open("durationlog.csv", "a+")
-        self.sound_queue: asyncio.Queue = asyncio.Queue()
-        self.start_sound: pygame.Sound = pygame.mixer.Sound("./sounds/start.wav")
-        self.crash_sound: pygame.Sound = pygame.mixer.Sound("./sounds/ping.wav")
-        self.crash_sound.set_volume(0.8)
-        self.chunk_sound: pygame.Sound = pygame.mixer.Sound("./sounds/chunk.wav")
-        self.game_over_sound: pygame.Sound = pygame.mixer.Sound("./sounds/game_over.wav")
-        self.sound_queue_task = asyncio.create_task(self.play_sounds_in_queue(),
-            name="word sound player")
+        self.sound_manager = SoundManager()
 
-        for n in range(11):
-            letter_beeps.append(pygame.mixer.Sound(f"sounds/{n}.wav"))
         events.on(f"game.stage_guess")(self.stage_guess)
         events.on(f"game.old_guess")(self.old_guess)
         events.on(f"game.bad_guess")(self.bad_guess)
@@ -625,10 +671,10 @@ class Game:
         self.last_letter_time_s = now_s
         self.start_time_s = now_s
         await self._app.start()
-        pygame.mixer.Sound.play(self.start_sound)
+        self.sound_manager.play_start()
 
     async def stage_guess(self, score: int, last_guess: str, player: int) -> None:
-        await self.sound_queue.put(f"word_sounds/{last_guess.lower()}.wav")
+        await self.sound_manager.queue_word_sound(last_guess)
         self.racks[player].guess_type = GuessType.GOOD
         self.shields.append(Shield(self.rack_metrics.get_rect().topleft, last_guess, score, player))
 
@@ -638,7 +684,7 @@ class Game:
         self.last_letter_time_s = pygame.time.get_ticks()/1000
 
     async def stop(self) -> None:
-        pygame.mixer.Sound.play(self.game_over_sound)
+        self.sound_manager.play_game_over()
         logger.info("GAME OVER")
         for rack in self.racks:
             rack.stop()
@@ -705,14 +751,12 @@ class Game:
             rack.update(window)
         for shield in self.shields:
             shield.update(window)
-            # print(f"checking collision: {shield.rect}, {self.letter.rect}")
             if shield.rect.y <= self.letter.get_screen_bottom_y():
-                # print(f"collided: {shield.letters}")
                 shield.letter_collision()
                 self.letter.shield_collision()
                 self.score.update_score(shield.score)
                 self._app.add_guess(shield.letters, shield.player)
-                pygame.mixer.Sound.play(self.crash_sound)
+                self.sound_manager.play_crash()
 
         self.shields[:] = [s for s in self.shields if s.active]
         self.score.update(window)
@@ -722,34 +766,9 @@ class Game:
             if self.letter.letter == "!":
                 await self.stop()
             else:
-                # logger.info(f"-->{self.letter.height}. {self.letter.rect.height}, {Letter.HEIGHT_INCREMENT}, {self.rack.pos[1]}")
-                pygame.mixer.Sound.play(self.chunk_sound)
+                self.sound_manager.play_chunk()
                 self.letter.new_fall()
                 await self.accept_letter()
-
-    async def play_sounds_in_queue(self) -> None:
-        try:
-            pygame.mixer.set_reserved(2)
-            delay_between_words_s = Game.DELAY_BETWEEN_WORD_SOUNDS_S
-            delay_between_words_s = 0.3
-            last_sound_time = datetime(year=1, month=1, day=1)
-            while True:
-                soundfile = await self.sound_queue.get()
-                async with aiofiles.open(soundfile, mode='rb') as f:
-                    s = pygame.mixer.Sound(buffer=await f.read())
-                    now = datetime.now()
-                    time_since_last_sound_s = (now - last_sound_time).total_seconds()
-                    time_to_sleep_s = delay_between_words_s - time_since_last_sound_s
-                    # print(f"{now} duration: {time_since_last_sound_s} sleep: {time_to_sleep_s} {soundfile}\nsound queue: {self.sound_queue.qsize()}")
-                    await asyncio.sleep(time_to_sleep_s)
-                    # print(f"{datetime.now()}: slept {time_to_sleep_s}")
-                    channel = pygame.mixer.find_channel(force=True)
-                    channel.queue(s)
-                    # print(f"{datetime.now()}: played {soundfile}")
-                    last_sound_time = datetime.now()
-        except Exception as e:
-            print(f"error playing sound {e}")
-            raise e
 
 class BlockWordsPygame():
     def __init__(self) -> None:
