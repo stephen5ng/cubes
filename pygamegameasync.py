@@ -284,26 +284,13 @@ class Rack():
         self.transition_tile = tile
         self.draw()
 
-    def update(self, window: pygame.Surface) -> None:
-        if not self.running:
-            window.blit(self.game_over_surface, self.game_over_pos)
-            return
+    def _render_fading_letters(self, surface_with_faders: pygame.Surface) -> None:
 
         def make_color(color: pygame.Color, alpha: int) -> pygame.Color:
             new_color = Color(color)
             new_color.a = alpha
             return new_color
-        surface_with_faders = self.surface.copy()
-        if self.falling_letter.locked_on and self.running:
-            if random.randint(0, 2) == 0:
-                if self.falling_letter.letter == "!":
-                    letter_index = random.randint(0, 6)
-                else:
-                    letter_index = self.falling_letter.letter_index()
-                surface_with_faders.fill(Color("black"),
-                    rect=self.rack_metrics.get_largest_letter_rect(letter_index),
-                    special_flags=pygame.BLEND_RGBA_MULT)
-
+                    
         new_letter_alpha = get_alpha(self.easing,
             self.last_update_letter_ms, Rack.LETTER_TRANSITION_DURATION_MS)
         if new_letter_alpha and self.transition_tile in self.tiles:
@@ -319,7 +306,27 @@ class Rack():
             letters = self.letters()
             for ix in range(0, self.highlight_length):
                 self._render_letter(surface_with_faders, ix, letters[ix], color)
-        window.blit(surface_with_faders, self.rack_metrics.get_rect().topleft)
+
+    def _render_flashing_letters(self, surface_with_faders: pygame.Surface) -> None:
+        if self.falling_letter.locked_on and self.running:
+            if random.randint(0, 2) == 0:
+                if self.falling_letter.letter == "!":
+                    letter_index = random.randint(0, 6)
+                else:
+                    letter_index = self.falling_letter.letter_index()
+                surface_with_faders.fill(Color("black"),
+                    rect=self.rack_metrics.get_largest_letter_rect(letter_index),
+                    special_flags=pygame.BLEND_RGBA_MULT)
+
+    def update(self, window: pygame.Surface) -> None:
+        if not self.running:
+            window.blit(self.game_over_surface, self.game_over_pos)
+            return
+
+        surface = self.surface.copy()
+        self._render_flashing_letters(surface)
+        self._render_fading_letters(surface)
+        window.blit(surface, self.rack_metrics.get_rect().topleft)
 
 class Shield():
     ACCELERATION = 1.05
