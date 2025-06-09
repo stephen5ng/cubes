@@ -32,6 +32,7 @@ class Dictionary:
 
     def get_rack(self) -> Rack:
         bingo = random.choice(self._bingos)
+        # bingo = "AAAAAA"
         print(f"initial bingo: ---------- {bingo} --------")
         return Rack(_sort_word(bingo))
 
