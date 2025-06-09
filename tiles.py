@@ -45,6 +45,9 @@ class Rack:
     def get_tiles(self) -> list[Tile]:
         return self._tiles
 
+    def id_to_position(self, id: str) -> int:
+        return self._tiles.index(next(t for t in self._tiles if t.id == id))
+
     def set_tiles(self, tiles: list[Tile]) -> None:
         self._tiles = tiles
 
