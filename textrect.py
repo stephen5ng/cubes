@@ -32,9 +32,8 @@ class Blitter():
         self._rect = rect
         self._empty_surface = pygame.Surface(rect.size, pygame.SRCALPHA)
 
-    def _render_blit_xy(self, surface: pygame.Surface, line: str, x: int, y: int, color_tuple: tuple[int, int, int]=None) -> None:
-        color = pygame.Color(color_tuple) if color_tuple else self._color
-        surface.blit(self._font.render(line, color)[0], (x, y))
+    def _render_blit_xy(self, surface: pygame.Surface, line: str, x: int, y: int, color_tuple: tuple[int, int, int, int]) -> None:
+        surface.blit(self._font.render(line, pygame.Color(color_tuple))[0], (x, y))
 
     def blit_words(self, words: tuple[str], pos_dict: dict[str, tuple[int, int]], colors: list[pygame.Color]) -> pygame.Surface:
         if not words:
@@ -44,7 +43,7 @@ class Blitter():
         for word, color in zip(words, colors):
             x, y = pos_dict[word]
             # Convert Color to hashable tuple
-            color_tuple = (color.r, color.g, color.b)
+            color_tuple = (color.r, color.g, color.b, color.a)
             self._render_blit_xy(surface, word, x, y, color_tuple)
         return surface
 
@@ -59,7 +58,7 @@ class TextRectRenderer():
         self._space_width = self._font_rect_getter.get_rect(" ").width
         self._space_height = self._font_rect_getter.get_rect("X").height
 
-    def render(self, words: list[str], colors: list[pygame.Color]=None) -> pygame.Surface:
+    def render(self, words: list[str], colors: list[pygame.Color]) -> pygame.Surface:
         self._pos_dict = self._prerender_textrect(words)
         return self._blitter.blit_words(words, self._pos_dict, colors)
 
