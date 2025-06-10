@@ -431,14 +431,10 @@ class FaderManager():
 class PreviousGuessesDisplayBase():
     FONT = "Arial"
 
-    def __init__(self, font_size, previous_guesses_instance=None) -> None:
+    def __init__(self, font_size: int) -> None:
         self.font = pygame.freetype.SysFont(PreviousGuessesDisplayBase.FONT, font_size)
         self.font.kerning = True
-        if previous_guesses_instance:
-            self.previous_guesses = previous_guesses_instance.previous_guesses
-        else:
-            self.previous_guesses = []
-
+        self.previous_guesses = []
         self._text_rect_renderer = textrect.TextRectRenderer(self.font,
                 pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -456,7 +452,6 @@ class PreviousGuessesDisplay(PreviousGuessesDisplayBase):
 
     def __init__(self, font_size: int) -> None:
         super().__init__(font_size)
-        self.previous_guesses = []
         self.fader_inputs = []
         self.bloop_sound = pygame.mixer.Sound("./sounds/bloop.wav")
         self.bloop_sound.set_volume(0.2)
