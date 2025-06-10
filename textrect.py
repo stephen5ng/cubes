@@ -16,10 +16,14 @@ class FontRectGetter():
     def __init__(self, font: pygame.freetype.Font) -> None:
         self._font = font
 
+    @staticmethod
     @functools.lru_cache(maxsize=64)
-    def get_rect(self, text: str) -> pygame.Rect:
-        r = self._font.get_rect(text)
+    def _get_rect(font: pygame.freetype.Font, size: int, text: str) -> pygame.Rect:
+        r = font.get_rect(text)
         return pygame.Rect(0, 0, r.width, r.height)
+
+    def get_rect(self, text: str) -> pygame.Rect:
+        return self._get_rect(self._font, self._font.size, text).copy()
 
 class Blitter():
     def __init__(self, font: pygame.freetype.Font, color: pygame.Color, rect: pygame.Rect) -> None:
@@ -28,7 +32,6 @@ class Blitter():
         self._rect = rect
         self._empty_surface = pygame.Surface(rect.size, pygame.SRCALPHA)
 
-    @functools.lru_cache(maxsize=64)
     def _render_blit_xy(self, surface: pygame.Surface, line: str, x: int, y: int, color_tuple: tuple[int, int, int, int]) -> None:
         surface.blit(self._font.render(line, pygame.Color(color_tuple))[0], (x, y))
 

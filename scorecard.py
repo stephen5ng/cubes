@@ -38,6 +38,7 @@ class ScoreCard:
         logging.info(f"guessing {guess}")
         self.player_rack.guess(guess)
         self.guesses.add((player, guess))
+        self.update_previous_guesses()
 
     def update_previous_guesses(self) -> None:
         self.possible_words = {word for _, word in self.guesses 
@@ -45,7 +46,7 @@ class ScoreCard:
         self.remaining_words = {word for _, word in self.guesses} - self.possible_words
 
     def get_previous_guesses(self) -> list[str]:
-        return sorted({word for _, word in self.guesses})
+        return sorted(list(self.possible_words))
 
     def get_remaining_previous_guesses(self) -> list[str]:
         return sorted(list(self.remaining_words))
