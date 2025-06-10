@@ -53,7 +53,7 @@ class TextRectRenderer():
         self._font_rect_getter = FontRectGetter(font)
         self._blitter = Blitter(font, rect)
         self._pos_dict = {}
-        self._space_width = self._font_rect_getter.get_size("I")[0]
+        self._space_width = int(self._font_rect_getter.get_size("I")[0]*1.5)
         x_height = self._font_rect_getter.get_size("X")[1]
         self._vertical_gap = int(1.25 * x_height)
 
