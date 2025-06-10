@@ -57,8 +57,11 @@ class TextRectRenderer():
         x_height = self._font_rect_getter.get_size("X")[1]
         self._vertical_gap = int(1.25 * x_height)
 
-    def render(self, words: list[str], colors: list[pygame.Color]) -> pygame.Surface:
+    def update_pos_dict(self, words: list[str]) -> None:
         self._pos_dict = self._prerender_textrect(words)
+
+    def render(self, words: list[str], colors: list[pygame.Color]) -> pygame.Surface:
+        self.update_pos_dict(words)
         return self._blitter.blit_words(words, self._pos_dict, colors)
 
     def get_pos(self, word: str) -> tuple[int, int]:

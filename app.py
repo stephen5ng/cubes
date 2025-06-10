@@ -98,8 +98,7 @@ class App:
 
     def add_guess(self, guess: str, player: int) -> None:
         self._score_card.add_guess(guess, player)
-        events.trigger("input.add_guess",
-            self._score_card.get_previous_guesses(), guess, player)
+        events.trigger("input.add_guess", self._score_card.get_previous_guesses(), guess, player)
 
     async def guess_tiles(self, word_tile_ids: list[str], move_tiles: bool, player: int) -> None:
         self._last_guess = word_tile_ids
