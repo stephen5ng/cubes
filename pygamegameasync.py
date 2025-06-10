@@ -443,8 +443,7 @@ class PreviousGuessesBase():
             self.color = SHIELD_COLOR_P0
 
         self.textrect = textrect.TextRectRenderer(self.font,
-                pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
-                self.color)
+                pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT))
 
     def update_previous_guesses(self, previous_guesses: list[str]) -> None:
         self.previous_guesses = previous_guesses
