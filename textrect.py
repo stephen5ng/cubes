@@ -33,7 +33,7 @@ class Blitter():
         self._empty_surface = pygame.Surface(rect.size, pygame.SRCALPHA)
 
     def _render_blit_xy(self, surface: pygame.Surface, word: str, x: int, y: int, color_tuple: tuple[int, int, int, int]) -> None:
-g        surface.blit(self._font.render(word, pygame.Color(color_tuple))[0], (x, y))
+        surface.blit(self._font.render(word, pygame.Color(color_tuple))[0], (x, y))
 
     def blit_words(self, words: tuple[str], pos_dict: dict[str, tuple[int, int]], colors: list[pygame.Color]) -> pygame.Surface:
         if not words:
