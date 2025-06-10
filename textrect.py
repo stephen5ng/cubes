@@ -32,8 +32,8 @@ class Blitter():
         self._rect = rect
         self._empty_surface = pygame.Surface(rect.size, pygame.SRCALPHA)
 
-    def _render_blit_xy(self, surface: pygame.Surface, line: str, x: int, y: int, color_tuple: tuple[int, int, int, int]) -> None:
-        surface.blit(self._font.render(line, pygame.Color(color_tuple))[0], (x, y))
+    def _render_blit_xy(self, surface: pygame.Surface, word: str, x: int, y: int, color_tuple: tuple[int, int, int, int]) -> None:
+g        surface.blit(self._font.render(word, pygame.Color(color_tuple))[0], (x, y))
 
     def blit_words(self, words: tuple[str], pos_dict: dict[str, tuple[int, int]], colors: list[pygame.Color]) -> pygame.Surface:
         if not words:
@@ -70,26 +70,22 @@ class TextRectRenderer():
         if not words:
             return pos_dict
 
-        # Check if any words are too long
-        for word in words:
-            if self._font_rect_getter.get_rect(word).width >= self._rect.width:
-                raise TextRectException("The word " + word + " is too long to fit in the rect passed.")
-            
         # Position first word at origin
         last_rect = self._font_rect_getter.get_rect(words[0])
         pos_dict[words[0]] = (0, 0)
         
         for word in words[1:]:
             word_rect = self._font_rect_getter.get_rect(word)
+            if word_rect.width > self._rect.width:
+                raise TextRectException("The word " + word + " is too long to fit in the rect passed.")
+            
             next_x = last_rect.x + last_rect.width + self._space_width
             
             if next_x + word_rect.width < self._rect.width:
-                pos_dict[word] = (next_x, last_rect.y)
-                word_rect.x, word_rect.y = next_x, last_rect.y
+                pos_dict[word] = (word_rect.x, word_rect.y) = (next_x, last_rect.y)
             else:
                 new_y = last_rect.y + self._space_height + int(self._space_height/4)
-                pos_dict[word] = (0, new_y)
-                word_rect.x, word_rect.y = 0, new_y
+                pos_dict[word] = (word_rect.x, word_rect.y) = (0, new_y)
                 
             last_rect = word_rect
                 
@@ -115,11 +111,12 @@ if __name__ == '__main__':
 
     my_font = pygame.freetype.Font(None, 22)
 
-    my_string = "Hi there! I'm a nice bit of wordwrapped text. Won't you be my friend? Honestly, wordwrapping is easy, with David's fancy new render_textrect () function. This is a new line. This is another one. Another line, you lucky dog."
+    my_string = "THE QUICK BROWN FOX JUMPS OVER A LAZY DOG"
 
     my_rect = pygame.Rect((40, 40, 300, 400))
     trr = TextRectRenderer(my_font, my_rect, pygame.Color(216, 216, 216))
-    cProfile.run('textrect_loop(trr, my_string)')
+    if len(sys.argv) > 1:
+        cProfile.run('textrect_loop(trr, my_string)')
     words = my_string.split()
     colors = [pygame.Color(216, 216, 216)] * len(words)
     rendered_text = trr.render(words, colors)
