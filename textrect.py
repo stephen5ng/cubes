@@ -96,8 +96,10 @@ class TextRectRenderer():
         return pos_dict
 
 def textrect_loop(trr, my_string):
+    words = my_string.split()
+    colors = [pygame.Color(216, 216, 216)] * len(words)
     for i in range(1000):
-        trr.render(my_string)
+        trr.render(words, colors)
 
 if __name__ == '__main__':
     import cProfile
