@@ -518,8 +518,8 @@ class PreviousGuessesDisplay(PreviousGuessesDisplayBase):
 class RemainingPreviousGuessesDisplay(PreviousGuessesDisplayBase):
     COLOR = Color("grey")
     TOP_GAP = 3
-    PLAYER_COLORS = [pygame.Color(SHIELD_COLOR_P0.r, SHIELD_COLOR_P0.g, SHIELD_COLOR_P0.b, 128),
-                     pygame.Color(SHIELD_COLOR_P1.r, SHIELD_COLOR_P1.g, SHIELD_COLOR_P1.b, 128)]  # Static array for player colors with 0.5 alpha
+    PLAYER_COLORS = [pygame.Color(SHIELD_COLOR_P0.r, SHIELD_COLOR_P0.g, SHIELD_COLOR_P0.b, 192),
+                     pygame.Color(SHIELD_COLOR_P1.r, SHIELD_COLOR_P1.g, SHIELD_COLOR_P1.b, 192)]  # Static array for player colors with 0.5 alpha
 
     def __init__(self, font_size: int, guess_to_player: dict[str, int]) -> None:
         super().__init__(font_size)
@@ -551,9 +551,6 @@ class RemainingPreviousGuessesDisplay(PreviousGuessesDisplayBase):
         self.surface = self._text_rect_renderer.render(
             self.remaining_guesses,
             [self.PLAYER_COLORS[self.guess_to_player.get(guess, 0)] for guess in self.remaining_guesses])
-
-    # def draw(self) -> None:
-    #     self.surface = self._text_rect_renderer.render(self.update_remaining_guesses, [self.color] * len(self.update_remaining_guesses))
 
 class LetterSource():
     ALPHA = 128
