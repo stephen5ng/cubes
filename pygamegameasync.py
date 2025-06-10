@@ -349,7 +349,7 @@ class Shield():
         self.draw()
 
     def draw(self) -> None:
-        self.surface = self.font.render(self.letters, PreviousGuesses.FADER_PLAYER_COLORS[self.player])[0]
+        self.surface = self.font.render(self.letters, PreviousGuessesDisplay.FADER_PLAYER_COLORS[self.player])[0]
         self.pos[0] = int(SCREEN_WIDTH/2 - self.surface.get_width()/2)
 
     def update(self, window: pygame.Surface) -> None:
@@ -429,11 +429,11 @@ class LastGuessFader():
             self.last_guess_surface.set_alpha(self.alpha)
             target.blit(self.last_guess_surface, self.last_guess_position)
 
-class PreviousGuessesBase():
+class PreviousGuessesDisplayBase():
     FONT = "Arial"
 
     def __init__(self, font_size, previous_guesses_instance=None) -> None:
-        self.font = pygame.freetype.SysFont(PreviousGuessesBase.FONT, font_size)
+        self.font = pygame.freetype.SysFont(PreviousGuessesDisplayBase.FONT, font_size)
         self.font.kerning = True
         if previous_guesses_instance:
             self.previous_guesses = previous_guesses_instance.previous_guesses
@@ -447,7 +447,7 @@ class PreviousGuessesBase():
         self.previous_guesses = previous_guesses
         self.draw()
 
-class PreviousGuesses(PreviousGuessesBase):
+class PreviousGuessesDisplay(PreviousGuessesDisplayBase):
     FONT_SIZE = 30
     POSITION_TOP = 24
     FADE_DURATION_NEW_GUESS = 2000
@@ -456,7 +456,7 @@ class PreviousGuesses(PreviousGuessesBase):
     FADER_PLAYER_COLORS = [FADER_COLOR_P0, FADER_COLOR_P1]
 
     def __init__(self, font_size=FONT_SIZE, previous_guesses_instance=None) -> None:
-        super(PreviousGuesses, self).__init__(font_size)
+        super(PreviousGuessesDisplay, self).__init__(font_size)
         if previous_guesses_instance:
             self.previous_guesses = previous_guesses_instance.previous_guesses
             self.fader_inputs = previous_guesses_instance.fader_inputs
@@ -491,18 +491,18 @@ class PreviousGuesses(PreviousGuessesBase):
 
     def old_guess(self, old_guess: str) -> None:
         self.fader_inputs.append(
-            [old_guess, pygame.time.get_ticks(), OLD_GUESS_COLOR, PreviousGuesses.FADE_DURATION_OLD_GUESS])
+            [old_guess, pygame.time.get_ticks(), OLD_GUESS_COLOR, PreviousGuessesDisplay.FADE_DURATION_OLD_GUESS])
         self.update_previous_guesses(self.previous_guesses)
         pygame.mixer.Sound.play(self.bloop_sound)
 
     def add_guess(self, previous_guesses: list[str], guess: str, player: int) -> None:
         self.guess_to_player[guess] = player
         self.fader_inputs.append(
-            [guess, pygame.time.get_ticks(), self.FADER_PLAYER_COLORS[player], PreviousGuesses.FADE_DURATION_NEW_GUESS])
+            [guess, pygame.time.get_ticks(), self.FADER_PLAYER_COLORS[player], PreviousGuessesDisplay.FADE_DURATION_NEW_GUESS])
         self.update_previous_guesses(previous_guesses)
 
     def update_previous_guesses(self, previous_guesses: list[str]) -> None:
-        super(PreviousGuesses, self).update_previous_guesses(previous_guesses)
+        super(PreviousGuessesDisplay, self).update_previous_guesses(previous_guesses)
         self._recreate_faders()
 
     def update(self, window: pygame.Surface) -> None:
@@ -516,32 +516,33 @@ class PreviousGuesses(PreviousGuessesBase):
 
         # re-create fader_inputs for the faders that survived.
         self.fader_inputs = [f for f in self.fader_inputs if f[0] in fader_guesses]
-        window.blit(surface_with_faders, [0, PreviousGuesses.POSITION_TOP])
+        window.blit(surface_with_faders, [0, PreviousGuessesDisplay.POSITION_TOP])
 
-class RemainingPreviousGuesses(PreviousGuessesBase):
+class RemainingPreviousGuessesDisplay(PreviousGuessesDisplayBase):
     COLOR = Color("grey")
     TOP_GAP = 3
 
-    def __init__(self, font_size=PreviousGuesses.FONT_SIZE-FONT_SIZE_DELTA, remaining_previous_guesses_instance=None) -> None:
+    def __init__(self, font_size=PreviousGuessesDisplay.FONT_SIZE-FONT_SIZE_DELTA, remaining_previous_guesses_instance=None) -> None:
         if remaining_previous_guesses_instance:
-            super(RemainingPreviousGuesses, self).__init__(
+            super(RemainingPreviousGuessesDisplay, self).__init__(
                 font_size, previous_guesses_instance=remaining_previous_guesses_instance)
             self.color = remaining_previous_guesses_instance.color
         else:
-            super(RemainingPreviousGuesses, self).__init__(font_size, None)
+            super(RemainingPreviousGuessesDisplay, self).__init__(font_size, None)
             self.color = REMAINING_PREVIOUS_GUESSES_COLOR
 
         self.surface = pygame.Surface((0, 0))
 
     def update(self, window: pygame.Surface, height: int) -> None:
-        top = height + PreviousGuesses.POSITION_TOP + RemainingPreviousGuesses.TOP_GAP
+        top = height + PreviousGuessesDisplay.POSITION_TOP + RemainingPreviousGuessesDisplay.TOP_GAP
         total_height = top + self.surface.get_bounding_rect().height
         if total_height > SCREEN_HEIGHT:
-            raise textrect.TextRectException("can't update RemainingPreviousGuesses")
+            raise textrect.TextRectException("can't update RemainingPreviousGuessesDisplay")
         window.blit(self.surface, [0, top])
 
     def draw(self) -> None:
         self.surface = self.textrect.render(self.previous_guesses, [self.color] * len(self.previous_guesses))
+
 class LetterSource():
     ALPHA = 128
     ANIMATION_DURAION_MS = 200
@@ -644,8 +645,8 @@ class Game:
             self.racks = [Rack(self.rack_metrics, self.letter, -1)]
         else:
             self.racks = [Rack(self.rack_metrics, self.letter, player) for player in range(PLAYER_COUNT)]
-        self.previous_guesses = PreviousGuesses()
-        self.remaining_previous_guesses = RemainingPreviousGuesses()
+        self.previous_guesses = PreviousGuessesDisplay()
+        self.remaining_previous_guesses = RemainingPreviousGuessesDisplay()
         self.letter_source = LetterSource(
             self.letter,
             self.rack_metrics.get_rect().x, self.rack_metrics.get_rect().width,
@@ -686,8 +687,8 @@ class Game:
         self.aborted = True
 
     async def start(self) -> None:
-        self.previous_guesses = PreviousGuesses()
-        self.remaining_previous_guesses = RemainingPreviousGuesses()
+        self.previous_guesses = PreviousGuessesDisplay()
+        self.remaining_previous_guesses = RemainingPreviousGuessesDisplay()
         self.letter.start()
         for score in self.scores:
             score.start()
@@ -732,9 +733,9 @@ class Game:
 
     def resize_previous_guesses(self) -> None:
         font_size = (cast(float, self.previous_guesses.font.size)*4.0)/5.0
-        self.previous_guesses = PreviousGuesses(
+        self.previous_guesses = PreviousGuessesDisplay(
             max(1, font_size), previous_guesses_instance=self.previous_guesses)
-        self.remaining_previous_guesses = RemainingPreviousGuesses(font_size-FONT_SIZE_DELTA,
+        self.remaining_previous_guesses = RemainingPreviousGuessesDisplay(font_size-FONT_SIZE_DELTA,
             remaining_previous_guesses_instance=self.remaining_previous_guesses)
         self.previous_guesses.draw()
         self.remaining_previous_guesses.draw()
