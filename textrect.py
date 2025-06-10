@@ -17,7 +17,7 @@ class FontRectGetter():
         self._font = font
 
     @staticmethod
-    # @functools.lru_cache(maxsize=64)
+    @functools.lru_cache(maxsize=64)
     def _get_rect(font: pygame.freetype.Font, size: int, text: str) -> pygame.Rect:
         r = font.get_rect(text)
         return pygame.Rect(0, 0, r.width, r.height)
@@ -121,7 +121,7 @@ if __name__ == '__main__':
     trr = TextRectRenderer(my_font, my_rect, pygame.Color(216, 216, 216))
     cProfile.run('textrect_loop(trr, my_string)')
     words = my_string.split()
-    colors = [pygame.Color(216, 216, 216)] * len(words)g
+    colors = [pygame.Color(216, 216, 216)] * len(words)
     rendered_text = trr.render(words, colors)
 
     display.blit(rendered_text, my_rect.topleft)
