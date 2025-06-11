@@ -115,7 +115,10 @@ class App:
             remaining_tiles = self._player_racks[player].get_tiles().copy()
             for guess_tile in guess_tiles:
                 remaining_tiles.remove(guess_tile)
-            self._player_racks[player].set_tiles(guess_tiles + remaining_tiles)
+            if player == 0:
+                self._player_racks[player].set_tiles(guess_tiles + remaining_tiles)
+            else:
+                self._player_racks[player].set_tiles(remaining_tiles + guess_tiles)
             tiles_dirty = True
 
         if self._score_card.is_old_guess(guess):
