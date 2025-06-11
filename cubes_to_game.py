@@ -28,19 +28,19 @@ cubes_to_neighbortags : Dict[str, str] = {}
 cubes_player_number : int = 0
 # logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
-def find_unmatched_cubes():
+def _find_unmatched_cubes():
     sources = set(cube_chain.keys())
     targets = set(cube_chain.values())
     return list(sources - targets)
 
-def remove_back_pointer(target_cube: str):
+def _remove_back_pointer(target_cube: str):
     for source in cube_chain:
         if cube_chain[source] == target_cube:
             # print(f"removing {source}: {cubes_to_letters[source]}")
             del cube_chain[source]
             break
 
-def print_cube_chain():
+def _print_cube_chain():
     if not cubes_to_letters:
         return
     try:
@@ -52,7 +52,7 @@ def print_cube_chain():
     except Exception as e:
         logging.error(f"print_cube_chain ERROR: {e}")
 
-def dump_cubes_to_neighbortags():
+def _dump_cubes_to_neighbortags():
     for cube in TAGS_TO_CUBES.values():
         log_str = f"{cube} [{cubes_to_letters.get(cube, '')}]"
         if cube in cubes_to_neighbortags:
@@ -63,13 +63,13 @@ def dump_cubes_to_neighbortags():
         logging.info(log_str)
     logging.info("")
 
-def form_words_from_chain() -> List[str]:
+def _form_words_from_chain() -> List[str]:
     """Forms words from the current cube chain. Returns empty list if invalid."""
     if not cube_chain:
         return []
 
     all_words = []
-    source_cubes = find_unmatched_cubes()
+    source_cubes = _find_unmatched_cubes()
     for source_cube in sorted(source_cubes):
         word_tiles = []
         sc = source_cube
@@ -93,7 +93,7 @@ def form_words_from_chain() -> List[str]:
 
     return all_words
 
-def has_loop_from_cube(start_cube: str) -> bool:
+def _has_loop_from_cube(start_cube: str) -> bool:
     """Checks if adding a link from start_cube would create a loop.
     Returns True if a loop is detected, False otherwise."""
     source_cube = start_cube
@@ -107,57 +107,53 @@ def has_loop_from_cube(start_cube: str) -> bool:
             break
         next_cube = cube_chain[source_cube]
         if next_cube == start_cube:
-            logging.info(f"breaking chain {print_cube_chain()}")
+            logging.info(f"breaking chain {_print_cube_chain()}")
             return True
         source_cube = next_cube
     return False
 
+def _update_chain(sender_cube: str, target_cube: str) -> bool:
+    """Updates the chain with a new connection. Returns True if chain is valid."""
+    if sender_cube == target_cube:
+        return False
+        
+    cube_chain[sender_cube] = target_cube
+    if _has_loop_from_cube(sender_cube):
+        del cube_chain[sender_cube]
+        return False
+    return True
+
 def process_tag(sender_cube: str, tag: str) -> List[str]:
-    # Returns lists of tileids
+    # Update neighbor tracking
     cubes_to_neighbortags[sender_cube] = tag
-    dump_cubes_to_neighbortags()
+    _dump_cubes_to_neighbortags()
     logging.info(f"process_tag {sender_cube}: {tag}")
     logging.info(f"process_tag cube_chain {cube_chain}")
 
+    # Handle empty tag case
     if not tag:
         logging.info(f"process_tag: no tag, deleting target of {sender_cube}")
         if sender_cube in cube_chain:
             del cube_chain[sender_cube]
-        return form_words_from_chain()
+        return _form_words_from_chain()
 
+    # Validate tag and cube
     if tag not in TAGS_TO_CUBES:
         logging.info(f"bad tag: {tag}")
         if sender_cube in cube_chain:
             del cube_chain[sender_cube]
-        return form_words_from_chain()
+        return _form_words_from_chain()
 
     target_cube = TAGS_TO_CUBES[tag]
-    if sender_cube == target_cube:
-        # print(f"cube can't point to itself")
+    
+    # Update chain if valid
+    if not _update_chain(sender_cube, target_cube):
         return []
 
-    logging.info(f"process_tag: {sender_cube} -> {target_cube}")
-    if target_cube in cube_chain.values():
-        # sender overrides existing chain--must have missed a remove message, process it now.
-        logging.info(f"override: remove back pointer for {target_cube}")
-        # might cause trouble because ordering of QOS 1 is not guaranteed
-        # https://stackoverflow.com/questions/30955110/is-message-order-preserved-in-mqtt-messages
-        # ignore the dupe and hope it works out
-        # remove_back_pointer(target_cube)
-    cube_chain[sender_cube] = target_cube
+    logging.info(f"process_tag final cube_chain: {_print_cube_chain()}")
+    return _form_words_from_chain()
 
-    logging.info(f"process_tag1 cube_chain {cube_chain}")
-
-    if has_loop_from_cube(sender_cube):
-        if sender_cube in cube_chain:
-            del cube_chain[sender_cube]
-        return []
-
-    logging.info(f"process_tag2 cube_chain {cube_chain}")
-    logging.info(f"process_tag final cube_chain: {print_cube_chain()}")
-    return form_words_from_chain()
-
-def initialize_arrays():
+def _initialize_arrays():
     tiles_to_cubes.clear()
     cubes_to_tileid.clear()
 
@@ -169,14 +165,17 @@ def initialize_arrays():
         tiles_to_cubes[tile_id] = cubes[ix]
         cubes_to_tileid[cubes[ix]] = tile_id
 
-async def load_rack_only(publish_queue, tiles_with_letters: list[tiles.Tile]):
+async def _publish_letter(publish_queue, letter, cube_id):
+    await publish_queue.put((f"cube/{cube_id}/letter", letter, True))
+
+async def _load_rack_only(publish_queue, tiles_with_letters: list[tiles.Tile]):
     logging.info(f"LOAD RACK tiles_with_letters: {tiles_with_letters}")
     for tile in tiles_with_letters:
         tile_id = tile.id
         cube_id = tiles_to_cubes[tile_id]
         letter = tile.letter
         cubes_to_letters[cube_id] = letter
-        await publish_letter(publish_queue, letter, cube_id)
+        await _publish_letter(publish_queue, letter, cube_id)
     logging.info(f"LOAD RACK tiles_with_letters done: {cubes_to_letters}")
 
 async def accept_new_letter(publish_queue, letter, tile_id):
@@ -190,7 +189,7 @@ async def publish_letter(publish_queue, letter, cube_id):
 last_tiles_with_letters : list[tiles.Tile] = []
 async def load_rack(publish_queue, tiles_with_letters: list[tiles.Tile]):
     global last_tiles_with_letters
-    await load_rack_only(publish_queue, tiles_with_letters)
+    await _load_rack_only(publish_queue, tiles_with_letters)
 
     if last_tiles_with_letters != tiles_with_letters:
         # Some of the tiles changed. Make a guess, just in case one of them
@@ -283,7 +282,7 @@ async def init(subscribe_client, cubes_file, tags_file, cubes_player_number_arg:
     TAGS_TO_CUBES = get_tags_to_cubes(cubes_file, tags_file)
     logging.info(f"ttc: {TAGS_TO_CUBES}")
 
-    initialize_arrays()
+    _initialize_arrays()
     await subscribe_client.subscribe("cube/nfc/#")
 
 async def handle_mqtt_message(publish_queue, message):

@@ -3,7 +3,7 @@ import asyncio
 from unittest.mock import Mock, patch, AsyncMock
 import cubes_to_game
 import tiles
-from cubes_to_game import process_tag, initialize_arrays, TAGS_TO_CUBES, cubes_to_tileid, cube_chain, guess_last_tiles, has_loop_from_cube
+from cubes_to_game import process_tag, _initialize_arrays, TAGS_TO_CUBES, cubes_to_tileid, cube_chain, guess_last_tiles, _has_loop_from_cube
 
 class TestCubesToGame(unittest.TestCase):
     def setUp(self):
@@ -64,7 +64,7 @@ class TestWordFormation(unittest.TestCase):
             "cube5": "5"
         }
         cube_chain.clear()
-        initialize_arrays()
+        _initialize_arrays()
 
     def test_empty_chain(self):
         """Test that empty chain returns empty list"""
@@ -162,53 +162,53 @@ class TestLoopDetection(unittest.TestCase):
             "cube5": "5"
         }
         cube_chain.clear()
-        initialize_arrays()
+        _initialize_arrays()
 
     def test_no_loop(self):
         """Test that a simple chain has no loop"""
         cube_chain["cube1"] = "cube2"
         cube_chain["cube2"] = "cube3"
-        self.assertFalse(has_loop_from_cube("cube1"))
+        self.assertFalse(_has_loop_from_cube("cube1"))
 
     def test_direct_loop(self):
         """Test detection of a direct loop (cube points to itself)"""
         cube_chain["cube1"] = "cube1"
-        self.assertTrue(has_loop_from_cube("cube1"))
+        self.assertTrue(_has_loop_from_cube("cube1"))
 
     def test_indirect_loop(self):
         """Test detection of an indirect loop (cube1 -> cube2 -> cube1)"""
         cube_chain["cube1"] = "cube2"
         cube_chain["cube2"] = "cube1"
-        self.assertTrue(has_loop_from_cube("cube1"))
+        self.assertTrue(_has_loop_from_cube("cube1"))
 
     def test_long_chain_no_loop(self):
         """Test that a long chain without loops is handled correctly"""
         for i in range(5):
             cube_chain[f"cube{i}"] = f"cube{i+1}"
-        self.assertFalse(has_loop_from_cube("cube0"))
+        self.assertFalse(_has_loop_from_cube("cube0"))
 
     def test_empty_chain(self):
         """Test that an empty chain has no loops"""
-        self.assertFalse(has_loop_from_cube("cube1"))
+        self.assertFalse(_has_loop_from_cube("cube1"))
 
     def test_self_referential_loop(self):
         """Test detection of a cube pointing to itself"""
         cube_chain["cube1"] = "cube1"
-        self.assertTrue(has_loop_from_cube("cube1"))
+        self.assertTrue(_has_loop_from_cube("cube1"))
 
     def test_large_loop(self):
         """Test detection of a large loop (cube1 -> cube2 -> cube3 -> cube1)"""
         cube_chain["cube1"] = "cube2"
         cube_chain["cube2"] = "cube3"
         cube_chain["cube3"] = "cube1"
-        self.assertTrue(has_loop_from_cube("cube1"))
+        self.assertTrue(_has_loop_from_cube("cube1"))
 
     def test_partial_chain(self):
         """Test loop detection on a partial chain (not starting from beginning)"""
         cube_chain["cube1"] = "cube2"
         cube_chain["cube2"] = "cube3"
         cube_chain["cube3"] = "cube1"
-        self.assertTrue(has_loop_from_cube("cube2"))  # Start from middle of loop
+        self.assertTrue(_has_loop_from_cube("cube2"))  # Start from middle of loop
 
     def test_chain_with_branch(self):
         """Test loop detection with a branching chain (cube1 -> cube2 -> cube3, cube1 -> cube4)
@@ -216,22 +216,22 @@ class TestLoopDetection(unittest.TestCase):
         cube_chain["cube1"] = "cube2"
         cube_chain["cube2"] = "cube3"
         cube_chain["cube4"] = "cube1"  # Creates a potential loop through cube4
-        self.assertFalse(has_loop_from_cube("cube1"))  # No loop in direct path
-        self.assertFalse(has_loop_from_cube("cube4"))  # No loop detected from cube4
+        self.assertFalse(_has_loop_from_cube("cube1"))  # No loop in direct path
+        self.assertFalse(_has_loop_from_cube("cube4"))  # No loop detected from cube4
 
     def test_max_length_chain(self):
         """Test that a chain at maximum length is not considered a loop.
         Note: The implementation treats chains at MAX_LETTERS as loops to prevent infinite chains"""
         for i in range(tiles.MAX_LETTERS):
             cube_chain[f"cube{i}"] = f"cube{i+1}"
-        self.assertTrue(has_loop_from_cube("cube0"))  # Chain at max length is treated as a loop
+        self.assertTrue(_has_loop_from_cube("cube0"))  # Chain at max length is treated as a loop
 
     def test_chain_with_missing_cube(self):
         """Test loop detection when a cube in the chain is missing"""
         cube_chain["cube1"] = "cube2"
         cube_chain["cube2"] = "missing_cube"
         cube_chain["missing_cube"] = "cube1"
-        self.assertTrue(has_loop_from_cube("cube1"))
+        self.assertTrue(_has_loop_from_cube("cube1"))
 
     def test_multiple_loops(self):
         """Test detection of multiple possible loops"""
@@ -240,8 +240,8 @@ class TestLoopDetection(unittest.TestCase):
         cube_chain["cube3"] = "cube1"  # First loop
         cube_chain["cube4"] = "cube5"
         cube_chain["cube5"] = "cube4"  # Second loop
-        self.assertTrue(has_loop_from_cube("cube1"))
-        self.assertTrue(has_loop_from_cube("cube4"))
+        self.assertTrue(_has_loop_from_cube("cube1"))
+        self.assertTrue(_has_loop_from_cube("cube4"))
 
 if __name__ == '__main__':
     unittest.main() 
