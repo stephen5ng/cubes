@@ -68,8 +68,8 @@ class App:
         self._running = False
 
     async def load_rack(self) -> None:
-        # TODO(sng): load both racks.
-        await cubes_to_game.load_rack(self._publish_queue, self._player_racks[0].get_tiles())
+        await cubes_to_game.load_rack(self._publish_queue, self._player_racks[0].get_tiles(), 0)
+        await cubes_to_game.load_rack(self._publish_queue, self._player_racks[1].get_tiles(), 1)
 
     async def accept_new_letter(self, next_letter: str, position: int) -> None:
         if PLAYER_COUNT > 1:
@@ -85,7 +85,8 @@ class App:
             changed_tile = self._player_racks[0].replace_letter(next_letter, position)
 
         self._score_card.update_previous_guesses()
-        await cubes_to_game.accept_new_letter(self._publish_queue, next_letter, changed_tile.id)
+        await cubes_to_game.accept_new_letter(self._publish_queue, next_letter, changed_tile.id, 0)
+        await cubes_to_game.accept_new_letter(self._publish_queue, next_letter, changed_tile.id, 1)
 
         self._update_previous_guesses()
         self._update_remaining_previous_guesses()
