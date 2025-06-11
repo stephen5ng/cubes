@@ -3,12 +3,12 @@ import asyncio
 from unittest.mock import Mock, patch, AsyncMock
 import cubes_to_game
 import tiles
-from cubes_to_game import process_tag, _initialize_arrays, TAGS_TO_CUBES, cubes_to_tileid, cube_chain, guess_last_tiles, _has_loop_from_cube
+from cubes_to_game import process_tag, _initialize_arrays, cube_manager, guess_last_tiles
 
 class TestCubesToGame(unittest.TestCase):
     def setUp(self):
         # Mock TAGS_TO_CUBES with exactly 6 entries to match production
-        cubes_to_game.TAGS_TO_CUBES = {
+        cube_manager.tags_to_cubes = {
             "tag0": "cube0",
             "tag1": "cube1",
             "tag2": "cube2",
@@ -18,7 +18,7 @@ class TestCubesToGame(unittest.TestCase):
         }
         
         # Mock the tiles_to_cubes dictionary with MAX_LETTERS (6) cubes
-        cubes_to_game.tiles_to_cubes = {
+        cube_manager.tiles_to_cubes = {
             "0": "cube0",
             "1": "cube1",
             "2": "cube2",
@@ -48,23 +48,24 @@ class TestCubesToGame(unittest.TestCase):
 class TestWordFormation(unittest.TestCase):
     def setUp(self):
         # Setup test data
-        global TAGS_TO_CUBES, cubes_to_tileid, cube_chain
-        TAGS_TO_CUBES = {
+        cube_manager.tags_to_cubes = {
+            "tag0": "cube0",
             "tag1": "cube1",
             "tag2": "cube2",
             "tag3": "cube3",
             "tag4": "cube4",
             "tag5": "cube5"
         }
-        cubes_to_tileid = {
+        cube_manager.cubes_to_tileid = {
+            "cube0": "0",
             "cube1": "1",
             "cube2": "2",
             "cube3": "3",
             "cube4": "4",
             "cube5": "5"
         }
-        cube_chain.clear()
-        _initialize_arrays()
+        cube_manager.cube_chain.clear()
+        cube_manager._initialize_arrays()
 
     def test_empty_chain(self):
         """Test that empty chain returns empty list"""
@@ -102,7 +103,7 @@ class TestWordFormation(unittest.TestCase):
     def test_invalid_cube(self):
         """Test handling of invalid cube in chain"""
         process_tag("cube1", "tag2")  # cube1 -> cube2
-        cube_chain["cube2"] = "invalid_cube"  # Manually add invalid cube
+        cube_manager.cube_chain["cube2"] = "invalid_cube"  # Manually add invalid cube
         result = process_tag("cube2", "")
         self.assertEqual(result, ["12"])  # Changed to match actual behavior - invalid cubes are allowed
 
@@ -129,8 +130,8 @@ class TestWordFormation(unittest.TestCase):
     def test_chain_with_invalid_middle(self):
         """Test handling of chains with invalid cubes in the middle"""
         process_tag("cube1", "tag2")  # cube1 -> cube2
-        cube_chain["cube2"] = "invalid_cube"  # Manually add invalid cube
-        cube_chain["invalid_cube"] = "cube3"  # Invalid cube -> cube3
+        cube_manager.cube_chain["cube2"] = "invalid_cube"  # Manually add invalid cube
+        cube_manager.cube_chain["invalid_cube"] = "cube3"  # Invalid cube -> cube3
         result = process_tag("cube3", "")
         self.assertEqual(result, [])
 
@@ -146,102 +147,103 @@ class TestWordFormation(unittest.TestCase):
 class TestLoopDetection(unittest.TestCase):
     def setUp(self):
         # Setup test data
-        global TAGS_TO_CUBES, cubes_to_tileid, cube_chain
-        TAGS_TO_CUBES = {
+        cube_manager.tags_to_cubes = {
+            "tag0": "cube0",
             "tag1": "cube1",
             "tag2": "cube2",
             "tag3": "cube3",
             "tag4": "cube4",
             "tag5": "cube5"
         }
-        cubes_to_tileid = {
+        cube_manager.cubes_to_tileid = {
+            "cube0": "0",
             "cube1": "1",
             "cube2": "2",
             "cube3": "3",
             "cube4": "4",
             "cube5": "5"
         }
-        cube_chain.clear()
-        _initialize_arrays()
+        cube_manager.cube_chain.clear()
+        cube_manager._initialize_arrays()
 
     def test_no_loop(self):
         """Test that a simple chain has no loop"""
-        cube_chain["cube1"] = "cube2"
-        cube_chain["cube2"] = "cube3"
-        self.assertFalse(_has_loop_from_cube("cube1"))
+        cube_manager.cube_chain["cube1"] = "cube2"
+        cube_manager.cube_chain["cube2"] = "cube3"
+        self.assertFalse(cube_manager._has_loop_from_cube("cube1"))
 
     def test_direct_loop(self):
         """Test detection of a direct loop (cube points to itself)"""
-        cube_chain["cube1"] = "cube1"
-        self.assertTrue(_has_loop_from_cube("cube1"))
+        cube_manager.cube_chain["cube1"] = "cube1"
+        self.assertTrue(cube_manager._has_loop_from_cube("cube1"))
 
     def test_indirect_loop(self):
         """Test detection of an indirect loop (cube1 -> cube2 -> cube1)"""
-        cube_chain["cube1"] = "cube2"
-        cube_chain["cube2"] = "cube1"
-        self.assertTrue(_has_loop_from_cube("cube1"))
+        cube_manager.cube_chain["cube1"] = "cube2"
+        cube_manager.cube_chain["cube2"] = "cube1"
+        self.assertTrue(cube_manager._has_loop_from_cube("cube1"))
 
     def test_long_chain_no_loop(self):
         """Test that a long chain without loops is handled correctly"""
         for i in range(5):
-            cube_chain[f"cube{i}"] = f"cube{i+1}"
-        self.assertFalse(_has_loop_from_cube("cube0"))
+            cube_manager.cube_chain[f"cube{i}"] = f"cube{i+1}"
+        self.assertFalse(cube_manager._has_loop_from_cube("cube0"))
 
     def test_empty_chain(self):
         """Test that an empty chain has no loops"""
-        self.assertFalse(_has_loop_from_cube("cube1"))
+        self.assertFalse(cube_manager._has_loop_from_cube("cube1"))
 
     def test_self_referential_loop(self):
         """Test detection of a cube pointing to itself"""
-        cube_chain["cube1"] = "cube1"
-        self.assertTrue(_has_loop_from_cube("cube1"))
+        cube_manager.cube_chain["cube1"] = "cube1"
+        self.assertTrue(cube_manager._has_loop_from_cube("cube1"))
 
     def test_large_loop(self):
         """Test detection of a large loop (cube1 -> cube2 -> cube3 -> cube1)"""
-        cube_chain["cube1"] = "cube2"
-        cube_chain["cube2"] = "cube3"
-        cube_chain["cube3"] = "cube1"
-        self.assertTrue(_has_loop_from_cube("cube1"))
+        cube_manager.cube_chain["cube1"] = "cube2"
+        cube_manager.cube_chain["cube2"] = "cube3"
+        cube_manager.cube_chain["cube3"] = "cube1"
+        self.assertTrue(cube_manager._has_loop_from_cube("cube1"))
 
     def test_partial_chain(self):
         """Test loop detection on a partial chain (not starting from beginning)"""
-        cube_chain["cube1"] = "cube2"
-        cube_chain["cube2"] = "cube3"
-        cube_chain["cube3"] = "cube1"
-        self.assertTrue(_has_loop_from_cube("cube2"))  # Start from middle of loop
+        cube_manager.cube_chain["cube1"] = "cube2"
+        cube_manager.cube_chain["cube2"] = "cube3"
+        cube_manager.cube_chain["cube3"] = "cube1"
+        self.assertTrue(cube_manager._has_loop_from_cube("cube2"))  # Start from middle of loop
 
     def test_chain_with_branch(self):
         """Test loop detection with a branching chain (cube1 -> cube2 -> cube3, cube1 -> cube4)
         Note: The implementation only detects loops that return to the starting cube."""
-        cube_chain["cube1"] = "cube2"
-        cube_chain["cube2"] = "cube3"
-        cube_chain["cube4"] = "cube1"  # Creates a potential loop through cube4
-        self.assertFalse(_has_loop_from_cube("cube1"))  # No loop in direct path
-        self.assertFalse(_has_loop_from_cube("cube4"))  # No loop detected from cube4
+        cube_manager.cube_chain["cube1"] = "cube2"
+        cube_manager.cube_chain["cube2"] = "cube3"
+        cube_manager.cube_chain["cube4"] = "cube1"  # Creates a potential loop through cube4
+        self.assertFalse(cube_manager._has_loop_from_cube("cube1"))  # No loop in direct path
+        self.assertFalse(cube_manager._has_loop_from_cube("cube4"))  # No loop detected from cube4
 
     def test_max_length_chain(self):
         """Test that a chain at maximum length is not considered a loop.
         Note: The implementation treats chains at MAX_LETTERS as loops to prevent infinite chains"""
         for i in range(tiles.MAX_LETTERS):
-            cube_chain[f"cube{i}"] = f"cube{i+1}"
-        self.assertTrue(_has_loop_from_cube("cube0"))  # Chain at max length is treated as a loop
+            cube_manager.cube_chain[f"cube{i}"] = f"cube{i+1}"
+        self.assertTrue(cube_manager._has_loop_from_cube("cube0"))  # Chain at max length is treated as a loop
 
     def test_chain_with_missing_cube(self):
         """Test loop detection when a cube in the chain is missing"""
-        cube_chain["cube1"] = "cube2"
-        cube_chain["cube2"] = "missing_cube"
-        cube_chain["missing_cube"] = "cube1"
-        self.assertTrue(_has_loop_from_cube("cube1"))
+        cube_manager.cube_chain["cube1"] = "cube2"
+        cube_manager.cube_chain["cube2"] = "missing_cube"
+        cube_manager.cube_chain["missing_cube"] = "cube1"
+        self.assertTrue(cube_manager._has_loop_from_cube("cube1"))
 
     def test_multiple_loops(self):
         """Test detection of multiple possible loops"""
-        cube_chain["cube1"] = "cube2"
-        cube_chain["cube2"] = "cube3"
-        cube_chain["cube3"] = "cube1"  # First loop
-        cube_chain["cube4"] = "cube5"
-        cube_chain["cube5"] = "cube4"  # Second loop
-        self.assertTrue(_has_loop_from_cube("cube1"))
-        self.assertTrue(_has_loop_from_cube("cube4"))
+        cube_manager.cube_chain["cube1"] = "cube2"
+        cube_manager.cube_chain["cube2"] = "cube3"
+        cube_manager.cube_chain["cube3"] = "cube1"  # First loop
+        cube_manager.cube_chain["cube4"] = "cube5"
+        cube_manager.cube_chain["cube5"] = "cube4"  # Second loop
+        self.assertTrue(cube_manager._has_loop_from_cube("cube1"))
+        self.assertTrue(cube_manager._has_loop_from_cube("cube4"))
 
 if __name__ == '__main__':
     unittest.main() 
