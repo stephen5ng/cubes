@@ -603,11 +603,11 @@ class SoundManager:
         self.sound_queue_task = asyncio.create_task(self.play_sounds_in_queue(), name="word sound player")
 
     async def play_sounds_in_queue(self) -> None:
-        try:
-            pygame.mixer.set_reserved(2)
-            delay_between_words_s = self.DELAY_BETWEEN_WORD_SOUNDS_S
-            last_sound_time = datetime(year=1, month=1, day=1)
-            while True:
+        pygame.mixer.set_reserved(2)
+        delay_between_words_s = self.DELAY_BETWEEN_WORD_SOUNDS_S
+        last_sound_time = datetime(year=1, month=1, day=1)
+        while True:
+            try:
                 soundfile = await self.sound_queue.get()
                 async with aiofiles.open(soundfile, mode='rb') as f:
                     s = pygame.mixer.Sound(buffer=await f.read())
@@ -618,9 +618,9 @@ class SoundManager:
                     channel = pygame.mixer.find_channel(force=True)
                     channel.queue(s)
                     last_sound_time = datetime.now()
-        except Exception as e:
-            print(f"error playing sound {e}")
-            raise e
+            except Exception as e:
+                print(f"error playing sound {soundfile}: {e}")
+                continue
 
     async def queue_word_sound(self, word: str) -> None:
         await self.sound_queue.put(f"word_sounds_0/{word.lower()}.wav")
