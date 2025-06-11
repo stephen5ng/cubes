@@ -183,10 +183,50 @@ class CubeManager:
 
         self._initialize_arrays()
 
+class GuessManager:
+    def __init__(self):
+        self.last_tiles_with_letters: list[tiles.Tile] = []
+        self.last_guess_tiles: List[str] = []
+        self.last_guess_time_s = time.time()
+        self.DEBOUNCE_TIME_S = 10
+
+    async def guess_word_based_on_cubes(self, sender: str, tag: str, publish_queue, cube_to_player: Dict[str, int], cube_managers: List[CubeManager]):
+        now_s = time.time()
+        
+        player = cube_to_player.get(sender)
+        if player is None:
+            logging.error(f"Unknown cube: {sender}")
+            return
+        
+        word_tiles_list = cube_managers[player].process_tag(sender, tag)
+        logging.info(f"WORD_TILES: {word_tiles_list}")
+        if word_tiles_list == self.last_guess_tiles and now_s - self.last_guess_time_s < self.DEBOUNCE_TIME_S:
+            logging.info(f"debounce ignoring guess")
+            self.last_guess_time_s = now_s
+            return
+        self.last_guess_time_s = now_s
+        await self.guess_tiles(publish_queue, word_tiles_list, player)
+
+    async def guess_tiles(self, publish_queue, word_tiles_list, player: int):
+        self.last_guess_tiles = word_tiles_list
+        await guess_last_tiles(publish_queue, player)
+
+    async def load_rack(self, publish_queue, tiles_with_letters: list[tiles.Tile], player: int):
+        await _load_rack_only(publish_queue, tiles_with_letters, player)
+
+        if self.last_tiles_with_letters != tiles_with_letters:
+            # Some of the tiles changed. Make a guess, just in case one of them
+            # was in our last guess (which is overkill).
+            logging.info(f"LOAD RACK guessing")
+            await guess_last_tiles(publish_queue, player)
+            self.last_tiles_with_letters = tiles_with_letters
+
 # Global managers for each player
 cube_managers: List[CubeManager] = [CubeManager(0), CubeManager(1)]
 # Global mapping of cube IDs to player numbers for O(1) lookup
 cube_to_player: Dict[str, int] = {}
+# Global guess manager
+guess_manager = GuessManager()
 
 async def _publish_letter(publish_queue, letter, cube_id):
     await publish_queue.put((f"cube/{cube_id}/letter", letter, True))
@@ -206,43 +246,14 @@ async def _load_rack_only(publish_queue, tiles_with_letters: list[tiles.Tile], p
         await _publish_letter(publish_queue, letter, cube_id)
     logging.info(f"LOAD RACK tiles_with_letters done: {cube_managers[player].cubes_to_letters}")
 
-last_tiles_with_letters : list[tiles.Tile] = []
 async def load_rack(publish_queue, tiles_with_letters: list[tiles.Tile], player: int):
-    global last_tiles_with_letters
-    await _load_rack_only(publish_queue, tiles_with_letters, player)
-
-    if last_tiles_with_letters != tiles_with_letters:
-        # Some of the tiles changed. Make a guess, just in case one of them
-        # was in our last guess (which is overkill).
-        logging.info(f"LOAD RACK guessing")
-        await guess_last_tiles(publish_queue, player)
-        last_tiles_with_letters = tiles_with_letters
+    await guess_manager.load_rack(publish_queue, tiles_with_letters, player)
 
 async def guess_tiles(publish_queue, word_tiles_list, player: int):
-    global last_guess_tiles
-    last_guess_tiles = word_tiles_list
-    await guess_last_tiles(publish_queue, player)
+    await guess_manager.guess_tiles(publish_queue, word_tiles_list, player)
 
-last_guess_time_s = time.time()
-last_guess_tiles: List[str] = []
-DEBOUNCE_TIME_S = 10
 async def guess_word_based_on_cubes(sender: str, tag: str, publish_queue):
-    global last_guess_time_s, last_guess_tiles
-    now_s = time.time()
-    
-    player = cube_to_player.get(sender)
-    if player is None:
-        logging.error(f"Unknown cube: {sender}")
-        return
-    
-    word_tiles_list = cube_managers[player].process_tag(sender, tag)
-    logging.info(f"WORD_TILES: {word_tiles_list}")
-    if word_tiles_list == last_guess_tiles and now_s - last_guess_time_s < DEBOUNCE_TIME_S:
-        logging.info(f"debounce ignoring guess")
-        last_guess_time_s = now_s
-        return
-    last_guess_time_s = now_s
-    await guess_tiles(publish_queue, word_tiles_list, player)
+    await guess_manager.guess_word_based_on_cubes(sender, tag, publish_queue, cube_to_player, cube_managers)
 
 guess_tiles_callback: Callable[[str, bool], Coroutine[None, None, None]]
 
@@ -252,8 +263,8 @@ def set_guess_tiles_callback(f):
 
 async def guess_last_tiles(publish_queue, player: int) -> None:
     unused_tiles = set((str(i) for i in range(tiles.MAX_LETTERS)))
-    logging.info(f"guess_last_tiles last_guess_tiles {last_guess_tiles} {unused_tiles}")
-    for guess in last_guess_tiles:
+    logging.info(f"guess_last_tiles last_guess_tiles {guess_manager.last_guess_tiles} {unused_tiles}")
+    for guess in guess_manager.last_guess_tiles:
         logging.info(f"guess_last_tiles: {guess}")
         # Skip single-tile guesses
         if len(guess) <= 1:
@@ -267,7 +278,7 @@ async def guess_last_tiles(publish_queue, player: int) -> None:
     for g in unused_tiles:
         await publish_queue.put((f"cube/{cube_managers[player].tiles_to_cubes[g]}/border_line", ' ', True))
 
-    for guess in last_guess_tiles:
+    for guess in guess_manager.last_guess_tiles:
         await guess_tiles_callback(guess, True, player)
 
 async def mark_guess(publish_queue, tiles: list[str], color: str, flash: bool):
