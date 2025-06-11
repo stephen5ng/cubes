@@ -105,8 +105,14 @@ class RackMetrics():
     def get_size(self) -> tuple[int, int]:
         return self.get_rect().size
 
-    def get_select_rect(self, select_count) -> pygame.Rect:
-        return pygame.Rect(0, 0, self.letter_width*select_count, self.letter_height)
+    def get_select_rect(self, select_count: int, player: int) -> pygame.Rect:
+        if player == 1:
+            # For player 1, start from right side and expand left
+            x = self.letter_width * (tiles.MAX_LETTERS - select_count)
+            return pygame.Rect(x, 0, self.letter_width * select_count, self.letter_height)
+        else:
+            # For player 0, start from left side and expand right (original behavior)
+            return pygame.Rect(0, 0, self.letter_width * select_count, self.letter_height)
 
 class Letter():
     DROP_TIME_MS = 15000
@@ -259,7 +265,7 @@ class Rack():
             self._render_letter(self.surface, ix, letter, self.rack_color_by_player[self.player+1])
         pygame.draw.rect(self.surface,
             self.guess_type_to_rect_color[self.guess_type],
-            self.rack_metrics.get_select_rect(self.select_count),
+            self.rack_metrics.get_select_rect(self.select_count, self.player),
             1)
 
     def start(self) -> None:
@@ -622,8 +628,8 @@ class SoundManager:
                 print(f"error playing sound {soundfile}: {e}")
                 continue
 
-    async def queue_word_sound(self, word: str) -> None:
-        await self.sound_queue.put(f"word_sounds_0/{word.lower()}.wav")
+    async def queue_word_sound(self, word: str, player: int) -> None:
+        await self.sound_queue.put(f"word_sounds_{player}/{word.lower()}.wav")
 
     def play_start(self) -> None:
         pygame.mixer.Sound.play(self.start_sound)
@@ -716,7 +722,7 @@ class Game:
         self.sound_manager.play_start()
 
     async def stage_guess(self, score: int, last_guess: str, player: int) -> None:
-        await self.sound_manager.queue_word_sound(last_guess)
+        await self.sound_manager.queue_word_sound(last_guess, player)
         self.racks[player].guess_type = GuessType.GOOD
         self.shields.append(Shield(self.rack_metrics.get_rect().topleft, last_guess, score, player))
 
@@ -828,14 +834,14 @@ class BlockWordsPygame():
         elif topic.matches("app/abort"):
             events.trigger("game.abort")
 
-    async def main(self, the_app: app.App, subscribe_client: aiomqtt.Client, start: bool, args: argparse.Namespace) -> None:
+    async def main(self, the_app: app.App, subscribe_client: aiomqtt.Client, start: bool, args: argparse.Namespace, keyboard_player_number: int) -> None:
         screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         clock = Clock()
         keyboard_guess = ""
         await subscribe_client.subscribe("app/#")
 
         game = Game(the_app, self.letter_font)
-        keyboard_rack = game.racks[0]
+        keyboard_rack = game.racks[keyboard_player_number]
         while True:
             current_time_s = pygame.time.get_ticks() / 1000
             if start and not game.running and current_time_s - game.stop_time_s > 120:
@@ -871,7 +877,7 @@ class BlockWordsPygame():
                             remaining_letters = list(keyboard_rack.letters())
                         if key in remaining_letters:
                             keyboard_guess += key
-                            await the_app.guess_word_keyboard(keyboard_guess, 0)
+                            await the_app.guess_word_keyboard(keyboard_guess, keyboard_player_number)
                             keyboard_rack.select_count = len(keyboard_guess)
                             logger.info(f"key: {str(key)} {keyboard_guess}")
 

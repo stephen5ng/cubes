@@ -25,6 +25,7 @@ cubes_to_letters : Dict[str, str] = {}
 tiles_to_cubes : Dict[str, str] = {}
 cubes_to_tileid : Dict[str, str] = {}
 cubes_to_neighbortags : Dict[str, str] = {}
+cubes_player_number : int = 0
 # logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 def find_unmatched_cubes():
@@ -206,7 +207,7 @@ async def guess_word_based_on_cubes(sender: str, tag: str, publish_queue):
         last_guess_time_s = now_s
         return
     last_guess_time_s = now_s
-    await guess_tiles(publish_queue, word_tiles_list, 0)
+    await guess_tiles(publish_queue, word_tiles_list, cubes_player_number)
 
 guess_tiles_callback: Callable[[str, bool], Coroutine[None, None, None]]
 
@@ -275,8 +276,9 @@ def get_tags_to_cubes_f(cubes_f, tags_f):
         tags_to_cubes[tag] = cube
     return tags_to_cubes
 
-async def init(subscribe_client, cubes_file, tags_file):
-    global TAGS_TO_CUBES
+async def init(subscribe_client, cubes_file, tags_file, cubes_player_number_arg: int):
+    global TAGS_TO_CUBES, cubes_player_number
+    cubes_player_number = cubes_player_number_arg
     logging.info("cubes_to_game")
     TAGS_TO_CUBES = get_tags_to_cubes(cubes_file, tags_file)
     logging.info(f"ttc: {TAGS_TO_CUBES}")

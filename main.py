@@ -61,12 +61,12 @@ async def trigger_events_from_mqtt(
         events.trigger("game.abort")
         raise e
 
-async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: pygamegameasync.BlockWordsPygame) -> None:
+async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: pygamegameasync.BlockWordsPygame, keyboard_player_number: int, cubes_player_number: int) -> None:
     async with aiomqtt.Client(MQTT_SERVER) as subscribe_client:
         async with aiomqtt.Client(MQTT_SERVER) as publish_client:
             publish_queue: asyncio.Queue = asyncio.Queue()
             the_app = app.App(publish_queue, dictionary)
-            await cubes_to_game.init(subscribe_client, args.cubes, args.tags)
+            await cubes_to_game.init(subscribe_client, args.cubes, args.tags, cubes_player_number)
             await subscribe_client.subscribe("game/guess")
 
             subscribe_task = asyncio.create_task(
@@ -75,7 +75,7 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
             publish_task = asyncio.create_task(publish_tasks_in_queue(publish_client, publish_queue),
                 name="mqtt publish handler")
 
-            await block_words.main(the_app, subscribe_client, args.start, args)
+            await block_words.main(the_app, subscribe_client, args.start, args, keyboard_player_number)
 
             subscribe_task.cancel()
             publish_queue.shutdown()
@@ -88,6 +88,8 @@ if __name__ == "__main__":
     parser.add_argument("--tags", default="tag_ids.txt", type=str)
     parser.add_argument("--cubes", default="cube_ids.txt", type=str)
     parser.add_argument('--start', action=argparse.BooleanOptionalAction)
+    parser.add_argument("--keyboard-player-number", default=1, type=int, help="Player number (1 or 2) that uses keyboard input")
+    parser.add_argument("--cubes-player-number", default=1, type=int, help="Player number (1 or 2) that uses cubes input")
     args = parser.parse_args()
 
     # logger.setLevel(logging.DEBUG)
@@ -97,5 +99,5 @@ if __name__ == "__main__":
     dictionary.read(f"{BUNDLE_TEMP_DIR}/sowpods.txt", f"{BUNDLE_TEMP_DIR}/bingos.txt")
     pygame.init()
     block_words = pygamegameasync.BlockWordsPygame()
-    asyncio.run(main(args, dictionary, block_words))
+    asyncio.run(main(args, dictionary, block_words, args.keyboard_player_number-1, args.cubes_player_number-1))
     pygame.quit()
