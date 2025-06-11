@@ -35,10 +35,6 @@ class CubeManager:
         self.cubes_to_neighbortags: Dict[str, str] = {}
         self.cube_list: List[str] = []  # Store ordered list of cubes
 
-    def is_cube_in_manager(self, cube_id: str) -> bool:
-        """Returns True if this cube belongs to this manager's player."""
-        return cube_id in self.cube_list
-
     def _find_unmatched_cubes(self):
         sources = set(self.cube_chain.keys())
         targets = set(self.cube_chain.values())
@@ -189,6 +185,8 @@ class CubeManager:
 
 # Global managers for each player
 cube_managers: List[CubeManager] = [CubeManager(0), CubeManager(1)]
+# Global mapping of cube IDs to player numbers for O(1) lookup
+cube_to_player: Dict[str, int] = {}
 
 async def _publish_letter(publish_queue, letter, cube_id):
     await publish_queue.put((f"cube/{cube_id}/letter", letter, True))
@@ -232,16 +230,11 @@ async def guess_word_based_on_cubes(sender: str, tag: str, publish_queue):
     global last_guess_time_s, last_guess_tiles
     now_s = time.time()
     
-    # Find which manager owns this cube
-    player = None
-    for p, manager in enumerate(cube_managers):
-        if manager.is_cube_in_manager(sender):
-            player = p
-            break
-    
+    player = cube_to_player.get(sender)
     if player is None:
         logging.error(f"Unknown cube: {sender}")
         return
+    
     word_tiles_list = cube_managers[player].process_tag(sender, tag)
     logging.info(f"WORD_TILES: {word_tiles_list}")
     if word_tiles_list == last_guess_tiles and now_s - last_guess_time_s < DEBOUNCE_TIME_S:
@@ -312,6 +305,9 @@ async def init(subscribe_client, cubes_file, tags_file):
     with open(tags_file) as tags_f:
         all_tags = read_data(tags_f)
     
+    # Clear and rebuild the global cube_to_player mapping
+    cube_to_player.clear()
+    
     # Initialize managers for both players
     for player, manager in enumerate(cube_managers):
         # Get player-specific data
@@ -319,6 +315,11 @@ async def init(subscribe_client, cubes_file, tags_file):
         tags = all_tags[:tiles.MAX_LETTERS] if player == 0 else all_tags[tiles.MAX_LETTERS:]
         manager.tags_to_cubes = {tag: cube for cube, tag in zip(cubes, tags)}
         manager.cube_list = cubes  # Store ordered list of cubes
+        
+        # Add to global cube_to_player mapping
+        for cube in cubes:
+            cube_to_player[cube] = player
+            
         manager._initialize_arrays()
 
 async def handle_mqtt_message(publish_queue, message):
