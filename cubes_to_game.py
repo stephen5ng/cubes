@@ -63,6 +63,36 @@ def dump_cubes_to_neighbortags():
         logging.info(log_str)
     logging.info("")
 
+def form_words_from_chain() -> List[str]:
+    """Forms words from the current cube chain. Returns empty list if invalid."""
+    if not cube_chain:
+        return []
+
+    all_words = []
+    source_cubes = find_unmatched_cubes()
+    for source_cube in sorted(source_cubes):
+        word_tiles = []
+        sc = source_cube
+        while sc:
+            if sc not in cubes_to_tileid:
+                return []
+            word_tiles.append(cubes_to_tileid[sc])
+            if len(word_tiles) > tiles.MAX_LETTERS:
+                logging.info("infinite loop")
+                return []
+            if sc not in cube_chain:
+                break
+            sc = cube_chain[sc]
+        all_words.append("".join(word_tiles))
+
+    # Check for duplicates
+    all_elements = [item for lst in all_words for item in lst]
+    if len(all_elements) != len(set(all_elements)):
+        logging.info(f"DUPES: {all_words}")
+        return []
+
+    return all_words
+
 def process_tag(sender_cube: str, tag: str) -> List[str]:
     # Returns lists of tileids
     cubes_to_neighbortags[sender_cube] = tag
@@ -117,34 +147,7 @@ def process_tag(sender_cube: str, tag: str) -> List[str]:
     logging.info(f"process_tag2 cube_chain {cube_chain}")
 
     logging.info(f"process_tag final cube_chain: {print_cube_chain()}")
-    if not cube_chain:
-        # No links at all, quit.
-        return []
-
-    all_words = []
-    source_cubes = find_unmatched_cubes()
-    for source_cube in sorted(source_cubes):
-        word_tiles = []
-        sc = source_cube
-        while sc:
-            logging.info(f"source_cube: {source_cube}")
-            word_tiles.append(cubes_to_tileid[sc])
-            if len(word_tiles) > tiles.MAX_LETTERS:
-                logging.info("infinite loop")
-                return []
-                # raise Exception("infinite loop")
-            if sc not in cube_chain:
-                break
-            sc = cube_chain[sc]
-        all_words.append("".join(word_tiles))
-    logging.info(f"all_words is {all_words}")
-    all_elements = [item for lst in all_words for item in lst]
-    if len(all_elements) != len(set(all_elements)):
-        logging.info(f"DUPES: {all_words}")
-        return []
-
-    logging.info(f"all_words {all_words}")
-    return all_words
+    return form_words_from_chain()
 
 def initialize_arrays():
     tiles_to_cubes.clear()
