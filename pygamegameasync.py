@@ -211,7 +211,7 @@ class Letter():
     def new_fall(self) -> None:
         self.start_fall_y += Letter.Y_INCREMENT
         self.total_fall_time = self.DROP_TIME_MS * (self.height - self.start_fall_y) / self.height
-        self.pos[1] = self.start_fall_y
+        self.pos[1] = self.new_start_fall_y = self.start_fall_y
         self.start_fall_time_ms = pygame.time.get_ticks()
 
 class Rack():
