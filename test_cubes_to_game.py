@@ -3,7 +3,7 @@ import asyncio
 from unittest.mock import Mock, patch, AsyncMock
 import cubes_to_game
 import tiles
-from cubes_to_game import process_tag, initialize_arrays, TAGS_TO_CUBES, cubes_to_tileid, cube_chain, guess_last_tiles
+from cubes_to_game import process_tag, initialize_arrays, TAGS_TO_CUBES, cubes_to_tileid, cube_chain, guess_last_tiles, has_loop_from_cube
 
 class TestCubesToGame(unittest.TestCase):
     def setUp(self):
@@ -88,9 +88,8 @@ class TestWordFormation(unittest.TestCase):
     def test_duplicate_tiles(self):
         """Test that duplicate tiles are rejected"""
         process_tag("cube1", "tag2")  # cube1 -> cube2
-        process_tag("cube2", "tag1")  # cube2 -> cube1 (creates loop)
-        result = process_tag("cube1", "")  # Should reject due to duplicates
-        self.assertEqual(result, ["21"])  # Changed to match actual behavior - loops are allowed
+        result = process_tag("cube2", "tag1")  # cube2 -> cube1 (creates loop)
+        self.assertEqual(result, [])  # Should reject due to loop detection
 
     def test_too_long_word(self):
         """Test that words longer than MAX_LETTERS are rejected"""
@@ -106,6 +105,54 @@ class TestWordFormation(unittest.TestCase):
         cube_chain["cube2"] = "invalid_cube"  # Manually add invalid cube
         result = process_tag("cube2", "")
         self.assertEqual(result, ["12"])  # Changed to match actual behavior - invalid cubes are allowed
+
+class TestLoopDetection(unittest.TestCase):
+    def setUp(self):
+        # Setup test data
+        global TAGS_TO_CUBES, cubes_to_tileid, cube_chain
+        TAGS_TO_CUBES = {
+            "tag1": "cube1",
+            "tag2": "cube2",
+            "tag3": "cube3",
+            "tag4": "cube4",
+            "tag5": "cube5"
+        }
+        cubes_to_tileid = {
+            "cube1": "1",
+            "cube2": "2",
+            "cube3": "3",
+            "cube4": "4",
+            "cube5": "5"
+        }
+        cube_chain.clear()
+        initialize_arrays()
+
+    def test_no_loop(self):
+        """Test that a simple chain has no loop"""
+        cube_chain["cube1"] = "cube2"
+        cube_chain["cube2"] = "cube3"
+        self.assertFalse(has_loop_from_cube("cube1"))
+
+    def test_direct_loop(self):
+        """Test detection of a direct loop (cube points to itself)"""
+        cube_chain["cube1"] = "cube1"
+        self.assertTrue(has_loop_from_cube("cube1"))
+
+    def test_indirect_loop(self):
+        """Test detection of an indirect loop (cube1 -> cube2 -> cube1)"""
+        cube_chain["cube1"] = "cube2"
+        cube_chain["cube2"] = "cube1"
+        self.assertTrue(has_loop_from_cube("cube1"))
+
+    def test_long_chain_no_loop(self):
+        """Test that a long chain without loops is handled correctly"""
+        for i in range(5):
+            cube_chain[f"cube{i}"] = f"cube{i+1}"
+        self.assertFalse(has_loop_from_cube("cube0"))
+
+    def test_empty_chain(self):
+        """Test that an empty chain has no loops"""
+        self.assertFalse(has_loop_from_cube("cube1"))
 
 if __name__ == '__main__':
     unittest.main() 

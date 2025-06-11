@@ -93,6 +93,25 @@ def form_words_from_chain() -> List[str]:
 
     return all_words
 
+def has_loop_from_cube(start_cube: str) -> bool:
+    """Checks if adding a link from start_cube would create a loop.
+    Returns True if a loop is detected, False otherwise."""
+    source_cube = start_cube
+    iter_length = 0
+    while source_cube:
+        iter_length += 1
+        if iter_length > tiles.MAX_LETTERS:
+            logging.info(f"forever loop, bailing")
+            return True
+        if not source_cube in cube_chain:
+            break
+        next_cube = cube_chain[source_cube]
+        if next_cube == start_cube:
+            logging.info(f"breaking chain {print_cube_chain()}")
+            return True
+        source_cube = next_cube
+    return False
+
 def process_tag(sender_cube: str, tag: str) -> List[str]:
     # Returns lists of tileids
     cubes_to_neighbortags[sender_cube] = tag
@@ -125,27 +144,12 @@ def process_tag(sender_cube: str, tag: str) -> List[str]:
 
     logging.info(f"process_tag1 cube_chain {cube_chain}")
 
-    # search for and remove any new loops
-    source_cube = sender_cube
-    iter_length = 0
-    while source_cube:
-        iter_length += 1
-        if iter_length > tiles.MAX_LETTERS:
-            logging.info(f"forever loop, bailing")
-            return []
-            raise Exception("")
-        if not source_cube in cube_chain:
-            break
-        next_cube = cube_chain[source_cube]
-        if next_cube == sender_cube:
-            logging.info(f"breaking chain {print_cube_chain()}")
-            return []
-            del cube_chain[source_cube]
-            logging.info(f"breaking chain done {print_cube_chain()}")
-            break
-        source_cube = next_cube
-    logging.info(f"process_tag2 cube_chain {cube_chain}")
+    if has_loop_from_cube(sender_cube):
+        if sender_cube in cube_chain:
+            del cube_chain[sender_cube]
+        return []
 
+    logging.info(f"process_tag2 cube_chain {cube_chain}")
     logging.info(f"process_tag final cube_chain: {print_cube_chain()}")
     return form_words_from_chain()
 
