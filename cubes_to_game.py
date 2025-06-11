@@ -117,30 +117,34 @@ def process_tag(sender_cube: str, tag: str) -> List[str]:
     cubes_to_neighbortags[sender_cube] = tag
     dump_cubes_to_neighbortags()
     logging.info(f"process_tag {sender_cube}: {tag}")
-    logging.info(f"process_tag0 cube_chain {cube_chain}")
+    logging.info(f"process_tag cube_chain {cube_chain}")
+
     if not tag:
         logging.info(f"process_tag: no tag, deleting target of {sender_cube}")
         if sender_cube in cube_chain:
             del cube_chain[sender_cube]
-    elif tag not in TAGS_TO_CUBES:
+        return form_words_from_chain()
+
+    if tag not in TAGS_TO_CUBES:
         logging.info(f"bad tag: {tag}")
         if sender_cube in cube_chain:
             del cube_chain[sender_cube]
-    else:
-        target_cube = TAGS_TO_CUBES[tag]
-        if sender_cube == target_cube:
-            # print(f"cube can't point to itself")
-            return []
+        return form_words_from_chain()
 
-        logging.info(f"process_tag: {sender_cube} -> {target_cube}")
-        if target_cube in cube_chain.values():
-            # sender overrides existing chain--must have missed a remove message, process it now.
-            logging.info(f"override: remove back pointer for {target_cube}")
-            # might cause trouble because ordering of QOS 1 is not guaranteed
-            # https://stackoverflow.com/questions/30955110/is-message-order-preserved-in-mqtt-messages
-            # ignore the dupe and hope it works out
-            # remove_back_pointer(target_cube)
-        cube_chain[sender_cube] = TAGS_TO_CUBES[tag]
+    target_cube = TAGS_TO_CUBES[tag]
+    if sender_cube == target_cube:
+        # print(f"cube can't point to itself")
+        return []
+
+    logging.info(f"process_tag: {sender_cube} -> {target_cube}")
+    if target_cube in cube_chain.values():
+        # sender overrides existing chain--must have missed a remove message, process it now.
+        logging.info(f"override: remove back pointer for {target_cube}")
+        # might cause trouble because ordering of QOS 1 is not guaranteed
+        # https://stackoverflow.com/questions/30955110/is-message-order-preserved-in-mqtt-messages
+        # ignore the dupe and hope it works out
+        # remove_back_pointer(target_cube)
+    cube_chain[sender_cube] = target_cube
 
     logging.info(f"process_tag1 cube_chain {cube_chain}")
 
@@ -277,11 +281,7 @@ def get_tags_to_cubes(cubes_file: str, tags_file: str):
 def get_tags_to_cubes_f(cubes_f, tags_f):
     cubes = read_data(cubes_f)
     tags = read_data(tags_f)
-
-    tags_to_cubes = {}
-    for cube, tag in zip(cubes, tags):
-        tags_to_cubes[tag] = cube
-    return tags_to_cubes
+    return {tag: cube for cube, tag in zip(cubes, tags)}
 
 async def init(subscribe_client, cubes_file, tags_file, cubes_player_number_arg: int):
     global TAGS_TO_CUBES, cubes_player_number
