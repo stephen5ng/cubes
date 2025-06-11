@@ -623,7 +623,7 @@ class SoundManager:
             raise e
 
     async def queue_word_sound(self, word: str) -> None:
-        await self.sound_queue.put(f"word_sounds/{word.lower()}.wav")
+        await self.sound_queue.put(f"word_sounds_0/{word.lower()}.wav")
 
     def play_start(self) -> None:
         pygame.mixer.Sound.play(self.start_sound)
