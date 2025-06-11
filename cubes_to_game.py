@@ -249,18 +249,11 @@ async def guess_last_tiles(publish_queue, player: int) -> None:
     for guess in last_guess_tiles:
         await guess_tiles_callback(guess, True, player)
 
-async def good_guess(publish_queue, tiles: list[str]):
+async def mark_guess(publish_queue, tiles: list[str], color: str, flash: bool):
     for t in tiles:
-        await publish_queue.put((f"cube/{tiles_to_cubes[t]}/flash", None, True))
-        await publish_queue.put((f"cube/{tiles_to_cubes[t]}/border_color", "G", True))
-
-async def old_guess(publish_queue, tiles: list[str]):
-    for t in tiles:
-        await publish_queue.put((f"cube/{tiles_to_cubes[t]}/border_color", "Y", True))
-
-async def bad_guess(publish_queue, tiles: list[str]):
-    for t in tiles:
-        await publish_queue.put((f"cube/{tiles_to_cubes[t]}/border_color", "W", True))
+        if flash:
+            await publish_queue.put((f"cube/{tiles_to_cubes[t]}/flash", None, True))
+        await publish_queue.put((f"cube/{tiles_to_cubes[t]}/border_color", color, True))
 
 async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str):
     logging.info(f"process_cube_guess: {topic} {data}")
@@ -295,3 +288,12 @@ async def init(subscribe_client, cubes_file, tags_file, cubes_player_number_arg:
 
 async def handle_mqtt_message(publish_queue, message):
     await process_cube_guess(publish_queue, message.topic, message.payload.decode())
+
+async def good_guess(publish_queue, tiles: list[str]):
+    await mark_guess(publish_queue, tiles, "G", True)
+
+async def old_guess(publish_queue, tiles: list[str]):
+    await mark_guess(publish_queue, tiles, "Y", False)
+
+async def bad_guess(publish_queue, tiles: list[str]):
+    await mark_guess(publish_queue, tiles, "W", False)
