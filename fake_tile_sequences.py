@@ -13,7 +13,7 @@ def get_lines(filename: str) -> list[str]:
         lines = f.readlines()
         return [line.strip() for line in lines]
 
-async def pub(sleep_duration_s: int, identical: bool) -> None:
+async def pub(sleep_duration_s: int, identical: bool, players: list[int]) -> None:
     all_cube_ids = get_lines("cube_ids.txt")
     all_tag_ids = get_lines("tag_ids.txt")
     
@@ -48,18 +48,25 @@ async def pub(sleep_duration_s: int, identical: bool) -> None:
                 p0_count += 1
                 p1_count += 1
             else:
-                # Original random behavior
-                player = random.randint(0, 1)
-                if player == 0:
-                    p0_count += 1
+                # Original random behavior, but only for selected players
+                if len(players) == 1:
+                    player = players[0] - 1  # Convert 1/2 to 0/1
                 else:
+                    player = random.randint(0, 1)
+                if player == 0 and 1 in players:
+                    p0_count += 1
+                    cubes = p0_cubes
+                    tags = p0_tags
+                elif player == 1 and 2 in players:
                     p1_count += 1
-                cubes = p0_cubes if player == 0 else p1_cubes
-                tags = p0_tags if player == 0 else p1_tags
+                    cubes = p1_cubes
+                    tags = p1_tags
+                else:
+                    await asyncio.sleep(sleep_duration_s)
+                    continue
                 
                 cube = random.choice(cubes)
                 tag = random.choice(tags)
-                # print(f"Publishing cube/nfc/{cube} with payload {tag}")
                 await client.publish(f"cube/nfc/{cube}", payload=tag)
             await asyncio.sleep(sleep_duration_s)
 
@@ -68,6 +75,8 @@ parser.add_argument("--duration", type=float, default=0.01,
                     help="Sleep duration in seconds (default: 0.01)")
 parser.add_argument("--identical", action="store_true",
                     help="Send same random sequence to both players simultaneously")
+parser.add_argument("--player", type=int, choices=[1, 2], action="append", default=[],
+                    help="Select which player(s) to send messages to (default: both)")
 args = parser.parse_args()
 
-asyncio.run(pub(args.duration, args.identical))
+asyncio.run(pub(args.duration, args.identical, args.player))
