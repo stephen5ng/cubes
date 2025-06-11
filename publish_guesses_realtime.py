@@ -37,19 +37,19 @@ def main():
 
     try:
         while True:
-            match get_char():
-                case '\x03':  # Ctrl+C
-                    break
-                case '\x7f':  # Backspace
-                    if current_word:
-                        current_word = current_word[:-1]
-                        update_word(client, current_word)
-                case '\r':  # Enter
-                    current_word = ""
+            char = get_char()
+            if char == '\x03':  # Ctrl+C
+                break
+            elif char == '\x7f':  # Backspace
+                if current_word:
+                    current_word = current_word[:-1]
                     update_word(client, current_word)
-                case c if c.isalpha():
-                    current_word += c.upper()
-                    update_word(client, current_word)
+            elif char == '\r':  # Enter
+                current_word = ""
+                update_word(client, current_word)
+            elif char.isalpha():
+                current_word += char.upper()
+                update_word(client, current_word)
 
     except KeyboardInterrupt:
         pass
