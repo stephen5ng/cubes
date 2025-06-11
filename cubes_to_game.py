@@ -292,8 +292,8 @@ async def guess_last_tiles(publish_queue, player: int) -> None:
     for guess in guess_manager.last_guess_tiles:
         await guess_tiles_callback(guess, True, player)
 
-async def mark_guess(publish_queue, tiles: list[str], color: str, flash: bool):
-    await cube_managers[0].mark_guess(publish_queue, tiles, color, flash)
+async def mark_guess(publish_queue, tiles: list[str], color: str, flash: bool, player: int):
+    await cube_managers[player].mark_guess(publish_queue, tiles, color, flash)
 
 async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str):
     logging.info(f"process_cube_guess: {topic} {data}")
@@ -344,11 +344,11 @@ async def init(subscribe_client, cubes_file, tags_file):
 async def handle_mqtt_message(publish_queue, message):
     await process_cube_guess(publish_queue, message.topic, message.payload.decode())
 
-async def good_guess(publish_queue, tiles: list[str]):
-    await mark_guess(publish_queue, tiles, "G", True)
+async def good_guess(publish_queue, tiles: list[str], player: int):
+    await mark_guess(publish_queue, tiles, "G", True, player)
 
-async def old_guess(publish_queue, tiles: list[str]):
-    await mark_guess(publish_queue, tiles, "Y", False)
+async def old_guess(publish_queue, tiles: list[str], player: int):
+    await mark_guess(publish_queue, tiles, "Y", False, player)
 
-async def bad_guess(publish_queue, tiles: list[str]):
-    await mark_guess(publish_queue, tiles, "W", False)
+async def bad_guess(publish_queue, tiles: list[str], player: int):
+    await mark_guess(publish_queue, tiles, "W", False, player)

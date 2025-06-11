@@ -124,10 +124,10 @@ class App:
 
         if self._score_card.is_old_guess(guess):
             events.trigger("game.old_guess", guess, player)
-            await cubes_to_game.old_guess(self._publish_queue, word_tile_ids)
+            await cubes_to_game.old_guess(self._publish_queue, word_tile_ids, player)
             tiles_dirty = True
         elif self._score_card.is_good_guess(guess):
-            await cubes_to_game.good_guess(self._publish_queue, word_tile_ids)
+            await cubes_to_game.good_guess(self._publish_queue, word_tile_ids, player)
             self._score_card.add_staged_guess(guess)
             events.trigger("game.stage_guess", 
                            self._score_card.calculate_score(guess), guess, player)
@@ -135,7 +135,7 @@ class App:
             tiles_dirty = True
         else:
             events.trigger("game.bad_guess", player)
-            await cubes_to_game.bad_guess(self._publish_queue, word_tile_ids)
+            await cubes_to_game.bad_guess(self._publish_queue, word_tile_ids, player)
 
         if tiles_dirty:
             self._update_rack_display(good_guess_highlight, len(guess), player)
