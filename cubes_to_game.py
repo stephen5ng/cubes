@@ -192,6 +192,11 @@ class CubeManager:
             letter = tile.letter
             self.cubes_to_letters[cube_id] = letter
             await _publish_letter(publish_queue, letter, cube_id)
+            if letter == " ":
+                await publish_queue.put((f"cube/{cube_id}/border_hline_top", "0x0000", True))
+                await publish_queue.put((f"cube/{cube_id}/border_hline_bottom", "0x0000", True))
+                await publish_queue.put((f"cube/{cube_id}/border_vline_left", "0x0000", True))
+                await publish_queue.put((f"cube/{cube_id}/border_vline_right", "0x0000", True))
         logging.info(f"LOAD RACK tiles_with_letters done: {self.cubes_to_letters}")
 
     async def mark_tiles_for_guess(self, publish_queue, unused_tiles: set[str], guess_tiles: List[str]) -> None:
@@ -199,11 +204,18 @@ class CubeManager:
         for guess in guess_tiles:
             for i, tile in enumerate(guess):
                 unused_tiles.remove(tile)
-                marker = '[' if i == 0 else ']' if i == len(guess)-1 else '-'
-                await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_line", marker, True))
+                await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_hline_top", "0xffff", True))
+                await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_hline_bottom", "0xffff", True))
+                await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_vline_left",
+                                         "0xffff" if i == 0 else "0x0000", True))
+                await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_vline_right",
+                                         "0xffff" if i == len(guess)-1 else "0x0000", True))
 
-        for g in unused_tiles:
-            await publish_queue.put((f"cube/{self.tiles_to_cubes[g]}/border_line", ' ', True))
+        for tile in unused_tiles:
+            await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_hline_top", "0x0000", True))
+            await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_hline_bottom", "0x0000", True))
+            await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_vline_left", "0x0000", True))
+            await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_vline_right", "0x0000", True))
 
     async def mark_guess(self, publish_queue, tiles: list[str], color: str, flash: bool) -> None:
         """Mark tiles with a color and optionally flash them."""
