@@ -29,13 +29,15 @@ last_cube_time = None
 async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.Queue) -> None:
     while True:
         topic, message, retain = await queue.get()
-        await publish_client.publish(topic, message, retain=retain)
-        logger.info(f"publishing: {topic}, {message}")
-        if "cube" in str(topic):
-            cube_id = str(topic).split('/')[1]
-            if cube_id == last_cube_id:
-                # print(f"{topic}  delta: {datetime.datetime.now() - last_cube_time}")
-                pass
+        # Store last messages in dict if not already defined
+        if not hasattr(publish_tasks_in_queue, 'last_messages'):
+            publish_tasks_in_queue.last_messages = {}
+            
+        # Only publish if message changed
+        if topic not in publish_tasks_in_queue.last_messages or publish_tasks_in_queue.last_messages[topic] != message:
+            await publish_client.publish(topic, message, retain=retain)
+            publish_tasks_in_queue.last_messages[topic] = message
+            logger.info(f"publishing: {topic}, {message}")
 
 async def trigger_events_from_mqtt(
     subscribe_client: aiomqtt.Client, publish_queue: asyncio.Queue, block_words: pygamegameasync.BlockWordsPygame, the_app: app.App) -> None:
