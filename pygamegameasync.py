@@ -19,7 +19,7 @@ from typing import cast
 import functools
 
 import app
-from app import PLAYER_COUNT
+from config import PLAYER_COUNT
 from pygame.image import tobytes as image_to_string
 from pygameasync import Clock, EventEngine, events
 import tiles
@@ -178,7 +178,7 @@ class Letter():
             self.locked_on = self.get_screen_bottom_y() + Letter.Y_INCREMENT*2 > self.height
             # print(f"{self.easing_complete} {remaining_ms} {self.fraction_complete} {self.locked_on} {self.get_screen_bottom_y() + Letter.Y_INCREMENT*2} > {self.height}")
 
-    def update(self, window: pygame.Surface, score: int) -> None:
+    def update(self, window: pygame.Surface) -> None:
         now_ms = pygame.time.get_ticks()
         fall_percent = (now_ms - self.start_fall_time_ms)/self.total_fall_time_ms
         fall_easing = self.top_bottom_easing(fall_percent)
@@ -795,8 +795,8 @@ class Game:
         self.letter_source.update(window)
 
         if self.running:
-            for score in self.scores:
-                self.letter.update(window, score.score)
+            self.letter.update(window)
+            await self._app.letter_lock(self.letter.letter_index(), self.letter.locked_on)
 
         for rack in self.racks:
             rack.update(window)

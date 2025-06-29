@@ -1,16 +1,11 @@
 #!/usr/bin/env python3
 
 import aiomqtt
-import asyncio
-import json
 import logging
-import os
-import re
-import requests
-import sys
 import time
-from typing import Callable, Coroutine, Dict, List, Optional
+from typing import Callable, Coroutine, Dict, List
 
+from config import PLAYER_COUNT
 import tiles
 
 # Configure logging to print to console
@@ -263,7 +258,7 @@ class GuessManager:
             self.last_tiles_with_letters = tiles_with_letters
 
 # Global managers for each player
-cube_managers: List[CubeManager] = [CubeManager(0), CubeManager(1)]
+cube_managers: List[CubeManager] = [CubeManager(player) for player in range(PLAYER_COUNT)]
 # Global mapping of cube IDs to player numbers for O(1) lookup
 cube_to_player: Dict[str, int] = {}
 # Global guess manager
@@ -295,6 +290,12 @@ def set_guess_tiles_callback(f):
     global guess_tiles_callback
     guess_tiles_callback = f
 
+async def letter_lock(publish_queue, locked_on: bool, tile_id: str) -> None:
+    print(f"letter_lock: locked_on {locked_on}, tile_id {tile_id}")
+    for player in range(len(cube_managers)):
+        cube_id = cube_managers[player].tiles_to_cubes[tile_id]
+        await publish_queue.put((f"cube/{cube_id}/lock", "1" if locked_on else "0", False))
+
 async def guess_last_tiles(publish_queue, player: int) -> None:
     unused_tiles = set((str(i) for i in range(tiles.MAX_LETTERS)))
     logging.info(f"guess_last_tiles last_guess_tiles {guess_manager.last_guess_tiles} {unused_tiles}")
@@ -319,13 +320,12 @@ def read_data(f) -> List[str]:
     return [l.strip() for l in data]
 
 def read_data_for_player(f, player: int) -> List[str]:
-    """Read data from file, returning first 6 rows for player 0, last 6 for player 1."""
+    """Read data from file, returning the appropriate section for the given player."""
     data = f.readlines()
     data = [l.strip() for l in data]
-    if player == 0:
-        return data[:tiles.MAX_LETTERS]
-    else:
-        return data[tiles.MAX_LETTERS:]
+    start_idx = player * tiles.MAX_LETTERS
+    end_idx = start_idx + tiles.MAX_LETTERS
+    return data[start_idx:end_idx]
 
 async def init(subscribe_client, cubes_file, tags_file):
     await subscribe_client.subscribe("cube/nfc/#")
@@ -339,11 +339,13 @@ async def init(subscribe_client, cubes_file, tags_file):
     # Clear and rebuild the global cube_to_player mapping
     cube_to_player.clear()
     
-    # Initialize managers for both players
+    # Initialize managers for each player
     for player, manager in enumerate(cube_managers):
         # Get player-specific data
-        cubes = all_cubes[:tiles.MAX_LETTERS] if player == 0 else all_cubes[tiles.MAX_LETTERS:]
-        tags = all_tags[:tiles.MAX_LETTERS] if player == 0 else all_tags[tiles.MAX_LETTERS:]
+        start_idx = player * tiles.MAX_LETTERS
+        end_idx = start_idx + tiles.MAX_LETTERS
+        cubes = all_cubes[start_idx:end_idx]
+        tags = all_tags[start_idx:end_idx]
         manager.tags_to_cubes = {tag: cube for cube, tag in zip(cubes, tags)}
         manager.cube_list = cubes  # Store ordered list of cubes
         

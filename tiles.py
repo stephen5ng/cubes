@@ -107,6 +107,9 @@ class Rack:
         bag = [letter for letter, frequency in frequencies.items() for _ in range(frequency)]
         return random.choice(bag)
 
+    def position_to_id(self, position: int) -> str:
+        return self._tiles[position].id
+
     def replace_letter(self, new_letter: str, position: int) -> Tile:
         logging.info(f"\nreplace_letter() {new_letter} -> {str(self)}, new_letter: {new_letter}")
         remove_tile = self._tiles[position]

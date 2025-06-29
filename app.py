@@ -3,20 +3,14 @@ from collections import Counter
 from datetime import datetime
 from functools import wraps
 import logging
-from paho.mqtt import client as mqtt_client
-import paho.mqtt.subscribe as subscribe
 from typing import Any, Callable, Coroutine
 
 import cubes_to_game
+from config import PLAYER_COUNT, MQTT_CLIENT_ID, MQTT_CLIENT_PORT
 from dictionary import Dictionary
 from pygameasync import events
 import tiles
 from scorecard import ScoreCard
-
-PLAYER_COUNT = 1
-
-MQTT_CLIENT_ID = 'game-server'
-MQTT_CLIENT_PORT = 1883
 
 logger = logging.getLogger("app:"+__name__)
 
@@ -74,9 +68,7 @@ class App:
     async def accept_new_letter(self, next_letter: str, position: int) -> None:
         if PLAYER_COUNT > 1:
             # Replace the tile in the rack that was hit, then replace that same tile in the other rack.
-            hit_rack = 0 if position < 3 else 1
-            other_rack = 1 if hit_rack == 0 else 0
-            position_offset = 3 * (1 if hit_rack == 0 else -1)
+            hit_rack, other_rack, position_offset = (0, 1, 3) if position < 3 else (1, 0, -3)
             
             changed_tile = self._player_racks[hit_rack].replace_letter(next_letter, position + position_offset)
             other_position = self._player_racks[other_rack].id_to_position(changed_tile.id)
@@ -96,6 +88,11 @@ class App:
         if changed_tile.id in self._last_guess:
             for player in range(PLAYER_COUNT):
                 await self.guess_tiles(self._last_guess, False, player)
+
+    async def letter_lock(self, position: int, locked_on: bool) -> None:
+        print(f"letter_lock: position {position}, locked_on {locked_on}")
+        for rack in self._player_racks:
+            await cubes_to_game.letter_lock(self._publish_queue, locked_on, rack.position_to_id(position))
 
     def add_guess(self, guess: str, player: int) -> None:
         self._score_card.add_guess(guess, player)

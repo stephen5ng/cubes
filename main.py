@@ -38,6 +38,7 @@ async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.
             await publish_client.publish(topic, message, retain=retain)
             publish_tasks_in_queue.last_messages[topic] = message
             logger.info(f"publishing: {topic}, {message}")
+            print(f"publishing: {topic}, {message}")
 
 async def trigger_events_from_mqtt(
     subscribe_client: aiomqtt.Client, publish_queue: asyncio.Queue, block_words: pygamegameasync.BlockWordsPygame, the_app: app.App) -> None:
