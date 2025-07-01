@@ -39,7 +39,7 @@ FREE_SCORE = 0
 
 letter_beeps: list[pygame.Sound] = []
 
-BAD_GUESS_COLOR=Color("Grey")
+BAD_GUESS_COLOR=Color("red")
 GOOD_GUESS_COLOR=Color("Green")
 OLD_GUESS_COLOR=Color("darkgray")
 LETTER_SOURCE_COLOR=Color("Red")
@@ -237,6 +237,7 @@ class Rack():
         self.last_guess_ms = -Rack.GUESS_TRANSITION_DURATION_MS
         self.highlight_length = 0
         self.select_count = 0
+        self.cursor_position = 0
         self.transition_tile: tiles.Tile = None
         self.guess_type = GuessType.BAD
         self.guess_type_to_rect_color = {
@@ -261,6 +262,10 @@ class Rack():
 
     def draw(self) -> None:
         self.surface = pygame.Surface(self.rack_metrics.get_size())
+        self.surface.fill(Color("black"))
+        if self.letters():
+            pygame.draw.rect(self.surface, Color("grey"), 
+                             self.rack_metrics.get_largest_letter_rect(self.cursor_position))
         for ix, letter in enumerate(self.letters()):
             self._render_letter(self.surface, ix, letter, self.rack_color_by_player[self.player+1])
         pygame.draw.rect(self.surface,
@@ -840,6 +845,15 @@ class BlockWordsPygame():
         keyboard_guess = ""
         await subscribe_client.subscribe("app/#")
 
+        add_sound = pygame.mixer.Sound("sounds/add.wav")
+        erase_sound = pygame.mixer.Sound("sounds/erase.wav")
+        cleared_sound = pygame.mixer.Sound("sounds/cleared.wav")
+        left_sound = pygame.mixer.Sound("sounds/left.wav")
+        right_sound = pygame.mixer.Sound("sounds/right.wav")
+        
+        left_sound.set_volume(0.5)
+        right_sound.set_volume(0.5)
+
         game = Game(the_app, self.letter_font)
         keyboard_rack = game.racks[keyboard_player_number]
         while True:
@@ -857,6 +871,35 @@ class BlockWordsPygame():
                         print("starting")
                         # pass
                         await game.start()
+                    elif key == "LEFT":
+                        if keyboard_rack.cursor_position > 0:
+                            keyboard_rack.cursor_position -= 1
+                            keyboard_rack.draw()
+                            pygame.mixer.Sound.play(left_sound)
+                    elif key == "RIGHT":
+                        if keyboard_rack.cursor_position < tiles.MAX_LETTERS - 1:
+                            keyboard_rack.cursor_position += 1
+                            keyboard_rack.draw()
+                            pygame.mixer.Sound.play(right_sound)
+                    elif key == "SPACE":
+                        print(f"space: {keyboard_rack.cursor_position} {keyboard_guess}")
+                        if keyboard_rack.cursor_position >= len(keyboard_guess):
+                            # Insert letter at cursor position into the guess
+                            letter_at_cursor = keyboard_rack.letters()[keyboard_rack.cursor_position]
+                            keyboard_guess += letter_at_cursor
+                            pygame.mixer.Sound.play(add_sound)
+                        else:
+                            # Remove letter at cursor position from the guess
+                            keyboard_guess = keyboard_guess[:keyboard_rack.cursor_position] + keyboard_guess[keyboard_rack.cursor_position + 1:]
+                            if keyboard_rack.select_count > 0:
+                                pygame.mixer.Sound.play(erase_sound)
+                        if keyboard_rack.cursor_position >= len(keyboard_guess):
+                            keyboard_rack.cursor_position = max(len(keyboard_guess) - 1, 0)
+                        keyboard_rack.select_count = len(keyboard_guess)
+                        if keyboard_rack.select_count == 0:
+                            print("cleared")
+                            pygame.mixer.Sound.play(cleared_sound)
+                        await the_app.guess_word_keyboard(keyboard_guess, keyboard_player_number)
                     elif key == "BACKSPACE":
                         if keyboard_guess:
                             keyboard_guess = keyboard_guess[:-1]

@@ -90,7 +90,6 @@ class App:
                 await self.guess_tiles(self._last_guess, False, player)
 
     async def letter_lock(self, position: int, locked_on: bool) -> None:
-        print(f"letter_lock: position {position}, locked_on {locked_on}")
         for rack in self._player_racks:
             await cubes_to_game.letter_lock(self._publish_queue, locked_on, rack.position_to_id(position))
 

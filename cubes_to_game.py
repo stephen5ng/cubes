@@ -291,7 +291,6 @@ def set_guess_tiles_callback(f):
     guess_tiles_callback = f
 
 async def letter_lock(publish_queue, locked_on: bool, tile_id: str) -> None:
-    print(f"letter_lock: locked_on {locked_on}, tile_id {tile_id}")
     for player in range(len(cube_managers)):
         cube_id = cube_managers[player].tiles_to_cubes[tile_id]
         await publish_queue.put((f"cube/{cube_id}/lock", "1" if locked_on else "0", False))
