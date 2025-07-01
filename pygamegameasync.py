@@ -832,6 +832,7 @@ class BlockWordsPygame():
         self._window = pygame.display.set_mode(
             (SCREEN_WIDTH*SCALING_FACTOR, SCREEN_HEIGHT*SCALING_FACTOR))
         self.letter_font = pygame.freetype.SysFont(FONT, RackMetrics.LETTER_SIZE)
+        self.keyboard_guess = ""
 
     async def handle_mqtt_message(self, topic: aiomqtt.Topic) -> None:
         if topic.matches("app/start"):
@@ -845,6 +846,11 @@ class BlockWordsPygame():
         keyboard_guess = ""
         await subscribe_client.subscribe("app/#")
 
+        joystick = None
+        if pygame.joystick.get_count() > 0:
+            joystick = pygame.joystick.Joystick(0)
+            print(f"Game controller connected: {joystick.get_name()}")
+
         add_sound = pygame.mixer.Sound("sounds/add.wav")
         erase_sound = pygame.mixer.Sound("sounds/erase.wav")
         cleared_sound = pygame.mixer.Sound("sounds/cleared.wav")
@@ -856,6 +862,52 @@ class BlockWordsPygame():
 
         game = Game(the_app, self.letter_font)
         keyboard_rack = game.racks[keyboard_player_number]
+        
+        async def handle_space_action():
+            if keyboard_rack.cursor_position >= len(self.keyboard_guess):
+                # Insert letter at cursor position into the guess
+                letter_at_cursor = keyboard_rack.letters()[keyboard_rack.cursor_position]
+                self.keyboard_guess += letter_at_cursor
+                pygame.mixer.Sound.play(add_sound)
+            else:
+                # Remove letter at cursor position from the guess
+                self.keyboard_guess = self.keyboard_guess[:keyboard_rack.cursor_position] + self.keyboard_guess[keyboard_rack.cursor_position + 1:]
+                if keyboard_rack.select_count > 0:
+                    pygame.mixer.Sound.play(erase_sound)
+            if keyboard_rack.cursor_position >= len(self.keyboard_guess):
+                keyboard_rack.cursor_position = max(len(self.keyboard_guess) - 1, 0)
+            keyboard_rack.select_count = len(self.keyboard_guess)
+            if keyboard_rack.select_count == 0:
+                pygame.mixer.Sound.play(cleared_sound)
+            await the_app.guess_word_keyboard(self.keyboard_guess, keyboard_player_number)
+        
+        async def start_game():
+            self.keyboard_guess = ""
+            keyboard_rack.cursor_position = 0
+            keyboard_rack.select_count = 0
+            # clear out the last guess
+            await the_app.guess_word_keyboard("", keyboard_player_number)            
+            await game.start()
+        
+        def handle_left_movement():
+            if keyboard_rack.cursor_position > 0:
+                keyboard_rack.cursor_position -= 1
+                keyboard_rack.draw()
+                pygame.mixer.Sound.play(left_sound)
+        
+        def handle_right_movement():
+            if keyboard_rack.cursor_position < tiles.MAX_LETTERS - 1:
+                keyboard_rack.cursor_position += 1
+                keyboard_rack.draw()
+                pygame.mixer.Sound.play(right_sound)
+        
+        def handle_return_action():
+            self.keyboard_guess = ""
+            keyboard_rack.cursor_position = 0
+            keyboard_rack.select_count = len(self.keyboard_guess)
+            pygame.mixer.Sound.play(cleared_sound)
+            keyboard_rack.draw()
+        
         while True:
             current_time_s = pygame.time.get_ticks() / 1000
             if start and not game.running and current_time_s - game.stop_time_s > 120:
@@ -868,61 +920,50 @@ class BlockWordsPygame():
                 if event.type == pygame.KEYDOWN:
                     key = pygame.key.name(event.key).upper()
                     if key == "ESCAPE":
-                        print("starting")
-                        # pass
-                        await game.start()
+                        await start_game()
                     elif key == "LEFT":
-                        if keyboard_rack.cursor_position > 0:
-                            keyboard_rack.cursor_position -= 1
-                            keyboard_rack.draw()
-                            pygame.mixer.Sound.play(left_sound)
+                        handle_left_movement()
                     elif key == "RIGHT":
-                        if keyboard_rack.cursor_position < tiles.MAX_LETTERS - 1:
-                            keyboard_rack.cursor_position += 1
-                            keyboard_rack.draw()
-                            pygame.mixer.Sound.play(right_sound)
+                        handle_right_movement()
                     elif key == "SPACE":
-                        print(f"space: {keyboard_rack.cursor_position} {keyboard_guess}")
-                        if keyboard_rack.cursor_position >= len(keyboard_guess):
-                            # Insert letter at cursor position into the guess
-                            letter_at_cursor = keyboard_rack.letters()[keyboard_rack.cursor_position]
-                            keyboard_guess += letter_at_cursor
-                            pygame.mixer.Sound.play(add_sound)
-                        else:
-                            # Remove letter at cursor position from the guess
-                            keyboard_guess = keyboard_guess[:keyboard_rack.cursor_position] + keyboard_guess[keyboard_rack.cursor_position + 1:]
-                            if keyboard_rack.select_count > 0:
-                                pygame.mixer.Sound.play(erase_sound)
-                        if keyboard_rack.cursor_position >= len(keyboard_guess):
-                            keyboard_rack.cursor_position = max(len(keyboard_guess) - 1, 0)
-                        keyboard_rack.select_count = len(keyboard_guess)
-                        if keyboard_rack.select_count == 0:
-                            print("cleared")
-                            pygame.mixer.Sound.play(cleared_sound)
-                        await the_app.guess_word_keyboard(keyboard_guess, keyboard_player_number)
+                        await handle_space_action()
                     elif key == "BACKSPACE":
-                        if keyboard_guess:
-                            keyboard_guess = keyboard_guess[:-1]
-                            keyboard_rack.select_count = len(keyboard_guess)
+                        if self.keyboard_guess:
+                            self.keyboard_guess = self.keyboard_guess[:-1]
+                            keyboard_rack.select_count = len(self.keyboard_guess)
                             keyboard_rack.draw()
                     elif key == "RETURN":
-                        keyboard_guess = ""
-                        keyboard_rack.select_count = len(keyboard_guess)
-                        keyboard_rack.draw()
+                        handle_return_action()
                     elif len(key) == 1:
                         remaining_letters = list(keyboard_rack.letters())
-                        for l in keyboard_guess:
+                        for l in self.keyboard_guess:
                             if l in remaining_letters:
                                 remaining_letters.remove(l)
                         if key not in remaining_letters:
-                            keyboard_guess = ""
-                            keyboard_rack.select_count = len(keyboard_guess)
+                            self.keyboard_guess = ""
+                            keyboard_rack.select_count = len(self.keyboard_guess)
                             remaining_letters = list(keyboard_rack.letters())
                         if key in remaining_letters:
-                            keyboard_guess += key
-                            await the_app.guess_word_keyboard(keyboard_guess, keyboard_player_number)
-                            keyboard_rack.select_count = len(keyboard_guess)
-                            logger.info(f"key: {str(key)} {keyboard_guess}")
+                            self.keyboard_guess += key
+                            await the_app.guess_word_keyboard(self.keyboard_guess, keyboard_player_number)
+                            keyboard_rack.select_count = len(self.keyboard_guess)
+                            logger.info(f"key: {str(key)} {self.keyboard_guess}")
+                
+                # Handle game controller events
+                if joystick and event.type == pygame.JOYAXISMOTION:
+                    if event.axis == 0:  # Left stick horizontal
+                        if event.value < -0.5:  # Left
+                            handle_left_movement()
+                        elif event.value > 0.5:  # Right
+                            handle_right_movement()
+                
+                if joystick and event.type == pygame.JOYBUTTONDOWN:
+                    if event.button == 1:  # A button (usually button 0)
+                        await handle_space_action()
+                    elif event.button == 2:  # B button - same as return
+                        handle_return_action()
+                    elif event.button == 9:
+                        await start_game()
 
             screen.fill((0, 0, 0))
             await game.update(screen)
