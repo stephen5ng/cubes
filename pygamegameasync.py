@@ -950,14 +950,14 @@ class BlockWordsPygame():
                             logger.info(f"key: {str(key)} {self.keyboard_guess}")
                 
                 # Handle game controller events
-                if joystick and event.type == pygame.JOYAXISMOTION:
+                if game.running and joystick and event.type == pygame.JOYAXISMOTION:
                     if event.axis == 0:  # Left stick horizontal
                         if event.value < -0.5:  # Left
                             handle_left_movement()
                         elif event.value > 0.5:  # Right
                             handle_right_movement()
                 
-                if joystick and event.type == pygame.JOYBUTTONDOWN:
+                if game.running and joystick and event.type == pygame.JOYBUTTONDOWN:
                     if event.button == 1:  # A button (usually button 0)
                         await handle_space_action()
                     elif event.button == 2:  # B button - same as return
