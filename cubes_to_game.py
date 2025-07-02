@@ -28,6 +28,7 @@ class CubeManager:
         self.tiles_to_cubes: Dict[str, str] = {}
         self.cubes_to_tileid: Dict[str, str] = {}
         self.cubes_to_neighbortags: Dict[str, str] = {}
+        self.border_color: str = "0xffff"
         self.cube_list: List[str] = []  # Store ordered list of cubes
 
     def _find_unmatched_cubes(self):
@@ -194,17 +195,18 @@ class CubeManager:
                 await publish_queue.put((f"cube/{cube_id}/border_vline_right", "0x0000", True))
         logging.info(f"LOAD RACK tiles_with_letters done: {self.cubes_to_letters}")
 
-    async def mark_tiles_for_guess(self, publish_queue, unused_tiles: set[str], guess_tiles: List[str]) -> None:
+    async def _mark_tiles_for_guess(self, publish_queue, guess_tiles: List[str]) -> None:
         """Mark tiles as used/unused for a guess."""
+        unused_tiles = set((str(i) for i in range(tiles.MAX_LETTERS)))
         for guess in guess_tiles:
             for i, tile in enumerate(guess):
                 unused_tiles.remove(tile)
-                await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_hline_top", "0xffff", True))
-                await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_hline_bottom", "0xffff", True))
+                await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_hline_top", self.border_color, True))
+                await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_hline_bottom", self.border_color, True))
                 await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_vline_left",
-                                         "0xffff" if i == 0 else "0x0000", True))
+                                         self.border_color if i == 0 else "0x0000", True))
                 await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_vline_right",
-                                         "0xffff" if i == len(guess)-1 else "0x0000", True))
+                                         self.border_color if i == len(guess)-1 else "0x0000", True))
 
         for tile in unused_tiles:
             await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_hline_top", "0x0000", True))
@@ -212,12 +214,9 @@ class CubeManager:
             await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_vline_left", "0x0000", True))
             await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_vline_right", "0x0000", True))
 
-    async def mark_guess(self, publish_queue, tiles: list[str], color: str, flash: bool) -> None:
-        """Mark tiles with a color and optionally flash them."""
+    async def flash_guess(self, publish_queue, tiles: list[str]) -> None:
         for t in tiles:
-            if flash:
-                await publish_queue.put((f"cube/{self.tiles_to_cubes[t]}/flash", None, True))
-            await publish_queue.put((f"cube/{self.tiles_to_cubes[t]}/border_color", color, True))
+            await publish_queue.put((f"cube/{self.tiles_to_cubes[t]}/flash", None, False))
 
 class GuessManager:
     def __init__(self):
@@ -272,9 +271,6 @@ async def accept_new_letter(publish_queue, letter, tile_id, player: int):
     cube_managers[player].cubes_to_letters[cube_id] = letter
     await _publish_letter(publish_queue, letter, cube_id)
 
-async def _load_rack_only(publish_queue, tiles_with_letters: list[tiles.Tile], player: int):
-    await cube_managers[player].load_rack(publish_queue, tiles_with_letters)
-
 async def load_rack(publish_queue, tiles_with_letters: list[tiles.Tile], player: int):
     await guess_manager.load_rack(publish_queue, tiles_with_letters, player)
 
@@ -293,19 +289,18 @@ def set_guess_tiles_callback(f):
 async def letter_lock(publish_queue, locked_on: bool, tile_id: str) -> None:
     for player in range(len(cube_managers)):
         cube_id = cube_managers[player].tiles_to_cubes[tile_id]
-        await publish_queue.put((f"cube/{cube_id}/lock", "1" if locked_on else "0", False))
+        await publish_queue.put((f"cube/{cube_id}/lock", "1" if locked_on else "0", True))
 
 async def guess_last_tiles(publish_queue, player: int) -> None:
-    unused_tiles = set((str(i) for i in range(tiles.MAX_LETTERS)))
-    logging.info(f"guess_last_tiles last_guess_tiles {guess_manager.last_guess_tiles} {unused_tiles}")
-    
-    await cube_managers[player].mark_tiles_for_guess(publish_queue, unused_tiles, guess_manager.last_guess_tiles)
-
+    logging.info(f"guess_last_tiles last_guess_tiles {guess_manager.last_guess_tiles}")
+        
     for guess in guess_manager.last_guess_tiles:
         await guess_tiles_callback(guess, True, player)
 
-async def mark_guess(publish_queue, tiles: list[str], color: str, flash: bool, player: int):
-    await cube_managers[player].mark_guess(publish_queue, tiles, color, flash)
+    await cube_managers[player]._mark_tiles_for_guess(publish_queue, guess_manager.last_guess_tiles)
+
+async def flash_guess(publish_queue, tiles: list[str], player: int):
+    await cube_managers[player].flash_guess(publish_queue, tiles)
 
 async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str):
     logging.info(f"process_cube_guess: {topic} {data}")
@@ -358,10 +353,11 @@ async def handle_mqtt_message(publish_queue, message):
     await process_cube_guess(publish_queue, message.topic, message.payload.decode())
 
 async def good_guess(publish_queue, tiles: list[str], player: int):
-    await mark_guess(publish_queue, tiles, "G", True, player)
+    cube_managers[player].border_color = "0x07E0"
+    await flash_guess(publish_queue, tiles, player)
 
 async def old_guess(publish_queue, tiles: list[str], player: int):
-    await mark_guess(publish_queue, tiles, "Y", False, player)
+    cube_managers[player].border_color = "0xFFE0"
 
 async def bad_guess(publish_queue, tiles: list[str], player: int):
-    await mark_guess(publish_queue, tiles, "W", False, player)
+    cube_managers[player].border_color = "0xFFFF"

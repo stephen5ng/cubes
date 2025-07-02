@@ -34,7 +34,7 @@ async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.
             publish_tasks_in_queue.last_messages = {}
             
         # Only publish if message changed
-        if topic not in publish_tasks_in_queue.last_messages or publish_tasks_in_queue.last_messages[topic] != message:
+        if not retain or topic not in publish_tasks_in_queue.last_messages or publish_tasks_in_queue.last_messages[topic] != message:
             await publish_client.publish(topic, message, retain=retain)
             publish_tasks_in_queue.last_messages[topic] = message
             logger.info(f"publishing: {topic}, {message}")
