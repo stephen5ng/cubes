@@ -826,6 +826,22 @@ class Game:
                 self.sound_manager.play_chunk()
                 self.letter.new_fall()
                 await self.accept_letter()
+class JoystickMapping:
+    def __init__(self, handlers):
+        self.handlers = handlers
+    async def process_event(self, event):
+        if event.type == pygame.JOYAXISMOTION and event.axis == 0:
+            if event.value < -0.5:
+                self.handlers['left']()
+            elif event.value > 0.5:
+                self.handlers['right']()
+        elif event.type == pygame.JOYBUTTONDOWN:
+            if event.button == 1:
+                await self.handlers['action']()
+            elif event.button == 2:
+                self.handlers['return']()
+            elif event.button == 9:
+                await self.handlers['start']()
 
 class BlockWordsPygame():
     def __init__(self) -> None:
@@ -841,28 +857,6 @@ class BlockWordsPygame():
             events.trigger("game.abort")
 
     async def main(self, the_app: app.App, subscribe_client: aiomqtt.Client, start: bool, args: argparse.Namespace, keyboard_player_number: int) -> None:
-        screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
-        clock = Clock()
-        keyboard_guess = ""
-        await subscribe_client.subscribe("app/#")
-
-        joystick = None
-        if pygame.joystick.get_count() > 0:
-            joystick = pygame.joystick.Joystick(0)
-            print(f"Game controller connected: {joystick.get_name()}")
-
-        add_sound = pygame.mixer.Sound("sounds/add.wav")
-        erase_sound = pygame.mixer.Sound("sounds/erase.wav")
-        cleared_sound = pygame.mixer.Sound("sounds/cleared.wav")
-        left_sound = pygame.mixer.Sound("sounds/left.wav")
-        right_sound = pygame.mixer.Sound("sounds/right.wav")
-        
-        left_sound.set_volume(0.5)
-        right_sound.set_volume(0.5)
-
-        game = Game(the_app, self.letter_font)
-        keyboard_rack = game.racks[keyboard_player_number]
-        
         async def handle_space_action():
             if keyboard_rack.cursor_position >= len(self.keyboard_guess):
                 # Insert letter at cursor position into the guess
@@ -908,6 +902,38 @@ class BlockWordsPygame():
             pygame.mixer.Sound.play(cleared_sound)
             keyboard_rack.draw()
         
+        # Define handlers dictionary before joystick initialization
+        handlers = {
+            'left': handle_left_movement,
+            'right': handle_right_movement,
+            'action': handle_space_action,
+            'return': handle_return_action,
+            'start': start_game,
+        }
+        screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+        clock = Clock()
+        keyboard_guess = ""
+        await subscribe_client.subscribe("app/#")
+
+        joystick = None
+        joystick_mapping = None
+        print(f"joystick count: {pygame.joystick.get_count()}")
+        if pygame.joystick.get_count() > 0:
+            joystick = pygame.joystick.Joystick(0)
+            print(f"Game controller connected: {joystick.get_name()}")
+            joystick_mapping = JoystickMapping(handlers)
+        add_sound = pygame.mixer.Sound("sounds/add.wav")
+        erase_sound = pygame.mixer.Sound("sounds/erase.wav")
+        cleared_sound = pygame.mixer.Sound("sounds/cleared.wav")
+        left_sound = pygame.mixer.Sound("sounds/left.wav")
+        right_sound = pygame.mixer.Sound("sounds/right.wav")
+        
+        left_sound.set_volume(0.5)
+        right_sound.set_volume(0.5)
+
+        game = Game(the_app, self.letter_font)
+        keyboard_rack = game.racks[keyboard_player_number]
+        
         while True:
             current_time_s = pygame.time.get_ticks() / 1000
             if start and not game.running and current_time_s - game.stop_time_s > 120:
@@ -948,23 +974,9 @@ class BlockWordsPygame():
                             await the_app.guess_word_keyboard(self.keyboard_guess, keyboard_player_number)
                             keyboard_rack.select_count = len(self.keyboard_guess)
                             logger.info(f"key: {str(key)} {self.keyboard_guess}")
-                
-                # Handle game controller events
-                if game.running and joystick and event.type == pygame.JOYAXISMOTION:
-                    if event.axis == 0:  # Left stick horizontal
-                        if event.value < -0.5:  # Left
-                            handle_left_movement()
-                        elif event.value > 0.5:  # Right
-                            handle_right_movement()
-                
-                if game.running and joystick and event.type == pygame.JOYBUTTONDOWN:
-                    if event.button == 1:  # A button (usually button 0)
-                        await handle_space_action()
-                    elif event.button == 2:  # B button - same as return
-                        handle_return_action()
-                    elif event.button == 9:
-                        await start_game()
-
+                # --- Joystick abstraction usage ---
+                if game.running and joystick and joystick_mapping:
+                    await joystick_mapping.process_event(event)
             screen.fill((0, 0, 0))
             await game.update(screen)
             hub75.update(screen)
