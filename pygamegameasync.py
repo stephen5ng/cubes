@@ -842,6 +842,23 @@ class JoystickMapping:
                 self.handlers['return']()
             elif event.button == 9:
                 await self.handlers['start']()
+class DDRMapping:
+    def __init__(self, handlers):
+        self.handlers = handlers
+    async def process_event(self, event):
+        if event.type == pygame.JOYBUTTONDOWN:
+            if event.button == 1:
+                await self.handlers['action']()
+            elif event.button == 0:
+                self.handlers['left']()
+            elif event.button == 2:
+                self.handlers['action']()
+            elif event.button == 3:
+                self.handlers['right']()
+            elif event.button == 5:
+                self.handlers['return']()
+            elif event.button == 9:
+                await self.handlers['start']()
 
 class BlockWordsPygame():
     def __init__(self) -> None:
