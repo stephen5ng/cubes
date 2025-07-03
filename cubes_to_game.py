@@ -324,9 +324,9 @@ def read_data_for_player(f, player: int) -> List[str]:
 async def init(subscribe_client, cubes_file, tags_file):
     await subscribe_client.subscribe("cube/nfc/#")
     
+    all_cubes = [str(i) for i in range(1, 7)]
+
     # Read all data first
-    with open(cubes_file) as cubes_f:
-        all_cubes = read_data(cubes_f)
     with open(tags_file) as tags_f:
         all_tags = read_data(tags_f)
     
