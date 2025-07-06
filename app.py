@@ -31,9 +31,10 @@ class App:
                 await the_app.guess_tiles(guess, move_tiles, player)
             return guess_tiles_callback
 
-        def make_start_game_callback(the_app: App) -> Callable[[],  Coroutine[Any, Any, None]]:
-            async def start_game_callback() -> None:
-                events.trigger("game.start")
+        def make_start_game_callback(the_app: App) -> Callable[[bool],  Coroutine[Any, Any, None]]:
+            async def start_game_callback(force: bool) -> None:
+                if force or not the_app._running:
+                    events.trigger("game.start")
             return start_game_callback
 
         self._dictionary = dictionary

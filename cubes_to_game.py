@@ -307,13 +307,21 @@ async def guess_last_tiles(publish_queue, player: int) -> None:
 async def flash_guess(publish_queue, tiles: list[str], player: int):
     await cube_managers[player].flash_guess(publish_queue, tiles)
 
+lastrealneighbor = {}
+
 async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str):
     logging.info(f"process_cube_guess: {topic} {data}")
     print(f"process_cube_guess: {topic} {data}")
     sender = topic.value.removeprefix("cube/nfc/")
     await publish_queue.put((f"game/nfc/{sender}", data, True))
+    if data != "":
+        if lastrealneighbor.get(sender, data) != data:
+            lastrealneighbor[sender] = data
+            await start_game_callback(False)
+            
+        lastrealneighbor[sender] = data
     if data in START_GAME_CUBES:
-        await start_game_callback()
+        await start_game_callback(True)
         return
     await guess_word_based_on_cubes(sender, data, publish_queue)
 
