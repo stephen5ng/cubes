@@ -31,12 +31,18 @@ class App:
                 await the_app.guess_tiles(guess, move_tiles, player)
             return guess_tiles_callback
 
+        def make_start_game_callback(the_app: App) -> Callable[[],  Coroutine[Any, Any, None]]:
+            async def start_game_callback() -> None:
+                events.trigger("game.start")
+            return start_game_callback
+
         self._dictionary = dictionary
         self._publish_queue = publish_queue
         self._last_guess: list[str] = []
         self._player_racks = [tiles.Rack('?' * tiles.MAX_LETTERS) for _ in range(PLAYER_COUNT)]
         self._score_card = ScoreCard(self._player_racks[0], self._dictionary)
         cubes_to_game.set_guess_tiles_callback(make_guess_tiles_callback(self))
+        cubes_to_game.set_start_game_callback(make_start_game_callback(self))
         self._running = False
 
     async def start(self) -> None:

@@ -19,6 +19,7 @@ import tiles
 # "Cubes" are the MAC address of the ESP32
 # "Tiles" are the tile number assigned by the app (usually 0-6)
 
+START_GAME_CUBES = ["E8F21366080104E0"]
 class CubeManager:
     def __init__(self, player_number: int):
         self.player_number = player_number
@@ -189,10 +190,10 @@ class CubeManager:
             self.cubes_to_letters[cube_id] = letter
             await _publish_letter(publish_queue, letter, cube_id)
             if letter == " ":
-                await publish_queue.put((f"cube/{cube_id}/border_hline_top", "0x0000", True))
-                await publish_queue.put((f"cube/{cube_id}/border_hline_bottom", "0x0000", True))
-                await publish_queue.put((f"cube/{cube_id}/border_vline_left", "0x0000", True))
-                await publish_queue.put((f"cube/{cube_id}/border_vline_right", "0x0000", True))
+                await publish_queue.put((f"cube/{cube_id}/border_hline_top", "", True))
+                await publish_queue.put((f"cube/{cube_id}/border_hline_bottom", "", True))
+                await publish_queue.put((f"cube/{cube_id}/border_vline_left", "", True))
+                await publish_queue.put((f"cube/{cube_id}/border_vline_right", "", True))
         logging.info(f"LOAD RACK tiles_with_letters done: {self.cubes_to_letters}")
 
     async def _mark_tiles_for_guess(self, publish_queue, guess_tiles: List[str]) -> None:
@@ -204,15 +205,15 @@ class CubeManager:
                 await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_hline_top", self.border_color, True))
                 await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_hline_bottom", self.border_color, True))
                 await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_vline_left",
-                                         self.border_color if i == 0 else "0x0000", True))
+                                         self.border_color if i == 0 else "", True))
                 await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_vline_right",
-                                         self.border_color if i == len(guess)-1 else "0x0000", True))
+                                         self.border_color if i == len(guess)-1 else "", True))
 
         for tile in unused_tiles:
-            await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_hline_top", "0x0000", True))
-            await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_hline_bottom", "0x0000", True))
-            await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_vline_left", "0x0000", True))
-            await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_vline_right", "0x0000", True))
+            await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_hline_top", "", True))
+            await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_hline_bottom", "", True))
+            await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_vline_left", "", True))
+            await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_vline_right", "", True))
 
     async def flash_guess(self, publish_queue, tiles: list[str]) -> None:
         for t in tiles:
@@ -286,10 +287,14 @@ def set_guess_tiles_callback(f):
     global guess_tiles_callback
     guess_tiles_callback = f
 
+def set_start_game_callback(f):
+    global start_game_callback
+    start_game_callback = f
+
 async def letter_lock(publish_queue, locked_on: bool, tile_id: str) -> None:
     for player in range(len(cube_managers)):
         cube_id = cube_managers[player].tiles_to_cubes[tile_id]
-        await publish_queue.put((f"cube/{cube_id}/lock", "1" if locked_on else "0", True))
+        await publish_queue.put((f"cube/{cube_id}/lock", "1" if locked_on else "", True))
 
 async def guess_last_tiles(publish_queue, player: int) -> None:
     logging.info(f"guess_last_tiles last_guess_tiles {guess_manager.last_guess_tiles}")
@@ -304,8 +309,12 @@ async def flash_guess(publish_queue, tiles: list[str], player: int):
 
 async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str):
     logging.info(f"process_cube_guess: {topic} {data}")
+    print(f"process_cube_guess: {topic} {data}")
     sender = topic.value.removeprefix("cube/nfc/")
     await publish_queue.put((f"game/nfc/{sender}", data, True))
+    if data in START_GAME_CUBES:
+        await start_game_callback()
+        return
     await guess_word_based_on_cubes(sender, data, publish_queue)
 
 def read_data(f) -> List[str]:
