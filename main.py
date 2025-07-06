@@ -29,6 +29,7 @@ last_cube_time = None
 async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.Queue) -> None:
     while True:
         topic, message, retain = await queue.get()
+        print(f"publish_tasks_in_queue: {topic}, {message}, {retain}")
         # Store last messages in dict if not already defined
         if not hasattr(publish_tasks_in_queue, 'last_messages'):
             publish_tasks_in_queue.last_messages = {}
