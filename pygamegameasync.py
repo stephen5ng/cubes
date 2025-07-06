@@ -41,7 +41,7 @@ letter_beeps: list[pygame.Sound] = []
 
 BAD_GUESS_COLOR=Color("red")
 GOOD_GUESS_COLOR=Color("Green")
-OLD_GUESS_COLOR=Color("darkgray")
+OLD_GUESS_COLOR=Color("yellow")
 LETTER_SOURCE_COLOR=Color("Red")
 
 RACK_COLOR=Color("LightGrey")
@@ -830,11 +830,17 @@ class JoystickMapping:
     def __init__(self, handlers):
         self.handlers = handlers
     async def process_event(self, event):
-        if event.type == pygame.JOYAXISMOTION and event.axis == 0:
-            if event.value < -0.5:
-                self.handlers['left']()
-            elif event.value > 0.5:
-                self.handlers['right']()
+        if event.type == pygame.JOYAXISMOTION:
+            if event.axis == 0:
+                if event.value < -0.5:
+                    self.handlers['left']()
+                elif event.value > 0.5:
+                    self.handlers['right']()
+            elif event.axis == 1:
+                if event.value < -0.5:
+                    await self.handlers['insert']()
+                elif event.value > 0.5:
+                    await self.handlers['delete']()
         elif event.type == pygame.JOYBUTTONDOWN:
             if event.button == 1:
                 await self.handlers['action']()
@@ -891,6 +897,25 @@ class BlockWordsPygame():
             if keyboard_rack.select_count == 0:
                 pygame.mixer.Sound.play(cleared_sound)
             await the_app.guess_word_keyboard(self.keyboard_guess, keyboard_player_number)
+
+        async def handle_insert_action():
+            if keyboard_rack.cursor_position >= len(self.keyboard_guess):
+                # Insert letter at cursor position into the guess
+                letter_at_cursor = keyboard_rack.letters()[keyboard_rack.cursor_position]
+                self.keyboard_guess += letter_at_cursor
+                pygame.mixer.Sound.play(add_sound)
+            await the_app.guess_word_keyboard(self.keyboard_guess, keyboard_player_number)
+        
+        async def handle_delete_action():
+            if keyboard_rack.cursor_position < len(self.keyboard_guess):
+                # Remove letter at cursor position from the guess
+                self.keyboard_guess = self.keyboard_guess[:keyboard_rack.cursor_position] + self.keyboard_guess[keyboard_rack.cursor_position + 1:]
+                if keyboard_rack.select_count > 0:
+                    pygame.mixer.Sound.play(erase_sound)
+            keyboard_rack.select_count = len(self.keyboard_guess)
+            if keyboard_rack.select_count == 0:
+                pygame.mixer.Sound.play(cleared_sound)
+            await the_app.guess_word_keyboard(self.keyboard_guess, keyboard_player_number)
         
         async def start_game():
             self.keyboard_guess = ""
@@ -923,6 +948,8 @@ class BlockWordsPygame():
         handlers = {
             'left': handle_left_movement,
             'right': handle_right_movement,
+            'insert': handle_insert_action,
+            'delete': handle_delete_action,
             'action': handle_space_action,
             'return': handle_return_action,
             'start': start_game,
