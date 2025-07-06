@@ -19,7 +19,7 @@ from typing import cast
 import functools
 
 import app
-from config import PLAYER_COUNT
+from config import MAX_PLAYERS
 from pygame.image import tobytes as image_to_string
 from pygameasync import Clock, EventEngine, events
 import tiles
@@ -322,7 +322,7 @@ class Rack():
                     letter_index = random.randint(0, 6)
                 else:
                     letter_index = self.falling_letter.letter_index()
-                    if PLAYER_COUNT > 1:
+                    if MAX_PLAYERS > 1:
                         # Only flash letters in our half of the rack
                         hit_rack = 0 if letter_index < 3 else 1
                         if self.player != hit_rack:
@@ -654,17 +654,17 @@ class SoundManager:
 class Game:
     def __init__(self, the_app: app.App, letter_font: pygame.freetype.Font) -> None:
         self._app = the_app
-        if PLAYER_COUNT == 1:
+        if MAX_PLAYERS == 1:
             self.scores = [Score(-1)]
         else:
-            self.scores = [Score(player) for player in range(PLAYER_COUNT)]
+            self.scores = [Score(player) for player in range(MAX_PLAYERS)]
         letter_y = self.scores[0].get_size()[1] + 4
         self.rack_metrics = RackMetrics()
         self.letter = Letter(letter_font, letter_y, self.rack_metrics)
-        if PLAYER_COUNT == 1:
+        if MAX_PLAYERS == 1:
             self.racks = [Rack(self.rack_metrics, self.letter, -1)]
         else:
-            self.racks = [Rack(self.rack_metrics, self.letter, player) for player in range(PLAYER_COUNT)]
+            self.racks = [Rack(self.rack_metrics, self.letter, player) for player in range(MAX_PLAYERS)]
         self.guess_to_player = {}
         self.previous_guesses_display = PreviousGuessesDisplay(PreviousGuessesDisplay.FONT_SIZE, self.guess_to_player)
         self.remaining_previous_guesses_display = RemainingPreviousGuessesDisplay(

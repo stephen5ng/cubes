@@ -5,7 +5,7 @@ import logging
 import time
 from typing import Callable, Coroutine, Dict, List
 
-from config import PLAYER_COUNT
+from config import MAX_PLAYERS
 import tiles
 
 # Configure logging to print to console
@@ -258,7 +258,7 @@ class GuessManager:
             self.last_tiles_with_letters = tiles_with_letters
 
 # Global managers for each player
-cube_managers: List[CubeManager] = [CubeManager(player) for player in range(PLAYER_COUNT)]
+cube_managers: List[CubeManager] = [CubeManager(player) for player in range(MAX_PLAYERS)]
 # Global mapping of cube IDs to player numbers for O(1) lookup
 cube_to_player: Dict[str, int] = {}
 # Global guess manager
