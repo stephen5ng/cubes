@@ -34,8 +34,9 @@ async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.
         if not hasattr(publish_tasks_in_queue, 'last_messages'):
             publish_tasks_in_queue.last_messages = {}
             
-        # Only publish if message changed
-        if not retain or topic not in publish_tasks_in_queue.last_messages or publish_tasks_in_queue.last_messages[topic] != message:
+        # Publish retained messages if they changed.
+        if not retain or publish_tasks_in_queue.last_messages.get(topic, None) != message:
+            # print(f"get: {publish_tasks_in_queue.last_messages.get(topic, '')}, {publish_tasks_in_queue.last_messages.get(topic, '') != message}")
             await publish_client.publish(topic, message, retain=retain)
             publish_tasks_in_queue.last_messages[topic] = message
             logger.info(f"publishing: {topic}, {message}")
@@ -79,7 +80,7 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
             publish_task = asyncio.create_task(publish_tasks_in_queue(publish_client, publish_queue),
                 name="mqtt publish handler")
 
-            await block_words.main(the_app, subscribe_client, args.start, args, keyboard_player_number)
+            await block_words.main(the_app, subscribe_client, args.start, keyboard_player_number)
 
             subscribe_task.cancel()
             publish_queue.shutdown()
