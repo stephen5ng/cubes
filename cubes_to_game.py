@@ -20,7 +20,7 @@ import tiles
 # "Cubes" are the MAC address of the ESP32
 # "Tiles" are the tile number assigned by the app (usually 0-6)
 
-START_GAME_CUBES = ["E8F21366080104E0"]
+START_GAME_TAGS = ["E8F21366080104E0"]
 class CubeManager:
     def __init__(self, player_number: int):
         self.player_number = player_number
@@ -321,7 +321,7 @@ async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str):
             await start_game_callback(False)
             
         lastrealneighbor[sender] = data
-    if data in START_GAME_CUBES:
+    if data in START_GAME_TAGS:
         await start_game_callback(True)
         return
     await guess_word_based_on_cubes(sender, data, publish_queue)

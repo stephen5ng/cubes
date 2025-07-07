@@ -71,11 +71,6 @@ class GuessType(Enum):
     OLD = 1
     GOOD = 2
 
-class InputType(Enum):
-    KEYBOARD = 0
-    CUBES = 1
-    GAMEPAD = 2
-    DDR = 3
 class InputDevice:
     def __init__(self, handlers):
         self.handlers = handlers
@@ -97,12 +92,16 @@ class InputDevice:
         """Base method to be overridden by subclasses"""
         pass
 
+class CubesInput(InputDevice):
+      async def process_event(self, event):
+        pass
+    
 class KeyboardInput(InputDevice):
     async def process_event(self, event):
         # Keyboard input is handled separately in the main loop
         pass
 
-class JoystickInput(InputDevice):
+class GamepadInput(InputDevice):
     async def process_event(self, event):
         if event.type == pygame.JOYBUTTONDOWN and event.button == 9:
             self.player_number = await self.handlers['start'](self)
@@ -147,7 +146,7 @@ class DDRInput(InputDevice):
                 self.handlers['return'](self)
 
 JOYSTICK_NAMES_TO_INPUTS = {
-    "USB gamepad": JoystickInput,
+    "USB gamepad": GamepadInput,
     "USB Gamepad": DDRInput,
 }
 class RackMetrics():
@@ -459,6 +458,7 @@ class Shield():
 class Score():
     def __init__(self, the_app: app.App, player: int) -> None:
         self.the_app = the_app
+        self.player = player
         self.font = pygame.freetype.SysFont(FONT, RackMetrics.LETTER_SIZE)
         self.pos = [0, 0]
         self.x = SCREEN_WIDTH/3 * (player+1)
@@ -760,7 +760,7 @@ class Game:
         events.on(f"game.bad_guess")(self.bad_guess)
         events.on(f"game.next_tile")(self.next_tile)
         events.on(f"game.abort")(self.abort)
-        events.on(f"game.start")(self.start)
+        events.on(f"game.start")(self.start_cubes)
         events.on(f"input.remaining_previous_guesses")(self.update_remaining_guesses)
         events.on(f"input.update_previous_guesses")(self.update_previous_guesses)
         events.on(f"input.add_guess")(self.add_guess)
@@ -782,6 +782,9 @@ class Game:
 
     async def abort(self) -> None:
         self.aborted = True
+
+    async def start_cubes(self) -> None:
+        await self.start(CubesInput(None))
 
     async def start(self, input_device: InputDevice) -> None:
         if self.running and input_device not in self.input_devices:
@@ -908,8 +911,8 @@ class Game:
                 self.sound_manager.play_crash()
 
         self.shields[:] = [s for s in self.shields if s.active]
-        for score in self.scores:
-            score.update(window)
+        for player in range(self._app._player_count):
+            self.scores[player].update(window)
 
         # letter collide with rack
         if self.running and self.letter.get_screen_bottom_y() > self.rack_metrics.get_rect().y:
