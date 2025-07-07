@@ -224,7 +224,8 @@ class Rack():
     LETTER_TRANSITION_DURATION_MS = 4000
     GUESS_TRANSITION_DURATION_MS = 800
 
-    def __init__(self, rack_metrics: RackMetrics, falling_letter: Letter, player: int) -> None:
+    def __init__(self, the_app: app.App, rack_metrics: RackMetrics, falling_letter: Letter, player: int) -> None:
+        self.the_app = the_app
         self.rack_metrics = rack_metrics
         self.player = player
         self.font = rack_metrics.font
@@ -262,12 +263,12 @@ class Rack():
 
     def draw(self) -> None:
         self.surface = pygame.Surface(self.rack_metrics.get_size())
-        self.surface.fill(Color("black"))
         if self.letters():
             pygame.draw.rect(self.surface, Color("grey"), 
                              self.rack_metrics.get_largest_letter_rect(self.cursor_position))
         for ix, letter in enumerate(self.letters()):
             self._render_letter(self.surface, ix, letter, self.rack_color_by_player[self.player+1])
+            
         pygame.draw.rect(self.surface,
             self.guess_type_to_rect_color[self.guess_type],
             self.rack_metrics.get_select_rect(self.select_count, self.player),
@@ -322,7 +323,7 @@ class Rack():
                     letter_index = random.randint(0, 6)
                 else:
                     letter_index = self.falling_letter.letter_index()
-                    if MAX_PLAYERS > 1:
+                    if self.the_app._player_count > 1:
                         # Only flash letters in our half of the rack
                         hit_rack = 0 if letter_index < 3 else 1
                         if self.player != hit_rack:
@@ -336,12 +337,12 @@ class Rack():
         if not self.running:
             window.blit(self.game_over_surface, self.game_over_pos)
             return
-
         surface = self.surface.copy()
         self._render_flashing_letters(surface)
         self._render_fading_letters(surface)
         top_left = self.rack_metrics.get_rect().topleft
-        top_left = (top_left[0] + self.left_offset_by_player[self.player+1], top_left[1])
+        player_index = 0 if self.the_app._player_count == 1 else self.player+1
+        top_left = (top_left[0] + self.left_offset_by_player[player_index], top_left[1])
         window.blit(surface, top_left)
 
 class Shield():
@@ -377,13 +378,12 @@ class Shield():
         self.pos[1] = SCREEN_HEIGHT
 
 class Score():
-    def __init__(self, player: int) -> None:
+    def __init__(self, the_app: app.App, player: int) -> None:
+        self.the_app = the_app
         self.font = pygame.freetype.SysFont(FONT, RackMetrics.LETTER_SIZE)
         self.pos = [0, 0]
-        if player == -1:
-            self.x = SCREEN_WIDTH/2
-        else:
-            self.x = SCREEN_WIDTH/3 * (player+1)
+        self.x = SCREEN_WIDTH/3 * (player+1)
+        self.midscreen = SCREEN_WIDTH/2
         self.start()
         self.draw()
 
@@ -396,7 +396,8 @@ class Score():
 
     def draw(self) -> None:
         self.surface = self.font.render(str(self.score), SCORE_COLOR)[0]
-        self.pos[0] = int(self.x - self.surface.get_width()/2)
+        self.pos[0] = int((self.midscreen if self.the_app._player_count == 1 else self.x) 
+                          - self.surface.get_width()/2)
 
     def update_score(self, score: int) -> None:
         self.score += score
@@ -654,17 +655,11 @@ class SoundManager:
 class Game:
     def __init__(self, the_app: app.App, letter_font: pygame.freetype.Font) -> None:
         self._app = the_app
-        if MAX_PLAYERS == 1:
-            self.scores = [Score(-1)]
-        else:
-            self.scores = [Score(player) for player in range(MAX_PLAYERS)]
+        self.scores = [Score(the_app, player) for player in range(MAX_PLAYERS)]
         letter_y = self.scores[0].get_size()[1] + 4
         self.rack_metrics = RackMetrics()
         self.letter = Letter(letter_font, letter_y, self.rack_metrics)
-        if MAX_PLAYERS == 1:
-            self.racks = [Rack(self.rack_metrics, self.letter, -1)]
-        else:
-            self.racks = [Rack(self.rack_metrics, self.letter, player) for player in range(MAX_PLAYERS)]
+        self.racks = [Rack(the_app, self.rack_metrics, self.letter, player) for player in range(MAX_PLAYERS)]
         self.guess_to_player = {}
         self.previous_guesses_display = PreviousGuessesDisplay(PreviousGuessesDisplay.FONT_SIZE, self.guess_to_player)
         self.remaining_previous_guesses_display = RemainingPreviousGuessesDisplay(
@@ -803,8 +798,8 @@ class Game:
             self.letter.update(window)
             await self._app.letter_lock(self.letter.letter_index(), self.letter.locked_on)
 
-        for rack in self.racks:
-            rack.update(window)
+        for player in range(self._app._player_count):
+            self.racks[player].update(window)
         for shield in self.shields:
             shield.update(window)
             if shield.rect.y <= self.letter.get_screen_bottom_y():
@@ -956,7 +951,7 @@ class BlockWordsPygame():
         }
         screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         clock = Clock()
-        keyboard_guess = ""
+        # keyboard_guess = ""
         await subscribe_client.subscribe("app/#")
 
         joystick = None
@@ -1004,6 +999,11 @@ class BlockWordsPygame():
                             keyboard_rack.draw()
                     elif key == "RETURN":
                         handle_return_action()
+                    elif key == "TAB":
+                        the_app._player_count = 1 if the_app._player_count == 2 else 2
+                        for player in range(MAX_PLAYERS):
+                            game.scores[player].draw()
+                            game.racks[player].draw()
                     elif len(key) == 1:
                         remaining_letters = list(keyboard_rack.letters())
                         for l in self.keyboard_guess:

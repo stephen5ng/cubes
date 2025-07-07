@@ -29,7 +29,7 @@ last_cube_time = None
 async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.Queue) -> None:
     while True:
         topic, message, retain = await queue.get()
-        print(f"publish_tasks_in_queue: {topic}, {message}, {retain}")
+        # print(f"publish_tasks_in_queue: {topic}, {message}, {retain}")
         # Store last messages in dict if not already defined
         if not hasattr(publish_tasks_in_queue, 'last_messages'):
             publish_tasks_in_queue.last_messages = {}
@@ -70,7 +70,7 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
         async with aiomqtt.Client(MQTT_SERVER) as publish_client:
             publish_queue: asyncio.Queue = asyncio.Queue()
             the_app = app.App(publish_queue, dictionary)
-            await cubes_to_game.init(subscribe_client, args.cubes, args.tags)
+            await cubes_to_game.init(subscribe_client, args.tags)
             await subscribe_client.subscribe("game/guess")
 
             subscribe_task = asyncio.create_task(
@@ -90,7 +90,6 @@ BUNDLE_TEMP_DIR = "."
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--tags", default="tag_ids.txt", type=str)
-    parser.add_argument("--cubes", default="cube_ids.txt", type=str)
     parser.add_argument('--start', action=argparse.BooleanOptionalAction)
     parser.add_argument("--keyboard-player-number", default=1, type=int, help="Player number (1 or 2) that uses keyboard input")
     args = parser.parse_args()

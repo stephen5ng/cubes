@@ -9,6 +9,7 @@ from config import MAX_PLAYERS
 import tiles
 
 # Configure logging to print to console
+# import sys
 # logging.basicConfig(
 #     level=logging.INFO,
 #     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -173,7 +174,7 @@ class CubeManager:
         self.cube_list = cubes  # Store ordered list of cubes
         return {tag: cube for cube, tag in zip(cubes, tags)}
 
-    async def init(self, subscribe_client, cubes_file, tags_file):
+    async def init(self, cubes_file, tags_file):
         logging.info("cubes_to_game")
         self.tags_to_cubes = self.get_tags_to_cubes(cubes_file, tags_file)
         logging.info(f"ttc: {self.tags_to_cubes}")
@@ -338,10 +339,10 @@ def read_data_for_player(f, player: int) -> List[str]:
     end_idx = start_idx + tiles.MAX_LETTERS
     return data[start_idx:end_idx]
 
-async def init(subscribe_client, cubes_file, tags_file):
+async def init(subscribe_client, tags_file):
     await subscribe_client.subscribe("cube/nfc/#")
     
-    all_cubes = [str(i) for i in range(1, 7)]
+    all_cubes = [str(i) for i in range(1, 14)]
 
     # Read all data first
     with open(tags_file) as tags_f:
