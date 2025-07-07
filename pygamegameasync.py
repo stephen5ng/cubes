@@ -82,6 +82,7 @@ class InputDevice:
         self._player_number = None
         self.current_guess = ""
         self.reversed = False
+        self.id = None
 
     @property
     def player_number(self):
@@ -144,8 +145,6 @@ class DDRInput(InputDevice):
                 self.handlers['right'](self)
             elif event.button == 5:
                 self.handlers['return'](self)
-            elif event.button == 9:
-                self.player_number = await self.handlers['start'](self)
 
 JOYSTICK_NAMES_TO_INPUTS = {
     "USB gamepad": JoystickInput,
@@ -1047,7 +1046,9 @@ class BlockWordsPygame():
                 joysticks.append(pygame.joystick.Joystick(j))
                 name = joysticks[j].get_name()
                 print(f"Game controller connected: {name}")
-                input_devices.append(JOYSTICK_NAMES_TO_INPUTS[name](handlers))
+                input_device = JOYSTICK_NAMES_TO_INPUTS[name](handlers)
+                input_device.id = j
+                input_devices.append(input_device)
         add_sound = pygame.mixer.Sound("sounds/add.wav")
         erase_sound = pygame.mixer.Sound("sounds/erase.wav")
         cleared_sound = pygame.mixer.Sound("sounds/cleared.wav")
@@ -1107,8 +1108,10 @@ class BlockWordsPygame():
                             game.racks[keyboard_input.player_number].select_count = len(keyboard_input.current_guess)
                             logger.info(f"key: {str(key)} {keyboard_input.current_guess}")
                 # --- Joystick abstraction usage ---
-                for j in input_devices: 
-                    await j.process_event(event)
+                if hasattr(event, 'joy'):  # Only process joystick events
+                    for input_device in input_devices: 
+                        if input_device.id == event.joy:
+                            await input_device.process_event(event)
             screen.fill((0, 0, 0))
             await game.update(screen)
             hub75.update(screen)
