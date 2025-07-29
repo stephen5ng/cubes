@@ -35,7 +35,7 @@ class App:
         def make_start_game_callback(the_app: App) -> Callable[[bool],  Coroutine[Any, Any, None]]:
             async def start_game_callback(force: bool) -> None:
                 if force or not the_app._running:
-                    events.trigger("game.start")
+                    events.trigger("game.start", pygame.time.get_ticks())
             return start_game_callback
 
         self._dictionary = dictionary
@@ -74,7 +74,7 @@ class App:
         for player in range(MAX_PLAYERS):
             await cubes_to_game.load_rack(self._publish_queue, self._player_racks[player].get_tiles(), player)
 
-    async def accept_new_letter(self, next_letter: str, position: int) -> None:
+    async def accept_new_letter(self, next_letter: str, position: int, now_ms: int) -> None:
         if self._player_count > 1:
             # Replace the tile in the rack that was hit, then replace that same tile in the other rack.
             hit_rack, other_rack, position_offset = (0, 1, 3) if position < 3 else (1, 0, -3)
@@ -92,7 +92,7 @@ class App:
         self._update_previous_guesses()
         self._update_remaining_previous_guesses()
         for player in range(self._player_count):
-            events.trigger("rack.update_letter", changed_tile, player)
+            events.trigger("rack.update_letter", changed_tile, player, now_ms)
         self._update_next_tile(self._player_racks[0].next_letter())
         if changed_tile.id in self._last_guess:
             for player in range(self._player_count):
@@ -104,7 +104,7 @@ class App:
 
     def add_guess(self, guess: str, player: int) -> None:
         self._score_card.add_guess(guess, player)
-        events.trigger("input.add_guess", self._score_card.get_previous_guesses(), guess, player)
+        events.trigger("input.add_guess", self._score_card.get_previous_guesses(), guess, player, pygame.time.get_ticks())
 
     async def guess_tiles(self, word_tile_ids: list[str], move_tiles: bool, player: int) -> None:
         self._last_guess = word_tile_ids
@@ -128,7 +128,7 @@ class App:
             tiles_dirty = True
 
         if self._score_card.is_old_guess(guess):
-            events.trigger("game.old_guess", guess, player)
+            events.trigger("game.old_guess", guess, player, pygame.time.get_ticks())
             await cubes_to_game.old_guess(self._publish_queue, word_tile_ids, player)
             tiles_dirty = True
         elif self._score_card.is_good_guess(guess):
@@ -153,15 +153,22 @@ class App:
             [self._player_racks[player].letters_to_ids(guess)], player)
 
     def _update_next_tile(self, next_tile: str) -> None:
-        events.trigger("game.next_tile", next_tile)
+        events.trigger("game.next_tile", next_tile, pygame.time.get_ticks())
 
     def _update_previous_guesses(self) -> None:
         events.trigger("input.update_previous_guesses",
-            self._score_card.get_previous_guesses())
+            self._score_card.get_previous_guesses(), pygame.time.get_ticks())
 
     def _update_remaining_previous_guesses(self) -> None:
-        events.trigger("input.remaining_previous_guesses", self._score_card.get_remaining_previous_guesses())
+        events.trigger("input.remaining_previous_guesses", 
+                       self._score_card.get_remaining_previous_guesses(),
+                       pygame.time.get_ticks())
 
     def _update_rack_display(self, highlight_length: int, guess_length: int, player: int):
-        events.trigger("rack.update_rack", self._player_racks[player].get_tiles(), highlight_length, guess_length, player)
+        events.trigger("rack.update_rack", 
+                       self._player_racks[player].get_tiles(),
+                       highlight_length,
+                       guess_length,
+                       player,
+                       pygame.time.get_ticks())
 

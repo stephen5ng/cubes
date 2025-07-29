@@ -58,7 +58,7 @@ async def trigger_events_from_mqtt(
             elif message.topic.matches("game/guess"):
                 await the_app.guess_word_keyboard(message.payload.decode(), 1)
             else:
-                await block_words.handle_mqtt_message(message.topic)
+                await block_words.handle_mqtt_message(message.topic, pygame.time.get_ticks())
 
     except Exception as e:
         print(f"fatal error: {e}")

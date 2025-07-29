@@ -257,7 +257,6 @@ class Letter():
             # print(f"{self.easing_complete} {remaining_ms} {self.fraction_complete} {self.locked_on} {self.get_screen_bottom_y() + Letter.Y_INCREMENT*2} > {self.height}")
 
     def update(self, window: pygame.Surface, now_ms: int) -> None:
-        now_ms = pygame.time.get_ticks()
         fall_percent = (now_ms - self.start_fall_time_ms)/self.total_fall_time_ms
         fall_easing = self.top_bottom_easing(fall_percent)
         self.pos[1] = int(self.new_start_fall_y + fall_easing * self.height)
@@ -282,21 +281,21 @@ class Letter():
                 self.next_column_move_time_ms = now_ms + self.NEXT_COLUMN_MS
                 pygame.mixer.Sound.play(self.bounce_sound)
 
-    def shield_collision(self) -> None:
+    def shield_collision(self, now_ms: int) -> None:
         # logger.debug(f"---------- {self.start_fall_y}, {self.pos[1]}, {new_pos}, {self.pos[1] - new_pos}")
         self.pos[1] = int(self.start_fall_y + (self.pos[1] - self.start_fall_y)/2)
         self.new_start_fall_y = int(self.start_fall_y + (self.pos[1] - self.start_fall_y)/2)
-        self.start_fall_time_ms = pygame.time.get_ticks()
+        self.start_fall_time_ms = now_ms
 
-    def change_letter(self, new_letter: str) -> None:
+    def change_letter(self, new_letter: str, now_ms: int) -> None:
         self.letter = new_letter
-        self.draw(pygame.time.get_ticks())
+        self.draw(now_ms)
 
-    def new_fall(self) -> None:
+    def new_fall(self, now_ms: int) -> None:
         self.start_fall_y += Letter.Y_INCREMENT
         self.total_fall_time = self.DROP_TIME_MS * (self.height - self.start_fall_y) / self.height
         self.pos[1] = self.new_start_fall_y = self.start_fall_y
-        self.start_fall_time_ms = pygame.time.get_ticks()
+        self.start_fall_time_ms = now_ms
 
 class Rack():
     LETTER_TRANSITION_DURATION_MS = 4000
@@ -360,15 +359,19 @@ class Rack():
         self.running = False
         self.draw()
 
-    async def update_rack(self, tiles: list[tiles.Tile], highlight_length: int, guess_length: int) -> None:
+    async def update_rack(self, 
+                          tiles: list[tiles.Tile], 
+                          highlight_length: int, 
+                          guess_length: int,
+                          now_ms: int) -> None:
         self.tiles = tiles
         self.highlight_length = highlight_length
-        self.last_guess_ms = pygame.time.get_ticks()
+        self.last_guess_ms = now_ms
         self.select_count = guess_length
         self.draw()
 
-    async def update_letter(self, tile: tiles.Tile) -> None:
-        self.last_update_letter_ms = pygame.time.get_ticks()
+    async def update_letter(self, tile: tiles.Tile, now_ms: int) -> None:
+        self.last_update_letter_ms = now_ms
         self.transition_tile = tile
         self.draw()
 
@@ -546,50 +549,56 @@ class PreviousGuessesDisplay(PreviousGuessesDisplayBase):
         self.draw()
 
     @classmethod
-    def from_instance(cls, instance: 'PreviousGuessesDisplay', font_size: int) -> 'PreviousGuessesDisplay':
+    def from_instance(cls, instance: 'PreviousGuessesDisplay', font_size: int, now_ms: int) -> 'PreviousGuessesDisplay':
         """Create a new instance from an existing one with a new font size."""
         new_instance = cls(font_size, instance.guess_to_player)
         new_instance.previous_guesses = instance.previous_guesses
         new_instance.fader_inputs = instance.fader_inputs
         new_instance.bloop_sound = instance.bloop_sound
         if instance.previous_guesses and instance.fader_inputs:
-            new_instance._recreate_faders()
+            new_instance._recreate_faders(now_ms)
         return new_instance
 
-    def _try_add_fader(self, guess: str, color: pygame.Color, duration: int) -> None:
+    def _try_add_fader(self, guess: str, color: pygame.Color, duration: int, now_ms: int) -> None:
         """Try to add a fader for the given guess if it exists in previous_guesses."""
         if guess in self.previous_guesses:
-            fader = self.fader_manager.create_fader(guess, pygame.time.get_ticks(), duration, color)
+            fader = self.fader_manager.create_fader(guess, now_ms, duration, color)
             self.faders.append(fader)
 
-    def _recreate_faders(self) -> None:
+    def _recreate_faders(self, now_ms: int) -> None:
         self.faders = []
         for last_guess, last_update_ms, color, duration in self.fader_inputs:
-            self._try_add_fader(last_guess, color, duration)
+            self._try_add_fader(last_guess, color, duration, now_ms)
 
     def draw(self) -> None:
         self.surface = self._text_rect_renderer.render(
             self.previous_guesses,
             [self.PLAYER_COLORS[self.guess_to_player.get(guess, 0)] for guess in self.previous_guesses])
 
-    def old_guess(self, old_guess: str) -> None:
+    def old_guess(self, old_guess: str, now_ms: int) -> None:
         self.fader_inputs.append(
-            [old_guess, pygame.time.get_ticks(), OLD_GUESS_COLOR, PreviousGuessesDisplay.FADE_DURATION_OLD_GUESS])
-        self._try_add_fader(old_guess, OLD_GUESS_COLOR, PreviousGuessesDisplay.FADE_DURATION_OLD_GUESS)
+            [old_guess, now_ms, OLD_GUESS_COLOR, PreviousGuessesDisplay.FADE_DURATION_OLD_GUESS])
+        self._try_add_fader(old_guess,
+                            OLD_GUESS_COLOR,
+                            PreviousGuessesDisplay.FADE_DURATION_OLD_GUESS,
+                            now_ms)
         self.draw()
         pygame.mixer.Sound.play(self.bloop_sound)
 
-    def add_guess(self, previous_guesses: list[str], guess: str, player: int) -> None:
+    def add_guess(self, previous_guesses: list[str], guess: str, player: int, now_ms: int) -> None:
         self.fader_inputs.append(
-            [guess, pygame.time.get_ticks(), self.FADER_PLAYER_COLORS[player], PreviousGuessesDisplay.FADE_DURATION_NEW_GUESS])
-        self.update_previous_guesses(previous_guesses)
-        self._try_add_fader(guess, self.FADER_PLAYER_COLORS[player], PreviousGuessesDisplay.FADE_DURATION_NEW_GUESS)
+            [guess, now_ms, self.FADER_PLAYER_COLORS[player], PreviousGuessesDisplay.FADE_DURATION_NEW_GUESS])
+        self.update_previous_guesses(previous_guesses, now_ms)
+        self._try_add_fader(guess, 
+                            self.FADER_PLAYER_COLORS[player],
+                            PreviousGuessesDisplay.FADE_DURATION_NEW_GUESS,
+                            now_ms)
 
-    def update_previous_guesses(self, previous_guesses: list[str]) -> None:
+    def update_previous_guesses(self, previous_guesses: list[str], now_ms: int) -> None:
         self.previous_guesses = previous_guesses
         self._text_rect_renderer.update_pos_dict(self.previous_guesses)
         self.fader_manager = FaderManager(self.previous_guesses, self.font, self._text_rect_renderer)        
-        self._recreate_faders()
+        self._recreate_faders(now_ms)
         self.draw()
 
     def update(self, window: pygame.Surface, now: int) -> None:
@@ -663,14 +672,17 @@ class LetterSource():
         self.surface.set_alpha(LetterSource.ALPHA)
         self.surface.fill(LETTER_SOURCE_COLOR)
 
-    def update(self, window: pygame.Surface, now: int) -> None:
+    def update(self, window: pygame.Surface, now_ms: int) -> None:
         if self.last_y != self.letter.start_fall_y:
-            self.last_update = pygame.time.get_ticks()
+            self.last_update = now_ms
             self.height = LetterSource.MAX_HEIGHT
             self.last_y = self.letter.start_fall_y
             self.draw()
         elif self.height > LetterSource.MIN_HEIGHT:
-            self.height = get_alpha(self.easing, self.last_update, LetterSource.ANIMATION_DURAION_MS, now)
+            self.height = get_alpha(self.easing, 
+                                    self.last_update, 
+                                    LetterSource.ANIMATION_DURAION_MS, 
+                                    now_ms)
             self.draw()
         self.pos = [self.x, self.initial_y + self.letter.start_fall_y - self.height]
         window.blit(self.surface, self.pos)
@@ -732,12 +744,12 @@ class SoundManager:
         pygame.mixer.Sound.play(self.bloop_sound)
 
 class Game:
-    def __init__(self, the_app: app.App, letter_font: pygame.freetype.Font) -> None:
+    def __init__(self, the_app: app.App, letter_font: pygame.freetype.Font, now_ms: int) -> None:
         self._app = the_app
         self.scores = [Score(the_app, player) for player in range(MAX_PLAYERS)]
         letter_y = self.scores[0].get_size()[1] + 4
         self.rack_metrics = RackMetrics()
-        self.letter = Letter(letter_font, letter_y, self.rack_metrics, pygame.time.get_ticks())
+        self.letter = Letter(letter_font, letter_y, self.rack_metrics, now_ms)
         self.racks = [Rack(the_app, self.rack_metrics, self.letter, player) for player in range(MAX_PLAYERS)]
         self.guess_to_player = {}
         self.previous_guesses_display = PreviousGuessesDisplay(PreviousGuessesDisplay.FONT_SIZE, self.guess_to_player)
@@ -767,15 +779,15 @@ class Game:
         events.on(f"rack.update_rack")(self.update_rack)
         events.on(f"rack.update_letter")(self.update_letter)
 
-    async def update_rack(self, tiles: list[tiles.Tile], highlight_length: int, guess_length: int, player: int) -> None:
-        await self.racks[player].update_rack(tiles, highlight_length, guess_length)
+    async def update_rack(self, tiles: list[tiles.Tile], highlight_length: int, guess_length: int, player: int, now_ms: int) -> None:
+        await self.racks[player].update_rack(tiles, highlight_length, guess_length, now_ms)
 
-    async def update_letter(self, changed_tile: tiles.Tile, player: int) -> None:
-        await self.racks[player].update_letter(changed_tile)
+    async def update_letter(self, changed_tile: tiles.Tile, player: int, now_ms: int) -> None:
+        await self.racks[player].update_letter(changed_tile, now_ms)
 
-    async def old_guess(self, old_guess: str, player: int) -> None:
+    async def old_guess(self, old_guess: str, player: int, now_ms: int) -> None:
         self.racks[player].guess_type = GuessType.OLD
-        self.previous_guesses_display.old_guess(old_guess)
+        self.previous_guesses_display.old_guess(old_guess, now_ms)
 
     async def bad_guess(self, player: int) -> None:
         self.racks[player].guess_type = GuessType.BAD
@@ -783,10 +795,10 @@ class Game:
     async def abort(self) -> None:
         self.aborted = True
 
-    async def start_cubes(self) -> None:
-        await self.start(CubesInput(None))
+    async def start_cubes(self, now_ms: int) -> None:
+        await self.start(CubesInput(None), now_ms)
 
-    async def start(self, input_device: InputDevice) -> None:
+    async def start(self, input_device: InputDevice, now_ms: int) -> None:
         if self.running and input_device not in self.input_devices:
             # Maxed out player count
             if self._app._player_count >= 2:
@@ -807,13 +819,13 @@ class Game:
         self.previous_guesses_display = PreviousGuessesDisplay(PreviousGuessesDisplay.FONT_SIZE, self.guess_to_player)
         self.remaining_previous_guesses_display = RemainingPreviousGuessesDisplay(
             PreviousGuessesDisplay.FONT_SIZE - FONT_SIZE_DELTA, self.guess_to_player)
-        self.letter.start(pygame.time.get_ticks())
+        self.letter.start(now_ms)
         for score in self.scores:
             score.start()
         for rack in self.racks:
             rack.start()
         self.running = True
-        now_s = pygame.time.get_ticks() / 1000
+        now_s = now_ms / 1000
         self.stop_time_s = -1000
         self.last_letter_time_s = now_s
         self.start_time_s = now_s
@@ -826,19 +838,19 @@ class Game:
         self.racks[player].guess_type = GuessType.GOOD
         self.shields.append(Shield(self.rack_metrics.get_rect().topleft, last_guess, score, player))
 
-    async def accept_letter(self) -> None:
-        await self._app.accept_new_letter(self.letter.letter, self.letter.letter_index())
+    async def accept_letter(self, now_ms: int) -> None:
+        await self._app.accept_new_letter(self.letter.letter, self.letter.letter_index(), now_ms)
         self.letter.letter = ""
-        self.last_letter_time_s = pygame.time.get_ticks()/1000
+        self.last_letter_time_s = now_ms/1000
 
-    async def stop(self) -> None:
+    async def stop(self, now_ms: int) -> None:
         self.sound_manager.play_game_over()
         logger.info("GAME OVER")
         for rack in self.racks:
             rack.stop()
         self.input_devices = []
         self.running = False
-        now_s = pygame.time.get_ticks() / 1000
+        now_s = now_ms / 1000
         self.stop_time_s = now_s
         self.duration_log_f.write(
             f"{self.scores[0].score},{now_s-self.start_time_s}\n")
@@ -846,21 +858,21 @@ class Game:
         await self._app.stop()
         logger.info("GAME OVER OVER")
 
-    async def next_tile(self, next_letter: str) -> None:
+    async def next_tile(self, next_letter: str, now_ms: int) -> None:
         if self.letter.get_screen_bottom_y() + Letter.Y_INCREMENT*3 > self.rack_metrics.get_rect().y:
             next_letter = "!"
-        self.letter.change_letter(next_letter)
+        self.letter.change_letter(next_letter, now_ms)
 
-    def resize_previous_guesses(self) -> None:
+    def resize_previous_guesses(self, now_ms: int) -> None:
         font_size = (cast(float, self.previous_guesses_display.font.size)*4.0)/5.0
         self.previous_guesses_display = PreviousGuessesDisplay.from_instance(
-            self.previous_guesses_display, max(1, int(font_size)))
+            self.previous_guesses_display, max(1, int(font_size)), now_ms)
         self.remaining_previous_guesses_display = RemainingPreviousGuessesDisplay.from_instance(
             self.remaining_previous_guesses_display, int(font_size - FONT_SIZE_DELTA))
         self.previous_guesses_display.draw()
         self.remaining_previous_guesses_display.draw()
 
-    def exec_with_resize(self, f):
+    def exec_with_resize(self, f, now_ms: int):
         retry_count = 0
         while True:
             try:
@@ -870,42 +882,50 @@ class Game:
                 return f()
             except textrect.TextRectException as e:
                 # print(f"resize_previous_guesses: {e}")
-                self.resize_previous_guesses()
+                self.resize_previous_guesses(now_ms)
 
-    async def add_guess(self, previous_guesses: list[str], guess: str, player: int) -> None:
+    async def add_guess(self, previous_guesses: list[str], guess: str, player: int, now_ms: int) -> None:
         self.guess_to_player[guess] = player
-        self.exec_with_resize(lambda: self.previous_guesses_display.add_guess(previous_guesses, guess, player))
+        self.exec_with_resize(lambda: self.previous_guesses_display.add_guess(
+            previous_guesses, guess, player, now_ms),
+                              now_ms)
 
-    async def update_previous_guesses(self, previous_guesses: list[str]) -> None:
-        self.exec_with_resize(lambda: self.previous_guesses_display.update_previous_guesses(previous_guesses))
+    async def update_previous_guesses(self, previous_guesses: list[str], now_ms: int) -> None:
+        self.exec_with_resize(
+            lambda: self.previous_guesses_display.update_previous_guesses(
+                previous_guesses, now_ms),
+            now_ms)
 
-    async def update_remaining_guesses(self, previous_guesses: list[str]) -> None:
-        self.exec_with_resize(lambda: self.remaining_previous_guesses_display.update_remaining_guesses(previous_guesses))
+    async def update_remaining_guesses(self, previous_guesses: list[str], now_ms: int) -> None:
+        self.exec_with_resize(
+            lambda: self.remaining_previous_guesses_display.update_remaining_guesses(previous_guesses),
+            now_ms)
 
-    def update_previous_guesses_with_resizing(self, window: pygame.Surface, now: int) -> None:
+    def update_previous_guesses_with_resizing(self, window: pygame.Surface, now_ms: int) -> None:
         def update_all_previous_guesses(self, window: pygame.Surface) -> None:
-            self.previous_guesses_display.update(window, now)
+            self.previous_guesses_display.update(window, now_ms)
             self.remaining_previous_guesses_display.update(
                 window, self.previous_guesses_display.surface.get_bounding_rect().height)
 
-        self.exec_with_resize(lambda: update_all_previous_guesses(self, window))
+        self.exec_with_resize(lambda: update_all_previous_guesses(self, window),
+                              now_ms)
 
-    async def update(self, window: pygame.Surface, now: int) -> None:
+    async def update(self, window: pygame.Surface, now_ms: int) -> None:
         window.set_alpha(255)
-        self.update_previous_guesses_with_resizing(window, now)
-        self.letter_source.update(window, now)
+        self.update_previous_guesses_with_resizing(window, now_ms)
+        self.letter_source.update(window, now_ms)
 
         if self.running:
-            self.letter.update(window, now)
+            self.letter.update(window, now_ms)
             await self._app.letter_lock(self.letter.letter_index(), self.letter.locked_on)
 
         for player in range(self._app._player_count):
-            self.racks[player].update(window, now)
+            self.racks[player].update(window, now_ms)
         for shield in self.shields:
             shield.update(window)
             if shield.rect.y <= self.letter.get_screen_bottom_y():
                 shield.letter_collision()
-                self.letter.shield_collision()
+                self.letter.shield_collision(now_ms)
                 self.scores[shield.player].update_score(shield.score)
                 self._app.add_guess(shield.letters, shield.player)
                 self.sound_manager.play_crash()
@@ -917,11 +937,11 @@ class Game:
         # letter collide with rack
         if self.running and self.letter.get_screen_bottom_y() > self.rack_metrics.get_rect().y:
             if self.letter.letter == "!":
-                await self.stop()
+                await self.stop(now_ms)
             else:
                 self.sound_manager.play_chunk()
-                self.letter.new_fall()
-                await self.accept_letter()
+                self.letter.new_fall(now_ms)
+                await self.accept_letter(now_ms)
 
 class BlockWordsPygame():
     def __init__(self) -> None:
@@ -929,9 +949,9 @@ class BlockWordsPygame():
             (SCREEN_WIDTH*SCALING_FACTOR, SCREEN_HEIGHT*SCALING_FACTOR))
         self.letter_font = pygame.freetype.SysFont(FONT, RackMetrics.LETTER_SIZE)
 
-    async def handle_mqtt_message(self, topic: aiomqtt.Topic) -> None:
+    async def handle_mqtt_message(self, topic: aiomqtt.Topic, now_ms: int) -> None:
         if topic.matches("app/start"):
-            events.trigger("game.start")
+            events.trigger("game.start", now_ms)
         elif topic.matches("app/abort"):
             events.trigger("game.abort")
 
@@ -987,9 +1007,9 @@ class BlockWordsPygame():
                 pygame.mixer.Sound.play(cleared_sound)
             await the_app.guess_word_keyboard(input_device.current_guess, input_device.player_number)
         
-        async def start_game(input_device: InputDevice):
+        async def start_game(input_device: InputDevice, now_ms: int):
             input_device.current_guess = ""
-            player_number = await game.start(input_device)
+            player_number = await game.start(input_device, now_ms)
             rack = game.racks[player_number]
             rack.cursor_position = 0
             rack.select_count = 0
@@ -1061,12 +1081,11 @@ class BlockWordsPygame():
         left_sound.set_volume(0.5)
         right_sound.set_volume(0.5)
 
-        game = Game(the_app, self.letter_font)
+        game = Game(the_app, self.letter_font, pygame.time.get_ticks())
         
         while True:
-            current_time_s = pygame.time.get_ticks() / 1000
-            if start and not game.running and current_time_s - game.stop_time_s > 120:
-                await game.start()
+            now_ms = pygame.time.get_ticks()
+
             if game.aborted:
                 return
             for event in pygame.event.get():
@@ -1075,48 +1094,50 @@ class BlockWordsPygame():
                 if event.type == pygame.KEYDOWN:
                     key = pygame.key.name(event.key).upper()
                     if key == "ESCAPE":
-                        keyboard_input.player_number = await start_game(keyboard_input)
+                        keyboard_input.player_number = await start_game(keyboard_input, now_ms)
                         print(f"keyboard_input.player_number player_number: {keyboard_input.player_number}")
-
-                    elif key == "LEFT":
-                        handle_left_movement(keyboard_input)
-                    elif key == "RIGHT":
-                        handle_right_movement(keyboard_input)
-                    elif key == "SPACE":
-                        await handle_space_action(keyboard_input)
-                    elif key == "BACKSPACE":
-                        if keyboard_input.current_guess:
-                            keyboard_input.current_guess = keyboard_input.current_guess[:-1]
-                            game.racks[keyboard_input.player_number].select_count = len(keyboard_input.current_guess)
-                            game.racks[keyboard_input.player_number].draw()
-                    elif key == "RETURN":
-                        handle_return_action(keyboard_input)
-                    elif key == "TAB":
-                        the_app._player_count = 1 if the_app._player_count == 2 else 2
-                        for player in range(MAX_PLAYERS):
-                            game.scores[player].draw()
-                            game.racks[player].draw()
-                    elif len(key) == 1:
-                        remaining_letters = list(game.racks[keyboard_input.player_number].letters())
-                        for l in keyboard_input.current_guess:
-                            if l in remaining_letters:
-                                remaining_letters.remove(l)
-                        if key not in remaining_letters:
-                            keyboard_input.current_guess = ""
-                            game.racks[keyboard_input.player_number].select_count = len(keyboard_input.current_guess)
+                    print(f"keyboard_input.player_number: {keyboard_input.player_number}")
+                    if keyboard_input.player_number is not None:
+                        if key == "LEFT":
+                            handle_left_movement(keyboard_input)
+                        elif key == "RIGHT":
+                            handle_right_movement(keyboard_input)
+                        elif key == "SPACE":
+                            await handle_space_action(keyboard_input)
+                        elif key == "BACKSPACE":
+                            if keyboard_input.current_guess:
+                                keyboard_input.current_guess = keyboard_input.current_guess[:-1]
+                                game.racks[keyboard_input.player_number].select_count = len(keyboard_input.current_guess)
+                                game.racks[keyboard_input.player_number].draw()
+                        elif key == "RETURN":
+                            handle_return_action(keyboard_input)
+                        elif key == "TAB":
+                            the_app._player_count = 1 if the_app._player_count == 2 else 2
+                            for player in range(MAX_PLAYERS):
+                                game.scores[player].draw()
+                                game.racks[player].draw()
+                        elif len(key) == 1:
+                            print(f"player_number: {keyboard_input.player_number}")
                             remaining_letters = list(game.racks[keyboard_input.player_number].letters())
-                        if key in remaining_letters:
-                            keyboard_input.current_guess += key
-                            await the_app.guess_word_keyboard(keyboard_input.current_guess, keyboard_input.player_number)
-                            game.racks[keyboard_input.player_number].select_count = len(keyboard_input.current_guess)
-                            logger.info(f"key: {str(key)} {keyboard_input.current_guess}")
-                # --- Joystick abstraction usage ---
+                            for l in keyboard_input.current_guess:
+                                if l in remaining_letters:
+                                    remaining_letters.remove(l)
+                            if key not in remaining_letters:
+                                keyboard_input.current_guess = ""
+                                game.racks[keyboard_input.player_number].select_count = len(keyboard_input.current_guess)
+                                remaining_letters = list(game.racks[keyboard_input.player_number].letters())
+                            if key in remaining_letters:
+                                keyboard_input.current_guess += key
+                                await the_app.guess_word_keyboard(keyboard_input.current_guess, keyboard_input.player_number)
+                                game.racks[keyboard_input.player_number].select_count = len(keyboard_input.current_guess)
+                                logger.info(f"key: {str(key)} {keyboard_input.current_guess}")
+                    # --- Joystick abstraction usage ---
                 if hasattr(event, 'joy'):  # Only process joystick events
                     for input_device in input_devices: 
                         if input_device.id == event.joy:
                             await input_device.process_event(event)
             screen.fill((0, 0, 0))
-            await game.update(screen, pygame.time.get_ticks())
+            await game.update(screen, now_ms)
             hub75.update(screen)
             pygame.transform.scale(screen,
                 self._window.get_rect().size, dest_surface=self._window)
