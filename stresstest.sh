@@ -6,6 +6,7 @@ trap "kill 0" EXIT
 duration="${1:-0.1}"
 
 
-python fake_tile_sequences.py --duration $duration --player 2 &
+#python fake_tile_sequences.py --duration $duration --player 2 &
+python fake_tile_sequences.py --duration $duration --player 1 &
 
 ./runpygame.sh
