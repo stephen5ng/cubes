@@ -60,8 +60,8 @@ PLAYER_COLORS = [SHIELD_COLOR_P0, SHIELD_COLOR_P1]
 FADER_PLAYER_COLORS = [FADER_COLOR_P0, FADER_COLOR_P1]
 
 def get_alpha(
-    easing: easing_functions.easing.EasingBase, last_update: float, duration: float) -> int:
-    remaining_ms = duration - (pygame.time.get_ticks() - last_update)
+    easing: easing_functions.easing.EasingBase, last_update: float, duration: float, now: int) -> int:
+    remaining_ms = duration - (now - last_update)
     if 0 < remaining_ms < duration:
         return int(easing(remaining_ms / duration))
     return 0
@@ -201,7 +201,7 @@ class Letter():
     COLUMN_SHIFT_INTERVAL_MS = 10000
 
     def __init__(
-        self, font: pygame.freetype.Font, initial_y: int, rack_metrics: RackMetrics) -> None:
+        self, font: pygame.freetype.Font, initial_y: int, rack_metrics: RackMetrics, now: int) -> None:
         self.rack_metrics = rack_metrics
         self.new_game_y = initial_y
         self.font = font
@@ -211,28 +211,28 @@ class Letter():
         self.fraction_complete = 0.0
         self.locked_on = False
         self.start_x = self.rack_metrics.get_rect().x
-        self.start()
-        self.start_fall_time_ms = pygame.time.get_ticks()
+        self.start(now)
+        self.start_fall_time_ms = now
         self.bounce_sound = pygame.mixer.Sound("sounds/bounce.wav")
         self.bounce_sound.set_volume(0.1)
         self.next_letter_easing = easing_functions.ExponentialEaseOut(start=0, end=1, duration=1)
         self.left_right_easing = easing_functions.ExponentialEaseIn(start=1000, end=10000, duration=1)
         self.top_bottom_easing = easing_functions.CubicEaseIn(start=0, end=1, duration=1)
-        self.draw()
+        self.draw(now)
 
-    def start(self) -> None:
+    def start(self, now: int) -> None:
         self.letter = ""
         self.letter_ix = 0
         self.start_fall_y = 0
         self.new_start_fall_y = 0
         self.column_move_direction = 1
-        self.next_column_move_time_ms = pygame.time.get_ticks()
+        self.next_column_move_time_ms = now
         self.top_bottom_percent = 0
         self.total_fall_time_ms = self.DROP_TIME_MS
         self.rect = pygame.Rect(0, 0, 0, 0)
         self.pos = [0, 0]
-        self.start_fall_time_ms = pygame.time.get_ticks()
-        self.last_beep_time_ms = pygame.time.get_ticks()
+        self.start_fall_time_ms = now
+        self.last_beep_time_ms = now
 
     def stop(self) -> None:
         self.letter = ""
@@ -245,9 +245,9 @@ class Letter():
     def get_screen_bottom_y(self) -> int:
         return self.new_game_y + self.pos[1] + self.letter_height
 
-    def draw(self) -> None:
+    def draw(self, now) -> None:
         self.surface = self.font.render(self.letter, LETTER_SOURCE_COLOR)[0]
-        remaining_ms = max(0, self.next_column_move_time_ms - pygame.time.get_ticks())
+        remaining_ms = max(0, self.next_column_move_time_ms - now)
         self.fraction_complete = 1.0 - remaining_ms/self.NEXT_COLUMN_MS
         self.easing_complete = self.next_letter_easing(self.fraction_complete)
         boost_x = 0 if self.locked_on else int(self.column_move_direction*(self.width*self.easing_complete - self.width))
@@ -256,7 +256,7 @@ class Letter():
             self.locked_on = self.get_screen_bottom_y() + Letter.Y_INCREMENT*2 > self.height
             # print(f"{self.easing_complete} {remaining_ms} {self.fraction_complete} {self.locked_on} {self.get_screen_bottom_y() + Letter.Y_INCREMENT*2} > {self.height}")
 
-    def update(self, window: pygame.Surface) -> None:
+    def update(self, window: pygame.Surface, now_ms: int) -> None:
         now_ms = pygame.time.get_ticks()
         fall_percent = (now_ms - self.start_fall_time_ms)/self.total_fall_time_ms
         fall_easing = self.top_bottom_easing(fall_percent)
@@ -267,7 +267,7 @@ class Letter():
             pygame.mixer.Sound.play(letter_beeps[int(10*distance_from_top)])
             self.last_beep_time_ms = now_ms
 
-        self.draw()
+        self.draw(now_ms)
 
         blit_pos = self.pos.copy()
         blit_pos[1] += self.new_game_y
@@ -290,7 +290,7 @@ class Letter():
 
     def change_letter(self, new_letter: str) -> None:
         self.letter = new_letter
-        self.draw()
+        self.draw(pygame.time.get_ticks())
 
     def new_fall(self) -> None:
         self.start_fall_y += Letter.Y_INCREMENT
@@ -372,14 +372,14 @@ class Rack():
         self.transition_tile = tile
         self.draw()
 
-    def _render_fading_letters(self, surface_with_faders: pygame.Surface) -> None:
+    def _render_fading_letters(self, surface_with_faders: pygame.Surface, now: int) -> None:
         def make_color(color: pygame.Color, alpha: int) -> pygame.Color:
             new_color = Color(color)
             new_color.a = alpha
             return new_color
 
         new_letter_alpha = get_alpha(self.easing,
-            self.last_update_letter_ms, Rack.LETTER_TRANSITION_DURATION_MS)
+            self.last_update_letter_ms, Rack.LETTER_TRANSITION_DURATION_MS, now)
         if new_letter_alpha and self.transition_tile in self.tiles:
             self._render_letter(
                 surface_with_faders,
@@ -387,7 +387,7 @@ class Rack():
                 self.transition_tile.letter,
                 make_color(LETTER_SOURCE_COLOR, new_letter_alpha))
 
-        good_word_alpha = get_alpha(self.easing, self.last_guess_ms, Rack.GUESS_TRANSITION_DURATION_MS)
+        good_word_alpha = get_alpha(self.easing, self.last_guess_ms, Rack.GUESS_TRANSITION_DURATION_MS, now)
         if good_word_alpha:
             color = make_color(GOOD_GUESS_COLOR, good_word_alpha)
             letters = self.letters()
@@ -411,13 +411,13 @@ class Rack():
                     rect=self.rack_metrics.get_largest_letter_rect(letter_index),
                     special_flags=pygame.BLEND_RGBA_MULT)
 
-    def update(self, window: pygame.Surface) -> None:
+    def update(self, window: pygame.Surface, now: int) -> None:
         if not self.running:
             window.blit(self.game_over_surface, self.game_over_pos)
             return
         surface = self.surface.copy()
         self._render_flashing_letters(surface)
-        self._render_fading_letters(surface)
+        self._render_fading_letters(surface, now)
         top_left = self.rack_metrics.get_rect().topleft
         player_index = 0 if self.the_app._player_count == 1 else self.player+1
         top_left = (top_left[0] + self.left_offset_by_player[player_index], top_left[1])
@@ -497,8 +497,8 @@ class LastGuessFader():
         self.last_guess_position = position
         self.alpha = 1
 
-    def blit(self, target) -> None:
-        self.alpha = get_alpha(self.easing, self.last_update_ms, self.duration)
+    def blit(self, target: pygame.Surface, now: int) -> None:
+        self.alpha = get_alpha(self.easing, self.last_update_ms, self.duration, now)
         if self.alpha:
             self.last_guess_surface.set_alpha(self.alpha)
             target.blit(self.last_guess_surface, self.last_guess_position)
@@ -592,10 +592,10 @@ class PreviousGuessesDisplay(PreviousGuessesDisplayBase):
         self._recreate_faders()
         self.draw()
 
-    def update(self, window: pygame.Surface) -> None:
+    def update(self, window: pygame.Surface, now: int) -> None:
         surface_with_faders = self.surface.copy()
         for fader in self.faders:
-            fader.blit(surface_with_faders)
+            fader.blit(surface_with_faders, now)
 
         # remove finished faders
         self.faders[:] = [f for f in self.faders if f.alpha]
@@ -663,14 +663,14 @@ class LetterSource():
         self.surface.set_alpha(LetterSource.ALPHA)
         self.surface.fill(LETTER_SOURCE_COLOR)
 
-    def update(self, window: pygame.Surface) -> None:
+    def update(self, window: pygame.Surface, now: int) -> None:
         if self.last_y != self.letter.start_fall_y:
             self.last_update = pygame.time.get_ticks()
             self.height = LetterSource.MAX_HEIGHT
             self.last_y = self.letter.start_fall_y
             self.draw()
         elif self.height > LetterSource.MIN_HEIGHT:
-            self.height = get_alpha(self.easing, self.last_update, LetterSource.ANIMATION_DURAION_MS)
+            self.height = get_alpha(self.easing, self.last_update, LetterSource.ANIMATION_DURAION_MS, now)
             self.draw()
         self.pos = [self.x, self.initial_y + self.letter.start_fall_y - self.height]
         window.blit(self.surface, self.pos)
@@ -737,7 +737,7 @@ class Game:
         self.scores = [Score(the_app, player) for player in range(MAX_PLAYERS)]
         letter_y = self.scores[0].get_size()[1] + 4
         self.rack_metrics = RackMetrics()
-        self.letter = Letter(letter_font, letter_y, self.rack_metrics)
+        self.letter = Letter(letter_font, letter_y, self.rack_metrics, pygame.time.get_ticks())
         self.racks = [Rack(the_app, self.rack_metrics, self.letter, player) for player in range(MAX_PLAYERS)]
         self.guess_to_player = {}
         self.previous_guesses_display = PreviousGuessesDisplay(PreviousGuessesDisplay.FONT_SIZE, self.guess_to_player)
@@ -807,7 +807,7 @@ class Game:
         self.previous_guesses_display = PreviousGuessesDisplay(PreviousGuessesDisplay.FONT_SIZE, self.guess_to_player)
         self.remaining_previous_guesses_display = RemainingPreviousGuessesDisplay(
             PreviousGuessesDisplay.FONT_SIZE - FONT_SIZE_DELTA, self.guess_to_player)
-        self.letter.start()
+        self.letter.start(pygame.time.get_ticks())
         for score in self.scores:
             score.start()
         for rack in self.racks:
@@ -882,25 +882,25 @@ class Game:
     async def update_remaining_guesses(self, previous_guesses: list[str]) -> None:
         self.exec_with_resize(lambda: self.remaining_previous_guesses_display.update_remaining_guesses(previous_guesses))
 
-    def update_previous_guesses_with_resizing(self, window: pygame.Surface) -> None:
+    def update_previous_guesses_with_resizing(self, window: pygame.Surface, now: int) -> None:
         def update_all_previous_guesses(self, window: pygame.Surface) -> None:
-            self.previous_guesses_display.update(window)
+            self.previous_guesses_display.update(window, now)
             self.remaining_previous_guesses_display.update(
                 window, self.previous_guesses_display.surface.get_bounding_rect().height)
 
         self.exec_with_resize(lambda: update_all_previous_guesses(self, window))
 
-    async def update(self, window: pygame.Surface) -> None:
+    async def update(self, window: pygame.Surface, now: int) -> None:
         window.set_alpha(255)
-        self.update_previous_guesses_with_resizing(window)
-        self.letter_source.update(window)
+        self.update_previous_guesses_with_resizing(window, now)
+        self.letter_source.update(window, now)
 
         if self.running:
-            self.letter.update(window)
+            self.letter.update(window, now)
             await self._app.letter_lock(self.letter.letter_index(), self.letter.locked_on)
 
         for player in range(self._app._player_count):
-            self.racks[player].update(window)
+            self.racks[player].update(window, now)
         for shield in self.shields:
             shield.update(window)
             if shield.rect.y <= self.letter.get_screen_bottom_y():
@@ -1116,7 +1116,7 @@ class BlockWordsPygame():
                         if input_device.id == event.joy:
                             await input_device.process_event(event)
             screen.fill((0, 0, 0))
-            await game.update(screen)
+            await game.update(screen, pygame.time.get_ticks())
             hub75.update(screen)
             pygame.transform.scale(screen,
                 self._window.get_rect().size, dest_surface=self._window)
