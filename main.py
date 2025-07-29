@@ -10,6 +10,8 @@ import os
 import pygame
 import traceback
 
+
+
 import app
 import cubes_to_game
 from dictionary import Dictionary
@@ -93,6 +95,7 @@ if __name__ == "__main__":
     parser.add_argument("--tags", default="tag_ids.txt", type=str)
     parser.add_argument('--start', action=argparse.BooleanOptionalAction)
     parser.add_argument("--keyboard-player-number", default=1, type=int, help="Player number (1 or 2) that uses keyboard input")
+    parser.add_argument("--replay", type=str, help="Replay a game from a log file")
     args = parser.parse_args()
 
     # logger.setLevel(logging.DEBUG)
@@ -101,6 +104,6 @@ if __name__ == "__main__":
     dictionary = Dictionary(tiles.MIN_LETTERS, tiles.MAX_LETTERS, open=my_open)
     dictionary.read(f"{BUNDLE_TEMP_DIR}/sowpods.txt", f"{BUNDLE_TEMP_DIR}/bingos.txt")
     pygame.init()
-    block_words = pygamegameasync.BlockWordsPygame()
+    block_words = pygamegameasync.BlockWordsPygame(replay_file=args.replay)
     asyncio.run(main(args, dictionary, block_words, args.keyboard_player_number-1))
     pygame.quit()

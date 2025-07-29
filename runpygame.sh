@@ -9,5 +9,5 @@ if ! nc -zv $mqtt_server 1883 > /dev/null 2>&1; then
 fi
 
 
-#python -X dev -X tracemalloc=5 ./main.py
-python ./main.py
+#python -X dev -X tracemalloc=5 ./main.py "$@"
+python ./main.py "$@"
