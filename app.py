@@ -29,7 +29,7 @@ class App:
     def __init__(self, publish_queue: asyncio.Queue, dictionary: Dictionary) -> None:
         def make_guess_tiles_callback(the_app: App) -> Callable[[list[str], bool, int],  Coroutine[Any, Any, None]]:
             async def guess_tiles_callback(guess: list[str], move_tiles: bool, player: int) -> None:
-                await the_app.guess_tiles(guess, move_tiles, player)
+                events.trigger("input.guess_tiles", guess, move_tiles, player)
             return guess_tiles_callback
 
         def make_start_game_callback(the_app: App) -> Callable[[bool],  Coroutine[Any, Any, None]]:
@@ -107,6 +107,7 @@ class App:
         events.trigger("input.add_guess", self._score_card.get_previous_guesses(), guess, player, pygame.time.get_ticks())
 
     async def guess_tiles(self, word_tile_ids: list[str], move_tiles: bool, player: int) -> None:
+        print(f"app.guess_tiles {word_tile_ids} {move_tiles} {player}")
         self._last_guess = word_tile_ids
         logger.info(f"guess_tiles: word_tile_ids {word_tile_ids}")
         if not self._running:

@@ -816,6 +816,7 @@ class Game:
         self.input_devices = []
         self.game_logger = GameLogger(log_file)
 
+        # TODO(sng): remove f
         events.on(f"game.stage_guess")(self.stage_guess)
         events.on(f"game.old_guess")(self.old_guess)
         events.on(f"game.bad_guess")(self.bad_guess)
@@ -825,9 +826,14 @@ class Game:
         events.on(f"input.remaining_previous_guesses")(self.update_remaining_guesses)
         events.on(f"input.update_previous_guesses")(self.update_previous_guesses)
         events.on(f"input.add_guess")(self.add_guess)
+        events.on(f"input.guess_tiles")(self.guess_tiles)
         events.on(f"rack.update_rack")(self.update_rack)
         events.on(f"rack.update_letter")(self.update_letter)
 
+    async def guess_tiles(self, word_tile_ids: list[str], move_tiles: bool, player: int):
+        print(f"Game.guess_tiles: {word_tile_ids}")
+        await self._app.guess_tiles(word_tile_ids, move_tiles, player)
+        
     async def update_rack(self, tiles: list[tiles.Tile], highlight_length: int, guess_length: int, player: int, now_ms: int) -> None:
         await self.racks[player].update_rack(tiles, highlight_length, guess_length, now_ms)
 
