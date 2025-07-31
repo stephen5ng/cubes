@@ -489,7 +489,7 @@ class Rack():
         window.blit(surface, top_left)
 
 class Shield():
-    def __init__(self, base_pos: tuple[int, int], letters: str, score: int, player: int) -> None:
+    def __init__(self, base_pos: tuple[int, int], letters: str, score: int, player: int, now_ms: int) -> None:
         self.font = pygame.freetype.SysFont("Arial", int(2+math.log(1+score)*8))
         self.letters = letters
         self.pos = [base_pos[0], float(base_pos[1])]
@@ -898,15 +898,15 @@ class Game:
         self.stop_time_s = -1000
         self.last_letter_time_s = now_s
         self.start_time_s = now_s
-        await self._app.start()
+        await self._app.start(now_ms)
         self.sound_manager.play_start()
         print("start done")
         return 0
 
-    async def stage_guess(self, score: int, last_guess: str, player: int) -> None:
+    async def stage_guess(self, score: int, last_guess: str, player: int, now_ms: int) -> None:
         await self.sound_manager.queue_word_sound(last_guess, player)
         self.racks[player].guess_type = GuessType.GOOD
-        self.shields.append(Shield(self.rack_metrics.get_rect().topleft, last_guess, score, player))
+        self.shields.append(Shield(self.rack_metrics.get_rect().topleft, last_guess, score, player, now_ms))
 
     async def accept_letter(self, now_ms: int) -> None:
         await self._app.accept_new_letter(self.letter.letter, self.letter.letter_index(), now_ms)
@@ -925,7 +925,7 @@ class Game:
         self.duration_log_f.write(
             f"{self.scores[0].score},{now_s-self.start_time_s}\n")
         self.duration_log_f.flush()
-        await self._app.stop()
+        await self._app.stop(now_ms)
         logger.info("GAME OVER OVER")
 
     async def next_tile(self, next_letter: str, now_ms: int) -> None:
@@ -1050,7 +1050,7 @@ class BlockWordsPygame():
                 'topic': type('Topic', (), {'value': topic_str})(),
                 'payload': payload_data.encode() if payload_data else None
             })()
-            await cubes_to_game.handle_mqtt_message(self._publish_queue, message)
+            await cubes_to_game.handle_mqtt_message(self._publish_queue, message, now_ms)
 
     async def handle_space_action(self, input_device: InputDevice):
         if not self.game.running:

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import aiomqtt
+import pygame
 import logging
 import time
 from typing import Callable, Coroutine, Dict, List
@@ -227,8 +228,8 @@ class GuessManager:
         self.last_guess_time_s = time.time()
         self.DEBOUNCE_TIME_S = 10
 
-    async def guess_word_based_on_cubes(self, sender: str, tag: str, publish_queue, cube_to_player: Dict[str, int], cube_managers: List[CubeManager]):
-        now_s = time.time()
+    async def guess_word_based_on_cubes(self, sender: str, tag: str, publish_queue, cube_to_player: Dict[str, int], cube_managers: List[CubeManager], now_ms: int):
+        now_s = now_ms / 1000
         
         player = cube_to_player.get(sender)
         if player is None:
@@ -242,20 +243,20 @@ class GuessManager:
             self.last_guess_time_s = now_s
             return
         self.last_guess_time_s = now_s
-        await self.guess_tiles(publish_queue, word_tiles_list, player)
+        await self.guess_tiles(publish_queue, word_tiles_list, player, now_ms)
 
-    async def guess_tiles(self, publish_queue, word_tiles_list, player: int):
+    async def guess_tiles(self, publish_queue, word_tiles_list, player: int, now_ms: int):
         self.last_guess_tiles = word_tiles_list
-        await guess_last_tiles(publish_queue, player)
+        await guess_last_tiles(publish_queue, player, now_ms)
 
-    async def load_rack(self, publish_queue, tiles_with_letters: list[tiles.Tile], player: int):
+    async def load_rack(self, publish_queue, tiles_with_letters: list[tiles.Tile], player: int, now_ms: int):
         await cube_managers[player].load_rack(publish_queue, tiles_with_letters)
 
         if self.last_tiles_with_letters != tiles_with_letters:
             # Some of the tiles changed. Make a guess, just in case one of them
             # was in our last guess (which is overkill).
             logging.info(f"LOAD RACK guessing")
-            await guess_last_tiles(publish_queue, player)
+            await guess_last_tiles(publish_queue, player, now_ms)
             self.last_tiles_with_letters = tiles_with_letters
 
 # Global managers for each player
@@ -273,14 +274,14 @@ async def accept_new_letter(publish_queue, letter, tile_id, player: int):
     cube_managers[player].cubes_to_letters[cube_id] = letter
     await _publish_letter(publish_queue, letter, cube_id)
 
-async def load_rack(publish_queue, tiles_with_letters: list[tiles.Tile], player: int):
-    await guess_manager.load_rack(publish_queue, tiles_with_letters, player)
+async def load_rack(publish_queue, tiles_with_letters: list[tiles.Tile], player: int, now_ms: int):
+    await guess_manager.load_rack(publish_queue, tiles_with_letters, player, now_ms)
 
 async def guess_tiles(publish_queue, word_tiles_list, player: int):
     await guess_manager.guess_tiles(publish_queue, word_tiles_list, player)
 
-async def guess_word_based_on_cubes(sender: str, tag: str, publish_queue):
-    await guess_manager.guess_word_based_on_cubes(sender, tag, publish_queue, cube_to_player, cube_managers)
+async def guess_word_based_on_cubes(sender: str, tag: str, publish_queue, now_ms: int):
+    await guess_manager.guess_word_based_on_cubes(sender, tag, publish_queue, cube_to_player, cube_managers, now_ms)
 
 guess_tiles_callback: Callable[[str, bool], Coroutine[None, None, None]]
 
@@ -297,24 +298,24 @@ async def letter_lock(publish_queue, locked_on: bool, tile_id: str) -> None:
         cube_id = cube_managers[player].tiles_to_cubes[tile_id]
         await publish_queue.put((f"cube/{cube_id}/lock", "1" if locked_on else None, True))
 
-async def guess_last_tiles(publish_queue, player: int) -> None:
+async def guess_last_tiles(publish_queue, player: int, now_ms: int) -> None:
     logging.info(f"guess_last_tiles last_guess_tiles {guess_manager.last_guess_tiles}")
     for guess in guess_manager.last_guess_tiles:
-        await guess_tiles_callback(guess, True, player)
+        await guess_tiles_callback(guess, True, player, now_ms)
 
     await cube_managers[player]._mark_tiles_for_guess(publish_queue, guess_manager.last_guess_tiles)
 
 async def flash_guess(publish_queue, tiles: list[str], player: int):
     await cube_managers[player].flash_guess(publish_queue, tiles)
 
-async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str):
+async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str, now_ms: int):
     logging.info(f"process_cube_guess: {topic} {data}")
     sender = topic.value.removeprefix("cube/nfc/")
     await publish_queue.put((f"game/nfc/{sender}", data, True))
     if data in START_GAME_TAGS:
         await start_game_callback(True)
         return
-    await guess_word_based_on_cubes(sender, data, publish_queue)
+    await guess_word_based_on_cubes(sender, data, publish_queue, now_ms)
 
 def read_data(f) -> List[str]:
     """Read all data from file."""
@@ -357,9 +358,9 @@ async def init(subscribe_client, tags_file):
             
         manager._initialize_arrays()
 
-async def handle_mqtt_message(publish_queue, message):
+async def handle_mqtt_message(publish_queue, message, now_ms: int):
     payload_data = message.payload.decode() if message.payload is not None else ""
-    await process_cube_guess(publish_queue, message.topic, payload_data)
+    await process_cube_guess(publish_queue, message.topic, payload_data, pygame.time.get_ticks())
 
 async def good_guess(publish_queue, tiles: list[str], player: int):
     cube_managers[player].border_color = "0x07E0"
