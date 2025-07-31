@@ -277,8 +277,8 @@ async def accept_new_letter(publish_queue, letter, tile_id, player: int):
 async def load_rack(publish_queue, tiles_with_letters: list[tiles.Tile], player: int, now_ms: int):
     await guess_manager.load_rack(publish_queue, tiles_with_letters, player, now_ms)
 
-async def guess_tiles(publish_queue, word_tiles_list, player: int):
-    await guess_manager.guess_tiles(publish_queue, word_tiles_list, player)
+async def guess_tiles(publish_queue, word_tiles_list, player: int, now_ms: int):
+    await guess_manager.guess_tiles(publish_queue, word_tiles_list, player, now_ms)
 
 async def guess_word_based_on_cubes(sender: str, tag: str, publish_queue, now_ms: int):
     await guess_manager.guess_word_based_on_cubes(sender, tag, publish_queue, cube_to_player, cube_managers, now_ms)
