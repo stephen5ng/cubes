@@ -492,13 +492,16 @@ class Shield():
     def __init__(self, base_pos: tuple[int, int], letters: str, score: int, player: int, now_ms: int) -> None:
         self.font = pygame.freetype.SysFont("Arial", int(2+math.log(1+score)*8))
         self.letters = letters
-        self.pos = [base_pos[0], float(base_pos[1])]
-        self.pos[1] -= self.font.get_rect("A").height
+        self.base_pos = [base_pos[0], float(base_pos[1])]
+        self.base_pos[1] -= self.font.get_rect("A").height
+        self.pos = [self.base_pos[0], self.base_pos[1]]
         self.rect = pygame.Rect(0, 0, 0, 0)
-        self.speed = -math.log(1+score) / 10
         self.score = score
         self.active = True
         self.player = player
+        self.start_time_ms = now_ms
+        self.initial_speed = -math.log(1+score)
+        self.acceleration_rate = 1.05
         self.draw()
 
     def draw(self) -> None:
@@ -507,8 +510,12 @@ class Shield():
 
     def update(self, window: pygame.Surface, now_ms: int) -> None:
         if self.active:
-            self.pos[1] += self.speed
-            self.speed *= 1.05
+            update_count = (now_ms - self.start_time_ms) / (1000.0/TICKS_PER_SECOND)
+
+            # Calculate position by summing up all previous speed contributions
+            # This is a geometric series: initial_speed * (1 - (1.05)^update_count) / (1 - 1.05)
+            displacement = self.initial_speed * (1 - (self.acceleration_rate ** update_count)) / (1 - self.acceleration_rate)
+            self.pos[1] = self.base_pos[1] + displacement
             window.blit(self.surface, self.pos)
 
             # Get the tightest rectangle around the content for collision detection.
