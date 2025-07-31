@@ -360,7 +360,7 @@ async def init(subscribe_client, tags_file):
 
 async def handle_mqtt_message(publish_queue, message, now_ms: int):
     payload_data = message.payload.decode() if message.payload is not None else ""
-    await process_cube_guess(publish_queue, message.topic, payload_data, pygame.time.get_ticks())
+    await process_cube_guess(publish_queue, message.topic, payload_data, now_ms)
 
 async def good_guess(publish_queue, tiles: list[str], player: int):
     cube_managers[player].border_color = "0x07E0"
