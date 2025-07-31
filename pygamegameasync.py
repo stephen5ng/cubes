@@ -505,7 +505,7 @@ class Shield():
         self.surface = self.font.render(self.letters, PreviousGuessesDisplay.FADER_PLAYER_COLORS[self.player])[0]
         self.pos[0] = int(SCREEN_WIDTH/2 - self.surface.get_width()/2)
 
-    def update(self, window: pygame.Surface) -> None:
+    def update(self, window: pygame.Surface, now_ms: int) -> None:
         if self.active:
             self.pos[1] += self.speed
             self.speed *= 1.05
@@ -992,7 +992,7 @@ class Game:
         for player in range(self._app.player_count):
             self.racks[player].update(window, now_ms)
         for shield in self.shields:
-            shield.update(window)
+            shield.update(window, now_ms)
             if shield.rect.y <= self.letter.get_screen_bottom_y():
                 shield.letter_collision()
                 self.letter.shield_collision(now_ms)
@@ -1112,7 +1112,7 @@ class BlockWordsPygame():
         rack.select_count = 0
 
         # clear out the last guess
-        await self.the_app.guess_word_keyboard("", player_number) 
+        await self.the_app.guess_word_keyboard("", player_number, now_ms)
         return player_number
     
     def handle_left_movement(self, input_device: InputDevice):
@@ -1183,7 +1183,7 @@ class BlockWordsPygame():
                 remaining_letters = list(self.game.racks[keyboard_input.player_number].letters())
             if key in remaining_letters:
                 keyboard_input.current_guess += key
-                await self.the_app.guess_word_keyboard(keyboard_input.current_guess, keyboard_input.player_number)
+                await self.the_app.guess_word_keyboard(keyboard_input.current_guess, keyboard_input.player_number, now_ms)
                 self.game.racks[keyboard_input.player_number].select_count = len(keyboard_input.current_guess)
                 logger.info(f"key: {str(key)} {keyboard_input.current_guess}")
 
