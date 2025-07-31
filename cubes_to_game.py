@@ -309,7 +309,6 @@ async def flash_guess(publish_queue, tiles: list[str], player: int):
 
 async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str):
     logging.info(f"process_cube_guess: {topic} {data}")
-    print(f"process_cube_guess: {topic} {data}")
     sender = topic.value.removeprefix("cube/nfc/")
     await publish_queue.put((f"game/nfc/{sender}", data, True))
     if data in START_GAME_TAGS:
@@ -359,7 +358,8 @@ async def init(subscribe_client, tags_file):
         manager._initialize_arrays()
 
 async def handle_mqtt_message(publish_queue, message):
-    await process_cube_guess(publish_queue, message.topic, message.payload.decode())
+    payload_data = message.payload.decode() if message.payload is not None else ""
+    await process_cube_guess(publish_queue, message.topic, payload_data)
 
 async def good_guess(publish_queue, tiles: list[str], player: int):
     cube_managers[player].border_color = "0x07E0"

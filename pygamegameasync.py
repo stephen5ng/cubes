@@ -19,8 +19,13 @@ import textrect
 from typing import cast
 import functools
 
+class EventType(Enum):
+    PYGAME = "pygame"
+    MQTT = "mqtt"
+
 import app
 from config import MAX_PLAYERS
+import cubes_to_game
 from mock_mqtt_client import MockMqttClient
 from pygame.image import tobytes as image_to_string
 from pygameasync import Clock, events
@@ -484,8 +489,6 @@ class Rack():
         window.blit(surface, top_left)
 
 class Shield():
-    ACCELERATION = 1.05
-
     def __init__(self, base_pos: tuple[int, int], letters: str, score: int, player: int) -> None:
         self.font = pygame.freetype.SysFont("Arial", int(2+math.log(1+score)*8))
         self.letters = letters
@@ -1031,11 +1034,23 @@ class BlockWordsPygame():
             self._mock_mqtt_client = MockMqttClient(mqtt_events)
         return self._mock_mqtt_client
 
-    async def handle_mqtt_message(self, topic: aiomqtt.Topic, now_ms: int) -> None:
-        if topic.matches("app/start"):
+    async def handle_mqtt_message(self, topic_str: str, payload, now_ms: int) -> None:
+        if topic_str == "app/start":
             events.trigger("game.start", now_ms)
-        elif topic.matches("app/abort"):
+        elif topic_str == "app/abort":
             events.trigger("game.abort")
+        elif topic_str == "game/guess":
+            payload_str = payload.decode() if payload else ""
+            await self.the_app.guess_word_keyboard(payload_str, 1)
+        elif topic_str.startswith("cube/nfc/"):
+            # Handle None payload by converting to empty string
+            payload_data = payload.decode() if payload is not None else ""
+            # Create a simple message-like object for cubes_to_game
+            message = type('Message', (), {
+                'topic': type('Topic', (), {'value': topic_str})(),
+                'payload': payload_data.encode() if payload_data else None
+            })()
+            await cubes_to_game.handle_mqtt_message(self._publish_queue, message)
 
     async def handle_space_action(self, input_device: InputDevice):
         if not self.game.running:
@@ -1172,8 +1187,19 @@ class BlockWordsPygame():
                 self.game.racks[keyboard_input.player_number].select_count = len(keyboard_input.current_guess)
                 logger.info(f"key: {str(key)} {keyboard_input.current_guess}")
 
-    async def main(self, the_app: app.App, subscribe_client: aiomqtt.Client, start: bool, keyboard_player_number: int) -> None:
+    def _add_mqtt_events_to_queue(self, mqtt_message_queue: asyncio.Queue, events_to_process: list, now_ms: int) -> None:
+        """Process MQTT messages from the queue and add them to events_to_process."""
+        try:
+            while not mqtt_message_queue.empty():
+                mqtt_data = mqtt_message_queue.get_nowait()
+                events_to_process.append((EventType.MQTT, mqtt_data, now_ms))
+        except asyncio.QueueEmpty:
+            pass
+
+    async def main(self, the_app: app.App, subscribe_client: aiomqtt.Client, start: bool, 
+                   keyboard_player_number: int, publish_queue: asyncio.Queue = None) -> None:
         self.the_app = the_app
+        self._publish_queue = publish_queue
         # Define handlers dictionary before joystick initialization
         handlers = {
             'left': self.handle_left_movement,
@@ -1187,8 +1213,8 @@ class BlockWordsPygame():
         screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         clock = Clock()
         
+        self.replayer = GameReplayer(self.replay_file)
         if self.replay_file:
-            self.replayer = GameReplayer(self.replay_file)
             self.replayer.load_events()
             print(f"Replay mode: loaded {len(self.replayer.events)} events from {self.replay_file}")
             mqtt_client = self.get_mock_mqtt_client()
@@ -1228,6 +1254,11 @@ class BlockWordsPygame():
         if self.replay_file and self._mock_mqtt_client:
             self._mock_mqtt_client.set_game_ready()
 
+        mqtt_message_queue = asyncio.Queue()
+        if not self.replay_file:
+            mqtt_task = asyncio.create_task(self._process_mqtt_messages(
+                mqtt_client, mqtt_message_queue, publish_queue), name="mqtt processor")
+
         time_offset = 0  # so that time doesn't go backwards after playing a replay file
         while True:
             now_ms = pygame.time.get_ticks() + time_offset
@@ -1238,48 +1269,53 @@ class BlockWordsPygame():
             events_to_process = []
             
             for event in pygame.event.get():
-                events_to_process.append(('real', event))
+                events_to_process.append((EventType.PYGAME, event, now_ms))
+            self._add_mqtt_events_to_queue(mqtt_message_queue, events_to_process, now_ms)
 
-            if self.replay_file and self.replayer.events:
-                if self.replayer.events:
-                    replay_event = self.replayer.events.pop()
-                    time_offset = now_ms = replay_event['timestamp_ms']
-                    if replay_event['event_type'] == 'keyboard_event':
-                        key = replay_event['data']['key']
-                        mock_event = type('MockEvent', (), {
-                            'type': pygame.KEYDOWN, 
-                            'key': pygame.key.key_code(key)
-                        })()
-                        events_to_process.append(('replay', mock_event, replay_event['timestamp_ms']))
-                    elif replay_event['event_type'] == 'quit':
-                        mock_event = type('MockEvent', (), {
-                            'type': pygame.QUIT
-                        })()
-                        events_to_process.append(('replay', mock_event, replay_event['timestamp_ms']))
-                    # MQTT events are now handled by trigger_events_from_mqtt via MockMqttClient
+            if self.replayer.events:
+                replay_event = self.replayer.events.pop()
+                time_offset = now_ms = replay_event['timestamp_ms']
+                if replay_event['event_type'] == 'keyboard_event':
+                    key = replay_event['data']['key']
+                    real_event = pygame.event.Event(pygame.KEYDOWN, key=pygame.key.key_code(key))
+                    events_to_process.append((EventType.PYGAME, real_event, replay_event['timestamp_ms']))
+                elif replay_event['event_type'] == 'quit':
+                    real_event = pygame.event.Event(pygame.QUIT)
+                    events_to_process.append((EventType.PYGAME, real_event, replay_event['timestamp_ms']))
+                elif replay_event['event_type'] == 'mqtt_message':
+                    topic_str = replay_event['data']['topic']
+                    payload_str = replay_event['data']['payload']
+                    
+                    payload = payload_str.encode() if payload_str is not None else None
+                    events_to_process.append((EventType.MQTT, (topic_str, payload), replay_event['timestamp_ms']))
                 # print(f"events_to_process: {events_to_process}")
 
             for event_data in events_to_process:
-                event_type, event = event_data[0], event_data[1]
-                event_time_ms = now_ms if event_type == 'real' else event_data[2]
+                event_type, event, event_time_ms = event_data
                 
-                if event.type == pygame.QUIT:
-                    self.game.game_logger.log_event("quit", {"timestamp": now_ms})
-                    self.game.game_logger.stop_logging()
-                    return
+                if event_type == EventType.PYGAME:
+                    if event.type == pygame.QUIT:
+                        self.game.game_logger.log_event("quit", {"timestamp": now_ms})
+                        self.game.game_logger.stop_logging()
+                        return
 
-                if event.type == pygame.KEYDOWN:
-                    if event_type == 'real':
+                    if event.type == pygame.KEYDOWN:
+                        # Log keyboard events for recording
                         key = pygame.key.name(event.key).upper()
                         self.game.game_logger.log_event("keyboard_event", {
                             "key": key,
-                            "timestamp": now_ms
+                            "timestamp": event_time_ms
                         })
-                    await self.handle_keyboard_event(event, keyboard_input, event_time_ms)
-                if hasattr(event, 'joy'):  # Only process joystick events
-                    for input_device in input_devices: 
-                        if input_device.id == event.joy:
-                            await input_device.process_event(event)
+                        await self.handle_keyboard_event(event, keyboard_input, event_time_ms)
+                    
+                    if hasattr(event, 'joy'):  # Only process joystick events
+                        for input_device in input_devices: 
+                            if input_device.id == event.joy:
+                                await input_device.process_event(event)
+                
+                elif event_type == EventType.MQTT:
+                    topic, payload = event
+                    await self.handle_mqtt_message(topic, payload, event_time_ms)
             
             screen.fill((0, 0, 0))
             await self.game.update(screen, now_ms)
@@ -1291,3 +1327,20 @@ class BlockWordsPygame():
                 await asyncio.sleep(0)  # Minimal delay to allow other tasks
             else:
                 await clock.tick(TICKS_PER_SECOND)
+
+    async def _process_mqtt_messages(self, mqtt_client: aiomqtt.Client, message_queue: asyncio.Queue, publish_queue: asyncio.Queue) -> None:
+        """Process MQTT messages and add them to the queue for main loop processing."""
+        try:
+            async for message in mqtt_client.messages:
+                if self.game.game_logger:
+                    self.game.game_logger.log_event("mqtt_message", {
+                        "topic": str(message.topic),
+                        "payload": message.payload.decode() if message.payload else None,
+                        "timestamp": pygame.time.get_ticks()
+                    })
+                
+                await message_queue.put((str(message.topic), message.payload))
+        except Exception as e:
+            print(f"MQTT processing error: {e}")
+            events.trigger("game.abort")
+            raise e
