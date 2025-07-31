@@ -37,6 +37,7 @@ class Rack:
             self._tiles.append(Tile(letter, str(count)))
         self._last_guess: list[Tile]  = []
         self._next_letter = self.gen_next_letter()
+        random.seed(1)
 
     def __repr__(self) -> str:
         return (f"TILES: {self._tiles}\n" +

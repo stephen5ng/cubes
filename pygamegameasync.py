@@ -282,19 +282,19 @@ class Letter():
         self.start(0)
         self.draw(0)
 
-    def start(self, now: int) -> None:
+    def start(self, now_ms: int) -> None:
         self.letter = ""
         self.letter_ix = 0
         self.start_fall_y = 0
         self.new_start_fall_y = 0
         self.column_move_direction = 1
-        self.next_column_move_time_ms = now
+        self.next_column_move_time_ms = now_ms
         self.top_bottom_percent = 0
         self.total_fall_time_ms = self.DROP_TIME_MS
         self.rect = pygame.Rect(0, 0, 0, 0)
         self.pos = [0, 0]
-        self.start_fall_time_ms = now
-        self.last_beep_time_ms = now
+        self.start_fall_time_ms = now_ms
+        self.last_beep_time_ms = now_ms
 
     def stop(self) -> None:
         self.letter = ""
@@ -318,6 +318,7 @@ class Letter():
             self.locked_on = self.get_screen_bottom_y() + Letter.Y_INCREMENT*2 > self.height
 
     def update(self, window: pygame.Surface, now_ms: int) -> None:
+        incident = False
         fall_percent = (now_ms - self.start_fall_time_ms)/self.total_fall_time_ms
         fall_easing = self.top_bottom_easing(fall_percent)
         self.pos[1] = int(self.new_start_fall_y + fall_easing * self.height)
@@ -334,6 +335,7 @@ class Letter():
         blit_pos[1] += self.new_game_y
         window.blit(self.surface, blit_pos)
         if now_ms > self.next_column_move_time_ms:
+            incident = True
             if not self.locked_on:
                 self.letter_ix = self.letter_ix + self.column_move_direction
                 if self.letter_ix < 0 or self.letter_ix >= tiles.MAX_LETTERS:
@@ -342,6 +344,7 @@ class Letter():
 
                 self.next_column_move_time_ms = now_ms + self.NEXT_COLUMN_MS
                 pygame.mixer.Sound.play(self.bounce_sound)
+        return incident
 
     def shield_collision(self, now_ms: int) -> None:
         # logger.debug(f"---------- {self.start_fall_y}, {self.pos[1]}, {new_pos}, {self.pos[1] - new_pos}")
@@ -988,12 +991,13 @@ class Game:
                               now_ms)
 
     async def update(self, window: pygame.Surface, now_ms: int) -> None:
+        incident = False
         window.set_alpha(255)
         self.update_previous_guesses_with_resizing(window, now_ms)
         self.letter_source.update(window, now_ms)
 
         if self.running:
-            self.letter.update(window, now_ms)
+            incident = incident or self.letter.update(window, now_ms)
             await self._app.letter_lock(self.letter.letter_index(), self.letter.locked_on)
 
         for player in range(self._app.player_count):
@@ -1001,6 +1005,7 @@ class Game:
         for shield in self.shields:
             shield.update(window, now_ms)
             if shield.rect.y <= self.letter.get_screen_bottom_y():
+                incident = True
                 shield.letter_collision()
                 self.letter.shield_collision(now_ms)
                 self.scores[shield.player].update_score(shield.score)
@@ -1013,12 +1018,14 @@ class Game:
 
         # letter collide with rack
         if self.running and self.letter.get_screen_bottom_y() > self.rack_metrics.get_rect().y:
+            incident = True
             if self.letter.letter == "!":
                 await self.stop(now_ms)
             else:
                 self.sound_manager.play_chunk()
                 self.letter.new_fall(now_ms)
                 await self.accept_letter(now_ms)
+        return incident
 
 class BlockWordsPygame():
     def __init__(self, replay_file: str = None) -> None:
@@ -1048,7 +1055,7 @@ class BlockWordsPygame():
             events.trigger("game.abort")
         elif topic_str == "game/guess":
             payload_str = payload.decode() if payload else ""
-            await self.the_app.guess_word_keyboard(payload_str, 1)
+            await self.the_app.guess_word_keyboard(payload_str, 1, now_ms)
         elif topic_str.startswith("cube/nfc/"):
             # Handle None payload by converting to empty string
             payload_data = payload.decode() if payload is not None else ""
@@ -1325,11 +1332,13 @@ class BlockWordsPygame():
                     await self.handle_mqtt_message(topic, payload, event_time_ms)
             
             screen.fill((0, 0, 0))
-            await self.game.update(screen, now_ms)
+            incident = await self.game.update(screen, now_ms)
+            if incident:
+                self.game.game_logger.log_event("incident_event", {})
             hub75.update(screen)
             pygame.transform.scale(screen, self._window.get_rect().size, dest_surface=self._window)
             pygame.display.flip()
-            
+
             if self.replay_file:
                 await asyncio.sleep(0)  # Minimal delay to allow other tasks
             else:

@@ -15,6 +15,7 @@ class Dictionary:
         self._all_words: set[str] = set()
         self._min_letters = min_letters
         self._max_letters = max_letters
+        random.seed(1)
 
     def read(self, dictionary_file: str, bingos_file: str) -> None:
         with self._open(dictionary_file, "r") as f:
