@@ -307,8 +307,6 @@ async def guess_last_tiles(publish_queue, player: int) -> None:
 async def flash_guess(publish_queue, tiles: list[str], player: int):
     await cube_managers[player].flash_guess(publish_queue, tiles)
 
-lastrealneighbor = {}
-
 async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str):
     logging.info(f"process_cube_guess: {topic} {data}")
     print(f"process_cube_guess: {topic} {data}")
@@ -361,6 +359,7 @@ async def init(subscribe_client, tags_file):
         manager._initialize_arrays()
 
 async def handle_mqtt_message(publish_queue, message):
+    print(dir(message))
     await process_cube_guess(publish_queue, message.topic, message.payload.decode())
 
 async def good_guess(publish_queue, tiles: list[str], player: int):

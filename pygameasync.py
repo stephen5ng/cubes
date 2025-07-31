@@ -43,16 +43,13 @@ class EventEngine:
     def trigger(self, event, *args, **kwargs):
         asyncio.create_task(self.async_trigger(event, *args, **kwargs), name=f"{event} handler")
 
-    # whatever gets triggered is just added to the current asyncio event loop,
-    # which we then trust to run eventually
     async def async_trigger(self, event, *args, **kwargs):
         logging.info(f"async_trigger: {event}")
         if event in self.listeners:
             # print(f"in list: {event}")
-            handlers = [func(*args, **kwargs) for func in self.listeners[event]]
-
-            # schedule all listeners to run
-            return await asyncio.gather(*handlers)
+            
+            for func in self.listeners[event]:
+                await func(*args, **kwargs)
         else:
             raise Exception(f"async_trigger: no event {event} in {self.listeners}")
 

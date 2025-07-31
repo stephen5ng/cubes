@@ -29,7 +29,7 @@ class App:
     def __init__(self, publish_queue: asyncio.Queue, dictionary: Dictionary) -> None:
         def make_guess_tiles_callback(the_app: App) -> Callable[[list[str], bool, int],  Coroutine[Any, Any, None]]:
             async def guess_tiles_callback(guess: list[str], move_tiles: bool, player: int) -> None:
-                events.trigger("input.guess_tiles", guess, move_tiles, player)
+                await the_app.guess_tiles(guess, move_tiles, player)
             return guess_tiles_callback
 
         def make_start_game_callback(the_app: App) -> Callable[[bool],  Coroutine[Any, Any, None]]:

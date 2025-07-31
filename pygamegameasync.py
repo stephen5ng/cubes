@@ -20,11 +20,10 @@ from typing import cast
 import functools
 
 import app
-import cubes_to_game
 from config import MAX_PLAYERS
 from mock_mqtt_client import MockMqttClient
 from pygame.image import tobytes as image_to_string
-from pygameasync import Clock, EventEngine, events
+from pygameasync import Clock, events
 import tiles
 
 logger = logging.getLogger(__name__)
@@ -306,13 +305,9 @@ class Letter():
     def draw(self, now) -> None:
         self.surface = self.font.render(self.letter, LETTER_SOURCE_COLOR)[0]
         remaining_ms = max(0, self.next_column_move_time_ms - now)
-        print(f"now: {now}, next_column_move_time_ms: {self.next_column_move_time_ms}")
-        print(f"remaining_ms: {remaining_ms}")
         self.fraction_complete = 1.0 - remaining_ms/self.NEXT_COLUMN_MS
         self.easing_complete = self.next_letter_easing(self.fraction_complete)
-        print(f"easing_complete: {self.easing_complete}, fraction_complete: {self.fraction_complete}")
         boost_x = 0 if self.locked_on else int(self.column_move_direction*(self.width*self.easing_complete - self.width))
-        print(f"boost_x: {boost_x}")
         self.pos[0] = self.rack_metrics.get_rect().x + self.rack_metrics.get_letter_rect(self.letter_ix, self.letter).x + boost_x
         if self.easing_complete >= 1:
             self.locked_on = self.get_screen_bottom_y() + Letter.Y_INCREMENT*2 > self.height
@@ -841,13 +836,9 @@ class Game:
         events.on(f"input.remaining_previous_guesses")(self.update_remaining_guesses)
         events.on(f"input.update_previous_guesses")(self.update_previous_guesses)
         events.on(f"input.add_guess")(self.add_guess)
-        events.on(f"input.guess_tiles")(self.guess_tiles)
         events.on(f"rack.update_rack")(self.update_rack)
         events.on(f"rack.update_letter")(self.update_letter)
 
-    async def guess_tiles(self, word_tile_ids: list[str], move_tiles: bool, player: int):
-        await self._app.guess_tiles(word_tile_ids, move_tiles, player)
-        
     async def update_rack(self, tiles: list[tiles.Tile], highlight_length: int, guess_length: int, player: int, now_ms: int) -> None:
         await self.racks[player].update_rack(tiles, highlight_length, guess_length, now_ms)
 
