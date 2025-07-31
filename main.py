@@ -51,6 +51,16 @@ async def trigger_events_from_mqtt(
     try:
         async for message in subscribe_client.messages:
             logger.info(f"trigger_events_from_mqtt incoming message topic: {message.topic} {message.payload!r}")
+            
+            # Log MQTT event to the same logfile
+            game_logger = the_app.get_game_logger()
+            if game_logger:
+                game_logger.log_event("mqtt_message", {
+                    "topic": str(message.topic),
+                    "payload": message.payload.decode() if message.payload else None,
+                    "timestamp": pygame.time.get_ticks()
+                })
+            
             if message.topic.matches("cube/nfc/#"):
                 now = datetime.datetime.now()
                 cube_id = str(message.topic).split('/')[2]
@@ -73,11 +83,16 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
         async with aiomqtt.Client(MQTT_SERVER) as publish_client:
             publish_queue: asyncio.Queue = asyncio.Queue()
             the_app = app.App(publish_queue, dictionary)
+            
             await cubes_to_game.init(subscribe_client, args.tags)
-            await subscribe_client.subscribe("game/guess")
+            if args.replay:
+                mqtt_client = block_words.get_mock_mqtt_client()
+            else:
+                await subscribe_client.subscribe("game/guess")
+                mqtt_client = subscribe_client
 
             subscribe_task = asyncio.create_task(
-                trigger_events_from_mqtt(subscribe_client, publish_queue, block_words, the_app),
+                trigger_events_from_mqtt(mqtt_client, publish_queue, block_words, the_app),
                 name="mqtt subscribe handler")
             publish_task = asyncio.create_task(publish_tasks_in_queue(publish_client, publish_queue),
                 name="mqtt publish handler")

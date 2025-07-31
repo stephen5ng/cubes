@@ -20,7 +20,9 @@ from typing import cast
 import functools
 
 import app
+import cubes_to_game
 from config import MAX_PLAYERS
+from mock_mqtt_client import MockMqttClient
 from pygame.image import tobytes as image_to_string
 from pygameasync import Clock, EventEngine, events
 import tiles
@@ -141,15 +143,24 @@ class InputDevice:
         pass
 
 class CubesInput(InputDevice):
-      async def process_event(self, event):
+    def __str__(self):
+        return "CubesInput"
+    
+    async def process_event(self, event):
         pass
     
 class KeyboardInput(InputDevice):
+    def __str__(self):
+        return "KeyboardInput"
+    
     async def process_event(self, event):
         # Keyboard input is handled separately in the main loop
         pass
 
 class GamepadInput(InputDevice):
+    def __str__(self):
+        return "GamepadInput"
+
     async def process_event(self, event):
         if event.type == pygame.JOYBUTTONDOWN and event.button == 9:
             self.player_number = await self.handlers['start'](self)
@@ -268,7 +279,6 @@ class Letter():
         self.draw(0)
 
     def start(self, now: int) -> None:
-        print(f"LETTER start: {now}")
         self.letter = ""
         self.letter_ix = 0
         self.start_fall_y = 0
@@ -296,9 +306,13 @@ class Letter():
     def draw(self, now) -> None:
         self.surface = self.font.render(self.letter, LETTER_SOURCE_COLOR)[0]
         remaining_ms = max(0, self.next_column_move_time_ms - now)
+        print(f"now: {now}, next_column_move_time_ms: {self.next_column_move_time_ms}")
+        print(f"remaining_ms: {remaining_ms}")
         self.fraction_complete = 1.0 - remaining_ms/self.NEXT_COLUMN_MS
         self.easing_complete = self.next_letter_easing(self.fraction_complete)
+        print(f"easing_complete: {self.easing_complete}, fraction_complete: {self.fraction_complete}")
         boost_x = 0 if self.locked_on else int(self.column_move_direction*(self.width*self.easing_complete - self.width))
+        print(f"boost_x: {boost_x}")
         self.pos[0] = self.rack_metrics.get_rect().x + self.rack_metrics.get_letter_rect(self.letter_ix, self.letter).x + boost_x
         if self.easing_complete >= 1:
             self.locked_on = self.get_screen_bottom_y() + Letter.Y_INCREMENT*2 > self.height
@@ -310,7 +324,8 @@ class Letter():
         distance_from_top = self.pos[1] / SCREEN_HEIGHT
         distance_from_bottom = 1 - distance_from_top
         if now_ms > self.last_beep_time_ms + (distance_from_bottom*distance_from_bottom)*7000:
-            pygame.mixer.Sound.play(letter_beeps[int(10*distance_from_top)])
+            letter_beeps_ix = min(len(letter_beeps)-1, int(10*distance_from_top))
+            pygame.mixer.Sound.play(letter_beeps[letter_beeps_ix])
             self.last_beep_time_ms = now_ms
 
         self.draw(now_ms)
@@ -451,7 +466,7 @@ class Rack():
                     letter_index = random.randint(0, 6)
                 else:
                     letter_index = self.falling_letter.letter_index()
-                    if self.the_app._player_count > 1:
+                    if self.the_app.player_count > 1:
                         # Only flash letters in our half of the rack
                         hit_rack = 0 if letter_index < 3 else 1
                         if self.player != hit_rack:
@@ -469,7 +484,7 @@ class Rack():
         self._render_flashing_letters(surface)
         self._render_fading_letters(surface, now)
         top_left = self.rack_metrics.get_rect().topleft
-        player_index = 0 if self.the_app._player_count == 1 else self.player+1
+        player_index = 0 if self.the_app.player_count == 1 else self.player+1
         top_left = (top_left[0] + self.left_offset_by_player[player_index], top_left[1])
         window.blit(surface, top_left)
 
@@ -525,7 +540,7 @@ class Score():
 
     def draw(self) -> None:
         self.surface = self.font.render(str(self.score), SCORE_COLOR)[0]
-        self.pos[0] = int((self.midscreen if self.the_app._player_count == 1 else self.x) 
+        self.pos[0] = int((self.midscreen if self.the_app.player_count == 1 else self.x) 
                           - self.surface.get_width()/2)
 
     def update_score(self, score: int) -> None:
@@ -831,7 +846,6 @@ class Game:
         events.on(f"rack.update_letter")(self.update_letter)
 
     async def guess_tiles(self, word_tile_ids: list[str], move_tiles: bool, player: int):
-        print(f"Game.guess_tiles: {word_tile_ids}")
         await self._app.guess_tiles(word_tile_ids, move_tiles, player)
         
     async def update_rack(self, tiles: list[tiles.Tile], highlight_length: int, guess_length: int, player: int, now_ms: int) -> None:
@@ -854,22 +868,28 @@ class Game:
         await self.start(CubesInput(None), now_ms)
 
     async def start(self, input_device: InputDevice, now_ms: int) -> None:
-        if self.running and input_device not in self.input_devices:
-            # Maxed out player count
-            if self._app._player_count >= 2:
-                return -1
+        if self.running:
+            if str(input_device) not in self.input_devices:
+                # Add P2
+                print(f"self.running: {self.running}, {str(input_device) in self.input_devices}, {self.input_devices}")
+                print(f"starting second player with input_device: {input_device}, {self.input_devices}")
+                # Maxed out player count
+                if self._app.player_count >= 2:
+                    return -1
 
-            # Player count must be 1.            
-            self._app._player_count = 2
-            self.input_devices.append(input_device)
-            for player in range(2):
-                self.scores[player].draw()
-                self.racks[player].draw()
-            return 1
-
-        self._app._player_count = 1
+                self._app.player_count = 2
+                self.input_devices.append(str(input_device))
+                for player in range(2):
+                    self.scores[player].draw()
+                    self.racks[player].draw()
+                return 1
+            # Already started, NOP
+            return
+    
+        self._app.player_count = 1
         print(f"starting new game with input_device: {input_device}")
-        self.input_devices = [input_device]
+        self.input_devices = [str(input_device)]
+        print(f"ADDED {str(input_device)} in self.input_devices: {str(input_device) in self.input_devices}")
         self.guess_to_player = {}
         self.previous_guesses_display = PreviousGuessesDisplay(PreviousGuessesDisplay.FONT_SIZE, self.guess_to_player)
         self.remaining_previous_guesses_display = RemainingPreviousGuessesDisplay(
@@ -886,6 +906,7 @@ class Game:
         self.start_time_s = now_s
         await self._app.start()
         self.sound_manager.play_start()
+        print("start done")
         return 0
 
     async def stage_guess(self, score: int, last_guess: str, player: int) -> None:
@@ -974,7 +995,7 @@ class Game:
             self.letter.update(window, now_ms)
             await self._app.letter_lock(self.letter.letter_index(), self.letter.locked_on)
 
-        for player in range(self._app._player_count):
+        for player in range(self._app.player_count):
             self.racks[player].update(window, now_ms)
         for shield in self.shields:
             shield.update(window)
@@ -986,7 +1007,7 @@ class Game:
                 self.sound_manager.play_crash()
 
         self.shields[:] = [s for s in self.shields if s.active]
-        for player in range(self._app._player_count):
+        for player in range(self._app.player_count):
             self.scores[player].update(window)
 
         # letter collide with rack
@@ -1007,6 +1028,17 @@ class BlockWordsPygame():
         self.game = None
         self.replay_file = replay_file
         self.replayer = None
+        self._mock_mqtt_client = None
+
+    def get_mock_mqtt_client(self):
+        """Get the mock MQTT client for replay mode."""
+        if not self._mock_mqtt_client and self.replay_file:
+            self.replayer = GameReplayer(self.replay_file)
+            self.replayer.load_events()
+            # Create mock client with MQTT events only
+            mqtt_events = [e for e in self.replayer.events if e['event_type'] == 'mqtt_message']
+            self._mock_mqtt_client = MockMqttClient(mqtt_events)
+        return self._mock_mqtt_client
 
     async def handle_mqtt_message(self, topic: aiomqtt.Topic, now_ms: int) -> None:
         if topic.matches("app/start"):
@@ -1066,6 +1098,7 @@ class BlockWordsPygame():
         await self.the_app.guess_word_keyboard(input_device.current_guess, input_device.player_number)
     
     async def start_game(self, input_device: InputDevice, now_ms: int):
+        print(f"start_game {input_device} {now_ms}")
         input_device.current_guess = ""
         player_number = await self.game.start(input_device, now_ms)
         rack = self.game.racks[player_number]
@@ -1109,10 +1142,8 @@ class BlockWordsPygame():
         key = pygame.key.name(event.key).upper()
         if key == "ESCAPE":
             keyboard_input.player_number = await self.start_game(keyboard_input, now_ms)
-            print(f"keyboard_input.player_number player_number: {keyboard_input.player_number}")
             return
 
-        print(f"keyboard_input.player_number: {keyboard_input.player_number}")
         if keyboard_input.player_number is None:
             return
 
@@ -1130,7 +1161,7 @@ class BlockWordsPygame():
         elif key == "RETURN":
             self.handle_return_action(keyboard_input)
         elif key == "TAB":
-            self.the_app._player_count = 1 if self.the_app._player_count == 2 else 2
+            self.the_app.player_count = 1 if self.the_app.player_count == 2 else 2
             for player in range(MAX_PLAYERS):
                 self.game.scores[player].draw()
                 self.game.racks[player].draw()
@@ -1164,7 +1195,15 @@ class BlockWordsPygame():
         }
         screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         clock = Clock()
-        await subscribe_client.subscribe("app/#")
+        
+        if self.replay_file:
+            self.replayer = GameReplayer(self.replay_file)
+            self.replayer.load_events()
+            print(f"Replay mode: loaded {len(self.replayer.events)} events from {self.replay_file}")
+            mqtt_client = self.get_mock_mqtt_client()
+        else:
+            await subscribe_client.subscribe("app/#")
+            mqtt_client = subscribe_client
 
         joysticks = []
         keyboard_input = KeyboardInput(handlers)
@@ -1192,14 +1231,15 @@ class BlockWordsPygame():
         
         if self.game.game_logger:
             self.game.game_logger.start_logging()
+            the_app.set_game_logger(self.game.game_logger)
         
-        self.replayer = GameReplayer(self.replay_file)
-        self.replayer.load_events()
-        if self.replay_file:
-            print(f"Replay mode: loaded {len(self.replayer.events)} events from {self.replay_file}")
-        
+        # Signal that the game is ready to receive MQTT messages
+        if self.replay_file and self._mock_mqtt_client:
+            self._mock_mqtt_client.set_game_ready()
+
+        time_offset = 0  # so that time doesn't go backwards after playing a replay file
         while True:
-            now_ms = pygame.time.get_ticks()
+            now_ms = pygame.time.get_ticks() + time_offset
 
             if self.game.aborted:
                 return
@@ -1212,7 +1252,7 @@ class BlockWordsPygame():
             if self.replay_file and self.replayer.events:
                 if self.replayer.events:
                     replay_event = self.replayer.events.pop()
-                    now_ms = replay_event['timestamp_ms']
+                    time_offset = now_ms = replay_event['timestamp_ms']
                     if replay_event['event_type'] == 'keyboard_event':
                         key = replay_event['data']['key']
                         mock_event = type('MockEvent', (), {
@@ -1225,24 +1265,19 @@ class BlockWordsPygame():
                             'type': pygame.QUIT
                         })()
                         events_to_process.append(('replay', mock_event, replay_event['timestamp_ms']))
-                print(f"events_to_process: {events_to_process}")
+                    # MQTT events are now handled by trigger_events_from_mqtt via MockMqttClient
+                # print(f"events_to_process: {events_to_process}")
 
             for event_data in events_to_process:
-                event_type = event_data[0]
-                if event_type == 'real':
-                    event = event_data[1]
-                    event_time_ms = now_ms
-                else:  # replay event
-                    event = event_data[1]
-                    event_time_ms = event_data[2]
+                event_type, event = event_data[0], event_data[1]
+                event_time_ms = now_ms if event_type == 'real' else event_data[2]
                 
                 if event.type == pygame.QUIT:
-                    if event_type == 'real' and self.game.game_logger:
-                        self.game.game_logger.log_event("quit", {"timestamp": now_ms})
-                    if self.game.game_logger:
-                        self.game.game_logger.stop_logging()
+                    self.game.game_logger.log_event("quit", {"timestamp": now_ms})
+                    self.game.game_logger.stop_logging()
                     return
-                elif event.type == pygame.KEYDOWN:
+
+                if event.type == pygame.KEYDOWN:
                     if event_type == 'real':
                         key = pygame.key.name(event.key).upper()
                         self.game.game_logger.log_event("keyboard_event", {

@@ -44,11 +44,30 @@ class App:
         self._player_racks = [tiles.Rack('?' * tiles.MAX_LETTERS) for _ in range(MAX_PLAYERS)]
         self._score_card = ScoreCard(self._player_racks[0], self._dictionary)
         self._player_count = 1
+        self._game_logger = None  # Will be set by the game
         cubes_to_game.set_guess_tiles_callback(make_guess_tiles_callback(self))
         cubes_to_game.set_start_game_callback(make_start_game_callback(self))
         self._running = False
 
+    @property
+    def player_count(self) -> int:
+        return self._player_count
+
+    @player_count.setter
+    def player_count(self, value: int) -> None:
+        self._player_count = value
+
+    def set_game_logger(self, game_logger) -> None:
+        """Set the game logger for MQTT event logging."""
+        self._game_logger = game_logger
+
+    def get_game_logger(self):
+        """Get the game logger for MQTT event logging."""
+        return self._game_logger
+
     async def start(self) -> None:
+        print(">>>>>>>> app.STARTING")
+        self._running = True
         the_rack = self._dictionary.get_rack()
         for player in range(MAX_PLAYERS):
             self._player_racks[player].set_tiles(the_rack.get_tiles())
@@ -62,7 +81,7 @@ class App:
         self._update_remaining_previous_guesses()
         for player in range(self._player_count):
             await cubes_to_game.guess_last_tiles(self._publish_queue, player)
-        self._running = True
+        print(">>>>>>>> app.STARTED")
 
     async def stop(self) -> None:
         for player in range(MAX_PLAYERS):
@@ -107,12 +126,10 @@ class App:
         events.trigger("input.add_guess", self._score_card.get_previous_guesses(), guess, player, pygame.time.get_ticks())
 
     async def guess_tiles(self, word_tile_ids: list[str], move_tiles: bool, player: int) -> None:
-        print(f"app.guess_tiles {word_tile_ids} {move_tiles} {player}")
         self._last_guess = word_tile_ids
         logger.info(f"guess_tiles: word_tile_ids {word_tile_ids}")
         if not self._running:
-            logger.info(f"not running, bailing")
-            return
+            events.trigger("game.start", pygame.time.get_ticks())
         guess = self._player_racks[player].ids_to_letters(word_tile_ids)
         guess_tiles = self._player_racks[player].ids_to_tiles(word_tile_ids)
 
@@ -172,4 +189,3 @@ class App:
                        guess_length,
                        player,
                        pygame.time.get_ticks())
-

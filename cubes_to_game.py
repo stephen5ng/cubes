@@ -299,7 +299,6 @@ async def letter_lock(publish_queue, locked_on: bool, tile_id: str) -> None:
 
 async def guess_last_tiles(publish_queue, player: int) -> None:
     logging.info(f"guess_last_tiles last_guess_tiles {guess_manager.last_guess_tiles}")
-        
     for guess in guess_manager.last_guess_tiles:
         await guess_tiles_callback(guess, True, player)
 
@@ -315,12 +314,6 @@ async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str):
     print(f"process_cube_guess: {topic} {data}")
     sender = topic.value.removeprefix("cube/nfc/")
     await publish_queue.put((f"game/nfc/{sender}", data, True))
-    if data != "":
-        if lastrealneighbor.get(sender, data) != data:
-            lastrealneighbor[sender] = data
-            await start_game_callback(False)
-            
-        lastrealneighbor[sender] = data
     if data in START_GAME_TAGS:
         await start_game_callback(True)
         return
