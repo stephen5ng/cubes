@@ -359,7 +359,6 @@ async def init(subscribe_client, tags_file):
         manager._initialize_arrays()
 
 async def handle_mqtt_message(publish_queue, message):
-    print(dir(message))
     await process_cube_guess(publish_queue, message.topic, message.payload.decode())
 
 async def good_guess(publish_queue, tiles: list[str], player: int):
