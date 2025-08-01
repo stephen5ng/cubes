@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 
-import platform
 import aiomqtt
 import argparse
 import asyncio
 import logging
 import os
+import platform
 import pygame
-
-
+import random
 
 import app
 import cubes_to_game
@@ -22,8 +21,6 @@ MQTT_SERVER = os.environ.get("MQTT_SERVER", "localhost")
 my_open = open
 
 logger = logging.getLogger(__name__)
-
-
 
 async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.Queue) -> None:
     while True:
@@ -73,6 +70,8 @@ if __name__ == "__main__":
     parser.add_argument("--keyboard-player-number", default=1, type=int, help="Player number (1 or 2) that uses keyboard input")
     parser.add_argument("--replay", type=str, help="Replay a game from a log file")
     args = parser.parse_args()
+    
+    random.seed(1)
 
     # logger.setLevel(logging.DEBUG)
     pygame.mixer.init(frequency=24000, size=-16, channels=2)

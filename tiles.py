@@ -32,12 +32,12 @@ def _tiles_to_letters(tiles: Sequence[Tile]) -> str:
 
 class Rack:
     def __init__(self, letters: str) -> None:
+        self.random_state = random.getstate()        
         self._tiles = []
         for count, letter in enumerate(letters):
             self._tiles.append(Tile(letter, str(count)))
         self._last_guess: list[Tile]  = []
         self._next_letter = self.gen_next_letter()
-        random.seed(1)
 
     def __repr__(self) -> str:
         return (f"TILES: {self._tiles}\n" +
@@ -106,7 +106,10 @@ class Rack:
         frequencies.subtract(c)
 
         bag = [letter for letter, frequency in frequencies.items() for _ in range(frequency)]
-        return random.choice(bag)
+        random.setstate(self.random_state)
+        v =  random.choice(bag)
+        self.random_state = random.getstate()
+        return v
 
     def position_to_id(self, position: int) -> str:
         return self._tiles[position].id
