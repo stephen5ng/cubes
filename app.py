@@ -65,6 +65,10 @@ class App:
         """Get the game logger for MQTT event logging."""
         return self._game_logger
 
+    def set_word_logger(self, word_logger) -> None:
+        """Set the word logger for new word formation logging."""
+        self._word_logger = word_logger
+
     async def start(self, now_ms: int) -> None:
         print(">>>>>>>> app.STARTING")
         self._running = True
@@ -152,8 +156,10 @@ class App:
         elif self._score_card.is_good_guess(guess):
             await cubes_to_game.good_guess(self._publish_queue, word_tile_ids, player)
             self._score_card.add_staged_guess(guess)
-            events.trigger("game.stage_guess", 
-                           self._score_card.calculate_score(guess), guess, player, now_ms)
+            score = self._score_card.calculate_score(guess)
+            events.trigger("game.stage_guess", score, guess, player, now_ms)
+            if self._word_logger:
+                self._word_logger(guess, player, score)
             good_guess_highlight = len(guess_tiles)
             tiles_dirty = True
         else:
