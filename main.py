@@ -31,7 +31,7 @@ word_logger = None
 def setup_word_logger():
     """Setup JSONL logger for word formations."""
     global word_logger
-    word_logger = open("game_replay_output.jsonl", "w")
+    word_logger = open("output/output.game.jsonl", "w")
 
 def log_word_formed(word: str, player: int, score: int):
     """Log new word formation event to JSONL file."""
@@ -54,20 +54,24 @@ def cleanup_word_logger():
 
 async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.Queue) -> None:
     while True:
-        topic, message, retain = await queue.get()
-        # print(f"publish_tasks_in_queue: {topic}, {message}, {retain}")
-        # Store last messages in dict if not already defined
-        if not hasattr(publish_tasks_in_queue, 'last_messages'):
-            publish_tasks_in_queue.last_messages = {}
-            
-        # Publish retained messages if they changed.
-        if not retain or publish_tasks_in_queue.last_messages.get(topic, None) != message:
-            # print(f"get: {publish_tasks_in_queue.last_messages.get(topic, '')}, {publish_tasks_in_queue.last_messages.get(topic, '') != message}")
-            await publish_client.publish(topic, message, retain=retain)
-            publish_tasks_in_queue.last_messages[topic] = message
-            logger.info(f"publishing: {topic}, {message}")
-            publish_logger.log_mqtt_publish(topic, message, retain)
-            # print(f"publishing: {topic}, {message}")
+        try:
+            topic, message, retain = await queue.get()
+            # print(f"publish_tasks_in_queue: {topic}, {message}, {retain}")
+            # Store last messages in dict if not already defined
+            if not hasattr(publish_tasks_in_queue, 'last_messages'):
+                publish_tasks_in_queue.last_messages = {}
+                
+            # Publish retained messages if they changed.
+            if not retain or publish_tasks_in_queue.last_messages.get(topic, None) != message:
+                # print(f"get: {publish_tasks_in_queue.last_messages.get(topic, '')}, {publish_tasks_in_queue.last_messages.get(topic, '') != message}")
+                await publish_client.publish(topic, message, retain=retain)
+                publish_tasks_in_queue.last_messages[topic] = message
+                logger.info(f"publishing: {topic}, {message}")
+                publish_logger.log_mqtt_publish(topic, message, retain)
+                # print(f"publishing: {topic}, {message}")
+        except asyncio.CancelledError:
+            # Handle graceful shutdown
+            break
 
 
 
@@ -93,8 +97,19 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
 
             await block_words.main(the_app, subscribe_client, args.start, keyboard_player_number, publish_queue)
 
+            # Wait for the publish queue to be empty before shutting down
+            while not publish_queue.empty():
+                await asyncio.sleep(0.1)
+            
             publish_queue.shutdown()
             publish_task.cancel()
+            
+            # Wait for the publish task to complete
+            try:
+                await publish_task
+            except asyncio.CancelledError:
+                pass
+            
             cleanup_word_logger()
             publish_logger.cleanup_publish_logger()
 
