@@ -112,9 +112,19 @@ class GameLogger:
         
         self.log_f.write(json.dumps(log_entry) + "\n")
         self.log_f.flush()
-
 def get_alpha(
     easing: easing_functions.easing.EasingBase, last_update: float, duration: float, now: int) -> int:
+    """Calculate alpha value for fading animations.
+    
+    Args:
+        easing: Easing function that controls the fade curve
+        last_update: Timestamp when the fade started
+        duration: Total duration of the fade in milliseconds
+        now: Current timestamp
+        
+    Returns:
+        Alpha value between 0-255, or 0 if fade is complete
+    """
     remaining_ms = duration - (now - last_update)
     if 0 < remaining_ms < duration:
         return int(easing(remaining_ms / duration))
@@ -309,7 +319,7 @@ class Letter():
 
     def draw(self, now) -> None:
         self.surface = self.font.render(self.letter, LETTER_SOURCE_COLOR)[0]
-        remaining_ms = max(0, self.next_column_move_time_ms - now)
+        remaining_ms = min(max(0, self.next_column_move_time_ms - now), self.NEXT_COLUMN_MS)
         self.fraction_complete = 1.0 - remaining_ms/self.NEXT_COLUMN_MS
         self.easing_complete = self.next_letter_easing(self.fraction_complete)
         boost_x = 0 if self.locked_on else int(self.column_move_direction*(self.width*self.easing_complete - self.width))
@@ -318,7 +328,7 @@ class Letter():
             self.locked_on = self.get_screen_bottom_y() + Letter.Y_INCREMENT*2 > self.height
 
     def update(self, window: pygame.Surface, now_ms: int) -> None:
-        incident = False
+        incidents = []
         fall_percent = (now_ms - self.start_fall_time_ms)/self.total_fall_time_ms
         fall_easing = self.top_bottom_easing(fall_percent)
         self.pos[1] = int(self.new_start_fall_y + fall_easing * self.height)
@@ -335,7 +345,7 @@ class Letter():
         blit_pos[1] += self.new_game_y
         window.blit(self.surface, blit_pos)
         if now_ms > self.next_column_move_time_ms:
-            incident = True
+            incidents.append("letter_column_move")
             if not self.locked_on:
                 self.letter_ix = self.letter_ix + self.column_move_direction
                 if self.letter_ix < 0 or self.letter_ix >= tiles.MAX_LETTERS:
@@ -344,7 +354,7 @@ class Letter():
 
                 self.next_column_move_time_ms = now_ms + self.NEXT_COLUMN_MS
                 pygame.mixer.Sound.play(self.bounce_sound)
-        return incident
+        return incidents
 
     def shield_collision(self, now_ms: int) -> None:
         # logger.debug(f"---------- {self.start_fall_y}, {self.pos[1]}, {new_pos}, {self.pos[1] - new_pos}")
@@ -744,19 +754,39 @@ class LetterSource():
         self.surface.fill(LETTER_SOURCE_COLOR)
 
     def update(self, window: pygame.Surface, now_ms: int) -> None:
+        """Updates the letter source animation and position.
+        
+        The letter source is a visual indicator showing where letters fall from.
+        When a letter starts falling, the source expands to full height and then
+        animates back down to minimum height.
+        
+        Args:
+            window: Surface to draw on
+            now_ms: Current timestamp in milliseconds
+            
+        Returns:
+            List of any incidents that occurred during update
+        """
+        incidents = []
         if self.last_y != self.letter.start_fall_y:
+            # Letter started falling from a new position
             self.last_update = now_ms
             self.height = LetterSource.MAX_HEIGHT
             self.last_y = self.letter.start_fall_y
             self.draw()
         elif self.height > LetterSource.MIN_HEIGHT:
-            self.height = get_alpha(self.easing, 
+            # Animate height back down
+            self.height = max(LetterSource.MIN_HEIGHT, 
+                              get_alpha(self.easing, 
                                     self.last_update, 
                                     LetterSource.ANIMATION_DURAION_MS, 
-                                    now_ms)
+                                    now_ms))
             self.draw()
+
+        # Position source above falling letter
         self.pos = [self.x, self.initial_y + self.letter.start_fall_y - self.height]
         window.blit(self.surface, self.pos)
+        return incidents
 
 class SoundManager:
     DELAY_BETWEEN_WORD_SOUNDS_S = 0.3
@@ -991,13 +1021,16 @@ class Game:
                               now_ms)
 
     async def update(self, window: pygame.Surface, now_ms: int) -> None:
-        incident = False
+        incidents = []
         window.set_alpha(255)
         self.update_previous_guesses_with_resizing(window, now_ms)
-        self.letter_source.update(window, now_ms)
+        if incident := self.letter_source.update(window, now_ms):
+            incidents.extend(incident)
 
         if self.running:
-            incident = incident or self.letter.update(window, now_ms)
+            if incident := self.letter.update(window, now_ms):
+                incidents.extend(incident)
+
             await self._app.letter_lock(self.letter.letter_index(), self.letter.locked_on)
 
         for player in range(self._app.player_count):
@@ -1005,7 +1038,7 @@ class Game:
         for shield in self.shields:
             shield.update(window, now_ms)
             if shield.rect.y <= self.letter.get_screen_bottom_y():
-                incident = True
+                incidents.append("shield_letter_collision")
                 shield.letter_collision()
                 self.letter.shield_collision(now_ms)
                 self.scores[shield.player].update_score(shield.score)
@@ -1018,14 +1051,14 @@ class Game:
 
         # letter collide with rack
         if self.running and self.letter.get_screen_bottom_y() > self.rack_metrics.get_rect().y:
-            incident = True
+            incidents.append("letter_rack_collision")
             if self.letter.letter == "!":
                 await self.stop(now_ms)
             else:
                 self.sound_manager.play_chunk()
                 self.letter.new_fall(now_ms)
                 await self.accept_letter(now_ms)
-        return incident
+        return incidents
 
 class BlockWordsPygame():
     def __init__(self, replay_file: str = None) -> None:
@@ -1186,7 +1219,7 @@ class BlockWordsPygame():
                 self.game.scores[player].draw()
                 self.game.racks[player].draw()
         elif len(key) == 1:
-            print(f"player_number: {keyboard_input.player_number}")
+            # print(f"player_number: {keyboard_input.player_number}")
             remaining_letters = list(self.game.racks[keyboard_input.player_number].letters())
             for l in keyboard_input.current_guess:
                 if l in remaining_letters:
@@ -1331,10 +1364,9 @@ class BlockWordsPygame():
                     topic, payload = event
                     await self.handle_mqtt_message(topic, payload, event_time_ms)
             
-            screen.fill((0, 0, 0))
-            incident = await self.game.update(screen, now_ms)
-            if incident:
-                self.game.game_logger.log_event("incident_event", {})
+            screen.fill((0, 0, 0))            
+            if len(incidents := await self.game.update(screen, now_ms)) > 0:
+                self.game.game_logger.log_event("incident_event", {"incidents": incidents})
             hub75.update(screen)
             pygame.transform.scale(screen, self._window.get_rect().size, dest_surface=self._window)
             pygame.display.flip()

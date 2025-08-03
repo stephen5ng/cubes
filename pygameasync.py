@@ -49,8 +49,16 @@ class EventEngine:
             # print(f"in list: {event}")
             
             for func in self.listeners[event]:
-                await func(*args, **kwargs)
+                try:
+                    await func(*args, **kwargs)
+                except Exception as e:
+                    print(f"Exception in async_trigger for event {event}: {e}")
+                    import sys
+                    import traceback
+                    traceback.print_exc()
+                    sys.exit(1)
         else:
             raise Exception(f"async_trigger: no event {event} in {self.listeners}")
 
 events = EventEngine()
+
