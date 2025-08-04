@@ -271,11 +271,10 @@ class Letter():
         self.letter = ""
         self.letter_ix = 0
         self.start_fall_y = 0
-        self.new_start_fall_y = 0
+        self.current_fall_start_y = 0
         self.column_move_direction = 1
         self.next_column_move_time_ms = now_ms
-        self.top_bottom_percent = 0
-        self.total_fall_time_ms = self.DROP_TIME_MS
+        self.fall_duration_ms = self.DROP_TIME_MS
         self.rect = pygame.Rect(0, 0, 0, 0)
         self.pos = [0, 0]
         self.start_fall_time_ms = now_ms
@@ -304,9 +303,9 @@ class Letter():
 
     def update(self, window: pygame.Surface, now_ms: int) -> None:
         incidents = []
-        fall_percent = (now_ms - self.start_fall_time_ms)/self.total_fall_time_ms
+        fall_percent = (now_ms - self.start_fall_time_ms)/self.fall_duration_ms
         fall_easing = self.top_bottom_easing(fall_percent)
-        self.pos[1] = int(self.new_start_fall_y + fall_easing * self.height)
+        self.pos[1] = int(self.current_fall_start_y + fall_easing * self.height)
         distance_from_top = self.pos[1] / SCREEN_HEIGHT
         distance_from_bottom = 1 - distance_from_top
         if now_ms > self.last_beep_time_ms + (distance_from_bottom*distance_from_bottom)*7000:
@@ -337,7 +336,7 @@ class Letter():
     def shield_collision(self, now_ms: int) -> None:
         # logger.debug(f"---------- {self.start_fall_y}, {self.pos[1]}, {new_pos}, {self.pos[1] - new_pos}")
         self.pos[1] = int(self.start_fall_y + (self.pos[1] - self.start_fall_y)/2)
-        self.new_start_fall_y = int(self.start_fall_y + (self.pos[1] - self.start_fall_y)/2)
+        self.current_fall_start_y = int(self.start_fall_y + (self.pos[1] - self.start_fall_y)/2)
         self.start_fall_time_ms = now_ms
 
     def change_letter(self, new_letter: str, now_ms: int) -> None:
@@ -346,8 +345,8 @@ class Letter():
 
     def new_fall(self, now_ms: int) -> None:
         self.start_fall_y += Letter.Y_INCREMENT
-        self.total_fall_time = self.DROP_TIME_MS * (self.height - self.start_fall_y) / self.height
-        self.pos[1] = self.new_start_fall_y = self.start_fall_y
+        self.fall_duration_ms = self.DROP_TIME_MS * (self.height - self.start_fall_y) / self.height
+        self.pos[1] = self.current_fall_start_y = self.start_fall_y
         self.start_fall_time_ms = now_ms
 
 class Rack():
