@@ -249,7 +249,7 @@ class Letter():
     def __init__(
         self, font: pygame.freetype.Font, initial_y: int, rack_metrics: RackMetrics, output_logger) -> None:
         self.rack_metrics = rack_metrics
-        self.new_game_y = initial_y
+        self.game_area_offset_y = initial_y  # Offset from screen top to game area
         self.font = font
         self.letter_width, self.letter_height = rack_metrics.letter_width, rack_metrics.letter_height
         self.width = rack_metrics.letter_width
@@ -290,7 +290,7 @@ class Letter():
         return self.letter_ix - self.column_move_direction
 
     def get_screen_bottom_y(self) -> int:
-        return self.new_game_y + self.pos[1] + self.letter_height
+        return self.game_area_offset_y + self.pos[1] + self.letter_height
 
     def draw(self, now) -> None:
         self.surface = self.font.render(self.letter, LETTER_SOURCE_COLOR)[0]
@@ -316,9 +316,10 @@ class Letter():
 
         self.draw(now_ms)
 
-        blit_pos = self.pos.copy()
-        blit_pos[1] += self.new_game_y
-        window.blit(self.surface, blit_pos)
+        # Convert from game coordinates to screen coordinates for rendering
+        screen_pos = self.pos.copy()
+        screen_pos[1] += self.game_area_offset_y
+        window.blit(self.surface, screen_pos)
         if now_ms > self.next_column_move_time_ms:
             incidents.append("letter_column_move")
             if not self.locked_on:
