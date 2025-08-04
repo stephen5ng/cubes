@@ -18,41 +18,75 @@ from pygameasync import events
 import pygamegameasync
 import tiles
 import hub75
-import publish_logger
+import json
+import pygame
 
-MQTT_SERVER = os.environ.get("MQTT_SERVER", "localhost")
-my_open = open
+class BaseLogger:
+    def __init__(self, log_file: str):
+        self.log_file = log_file
+        self.log_f = None
+        
+    def start_logging(self):
+        self.log_f = open(self.log_file, "w")
+    
+    def stop_logging(self):
+        if self.log_f:
+            self.log_f.close()
+            self.log_f = None
+    
+    def _write_event(self, event: dict):
+        if not self.log_f:
+            return
+        self.log_f.write(json.dumps(event) + "\n")
+        self.log_f.flush()
 
-logger = logging.getLogger(__name__)
-
-# JSONL logger for word formations
-word_logger = None
-
-def setup_word_logger():
-    """Setup JSONL logger for word formations."""
-    global word_logger
-    word_logger = open("output/output.game.jsonl", "w")
-
-def log_word_formed(word: str, player: int, score: int):
-    """Log new word formation event to JSONL file."""
-    if word_logger:
+class OutputLogger(BaseLogger):
+    def log_word_formed(self, word: str, player: int, score: int):
         event = {
             "event_type": "word_formed",
             "word": word,
             "player": player,
             "score": score
         }
-        word_logger.write(json.dumps(event) + "\n")
-        word_logger.flush()
+        self._write_event(event)
+    
+    def log_letter_position_change(self, x: int, y: int):
+        event = {
+            "event_type": "letter_position_change",
+            "x": x,
+            "y": y
+        }
+        self._write_event(event)
 
-def cleanup_word_logger():
-    """Close the word logger."""
-    global word_logger
-    if word_logger:
-        word_logger.close()
-        word_logger = None
+class GameLogger(BaseLogger):
+    def log_event(self, event_type: str, data: dict):
+        now_ms = pygame.time.get_ticks()
+        
+        log_entry = {
+            "timestamp_ms": now_ms,
+            "event_type": event_type,
+            "data": data
+        }
+        
+        self._write_event(log_entry)
 
-async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.Queue) -> None:
+class PublishLogger(BaseLogger):
+    def log_mqtt_publish(self, topic: str, message, retain: bool):
+        """Log MQTT publish event to JSONL file."""
+        event = {
+            "event_type": "mqtt_publish",
+            "topic": topic,
+            "message": message,
+            "retain": retain
+        }
+        self._write_event(event)
+
+MQTT_SERVER = os.environ.get("MQTT_SERVER", "localhost")
+my_open = open
+
+logger = logging.getLogger(__name__)
+
+async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.Queue, publish_logger: PublishLogger) -> None:
     while True:
         try:
             topic, message, retain = await queue.get()
@@ -74,16 +108,19 @@ async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.
             break
 
 
-
 async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: pygamegameasync.BlockWordsPygame, keyboard_player_number: int) -> None:
-    setup_word_logger()
-    publish_logger.setup_publish_logger()
+    # Set up loggers
+    publish_logger = PublishLogger("output/output.publish.jsonl")
+    publish_logger.start_logging()
+    
+    # Set up game loggers
+    game_logger = GameLogger("game_replay.jsonl")
+    output_logger = OutputLogger("output/output.jsonl")
     
     async with aiomqtt.Client(MQTT_SERVER) as subscribe_client:
         async with aiomqtt.Client(MQTT_SERVER) as publish_client:
             publish_queue: asyncio.Queue = asyncio.Queue()
             the_app = app.App(publish_queue, dictionary)
-            the_app.set_word_logger(log_word_formed)
             
             await cubes_to_game.init(subscribe_client, args.tags)
             if args.replay:
@@ -92,10 +129,10 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
                 await subscribe_client.subscribe("game/guess")
 
             # MQTT subscription is now handled in pygamegameasync main loop
-            publish_task = asyncio.create_task(publish_tasks_in_queue(publish_client, publish_queue),
+            publish_task = asyncio.create_task(publish_tasks_in_queue(publish_client, publish_queue, publish_logger),
                 name="mqtt publish handler")
 
-            await block_words.main(the_app, subscribe_client, args.start, keyboard_player_number, publish_queue)
+            await block_words.main(the_app, subscribe_client, args.start, keyboard_player_number, publish_queue, game_logger, output_logger)
 
             # Wait for the publish queue to be empty before shutting down
             while not publish_queue.empty():
@@ -110,8 +147,8 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
             except asyncio.CancelledError:
                 pass
             
-            cleanup_word_logger()
-            publish_logger.cleanup_publish_logger()
+
+            publish_logger.stop_logging()
 
 BUNDLE_TEMP_DIR = "."
 
@@ -131,10 +168,9 @@ if __name__ == "__main__":
     dictionary = Dictionary(tiles.MIN_LETTERS, tiles.MAX_LETTERS, open=my_open)
     dictionary.read(f"{BUNDLE_TEMP_DIR}/sowpods.txt", f"{BUNDLE_TEMP_DIR}/bingos.txt")
     pygame.init()
-    block_words = pygamegameasync.BlockWordsPygame(replay_file=args.replay)
+    block_words = pygamegameasync.BlockWordsPygame(replay_file=args.replay or "")
     try:
         asyncio.run(main(args, dictionary, block_words, args.keyboard_player_number-1))
     finally:
-        cleanup_word_logger()
-        publish_logger.cleanup_publish_logger()
+        # Publish logger cleanup is handled in main function
         pygame.quit()

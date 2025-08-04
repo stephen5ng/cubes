@@ -158,8 +158,7 @@ class App:
             self._score_card.add_staged_guess(guess)
             score = self._score_card.calculate_score(guess)
             events.trigger("game.stage_guess", score, guess, player, now_ms)
-            if self._word_logger:
-                self._word_logger(guess, player, score)
+            self._word_logger.log_word_formed(guess, player, score)
             good_guess_highlight = len(guess_tiles)
             tiles_dirty = True
         else:

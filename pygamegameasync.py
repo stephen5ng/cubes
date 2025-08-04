@@ -44,7 +44,7 @@ ANTIALIAS = 1
 
 FREE_SCORE = 0
 
-letter_beeps: list[pygame.Sound] = []
+letter_beeps: list = []
 
 BAD_GUESS_COLOR=Color("red")
 GOOD_GUESS_COLOR=Color("Green")
@@ -84,34 +84,7 @@ class GameReplayer:
         
         self.events.reverse()
 
-class GameLogger:
-    def __init__(self, log_file: str = None):
-        self.log_file = log_file
-        self.log_f = None
-        
-    def start_logging(self):
-        if self.log_file:
-            self.log_f = open(self.log_file, "w")
-    
-    def stop_logging(self):
-        if self.log_f:
-            self.log_f.close()
-            self.log_f = None
-    
-    def log_event(self, event_type: str, data: dict):
-        if not self.log_f:
-            return
-            
-        now_ms = pygame.time.get_ticks()
-        
-        log_entry = {
-            "timestamp_ms": now_ms,
-            "event_type": event_type,
-            "data": data
-        }
-        
-        self.log_f.write(json.dumps(log_entry) + "\n")
-        self.log_f.flush()
+
 def get_alpha(
     easing: easing_functions.easing.EasingBase, last_update: float, duration: float, now: int) -> int:
     """Calculate alpha value for fading animations.
@@ -274,7 +247,7 @@ class Letter():
     COLUMN_SHIFT_INTERVAL_MS = 10000
 
     def __init__(
-        self, font: pygame.freetype.Font, initial_y: int, rack_metrics: RackMetrics) -> None:
+        self, font: pygame.freetype.Font, initial_y: int, rack_metrics: RackMetrics, output_logger) -> None:
         self.rack_metrics = rack_metrics
         self.new_game_y = initial_y
         self.font = font
@@ -289,6 +262,8 @@ class Letter():
         self.next_letter_easing = easing_functions.ExponentialEaseOut(start=0, end=1, duration=1)
         self.left_right_easing = easing_functions.ExponentialEaseIn(start=1000, end=10000, duration=1)
         self.top_bottom_easing = easing_functions.CubicEaseIn(start=0, end=1, duration=1)
+        self.output_logger = output_logger
+
         self.start(0)
         self.draw(0)
 
@@ -354,6 +329,8 @@ class Letter():
 
                 self.next_column_move_time_ms = now_ms + self.NEXT_COLUMN_MS
                 pygame.mixer.Sound.play(self.bounce_sound)
+            
+            self.output_logger.log_letter_position_change(self.pos[0], self.pos[1])
         return incidents
 
     def shield_collision(self, now_ms: int) -> None:
@@ -845,12 +822,14 @@ class SoundManager:
         pygame.mixer.Sound.play(self.bloop_sound)
 
 class Game:
-    def __init__(self, the_app: app.App, letter_font: pygame.freetype.Font, log_file: str) -> None:
+    def __init__(self, the_app: app.App, letter_font: pygame.freetype.Font, game_logger, output_logger) -> None:
         self._app = the_app
         self.scores = [Score(the_app, player) for player in range(MAX_PLAYERS)]
         letter_y = self.scores[0].get_size()[1] + 4
         self.rack_metrics = RackMetrics()
-        self.letter = Letter(letter_font, letter_y, self.rack_metrics)
+        self.game_logger = game_logger
+        self.output_logger = output_logger
+        self.letter = Letter(letter_font, letter_y, self.rack_metrics, self.output_logger)
         self.racks = [Rack(the_app, self.rack_metrics, self.letter, player) for player in range(MAX_PLAYERS)]
         self.guess_to_player = {}
         self.previous_guesses_display = PreviousGuessesDisplay(PreviousGuessesDisplay.FONT_SIZE, self.guess_to_player)
@@ -867,7 +846,6 @@ class Game:
         self.duration_log_f = open("durationlog.csv", "a+")
         self.sound_manager = SoundManager()
         self.input_devices = []
-        self.game_logger = GameLogger(log_file)
 
         # TODO(sng): remove f
         events.on(f"game.stage_guess")(self.stage_guess)
@@ -1061,7 +1039,7 @@ class Game:
         return incidents
 
 class BlockWordsPygame():
-    def __init__(self, replay_file: str = None) -> None:
+    def __init__(self, replay_file: str) -> None:
         self._window = pygame.display.set_mode(
             (SCREEN_WIDTH*SCALING_FACTOR, SCREEN_HEIGHT*SCALING_FACTOR))
         self.letter_font = pygame.freetype.SysFont(FONT, RackMetrics.LETTER_SIZE)
@@ -1244,7 +1222,8 @@ class BlockWordsPygame():
             pass
 
     async def main(self, the_app: app.App, subscribe_client: aiomqtt.Client, start: bool, 
-                   keyboard_player_number: int, publish_queue: asyncio.Queue = None) -> None:
+                   keyboard_player_number: int, publish_queue: asyncio.Queue, 
+                   game_logger, output_logger) -> None:
         self.the_app = the_app
         self._publish_queue = publish_queue
         # Define handlers dictionary before joystick initialization
@@ -1290,12 +1269,12 @@ class BlockWordsPygame():
         self.left_sound.set_volume(0.5)
         self.right_sound.set_volume(0.5)
 
-        log_file = None if self.replay_file else "game_replay.jsonl"
-        self.game = Game(the_app, self.letter_font, log_file)
+        self.game = Game(the_app, self.letter_font, game_logger, output_logger)
         
-        if self.game.game_logger:
-            self.game.game_logger.start_logging()
-            the_app.set_game_logger(self.game.game_logger)
+        self.game.game_logger.start_logging()
+        self.game.output_logger.start_logging()
+        the_app.set_game_logger(self.game.game_logger)
+        the_app.set_word_logger(self.game.output_logger)
         
         # Signal that the game is ready to receive MQTT messages
         if self.replay_file and self._mock_mqtt_client:
@@ -1344,6 +1323,7 @@ class BlockWordsPygame():
                     if event.type == pygame.QUIT:
                         self.game.game_logger.log_event("quit", {"timestamp": now_ms})
                         self.game.game_logger.stop_logging()
+                        self.game.output_logger.stop_logging()
                         return
 
                     if event.type == pygame.KEYDOWN:
