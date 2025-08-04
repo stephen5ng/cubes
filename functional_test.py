@@ -73,9 +73,32 @@ def record_golden_files(test_name):
     """Record golden files from current output directory."""
     output_dir = "output"
     golden_dir = f"goldens/{test_name}"
+    replay_dir = f"replay/{test_name}"
+    
+    # Clean output directory
+    if os.path.exists(output_dir):
+        shutil.rmtree(output_dir)
+    os.makedirs(output_dir)
+    
+    # Run the game to generate output files and replay
+    cmd = ["./runpygame.sh"]
+    print(f"Running: {' '.join(cmd)}")
+    
+    try:
+        result = subprocess.run(cmd)
+        print(f"Game completed with return code: {result.returncode}")
+        if result.returncode != 0:
+            print(f"Warning: Game exited with non-zero return code: {result.returncode}")
+            
+    except subprocess.TimeoutExpired:
+        print("Error: Game timed out after 30 seconds")
+        return False
+    except Exception as e:
+        print(f"Error running game: {e}")
+        return False
     
     if not os.path.exists(output_dir):
-        print(f"Error: Output directory {output_dir} not found")
+        print(f"Error: Output directory {output_dir} not found after game run")
         return False
     
     # Create golden directory
@@ -91,6 +114,14 @@ def record_golden_files(test_name):
         golden_file = Path(golden_dir) / output_file.name
         shutil.copy2(output_file, golden_file)
         print(f"Recorded: {golden_file}")
+    
+    # Move game_replay.jsonl to replay directory
+    replay_file = Path("game_replay.jsonl")
+    if replay_file.exists():
+        os.makedirs(replay_dir, exist_ok=True)
+        replay_dest = Path(replay_dir) / "game_replay.jsonl"
+        shutil.move(replay_file, replay_dest)
+        print(f"Moved: {replay_dest}")
     
     return True
 
