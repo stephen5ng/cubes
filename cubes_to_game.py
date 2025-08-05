@@ -200,7 +200,7 @@ class CubeManager:
 
     async def _mark_tiles_for_guess(self, publish_queue, guess_tiles: List[str]) -> None:
         """Mark tiles as used/unused for a guess."""
-        unused_tiles = set((str(i) for i in range(tiles.MAX_LETTERS)))
+        unused_tiles = sorted(list(set((str(i) for i in range(tiles.MAX_LETTERS)))))
         for guess in guess_tiles:
             for i, tile in enumerate(guess):
                 unused_tiles.remove(tile)
@@ -313,7 +313,7 @@ async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str, now
     sender = topic.value.removeprefix("cube/nfc/")
     await publish_queue.put((f"game/nfc/{sender}", data, True))
     if data in START_GAME_TAGS:
-        await start_game_callback(True)
+        await start_game_callback(True, now_ms)
         return
     await guess_word_based_on_cubes(sender, data, publish_queue, now_ms)
 

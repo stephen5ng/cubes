@@ -33,9 +33,9 @@ class App:
             return guess_tiles_callback
 
         def make_start_game_callback(the_app: App) -> Callable[[bool],  Coroutine[Any, Any, None]]:
-            async def start_game_callback(force: bool) -> None:
+            async def start_game_callback(force: bool, now_ms: int) -> None:
                 if force or not the_app._running:
-                    events.trigger("game.start", pygame.time.get_ticks())
+                    events.trigger("game.start", now_ms)
             return start_game_callback
 
         self._dictionary = dictionary
@@ -133,7 +133,7 @@ class App:
         self._last_guess = word_tile_ids
         logger.info(f"guess_tiles: word_tile_ids {word_tile_ids}")
         if not self._running:
-            events.trigger("game.start", pygame.time.get_ticks())
+            events.trigger("game.start", now_ms)
         guess = self._player_racks[player].ids_to_letters(word_tile_ids)
         guess_tiles = self._player_racks[player].ids_to_tiles(word_tile_ids)
 

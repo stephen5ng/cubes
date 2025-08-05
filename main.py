@@ -3,13 +3,13 @@
 import aiomqtt
 import argparse
 import asyncio
+from datetime import datetime
 import json
 import logging
 import os
-import platform
 import pygame
 import random
-from datetime import datetime
+import sys
 
 import app
 import cubes_to_game
@@ -27,7 +27,8 @@ class BaseLogger:
         self.log_f = None
         
     def start_logging(self):
-        self.log_f = open(self.log_file, "w")
+        if self.log_file:
+            self.log_f = open(self.log_file, "w")
     
     def stop_logging(self):
         if self.log_f:
@@ -50,24 +51,23 @@ class OutputLogger(BaseLogger):
         }
         self._write_event(event)
     
-    def log_letter_position_change(self, x: int, y: int):
+    def log_letter_position_change(self, x: int, y: int, now_ms: int):
         event = {
             "event_type": "letter_position_change",
             "x": x,
-            "y": y
+            "y": y,
+            "timestamp_ms": now_ms
         }
         self._write_event(event)
 
 class GameLogger(BaseLogger):
-    def log_event(self, event_type: str, data: dict):
-        now_ms = pygame.time.get_ticks()
-        
+    def log_events(self, now_ms: int, events: dict):
+        print(f"logging: {events}")
         log_entry = {
             "timestamp_ms": now_ms,
-            "event_type": event_type,
-            "data": data
+            "events": events
         }
-        
+
         self._write_event(log_entry)
 
 class PublishLogger(BaseLogger):
@@ -104,7 +104,7 @@ async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.
                 publish_logger.log_mqtt_publish(topic, message, retain)
                 # print(f"publishing: {topic}, {message}")
         except asyncio.CancelledError:
-            # Handle graceful shutdown
+            # Handle graceful shutdown            
             break
 
 
@@ -114,7 +114,7 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
     publish_logger.start_logging()
     
     # Set up game loggers
-    game_logger = GameLogger("game_replay.jsonl")
+    game_logger = GameLogger(None if args.replay else "game_replay.jsonl")
     output_logger = OutputLogger("output/output.jsonl")
     
     async with aiomqtt.Client(MQTT_SERVER) as subscribe_client:
@@ -171,6 +171,7 @@ if __name__ == "__main__":
     block_words = pygamegameasync.BlockWordsPygame(replay_file=args.replay or "")
     try:
         asyncio.run(main(args, dictionary, block_words, args.keyboard_player_number-1))
+        print("asyncio main done")
     finally:
         # Publish logger cleanup is handled in main function
         pygame.quit()
