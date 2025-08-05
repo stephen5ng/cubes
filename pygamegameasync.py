@@ -1228,7 +1228,7 @@ class BlockWordsPygame:
                 mqtt_message = mqtt_message_queue.get_nowait()
                 event = {'topic': str(mqtt_message.topic),
                          'payload': mqtt_message.payload.decode() if mqtt_message.payload else None}
-                print(f"adding to quee {event}")
+                # print(f"adding to quee {event}")
                 mqtt_events.append(event)
         except asyncio.QueueEmpty:
             pass
