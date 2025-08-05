@@ -1289,6 +1289,9 @@ class BlockWordsPygame:
         the_app.set_game_logger(self.game.game_logger)
         the_app.set_word_logger(self.game.output_logger)
         
+        # Start the event engine
+        await events.start()
+        
         # Signal that the game is ready to receive MQTT messages
         if self.replay_file and self._mock_mqtt_client:
             self._mock_mqtt_client.set_game_ready()
@@ -1303,6 +1306,7 @@ class BlockWordsPygame:
             now_ms = pygame.time.get_ticks() + time_offset
 
             if self.game.aborted:
+                await events.stop()
                 return
             
             pygame_events = []
@@ -1351,6 +1355,7 @@ class BlockWordsPygame:
                     self.game.game_logger.log_events(now_ms, events_to_log)
                     self.game.game_logger.stop_logging()
                     self.game.output_logger.stop_logging()
+                    await events.stop()
                     return
 
                 if event_type == "KEYDOWN":

@@ -26,6 +26,8 @@ class Clock:
 class EventEngine:
     def __init__(self) -> None:
         self.listeners: dict[str, list[Callable]] = {}
+        self.queue = asyncio.Queue()
+        self.running = False
 
     def on(self, event: str) -> Callable:
         if event not in self.listeners:
@@ -34,31 +36,33 @@ class EventEngine:
         def wrapper(func, *args):
             self.listeners[event].append(func)
             return func
-
         return wrapper
 
-    # this function is purposefully not async
-    # code calling this will do so in a "fire-and-forget" manner, and shouldn't be
-    # slowed down by needing to await a result
     def trigger(self, event, *args, **kwargs):
-        asyncio.create_task(self.async_trigger(event, *args, **kwargs), name=f"{event} handler")
+        if self.running:
+            self.queue.put_nowait((event, args, kwargs))
 
-    async def async_trigger(self, event, *args, **kwargs):
-        logging.info(f"async_trigger: {event}")
-        if event in self.listeners:
-            # print(f"in list: {event}")
-            
-            for func in self.listeners[event]:
-                try:
-                    await func(*args, **kwargs)
-                except Exception as e:
-                    print(f"Exception in async_trigger for event {event}: {e}")
-                    import sys
-                    import traceback
-                    traceback.print_exc()
-                    sys.exit(1)
-        else:
-            raise Exception(f"async_trigger: no event {event} in {self.listeners}")
+    async def start(self):
+        self.running = True
+        asyncio.create_task(self._worker(), name="event_worker")
+
+    async def stop(self):
+        self.running = False
+
+    async def _worker(self):
+        while self.running:
+            try:
+                event, args, kwargs = await asyncio.wait_for(self.queue.get(), timeout=0.1)
+                if event in self.listeners:
+                    for func in self.listeners[event]:
+                        try:
+                            await func(*args, **kwargs)
+                        except Exception as e:
+                            logging.error(f"Event handler error: {e}")
+            except asyncio.TimeoutError:
+                continue
+            except Exception as e:
+                logging.error(f"Event worker error: {e}")
 
 events = EventEngine()
 
