@@ -1067,7 +1067,7 @@ class BlockWordsPygame:
         return self._mock_mqtt_client
 
     async def handle_mqtt_message(self, topic_str: str, payload, now_ms: int) -> None:
-        print(f"{now_ms} Handling message: {topic_str} {payload}")
+        # print(f"{now_ms} Handling message: {topic_str} {payload}")
         if topic_str == "app/start":
             await self.game.start_cubes(now_ms)
             # events.trigger("game.start", now_ms)
