@@ -1,6 +1,5 @@
 {"event_type": "word_formed", "word": "ITS", "player": 0, "score": 3}
 {"event_type": "word_formed", "word": "DOE", "player": 0, "score": 3}
-{"event_type": "letter_position_change", "x": 49, "y": 0, "timestamp_ms": 791}
 {"event_type": "word_formed", "word": "DOL", "player": 0, "score": 3}
 {"event_type": "word_formed", "word": "ARE", "player": 0, "score": 3}
 {"event_type": "word_formed", "word": "REDO", "player": 0, "score": 4}
@@ -2176,7 +2175,6 @@
 {"event_type": "letter_position_change", "x": 69, "y": 205, "timestamp_ms": 317356}
 {"event_type": "letter_position_change", "x": 69, "y": 205, "timestamp_ms": 317362}
 {"event_type": "letter_position_change", "x": 69, "y": 207, "timestamp_ms": 317383}
-{"event_type": "letter_position_change", "x": 50, "y": 0, "timestamp_ms": 317495}
 {"event_type": "word_formed", "word": "GAY", "player": 0, "score": 3}
 {"event_type": "letter_position_change", "x": 66, "y": 0, "timestamp_ms": 318505}
 {"event_type": "word_formed", "word": "ALA", "player": 0, "score": 3}

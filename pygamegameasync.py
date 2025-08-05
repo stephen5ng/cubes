@@ -195,7 +195,7 @@ JOYSTICK_NAMES_TO_INPUTS = {
     "USB gamepad": GamepadInput,
     "USB Gamepad": DDRInput,
 }
-class RackMetrics():
+class RackMetrics:
     LETTER_SIZE = 24
     LETTER_BORDER = 0
     BOTTOM_MARGIN = 1
@@ -238,7 +238,7 @@ class RackMetrics():
             # For player 0, start from left side and expand right (original behavior)
             return pygame.Rect(0, 0, self.letter_width * select_count, self.letter_height)
 
-class Letter():
+class Letter:
     DROP_TIME_MS = 15000
     NEXT_COLUMN_MS = 1000
     ANTIALIAS = 1
@@ -269,11 +269,11 @@ class Letter():
 
     def start(self, now_ms: int) -> None:
         self.letter = ""
-        self.letter_ix = 0
+        self.letter_ix = 1
         self.start_fall_y = 0
         self.current_fall_start_y = 0
         self.column_move_direction = 1
-        self.next_column_move_time_ms = now_ms
+        self.next_column_move_time_ms = now_ms + self.NEXT_COLUMN_MS
         self.fall_duration_ms = self.DROP_TIME_MS
         self.rect = pygame.Rect(0, 0, 0, 0)
         self.pos = [0, 0]
@@ -284,7 +284,7 @@ class Letter():
         self.letter = ""
 
     def letter_index(self) -> int:
-        if self.easing_complete >= 0.5:
+        if self.fraction_complete_eased >= 0.5:
             return self.letter_ix
         return self.letter_ix - self.column_move_direction
 
@@ -295,10 +295,12 @@ class Letter():
         self.surface = self.font.render(self.letter, LETTER_SOURCE_COLOR)[0]
         remaining_ms = min(max(0, self.next_column_move_time_ms - now_ms), self.NEXT_COLUMN_MS)
         self.fraction_complete = 1.0 - remaining_ms/self.NEXT_COLUMN_MS
-        self.easing_complete = self.next_letter_easing(self.fraction_complete)
-        boost_x = 0 if self.locked_on else int(self.column_move_direction*(self.width*self.easing_complete - self.width))
+        self.fraction_complete_eased = self.next_letter_easing(self.fraction_complete)
+        boost_x = 0 if self.locked_on else int(self.column_move_direction*(self.width*(self.fraction_complete_eased - 1)))
         self.pos[0] = self.rack_metrics.get_rect().x + self.rack_metrics.get_letter_rect(self.letter_ix, self.letter).x + boost_x
-        self.locked_on = (self.easing_complete >=1) and (self.get_screen_bottom_y() + Letter.Y_INCREMENT*2 > self.height)
+        # print(f"{now_ms}: letter.draw {self.letter_ix} {self.pos[0]}, {boost_x}, {self.fraction_complete_eased}, "
+        #       f"{self.fraction_complete}, {remaining_ms}, {self.next_column_move_time_ms}")
+        self.locked_on = (self.fraction_complete_eased >=1) and (self.get_screen_bottom_y() + Letter.Y_INCREMENT*2 > self.height)
 
     def update(self, window: pygame.Surface, now_ms: int) -> None:
         incidents = []
@@ -349,7 +351,7 @@ class Letter():
         self.pos[1] = self.current_fall_start_y = self.start_fall_y
         self.start_fall_time_ms = now_ms
 
-class Rack():
+class Rack:
     LETTER_TRANSITION_DURATION_MS = 4000
     GUESS_TRANSITION_DURATION_MS = 800
 
@@ -478,7 +480,7 @@ class Rack():
         top_left = (top_left[0] + self.left_offset_by_player[player_index], top_left[1])
         window.blit(surface, top_left)
 
-class Shield():
+class Shield:
     def __init__(self, base_pos: tuple[int, int], letters: str, score: int, player: int, now_ms: int) -> None:
         self.font = pygame.freetype.SysFont("Arial", int(2+math.log(1+score)*8))
         self.letters = letters
@@ -515,7 +517,7 @@ class Shield():
         self.active = False
         self.pos[1] = SCREEN_HEIGHT
 
-class Score():
+class Score:
     def __init__(self, the_app: app.App, player: int) -> None:
         self.the_app = the_app
         self.player = player
@@ -545,7 +547,7 @@ class Score():
     def update(self, window: pygame.Surface) -> None:
         window.blit(self.surface, self.pos)
 
-class LastGuessFader():
+class LastGuessFader:
     FADE_DURATION_MS = 2000
 
     def __init__(self, last_update_ms: int, duration: int, surface: pygame.Surface, position: tuple[int, int]) -> None:
@@ -563,7 +565,7 @@ class LastGuessFader():
             self.last_guess_surface.set_alpha(self.alpha)
             target.blit(self.last_guess_surface, self.last_guess_position)
 
-class FaderManager():
+class FaderManager:
     def __init__(self, previous_guesses: list[str], font: pygame.freetype.Font, text_rect_renderer: textrect.TextRectRenderer):
         self._previous_guesses = previous_guesses
         self._text_rect_renderer = text_rect_renderer
@@ -578,7 +580,7 @@ class FaderManager():
         last_guess_surface = self._cached_render(self._font, last_guess, (color.r, color.g, color.b))
         last_guess_position = self._text_rect_renderer.get_pos(last_guess)
         return LastGuessFader(last_update_ms, duration, last_guess_surface, last_guess_position)
-class PreviousGuessesDisplayBase():
+class PreviousGuessesDisplayBase:
     FONT = "Arial"
 
     def __init__(self, font_size: int) -> None:
@@ -710,7 +712,7 @@ class RemainingPreviousGuessesDisplay(PreviousGuessesDisplayBase):
             self.remaining_guesses,
             [self.PLAYER_COLORS[self.guess_to_player.get(guess, 0)] for guess in self.remaining_guesses])
 
-class LetterSource():
+class LetterSource:
     ALPHA = 128
     ANIMATION_DURAION_MS = 200
     MIN_HEIGHT = 1
