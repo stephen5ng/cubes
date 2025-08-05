@@ -1,0 +1,1871 @@
+{"timestamp_ms": 852, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 856, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 935, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 1048, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}]}}
+{"timestamp_ms": 1155, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 1258, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 1361, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 1462, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 1567, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 1647, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 1746, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 1849, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 1875, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 1964, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 2080, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 2162, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 2268, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 2374, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 2476, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 2583, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 2684, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": null}]}}
+{"timestamp_ms": 2762, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 2865, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 2891, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 2970, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": null}]}}
+{"timestamp_ms": 3081, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 3187, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 3292, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 3383, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 3496, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 3602, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 3707, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 3784, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 3889, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 3893, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 4008, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 4095, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 4203, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 4307, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 4414, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 4497, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 4599, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 4702, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 4804, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 4912, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 5026, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 5113, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 5221, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 5328, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 5414, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 5518, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 5624, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 5726, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 5828, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 5932, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 6020, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 6136, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 6218, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 6325, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 6421, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 6545, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 6624, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 6730, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 6833, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 6938, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 7057, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 7142, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 7250, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 7335, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 7438, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 7546, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 7651, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 7742, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 7850, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 7952, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 8046, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 8158, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 8247, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 8367, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 8451, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 8563, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 8679, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 8767, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 8863, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 8921, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 8956, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 8979, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}], "incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 9064, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 9173, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 9282, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 9371, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 9472, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 9579, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 9672, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 9769, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 9889, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 9978, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 10094, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 10183, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 10299, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 10386, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 10476, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 10587, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 10699, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 10782, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 10887, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 10985, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 11017, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 11112, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}]}}
+{"timestamp_ms": 11204, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 11310, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 11421, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 11508, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 11615, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 11699, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 11808, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 11919, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 12003, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 12033, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 12122, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 12222, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 12352, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 12434, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 12540, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 12628, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 12731, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 12831, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 12941, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 13008, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 13035, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 13136, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 13261, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 13364, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 13452, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 13564, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 13674, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 13786, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 13894, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 13978, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 14011, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 14102, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 14197, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 14297, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 14387, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 14490, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 14594, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 14705, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 14796, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 14905, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 15009, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 15017, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 15116, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 15231, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 15329, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 15428, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 15546, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 15631, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 15734, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 15835, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 15943, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 16031, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 16035, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 16157, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 16250, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 16367, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 16451, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 16568, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 16658, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 16749, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 16868, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 16953, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 17043, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 17097, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 17163, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 17287, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 17392, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 17482, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 17579, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 17693, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 17792, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 17875, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 17999, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 18057, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 18085, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 18190, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 18308, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 18406, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 18499, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 18588, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 18714, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 18795, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 18901, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 19007, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 19064, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 19100, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 19222, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 19314, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 19439, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 19530, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}]}}
+{"timestamp_ms": 19625, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 19720, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 19816, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 19918, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 20022, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 20077, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 20142, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 20240, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 20337, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 20452, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 20538, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": null}]}}
+{"timestamp_ms": 20642, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": null}]}}
+{"timestamp_ms": 20758, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 20844, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 20957, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 21058, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 21091, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 21160, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 21259, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 21355, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 21447, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 21569, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 21663, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 21759, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 21856, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 21960, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 22050, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 22109, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 22169, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 22261, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 22358, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 22473, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 22558, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 22663, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 22760, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 22878, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 22979, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 23074, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": null}]}}
+{"timestamp_ms": 23116, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 23138, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23147, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23165, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23175, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23190, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23204, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23214, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23231, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23242, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23265, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23271, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23293, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23299, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23321, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23332, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23356, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23363, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23386, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23395, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23419, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23426, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23449, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23458, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23482, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23489, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23512, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23520, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23541, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23547, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23569, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23576, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23597, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 23603, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 23681, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 23793, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 23875, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 23977, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 24095, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 24192, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 24289, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 24393, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 24514, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 24600, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 24608, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 24730, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 24829, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": null}]}}
+{"timestamp_ms": 24919, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 25014, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 25108, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 25217, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 25309, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 25423, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 25538, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 25625, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 25715, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 25831, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 25916, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 26032, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 26120, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}]}}
+{"timestamp_ms": 26238, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 26335, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 26423, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 26533, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 26627, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 26735, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 26842, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 26939, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 27054, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 27168, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 27254, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 27350, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": null}]}}
+{"timestamp_ms": 27462, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 27550, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 27628, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 27656, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 27767, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 27864, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 27985, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 28077, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 28162, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 28261, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 28372, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 28489, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 28575, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 28638, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 28667, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 28770, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 28884, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 28984, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 29077, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": null}]}}
+{"timestamp_ms": 29190, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}]}}
+{"timestamp_ms": 29288, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 29398, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 29515, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 29609, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}]}}
+{"timestamp_ms": 29642, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 29719, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 29807, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 29914, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 30018, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 30131, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 30222, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 30315, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 30432, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 30528, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 30647, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 30741, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 30835, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 30926, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 31024, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 31140, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 31251, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 31349, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 31432, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 31549, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 31636, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": null}]}}
+{"timestamp_ms": 31668, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 31753, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 31841, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 31969, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 32063, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 32154, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 32256, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 32352, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 32460, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 32572, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 32661, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 32690, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 32770, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 32881, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 32979, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 33071, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 33195, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 33277, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 33385, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 33509, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 33578, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 33687, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 33699, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 33783, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 33900, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 33986, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 34118, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 34208, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 34309, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 34415, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 34516, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": null}]}}
+{"timestamp_ms": 34621, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 34717, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 34812, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 34941, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 35043, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 35125, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 35243, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 35338, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 35450, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 35535, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 35652, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 35725, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 35743, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 35751, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 35771, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 35781, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 35804, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 35808, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 35832, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 35840, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 35862, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 35868, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 35891, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 35896, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 35920, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 35925, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 35949, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 35964, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 35987, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 35991, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36014, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36027, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36051, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36057, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36080, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36085, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36108, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36113, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36136, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36147, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36169, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36179, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36201, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36206, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36229, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36238, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36261, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": null}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 36270, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36291, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36301, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36321, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36330, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36352, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36361, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36383, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36390, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36413, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36420, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36443, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36447, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36470, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36474, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36497, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36504, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36527, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36533, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36551, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36560, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36576, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36590, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36607, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36619, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36636, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36643, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36665, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36671, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36694, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36701, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36724, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36731, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 36755, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 36761, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 36865, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 36957, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 37050, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 37167, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 37257, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 37371, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 37479, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 37560, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 37663, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 37774, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 37889, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 37974, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 38069, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 38190, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 38281, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 38399, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 38486, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 38571, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 38691, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 38775, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 38887, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 39004, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 39095, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 39184, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 39300, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 39385, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 39497, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 39586, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 39688, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 39780, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 39807, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 39902, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 40018, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 40101, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 40221, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 40306, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 40428, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": null}]}}
+{"timestamp_ms": 40515, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 40608, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 40737, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 40797, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 40826, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 40912, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 41027, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 41141, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}]}}
+{"timestamp_ms": 41230, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 41321, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 41372, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 41426, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 41529, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 41635, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 41748, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}]}}
+{"timestamp_ms": 41803, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 41829, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 41945, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 42035, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 42140, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 42256, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 42340, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 42457, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 42539, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 42659, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 42746, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 42812, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 42870, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 42968, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 43066, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 43156, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 43270, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 43376, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 43477, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 43591, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 43702, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 43787, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 43818, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 43888, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 44001, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 44096, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 44217, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 44311, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 44403, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 44511, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 44616, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 44726, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 44821, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 44937, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 45030, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 45121, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 45232, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 45351, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 45445, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 45559, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 45650, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 45757, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 45843, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 45941, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 46059, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 46151, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 46259, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 46354, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 46471, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 46560, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}]}}
+{"timestamp_ms": 46656, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 46762, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 46866, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 46959, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 47079, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 47166, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 47276, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 47389, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 47478, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 47577, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 47673, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 47796, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 47888, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 47977, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 48089, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 48182, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 48305, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 48395, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 48500, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 48596, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 48719, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 48808, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 48891, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 48905, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 49005, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 49097, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 49208, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 49325, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 49415, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 49515, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": null}]}}
+{"timestamp_ms": 49632, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 49721, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 49818, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 49907, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 49942, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 50033, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 50120, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 50235, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 50323, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 50433, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 50547, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 50647, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 50753, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 50858, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 50924, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 50959, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 51057, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 51152, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 51241, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 51350, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 51465, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 51564, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 51664, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 51771, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 51866, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 51936, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 51946, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 51968, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "BD291466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 51978, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52000, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52009, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52032, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52040, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52059, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52074, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52085, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52105, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52113, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52132, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52138, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52159, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 52165, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52187, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52192, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52215, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52220, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52243, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52248, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52272, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52283, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52306, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52312, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52335, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52344, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52367, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52373, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52397, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52404, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52427, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52436, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52459, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52467, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52491, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52498, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52521, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52528, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52551, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52558, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52581, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52588, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52611, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52618, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52641, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52648, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52671, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52679, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52701, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52708, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52730, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52737, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52759, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52767, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52790, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52797, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52820, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52826, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52849, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52856, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52879, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52888, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52910, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52916, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52939, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52946, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52969, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52975, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 52998, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 53002, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 53025, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 53080, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 53168, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 53290, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 53377, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 53493, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 53577, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 53683, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 53818, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 53917, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 53994, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 54034, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 54091, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 54193, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 54321, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 54419, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 54516, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 54604, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 54721, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 54810, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 54926, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 55010, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 55040, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 55128, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 55215, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 55307, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 55417, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 55534, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": null}]}}
+{"timestamp_ms": 55622, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 55713, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 55832, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 55922, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 56036, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 56044, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 56132, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 56226, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 56343, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": null}]}}
+{"timestamp_ms": 56422, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 56536, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 56651, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}]}}
+{"timestamp_ms": 56743, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": null}]}}
+{"timestamp_ms": 56830, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 56937, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 57054, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": null}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 57152, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 57246, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 57363, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": null}]}}
+{"timestamp_ms": 57446, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 57561, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 57647, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 57743, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 57860, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 57947, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 58051, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 58068, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 58158, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 58260, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 58359, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 58480, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 58576, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 58663, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 58760, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 58866, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 58967, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": null}]}}
+{"timestamp_ms": 59069, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 59168, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 59291, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 59377, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 59497, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 59590, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 59681, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 59802, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 59890, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": null}]}}
+{"timestamp_ms": 60008, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 60074, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 60104, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": null}]}}
+{"timestamp_ms": 60199, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": null}]}}
+{"timestamp_ms": 60328, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 60424, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 60517, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 60602, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 60709, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 60814, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 60932, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 61016, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 61082, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 61141, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}]}}
+{"timestamp_ms": 61235, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 61321, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 61434, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 61531, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 61630, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 61754, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 61842, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 61934, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 62035, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 62097, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 62106, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62128, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62136, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62160, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62169, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62192, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62198, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62221, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62231, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62255, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62264, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62287, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62295, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62318, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62327, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62350, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62359, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62382, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62390, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62412, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62419, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62442, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62449, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62470, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62476, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62500, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62506, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62529, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62535, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62558, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62565, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62588, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62594, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62617, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62623, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62647, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62653, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62677, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62683, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62706, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62713, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62736, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62743, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62766, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62773, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62796, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62802, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62826, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62831, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62854, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62859, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62882, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62887, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62910, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62915, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62938, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62943, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62966, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62971, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62993, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 62998, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 63022, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 63031, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 63054, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 63064, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 63087, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 63092, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 63116, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 63122, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 63144, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 63155, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 63174, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 63184, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 63207, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 63216, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 63239, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 63248, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 63272, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 63284, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 63364, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 63451, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 63558, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 63661, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 63776, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 63858, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 63973, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 64066, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 64178, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 64282, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 64296, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 64384, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 64475, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 64591, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 64682, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 64799, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 64882, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 65009, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 65099, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 65185, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 65300, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 65386, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 65499, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 65592, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 65698, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 65814, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 65903, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 66017, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 66101, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 66227, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 66303, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 66326, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 66419, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 66516, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 66638, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 66717, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 66821, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 66940, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 67022, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 67136, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 67254, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 67311, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 67349, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 67441, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 67531, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 67648, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}]}}
+{"timestamp_ms": 67763, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 67845, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 67956, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 68063, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 68146, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 68264, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 68321, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 68348, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 68453, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 68577, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 68653, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 68770, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 68874, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 68961, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 69057, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 69162, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 69308, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 69336, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 69424, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 69520, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 69620, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 69727, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 69816, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 69909, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 70008, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 70141, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 70231, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 70331, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 70342, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 70432, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 70520, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 70637, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 70725, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 70831, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 70937, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 71044, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 71129, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 71241, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 71331, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 71360, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 71368, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71391, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71402, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71425, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71430, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71454, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71462, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71485, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71490, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71514, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71521, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71543, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71553, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71576, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71584, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71607, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71618, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71642, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71652, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71676, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71685, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71708, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71717, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71739, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71748, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71770, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71776, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71799, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71805, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71829, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71834, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71858, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71865, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71888, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71894, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71918, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71924, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71946, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71952, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71976, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 71981, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 72005, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 72010, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 72033, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 72039, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 72062, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 72068, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 72092, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 72098, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 72121, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 72127, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 72150, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 72156, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 72266, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 72355, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 72460, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 72570, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 72663, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 72746, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 72854, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 72973, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 73066, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 73172, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 73269, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 73364, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 73491, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 73581, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 73692, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 73775, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 73886, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 73997, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 74081, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 74177, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 74200, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 74293, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 74381, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 74498, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 74585, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 74701, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 74786, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 74902, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 74987, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 75099, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 75188, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 75306, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 75390, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 75507, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 75593, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}], "incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 75698, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 75809, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 75915, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 76000, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 76137, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 76203, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 76233, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 76322, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 76444, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 76534, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 76621, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 76736, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 76819, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 76937, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 77025, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 77146, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": null}]}}
+{"timestamp_ms": 77204, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 77230, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 77355, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 77438, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 77552, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 77638, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 77752, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 77868, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 77947, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 78068, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 78155, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 78211, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 78269, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 78364, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 78460, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 78576, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 78662, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 78777, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 78867, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 78984, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 79076, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 79182, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 79220, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 79303, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 79392, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 79477, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 79586, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 79700, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 79786, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 79910, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 79994, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 80095, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 80215, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 80242, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 80310, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 80400, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 80519, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 80599, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": null}]}}
+{"timestamp_ms": 80722, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": null}]}}
+{"timestamp_ms": 80814, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 80899, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 81007, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": null}]}}
+{"timestamp_ms": 81123, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 81219, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 81254, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 81315, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 81408, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 81530, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 81620, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 81717, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 81815, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 81938, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 82018, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 82124, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 82216, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 82255, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 82279, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82284, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82306, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82316, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82337, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82347, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82369, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82378, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82400, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82409, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82430, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82438, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82461, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82468, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82492, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82499, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82522, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82529, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82552, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82558, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82581, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82587, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82610, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82616, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82640, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82647, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82670, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82677, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82701, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82707, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82731, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82737, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82761, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82767, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82790, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82796, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82820, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82826, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82849, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82856, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82880, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82886, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82909, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82915, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82938, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82944, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82967, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82974, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82997, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 83003, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 83025, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 83032, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 83056, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 83061, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 83084, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 83090, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 83114, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 83121, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 83143, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 83230, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 83336, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 83457, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 83537, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 83651, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 83742, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 83853, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 83945, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 84066, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 84128, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 84162, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 84256, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 84373, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 84462, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 84550, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 84666, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}]}}
+{"timestamp_ms": 84782, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 84868, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 84984, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 85072, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 85130, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 85163, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 85272, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 85387, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 85474, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 85588, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": null}]}}
+{"timestamp_ms": 85674, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 85787, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 85874, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 85970, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 86084, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 86144, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 86197, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 86293, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 86387, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 86486, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 86603, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 86685, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 86800, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 86901, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 86989, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 87117, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 87157, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 87207, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 87299, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 87413, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 87508, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 87602, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 87721, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 87812, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 87915, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": null}]}}
+{"timestamp_ms": 88015, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 88110, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 88176, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 88186, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88209, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88219, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88242, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88252, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88275, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88284, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88307, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": null}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88314, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88336, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88342, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88366, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88371, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88394, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88401, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88425, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88431, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88454, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88460, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88483, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88489, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88508, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88518, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88537, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88546, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88567, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88574, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88597, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88604, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88627, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88633, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88657, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88663, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88687, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88693, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88716, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88723, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88746, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88752, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88775, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88782, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88804, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88810, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88833, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88840, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88863, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88870, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88894, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88900, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88923, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88930, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88953, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88959, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88983, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 88989, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89013, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89019, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89043, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89049, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89072, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89079, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89102, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89110, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89133, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89141, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89163, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89170, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89193, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89200, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89223, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89230, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89253, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89259, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89283, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89289, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89312, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89319, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89342, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89349, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89372, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89379, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 89402, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 89409, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 89433, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 89528, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 89634, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 89748, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 89827, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 89942, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 90034, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 90140, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 90233, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 90344, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 90410, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 90447, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 90542, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": null}]}}
+{"timestamp_ms": 90644, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 90764, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 90849, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 90973, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 91064, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 91152, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}]}}
+{"timestamp_ms": 91370, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 91441, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 91464, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 91504, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 91617, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 91713, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 91824, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 91917, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 92025, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 92141, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 92225, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 92353, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 92436, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 92461, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 92563, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 92657, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 92770, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 92895, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 92988, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 93075, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 93182, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 93302, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 93397, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 93468, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 93491, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93500, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93524, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93533, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93557, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93562, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93584, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93589, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93612, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93622, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93646, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93652, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93673, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93688, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93700, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93720, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93732, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93748, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93764, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93778, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93795, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93806, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93829, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93840, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93862, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93867, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93890, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93898, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93921, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93930, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93954, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93960, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93983, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 93988, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94011, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94018, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94042, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94049, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94072, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94078, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94101, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94110, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94133, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94139, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94162, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94170, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94194, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94199, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94222, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94228, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94251, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94261, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94284, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94289, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94311, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94322, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94345, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94351, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94375, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94386, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94409, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94415, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94438, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94446, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94470, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 94480, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 94504, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 94535, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 94630, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 94751, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 94848, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": null}]}}
+{"timestamp_ms": 94950, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": null}]}}
+{"timestamp_ms": 95028, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 95135, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 95240, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 95329, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 95442, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 95508, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 95568, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 95659, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 95743, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 95844, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 95966, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 96052, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 96168, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 96259, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 96380, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 96468, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 96525, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 96553, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 96668, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 96783, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 96868, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 96980, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 97066, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 97181, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}]}}
+{"timestamp_ms": 97268, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 97382, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 97475, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 97526, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 97539, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97555, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97566, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97583, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97595, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97610, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97619, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97637, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97647, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97664, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97677, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97699, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97711, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97733, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97744, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97768, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97773, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97797, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97801, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97825, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97829, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97852, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97859, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97883, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97890, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97914, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97923, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97945, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97951, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97973, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 97978, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98002, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98009, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98033, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98038, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98061, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98068, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98091, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98096, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98119, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98132, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98155, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98160, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98186, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98192, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98215, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98230, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98253, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98258, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98281, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98286, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98309, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98317, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98340, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98345, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98368, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98379, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98402, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98407, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98430, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 98435, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98457, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98463, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98485, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98495, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98519, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98529, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98553, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98558, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98581, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98587, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98611, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98622, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98643, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98650, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98672, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98678, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98700, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98703, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98725, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98735, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98750, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98768, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98779, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98792, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98810, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98821, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98835, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98850, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98866, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98880, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98895, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98904, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98923, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98933, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98957, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98961, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98984, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 98990, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99013, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99021, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99045, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99048, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99072, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99083, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99106, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99116, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99139, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99143, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99166, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99177, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99195, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99205, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99228, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": null}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 99234, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99256, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99266, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99283, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99290, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99312, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99320, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99342, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99345, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99368, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99371, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99395, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99410, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99433, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99439, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99461, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99468, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99487, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99494, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99518, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99526, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99548, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99554, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99577, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99581, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99603, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99610, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99633, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 99640, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99663, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99670, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99693, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99700, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99724, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": null}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99731, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99754, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99761, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99785, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99791, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99815, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99820, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99841, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99848, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99872, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99879, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99903, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99910, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99933, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99940, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99963, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99969, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99992, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99998, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100020, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100026, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100049, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100055, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100078, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100084, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100107, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100113, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100136, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100142, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100164, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100170, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100194, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100200, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100222, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100228, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100251, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100257, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100280, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100285, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100309, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100313, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100336, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100342, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100363, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100370, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100391, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100397, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100420, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100426, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100449, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100456, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100478, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100484, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100507, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100513, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100536, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 100542, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100564, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100569, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100593, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100598, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100621, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100627, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100651, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100657, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100679, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100685, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100708, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100713, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100736, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100741, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100765, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100770, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100793, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100798, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100821, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100826, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100850, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 100856, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100879, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100884, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100907, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100912, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100935, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100941, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100964, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100969, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100992, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100997, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101020, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101025, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101049, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 101055, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101079, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101084, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101107, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101112, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101134, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101140, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101163, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101169, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101191, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101196, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101219, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101224, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101247, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 101252, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101275, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101280, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101304, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 101309, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101332, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101337, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101360, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 101362, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101385, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101391, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101414, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101420, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101442, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101449, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101472, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101478, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101501, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101506, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101530, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101535, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101558, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101564, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101587, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101593, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101615, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101617, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101639, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101646, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101669, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101676, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101700, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101701, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101725, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101731, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101754, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101761, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101784, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101791, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101809, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101816, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101839, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101846, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101864, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101871, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101890, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101899, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101922, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101932, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101955, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101965, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101981, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101991, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102006, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102017, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102033, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102053, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 102065, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102086, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102097, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102112, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102127, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102142, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102151, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102172, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102176, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102200, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102208, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102231, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102238, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102261, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102270, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102292, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102299, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102321, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102329, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102351, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102358, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102381, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102387, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102406, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102413, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102436, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102444, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102467, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "30071466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102473, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102496, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102502, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102525, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102531, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102554, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102559, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102582, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102588, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102611, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102618, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102641, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102648, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102671, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "BD291466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102677, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102701, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102707, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102730, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102737, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102760, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 102767, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102790, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102796, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102819, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102825, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102848, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102854, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102877, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102883, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102906, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102912, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102936, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102941, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102964, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102970, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102993, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 102999, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 103022, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 103028, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 103051, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 103057, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 103080, "events": {"mqtt": [{"topic": "cube/nfc/6", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 103086, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 103109, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 103115, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 103139, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 103144, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 103167, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "A9121466080104E0"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 103172, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 103195, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 103276, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 103379, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 103493, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 103586, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 103674, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "A9121466080104E0"}]}}
+{"timestamp_ms": 103783, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 103876, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 103984, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": null}]}}
+{"timestamp_ms": 104091, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": null}]}}
+{"timestamp_ms": 104214, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "71E81366080104E0"}]}}
+{"timestamp_ms": 104303, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 104408, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 104422, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 104513, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 104627, "events": {"mqtt": [{"topic": "cube/nfc/5", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 104716, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 104842, "events": {"mqtt": [{"topic": "cube/nfc/4", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 104927, "events": {"mqtt": [{"topic": "cube/nfc/3", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 105039, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "BD291466080104E0"}]}}
+{"timestamp_ms": 105120, "events": {"mqtt": [{"topic": "cube/nfc/1", "payload": "361E1466080104E0"}]}}
+{"timestamp_ms": 105230, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "B1FD1366080104E0"}]}}
+{"timestamp_ms": 105338, "events": {"mqtt": [{"topic": "cube/nfc/2", "payload": "30071466080104E0"}]}}
+{"timestamp_ms": 105439, "events": {"pygame": [{"type": "KEYDOWN", "key": "LEFT META"}], "mqtt": [{"topic": "cube/nfc/3", "payload": "30071466080104E0"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 105549, "events": {"pygame": [{"type": "KEYDOWN", "key": "Q"}, {"type": "QUIT"}], "mqtt": [{"topic": "cube/nfc/6", "payload": "361E1466080104E0"}]}}
