@@ -291,22 +291,7 @@ class Letter:
     def get_screen_bottom_y(self) -> int:
         return self.game_area_offset_y + self.pos[1] + self.letter_height
 
-    def draw(self, now_ms) -> None:
-        self.surface = self.font.render(self.letter, LETTER_SOURCE_COLOR)[0]
-        remaining_ms = min(max(0, self.next_column_move_time_ms - now_ms), self.NEXT_COLUMN_MS)
-        self.fraction_complete = 1.0 - remaining_ms/self.NEXT_COLUMN_MS
-        self.fraction_complete_eased = self.next_letter_easing(self.fraction_complete)
-        boost_x = 0 if self.locked_on else int(self.column_move_direction*(self.width*(self.fraction_complete_eased - 1)))
-        self.pos[0] = self.rack_metrics.get_rect().x + self.rack_metrics.get_letter_rect(self.letter_ix, self.letter).x + boost_x
-        # print(f"{now_ms}: letter.draw {self.letter_ix} {self.pos[0]}, {boost_x}, {self.fraction_complete_eased}, "
-        #       f"{self.fraction_complete}, {remaining_ms}, {self.next_column_move_time_ms}")
-        self.locked_on = (self.fraction_complete_eased >=1) and (self.get_screen_bottom_y() + Letter.Y_INCREMENT*2 > self.height)
-
-    def update(self, window: pygame.Surface, now_ms: int) -> None:
-        incidents = []
-        fall_percent = (now_ms - self.start_fall_time_ms)/self.fall_duration_ms
-        fall_easing = self.top_bottom_easing(fall_percent)
-        self.pos[1] = int(self.current_fall_start_y + fall_easing * self.height)
+    def _update_beeping(self, now_ms: int) -> None:
         distance_from_top = self.pos[1] / SCREEN_HEIGHT
         distance_from_bottom = 1 - distance_from_top
         if now_ms > self.last_beep_time_ms + (distance_from_bottom*distance_from_bottom)*7000:
@@ -314,12 +299,28 @@ class Letter:
             pygame.mixer.Sound.play(letter_beeps[letter_beeps_ix])
             self.last_beep_time_ms = now_ms
 
+    def draw(self, now_ms) -> None:
+        self.surface = self.font.render(self.letter, LETTER_SOURCE_COLOR)[0]
+        remaining_ms = min(max(0, self.next_column_move_time_ms - now_ms), self.NEXT_COLUMN_MS)
+        self.fraction_complete = 1.0 - remaining_ms/self.NEXT_COLUMN_MS
+        self.fraction_complete_eased = self.next_letter_easing(self.fraction_complete)
+        boost_x = 0 if self.locked_on else int(self.column_move_direction*(self.width*(self.fraction_complete_eased - 1)))
+        self.pos[0] = self.rack_metrics.get_rect().x + self.rack_metrics.get_letter_rect(self.letter_ix, self.letter).x + boost_x
+        self.locked_on = (self.fraction_complete_eased >=1) and (self.get_screen_bottom_y() + Letter.Y_INCREMENT*2 > self.height)
+
+    def update(self, window: pygame.Surface, now_ms: int) -> None:
+        incidents = []
+        fall_percent = (now_ms - self.start_fall_time_ms)/self.fall_duration_ms
+        fall_easing = self.top_bottom_easing(fall_percent)
+        self.pos[1] = int(self.current_fall_start_y + fall_easing * self.height)
+        
+        self._update_beeping(now_ms)
         self.draw(now_ms)
 
-        # Convert from game coordinates to screen coordinates for rendering
         screen_pos = self.pos.copy()
         screen_pos[1] += self.game_area_offset_y
         window.blit(self.surface, screen_pos)
+        
         if now_ms > self.next_column_move_time_ms:
             incidents.append("letter_column_move")
             if not self.locked_on:
@@ -329,7 +330,6 @@ class Letter:
                     self.letter_ix = self.letter_ix + self.column_move_direction*2
 
                 self.next_column_move_time_ms = now_ms + self.NEXT_COLUMN_MS
-
                 pygame.mixer.Sound.play(self.bounce_sound)
             
             self.output_logger.log_letter_position_change(self.pos[0], self.pos[1], now_ms)
