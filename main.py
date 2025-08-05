@@ -175,6 +175,10 @@ if __name__ == "__main__":
     try:
         asyncio.run(main(args, dictionary, block_words, args.keyboard_player_number-1))
         print("asyncio main done")
-    finally:
-        # Publish logger cleanup is handled in main function
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        logger.exception(e)
+        # Still need to quit pygame to stop the window
         pygame.quit()
+        sys.exit(1)
