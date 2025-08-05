@@ -299,14 +299,36 @@ class Letter:
             pygame.mixer.Sound.play(letter_beeps[letter_beeps_ix])
             self.last_beep_time_ms = now_ms
 
-    def draw(self, now_ms) -> None:
-        self.surface = self.font.render(self.letter, LETTER_SOURCE_COLOR)[0]
+    def _update_column_movement(self, now_ms: int) -> list[str]:
+        incidents = []
+        if now_ms > self.next_column_move_time_ms:
+            incidents.append("letter_column_move")
+            if not self.locked_on:
+                self.letter_ix = self.letter_ix + self.column_move_direction
+                if self.letter_ix < 0 or self.letter_ix >= tiles.MAX_LETTERS:
+                    self.column_move_direction *= -1
+                    self.letter_ix = self.letter_ix + self.column_move_direction*2
+
+                self.next_column_move_time_ms = now_ms + self.NEXT_COLUMN_MS
+                pygame.mixer.Sound.play(self.bounce_sound)
+            
+            self.output_logger.log_letter_position_change(self.pos[0], self.pos[1], now_ms)
+        return incidents
+
+    def _calculate_position(self, now_ms: int) -> None:
         remaining_ms = min(max(0, self.next_column_move_time_ms - now_ms), self.NEXT_COLUMN_MS)
         self.fraction_complete = 1.0 - remaining_ms/self.NEXT_COLUMN_MS
         self.fraction_complete_eased = self.next_letter_easing(self.fraction_complete)
         boost_x = 0 if self.locked_on else int(self.column_move_direction*(self.width*(self.fraction_complete_eased - 1)))
         self.pos[0] = self.rack_metrics.get_rect().x + self.rack_metrics.get_letter_rect(self.letter_ix, self.letter).x + boost_x
-        self.locked_on = (self.fraction_complete_eased >=1) and (self.get_screen_bottom_y() + Letter.Y_INCREMENT*2 > self.height)
+
+    def _update_locked_state(self) -> None:
+        self.locked_on = (self.fraction_complete_eased >= 1) and (self.get_screen_bottom_y() + Letter.Y_INCREMENT*2 > self.height)
+
+    def draw(self, now_ms) -> None:
+        self.surface = self.font.render(self.letter, LETTER_SOURCE_COLOR)[0]
+        self._calculate_position(now_ms)
+        self._update_locked_state()
 
     def update(self, window: pygame.Surface, now_ms: int) -> None:
         incidents = []
@@ -321,18 +343,7 @@ class Letter:
         screen_pos[1] += self.game_area_offset_y
         window.blit(self.surface, screen_pos)
         
-        if now_ms > self.next_column_move_time_ms:
-            incidents.append("letter_column_move")
-            if not self.locked_on:
-                self.letter_ix = self.letter_ix + self.column_move_direction
-                if self.letter_ix < 0 or self.letter_ix >= tiles.MAX_LETTERS:
-                    self.column_move_direction *= -1
-                    self.letter_ix = self.letter_ix + self.column_move_direction*2
-
-                self.next_column_move_time_ms = now_ms + self.NEXT_COLUMN_MS
-                pygame.mixer.Sound.play(self.bounce_sound)
-            
-            self.output_logger.log_letter_position_change(self.pos[0], self.pos[1], now_ms)
+        incidents.extend(self._update_column_movement(now_ms))
         return incidents
 
     def shield_collision(self, now_ms: int) -> None:
