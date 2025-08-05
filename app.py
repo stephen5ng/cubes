@@ -110,7 +110,7 @@ class App:
 
         self._score_card.update_previous_guesses()
         for player in range(self._player_count):
-            await cubes_to_game.accept_new_letter(self._publish_queue, next_letter, changed_tile.id, player)
+            await cubes_to_game.accept_new_letter(self._publish_queue, next_letter, changed_tile.id, player, now_ms)
 
         self._update_previous_guesses()
         self._update_remaining_previous_guesses()
@@ -121,9 +121,14 @@ class App:
             for player in range(self._player_count):
                 await self.guess_tiles(self._last_guess, False, player, now_ms)
 
-    async def letter_lock(self, position: int, locked_on: bool) -> None:
-        for rack in self._player_racks:
-            await cubes_to_game.letter_lock(self._publish_queue, locked_on, rack.position_to_id(position))
+    async def letter_lock(self, position: int | None, now_ms: int) -> bool:
+        lock_change = False
+        for player in range(self._player_count):
+            lock_change |= await cubes_to_game.letter_lock(self._publish_queue,
+                player,
+                self._player_racks[player].position_to_id(position) if position else None,
+                now_ms)
+        return lock_change
 
     def add_guess(self, guess: str, player: int) -> None:
         self._score_card.add_guess(guess, player)
@@ -133,6 +138,7 @@ class App:
         self._last_guess = word_tile_ids
         logger.info(f"guess_tiles: word_tile_ids {word_tile_ids}")
         if not self._running:
+            print(f" {now_ms} guess_tiles: not running, triggering game.start")
             events.trigger("game.start", now_ms)
         guess = self._player_racks[player].ids_to_letters(word_tile_ids)
         guess_tiles = self._player_racks[player].ids_to_tiles(word_tile_ids)
@@ -154,7 +160,7 @@ class App:
             await cubes_to_game.old_guess(self._publish_queue, word_tile_ids, player)
             tiles_dirty = True
         elif self._score_card.is_good_guess(guess):
-            await cubes_to_game.good_guess(self._publish_queue, word_tile_ids, player)
+            await cubes_to_game.good_guess(self._publish_queue, word_tile_ids, player, now_ms)
             self._score_card.add_staged_guess(guess)
             score = self._score_card.calculate_score(guess)
             events.trigger("game.stage_guess", score, guess, player, now_ms)

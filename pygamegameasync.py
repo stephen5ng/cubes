@@ -298,8 +298,7 @@ class Letter():
         self.easing_complete = self.next_letter_easing(self.fraction_complete)
         boost_x = 0 if self.locked_on else int(self.column_move_direction*(self.width*self.easing_complete - self.width))
         self.pos[0] = self.rack_metrics.get_rect().x + self.rack_metrics.get_letter_rect(self.letter_ix, self.letter).x + boost_x
-        if self.easing_complete >= 1:
-            self.locked_on = self.get_screen_bottom_y() + Letter.Y_INCREMENT*2 > self.height
+        self.locked_on = (self.easing_complete >=1) and (self.get_screen_bottom_y() + Letter.Y_INCREMENT*2 > self.height)
 
     def update(self, window: pygame.Surface, now_ms: int) -> None:
         incidents = []
@@ -847,6 +846,7 @@ class Game:
         self.duration_log_f = open("durationlog.csv", "a+")
         self.sound_manager = SoundManager()
         self.input_devices = []
+        self.last_lock = False
 
         # TODO(sng): remove f
         events.on(f"game.stage_guess")(self.stage_guess)
@@ -878,6 +878,7 @@ class Game:
         self.aborted = True
 
     async def start_cubes(self, now_ms: int) -> None:
+        print(f"start_cubes {now_ms}")
         await self.start(CubesInput(None), now_ms)
 
     async def start(self, input_device: InputDevice, now_ms: int) -> None:
@@ -896,8 +897,6 @@ class Game:
                     self.scores[player].draw()
                     self.racks[player].draw()
                 return 1
-            # Already started, NOP
-            return
     
         self._app.player_count = 1
         print(f"{now_ms} starting new game with input_device: {input_device}")
@@ -907,6 +906,7 @@ class Game:
         self.previous_guesses_display = PreviousGuessesDisplay(PreviousGuessesDisplay.FONT_SIZE, self.guess_to_player)
         self.remaining_previous_guesses_display = RemainingPreviousGuessesDisplay(
             PreviousGuessesDisplay.FONT_SIZE - FONT_SIZE_DELTA, self.guess_to_player)
+        print(f"start_cubes: starting letter {now_ms}")
         self.letter.start(now_ms)
         for score in self.scores:
             score.start()
@@ -1010,7 +1010,12 @@ class Game:
             if incident := self.letter.update(window, now_ms):
                 incidents.extend(incident)
 
-            await self._app.letter_lock(self.letter.letter_index(), self.letter.locked_on)
+            if self.letter.locked_on or self.last_lock:
+                self.last_lock = self.letter.locked_on
+                letter_index = self.letter.letter_index() if self.letter.locked_on else None
+                incidents.append("letter_lock")
+                if await self._app.letter_lock(letter_index, now_ms):
+                    incidents.append("letter_lock")
 
         for player in range(self._app.player_count):
             self.racks[player].update(window, now_ms)
@@ -1039,7 +1044,7 @@ class Game:
                 await self.accept_letter(now_ms)
         return incidents
 
-class BlockWordsPygame():
+class BlockWordsPygame:
     def __init__(self, replay_file: str) -> None:
         self._window = pygame.display.set_mode(
             (SCREEN_WIDTH*SCALING_FACTOR, SCREEN_HEIGHT*SCALING_FACTOR))
@@ -1336,19 +1341,16 @@ class BlockWordsPygame():
                 if 'pygame' in replay_events['events']:
                     pygame_events.extend(replay_events['events']['pygame'])
 
-                # print(f"pygame_events: {pygame_events}")
                 if 'mqtt' in replay_events['events']:
                     mqtt_events.extend(replay_events['events']['mqtt'])
 
             for pygame_event in pygame_events:
-                print(f"pygame_event: {pygame_event}")
                 event_type = pygame_event['type']
 
                 if event_type == "QUIT":
-                    print("GOT QUIT")
+                    self.game.game_logger.log_events(now_ms, events_to_log)
                     self.game.game_logger.stop_logging()
                     self.game.output_logger.stop_logging()
-                    print("RETURNING")
                     return
 
                 if event_type == "KEYDOWN":
@@ -1363,10 +1365,10 @@ class BlockWordsPygame():
                 await self.handle_mqtt_message(mqtt_event['topic'], mqtt_event['payload'], now_ms)
             
             screen.fill((0, 0, 0))
-            print(f"UPDATING {now_ms}")
+            # print(f"UPDATING {now_ms}")
             if len(incidents := await self.game.update(screen, now_ms)) > 0:
                 events_to_log['incidents'] = incidents
-                print(f"{now_ms} incidents {incidents}")
+                # print(f"{now_ms} incidents {incidents}")
 
             if mqtt_events or pygame_events or incidents:
                 self.game.game_logger.log_events(now_ms, events_to_log)

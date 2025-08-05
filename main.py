@@ -62,7 +62,6 @@ class OutputLogger(BaseLogger):
 
 class GameLogger(BaseLogger):
     def log_events(self, now_ms: int, events: dict):
-        print(f"logging: {events}")
         log_entry = {
             "timestamp_ms": now_ms,
             "events": events
@@ -71,9 +70,10 @@ class GameLogger(BaseLogger):
         self._write_event(log_entry)
 
 class PublishLogger(BaseLogger):
-    def log_mqtt_publish(self, topic: str, message, retain: bool):
+    def log_mqtt_publish(self, topic: str, message, retain: bool, timestamp_ms: int):
         """Log MQTT publish event to JSONL file."""
         event = {
+            "timestamp_ms": timestamp_ms,
             "event_type": "mqtt_publish",
             "topic": topic,
             "message": message,
@@ -89,23 +89,26 @@ logger = logging.getLogger(__name__)
 async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.Queue, publish_logger: PublishLogger) -> None:
     while True:
         try:
-            topic, message, retain = await queue.get()
-            # print(f"publish_tasks_in_queue: {topic}, {message}, {retain}")
+            timestamp = None
+            topic, message, retain, timestamp = await queue.get()
             # Store last messages in dict if not already defined
             if not hasattr(publish_tasks_in_queue, 'last_messages'):
                 publish_tasks_in_queue.last_messages = {}
                 
             # Publish retained messages if they changed.
             if not retain or publish_tasks_in_queue.last_messages.get(topic, None) != message:
-                # print(f"get: {publish_tasks_in_queue.last_messages.get(topic, '')}, {publish_tasks_in_queue.last_messages.get(topic, '') != message}")
                 await publish_client.publish(topic, message, retain=retain)
                 publish_tasks_in_queue.last_messages[topic] = message
                 logger.info(f"publishing: {topic}, {message}")
-                publish_logger.log_mqtt_publish(topic, message, retain)
-                # print(f"publishing: {topic}, {message}")
+                publish_logger.log_mqtt_publish(topic, message, retain, timestamp)
         except asyncio.CancelledError:
             # Handle graceful shutdown            
             break
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            print(f"publish_tasks_in_queue failed {e}")
+            sys.exit(1)
 
 
 async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: pygamegameasync.BlockWordsPygame, keyboard_player_number: int) -> None:
