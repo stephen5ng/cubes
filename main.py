@@ -42,8 +42,9 @@ class BaseLogger:
         self.log_f.flush()
 
 class OutputLogger(BaseLogger):
-    def log_word_formed(self, word: str, player: int, score: int):
+    def log_word_formed(self, word: str, player: int, score: int, now_ms: int):
         event = {
+            "time": now_ms,
             "event_type": "word_formed",
             "word": word,
             "player": player,
@@ -53,10 +54,10 @@ class OutputLogger(BaseLogger):
     
     def log_letter_position_change(self, x: int, y: int, now_ms: int):
         event = {
-            "event_type": "letter_position_change",
+            "time": now_ms,
+            "event_type": "letter_position",
             "x": x,
             "y": y,
-            "timestamp_ms": now_ms
         }
         self._write_event(event)
 
@@ -73,8 +74,7 @@ class PublishLogger(BaseLogger):
     def log_mqtt_publish(self, topic: str, message, retain: bool, timestamp_ms: int):
         """Log MQTT publish event to JSONL file."""
         event = {
-            "timestamp_ms": timestamp_ms,
-            "event_type": "mqtt_publish",
+            "time": timestamp_ms,
             "topic": topic,
             "message": message,
             "retain": retain
