@@ -1258,6 +1258,38 @@ class BlockWordsPygame:
             pass
         return mqtt_events
 
+    def _get_pygame_events(self):
+        pygame_events = []
+        for pygame_event in pygame.event.get():
+            if pygame_event.type == pygame.QUIT:
+                pygame_events.append({"type": "QUIT"})
+            elif pygame_event.type == pygame.KEYDOWN:
+                pygame_events.append({
+                    "type": "KEYDOWN",
+                    "key": pygame.key.name(pygame_event.key).upper()
+                })
+            elif pygame_event.type == pygame.JOYAXISMOTION:
+                pygame_events.append({
+                    "type": "JOYAXISMOTION",
+                    "axis": pygame_event.axis,
+                    "value": pygame_event.value
+                })
+            elif pygame_event.type == pygame.JOYBUTTONDOWN:
+                pygame_events.append({
+                    "type": "JOYBUTTONDOWN",
+                    "button": pygame_event.button,
+                })
+        return pygame_events
+
+    def _get_replay_events(self, pygame_events: list, mqtt_events: list) -> int:
+        replay_events = self.replayer.events.pop()
+        now_ms = replay_events['timestamp_ms']
+        if 'pygame' in replay_events['events']:
+            pygame_events.extend(replay_events['events']['pygame'])
+        if 'mqtt' in replay_events['events']:
+            mqtt_events.extend(replay_events['events']['mqtt'])
+        return now_ms
+
     async def _handle_pygame_events(self, pygame_events, keyboard_input, input_devices, now_ms, events_to_log):
         for pygame_event in pygame_events:
             event_type = pygame_event['type']
@@ -1354,29 +1386,7 @@ class BlockWordsPygame:
                 await events.stop()
                 return
             
-            pygame_events = []
-            for pygame_event in pygame.event.get():
-                # print(f"pygame_event: {pygame_event}")
-                if pygame_event.type == pygame.QUIT:
-                    pygame_events.append({
-                        "type": "QUIT"
-                    })
-                elif pygame_event.type == pygame.KEYDOWN:    
-                    pygame_events.append({
-                        "type": "KEYDOWN",
-                        "key": pygame.key.name(pygame_event.key).upper()
-                    })
-                elif pygame_event.type == pygame.JOYAXISMOTION:
-                    pygame_events.append({
-                        "type": "JOYAXISMOTION",
-                        "axis": pygame_event.axis,
-                        "value": pygame_event.value
-                    })
-                elif pygame_event.type == pygame.JOYBUTTONDOWN:
-                    pygame_events.append({
-                        "type": "JOYBUTTONDOWN",
-                        "button": pygame_event.button,
-                    })
+            pygame_events = self._get_pygame_events()
 
             events_to_log = {}
             if pygame_events:
@@ -1386,13 +1396,7 @@ class BlockWordsPygame:
                 events_to_log['mqtt'] = mqtt_events
 
             if self.replayer.events:
-                replay_events = self.replayer.events.pop()
-                time_offset = now_ms = replay_events['timestamp_ms']                
-                if 'pygame' in replay_events['events']:
-                    pygame_events.extend(replay_events['events']['pygame'])
-
-                if 'mqtt' in replay_events['events']:
-                    mqtt_events.extend(replay_events['events']['mqtt'])
+                now_ms = time_offset = self._get_replay_events(pygame_events, mqtt_events)
 
             if await self._handle_pygame_events(pygame_events, keyboard_input, input_devices, now_ms, events_to_log):
                 return
