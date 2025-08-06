@@ -164,22 +164,22 @@ class CubeManager:
             self.tiles_to_cubes[tile_id] = cubes[ix]
             self.cubes_to_tileid[cubes[ix]] = tile_id
 
-    def get_tags_to_cubes(self, cubes_file: str, tags_file: str):
-        with open(cubes_file) as cubes_f:
-            with open(tags_file) as tags_f:
-                return self.get_tags_to_cubes_f(cubes_f, tags_f)
-
     def get_tags_to_cubes_f(self, cubes_f, tags_f):
         cubes = read_data(cubes_f)
         tags = read_data(tags_f)
         self.cube_list = cubes  # Store ordered list of cubes
         return {tag: cube for cube, tag in zip(cubes, tags)}
 
-    async def init(self, cubes_file, tags_file):
-        logging.info("cubes_to_game")
-        self.tags_to_cubes = self.get_tags_to_cubes(cubes_file, tags_file)
-        logging.info(f"ttc: {self.tags_to_cubes}")
+    async def init(self, all_cubes: List[str], all_tags: List[str]):
+        """Initialize cube manager for a specific player."""
+        start_idx = self.player_number * tiles.MAX_LETTERS
+        end_idx = start_idx + tiles.MAX_LETTERS
+        
+        cubes = all_cubes[start_idx:end_idx]
+        tags = all_tags[start_idx:end_idx]
 
+        self.tags_to_cubes = {tag: cube for cube, tag in zip(cubes, tags)}
+        self.cube_list = cubes
         self._initialize_arrays()
 
     async def load_rack(self, publish_queue, tiles_with_letters: list[tiles.Tile], now_ms: int) -> None:
@@ -361,19 +361,11 @@ async def init(subscribe_client, tags_file):
     
     # Initialize managers for each player
     for player, manager in enumerate(cube_managers):
-        # Get player-specific data
-        start_idx = player * tiles.MAX_LETTERS
-        end_idx = start_idx + tiles.MAX_LETTERS
-        cubes = all_cubes[start_idx:end_idx]
-        tags = all_tags[start_idx:end_idx]
-        manager.tags_to_cubes = {tag: cube for cube, tag in zip(cubes, tags)}
-        manager.cube_list = cubes  # Store ordered list of cubes
+        await manager.init(all_cubes, all_tags)
         
         # Add to global cube_to_player mapping
-        for cube in cubes:
+        for cube in manager.cube_list:
             cube_to_player[cube] = player
-            
-        manager._initialize_arrays()
 
 async def handle_mqtt_message(publish_queue, message, now_ms: int):
     payload_data = message.payload.decode() if message.payload is not None else ""
