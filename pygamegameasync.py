@@ -174,9 +174,9 @@ class GamepadInput(InputDevice):
                     self.handlers['right'](self)
             elif event["axis"] == 1:
                 if event["value"] < -0.5:
-                    await self.handlers['insert'](self)
+                    await self.handlers['insert'](self, now_ms)
                 elif event["value"] > 0.5:
-                    await self.handlers['delete'](self)
+                    await self.handlers['delete'](self, now_ms)
         elif event["type"] == "JOYBUTTONDOWN":
             if event["button"] == 1:
                 await self.handlers['action'](self, now_ms)
@@ -1137,7 +1137,7 @@ class BlockWordsPygame:
             pygame.mixer.Sound.play(self.cleared_sound)
         await self.the_app.guess_word_keyboard(input_device.current_guess, input_device.player_number, now_ms)
 
-    async def handle_insert_action(self, input_device: InputDevice):
+    async def handle_insert_action(self, input_device: InputDevice, now_ms: int):
         if not self.game.running:
             return
         rack = self.game.racks[input_device.player_number]            
@@ -1146,7 +1146,7 @@ class BlockWordsPygame:
             letter_at_cursor = rack.letters()[rack.cursor_position]
             input_device.current_guess += letter_at_cursor
             pygame.mixer.Sound.play(self.add_sound)
-        await self.the_app.guess_word_keyboard(input_device.current_guess, input_device.player_number)
+        await self.the_app.guess_word_keyboard(input_device.current_guess, input_device.player_number, now_ms)
     
     async def handle_delete_action(self, input_device: InputDevice):
         if not self.game.running:
