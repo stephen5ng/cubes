@@ -157,28 +157,30 @@ class GamepadInput(InputDevice):
     def __str__(self):
         return "GamepadInput"
 
-    async def process_event(self, event):
-        if event.type == pygame.JOYBUTTONDOWN and event.button == 9:
-            self.player_number = await self.handlers['start'](self)
+    async def process_event(self, event, now_ms: int):
+        if event["type"] == "JOYBUTTONDOWN" and event["button"] == 9:
+            self.player_number = await self.handlers['start'](self, now_ms)
             print(f"JOYSTICK player_number: {self.player_number}")
+            return
+
         if self.player_number is None:
             return
 
-        if event.type == "JOYAXISMOTION":
-            if event.axis == 0:
-                if event.value < -0.5:
+        if event["type"] == "JOYAXISMOTION":
+            if event["axis"] == 0:
+                if event["value"] < -0.5:
                     self.handlers['left'](self)
-                elif event.value > 0.5:
+                elif event["value"] > 0.5:
                     self.handlers['right'](self)
-            elif event.axis == 1:
-                if event.value < -0.5:
+            elif event["axis"] == 1:
+                if event["value"] < -0.5:
                     await self.handlers['insert'](self)
-                elif event.value > 0.5:
+                elif event["value"] > 0.5:
                     await self.handlers['delete'](self)
-        elif event.type == pygame.JOYBUTTONDOWN:
-            if event.button == 1:
-                await self.handlers['action'](self)
-            elif event.button == 2:
+        elif event["type"] == "JOYBUTTONDOWN":
+            if event["button"] == 1:
+                await self.handlers['action'](self, now_ms)
+            elif event["button"] == 2:
                 self.handlers['return'](self)
 
 class DDRInput(InputDevice):
@@ -1109,7 +1111,7 @@ class BlockWordsPygame:
             # print(f"!!!-----> message: {message}")
             await cubes_to_game.handle_mqtt_message(self._publish_queue, message, now_ms)
 
-    async def handle_space_action(self, input_device: InputDevice):
+    async def handle_space_action(self, input_device: InputDevice, now_ms: int):
         if not self.game.running:
             return
 
@@ -1133,7 +1135,7 @@ class BlockWordsPygame:
         rack.select_count = len(input_device.current_guess)
         if rack.select_count == 0:
             pygame.mixer.Sound.play(self.cleared_sound)
-        await self.the_app.guess_word_keyboard(input_device.current_guess, input_device.player_number)
+        await self.the_app.guess_word_keyboard(input_device.current_guess, input_device.player_number, now_ms)
 
     async def handle_insert_action(self, input_device: InputDevice):
         if not self.game.running:
@@ -1214,7 +1216,7 @@ class BlockWordsPygame:
         elif key == "RIGHT":
             self.handle_right_movement(keyboard_input)
         elif key == "SPACE":
-            await self.handle_space_action(keyboard_input)
+            await self.handle_space_action(keyboard_input, now_ms)
         elif key == "BACKSPACE":
             if keyboard_input.current_guess:
                 keyboard_input.current_guess = keyboard_input.current_guess[:-1]
@@ -1333,6 +1335,7 @@ class BlockWordsPygame:
             
             pygame_events = []
             for pygame_event in pygame.event.get():
+                # print(f"pygame_event: {pygame_event}")
                 if pygame_event.type == pygame.QUIT:
                     pygame_events.append({
                         "type": "QUIT"
@@ -1383,10 +1386,13 @@ class BlockWordsPygame:
                 if event_type == "KEYDOWN":
                     await self.handle_keyboard_event(pygame_event['key'], keyboard_input, now_ms)
                 
-                if hasattr(pygame_event, 'joy'):  # Only process joystick events
+                # print(f"pygame_event: {pygame_event}")
+                if 'JOY' in event_type:
                     for input_device in input_devices: 
-                        if input_device.id == pygame_event.joy:
-                            await input_device.process_event(pygame_event)
+                        # print(f"input_device: {input_device} {input_device.id}")
+                        if str(input_device) == "GamepadInput":
+                            # print(f"processing event {pygame_event}")
+                            await input_device.process_event(pygame_event, now_ms)
             
             for mqtt_event in mqtt_events:
                 await self.handle_mqtt_message(mqtt_event['topic'], mqtt_event['payload'], now_ms)
