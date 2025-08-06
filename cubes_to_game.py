@@ -90,22 +90,14 @@ class CubeManager:
         return all_words
 
     def _has_loop_from_cube(self, start_cube: str) -> bool:
-        """Checks if adding a link from start_cube would create a loop.
-        Returns True if a loop is detected, False otherwise."""
-        source_cube = start_cube
-        iter_length = 0
-        while source_cube:
-            iter_length += 1
-            if iter_length > tiles.MAX_LETTERS:
-                logging.info(f"forever loop, bailing")
+        """Checks if adding a link from start_cube would create a loop."""
+        path = {start_cube}
+        curr = self.cube_chain.get(start_cube)
+        while curr:
+            if curr in path:
                 return True
-            if not source_cube in self.cube_chain:
-                break
-            next_cube = self.cube_chain[source_cube]
-            if next_cube == start_cube:
-                logging.info(f"breaking chain {self._print_cube_chain()}")
-                return True
-            source_cube = next_cube
+            path.add(curr)
+            curr = self.cube_chain.get(curr)
         return False
 
     def _update_chain(self, sender_cube: str, target_cube: str) -> bool:
