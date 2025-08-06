@@ -44,9 +44,8 @@ class CubeManager:
             return
         try:
             s = f"Player {self.player_number}: "
-            for source in self.cube_chain:
-                target = self.cube_chain[source]
-                s += f"{source} [{self.cubes_to_letters[source]}] -> {target} [{self.cubes_to_letters[target]}]; "
+            for source, target in self.cube_chain.items():
+                s += f"{source} [{self.cubes_to_letters.get(source, '')}] -> {target} [{self.cubes_to_letters.get(target, '')}]; "
             return s
         except Exception as e:
             logging.error(f"print_cube_chain ERROR: {e}")
@@ -129,15 +128,8 @@ class CubeManager:
         logging.info(f"process_tag {sender_cube}: {tag}")
         logging.info(f"process_tag cube_chain {self.cube_chain}")
 
-        # Handle empty tag case
-        if not tag:
-            logging.info(f"process_tag: no tag, deleting target of {sender_cube}")
-            if sender_cube in self.cube_chain:
-                del self.cube_chain[sender_cube]
-            return self._form_words_from_chain()
-
-        # Validate tag and cube
-        if tag not in self.tags_to_cubes:
+        # Handle empty or invalid tag case
+        if not tag or tag not in self.tags_to_cubes:
             logging.info(f"bad tag: {tag}")
             if sender_cube in self.cube_chain:
                 del self.cube_chain[sender_cube]
