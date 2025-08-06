@@ -143,16 +143,9 @@ class CubeManager:
         return self._form_words_from_chain()
 
     def _initialize_arrays(self):
-        self.tiles_to_cubes.clear()
-        self.cubes_to_tileid.clear()
-
         cubes = list(self.tags_to_cubes.values())
-        for ix in range(tiles.MAX_LETTERS+1):
-            if ix >= len(cubes):
-                break
-            tile_id = str(ix)
-            self.tiles_to_cubes[tile_id] = cubes[ix]
-            self.cubes_to_tileid[cubes[ix]] = tile_id
+        self.tiles_to_cubes = {str(i): cubes[i] for i in range(len(cubes))}
+        self.cubes_to_tileid = {cube: tile_id for tile_id, cube in self.tiles_to_cubes.items()}
 
     async def init(self, all_cubes: List[str], all_tags: List[str]):
         """Initialize cube manager for a specific player."""
