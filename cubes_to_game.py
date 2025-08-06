@@ -66,8 +66,8 @@ class CubeManager:
         if not self.cube_chain:
             return []
 
-        all_words = []
         source_cubes = self._find_unmatched_cubes()
+        all_words = []
         for source_cube in sorted(source_cubes):
             word_tiles = []
             sc = source_cube
@@ -78,9 +78,7 @@ class CubeManager:
                 if len(word_tiles) > tiles.MAX_LETTERS:
                     logging.info("infinite loop")
                     return []
-                if sc not in self.cube_chain:
-                    break
-                sc = self.cube_chain[sc]
+                sc = self.cube_chain.get(sc)
             all_words.append("".join(word_tiles))
 
         # Check for duplicates
@@ -155,12 +153,6 @@ class CubeManager:
             tile_id = str(ix)
             self.tiles_to_cubes[tile_id] = cubes[ix]
             self.cubes_to_tileid[cubes[ix]] = tile_id
-
-    def get_tags_to_cubes_f(self, cubes_f, tags_f):
-        cubes = read_data(cubes_f)
-        tags = read_data(tags_f)
-        self.cube_list = cubes  # Store ordered list of cubes
-        return {tag: cube for cube, tag in zip(cubes, tags)}
 
     async def init(self, all_cubes: List[str], all_tags: List[str]):
         """Initialize cube manager for a specific player."""
@@ -330,14 +322,6 @@ def read_data(f) -> List[str]:
     """Read all data from file."""
     data = f.readlines()
     return [l.strip() for l in data]
-
-def read_data_for_player(f, player: int) -> List[str]:
-    """Read data from file, returning the appropriate section for the given player."""
-    data = f.readlines()
-    data = [l.strip() for l in data]
-    start_idx = player * tiles.MAX_LETTERS
-    end_idx = start_idx + tiles.MAX_LETTERS
-    return data[start_idx:end_idx]
 
 async def init(subscribe_client, tags_file):
     await subscribe_client.subscribe("cube/nfc/#")
