@@ -1258,6 +1258,25 @@ class BlockWordsPygame:
             pass
         return mqtt_events
 
+    async def _handle_pygame_events(self, pygame_events, keyboard_input, input_devices, now_ms, events_to_log):
+        for pygame_event in pygame_events:
+            event_type = pygame_event['type']
+            if event_type == "QUIT":
+                self.game.game_logger.log_events(now_ms, events_to_log)
+                self.game.game_logger.stop_logging()
+                self.game.output_logger.stop_logging()
+                await events.stop()
+                return True
+
+            if event_type == "KEYDOWN":
+                await self.handle_keyboard_event(pygame_event['key'], keyboard_input, now_ms)
+            
+            if 'JOY' in event_type:
+                for input_device in input_devices: 
+                    if str(input_device) == "GamepadInput":
+                        await input_device.process_event(pygame_event, now_ms)
+        return False
+
     async def main(self, the_app: app.App, subscribe_client: aiomqtt.Client, start: bool, 
                    keyboard_player_number: int, publish_queue: asyncio.Queue, 
                    game_logger, output_logger) -> None:
@@ -1375,24 +1394,8 @@ class BlockWordsPygame:
                 if 'mqtt' in replay_events['events']:
                     mqtt_events.extend(replay_events['events']['mqtt'])
 
-            for pygame_event in pygame_events:
-                event_type = pygame_event['type']
-                if event_type == "QUIT":
-                    self.game.game_logger.log_events(now_ms, events_to_log)
-                    self.game.game_logger.stop_logging()
-                    self.game.output_logger.stop_logging()
-                    await events.stop()
-                    return
-
-                if event_type == "KEYDOWN":
-                    await self.handle_keyboard_event(pygame_event['key'], keyboard_input, now_ms)
-                
-                # print(f"pygame_event: {pygame_event}")
-                if 'JOY' in event_type:
-                    for input_device in input_devices: 
-                        # print(f"input_device: {input_device} {input_device.id}")
-                        if str(input_device) == "GamepadInput":
-                            await input_device.process_event(pygame_event, now_ms)
+            if await self._handle_pygame_events(pygame_events, keyboard_input, input_devices, now_ms, events_to_log):
+                return
             
             for mqtt_event in mqtt_events:
                 await self.handle_mqtt_message(mqtt_event['topic'], mqtt_event['payload'], now_ms)
