@@ -1289,7 +1289,9 @@ class BlockWordsPygame:
         keyboard_input = KeyboardInput(handlers)
         input_devices = [keyboard_input]
         print(f"joystick count: {pygame.joystick.get_count()}")
-        if pygame.joystick.get_count() > 0:
+        if self.replay_file:
+            input_devices.append(GamepadInput(handlers))
+        elif pygame.joystick.get_count() > 0:
             for j in range(pygame.joystick.get_count()):
                 joysticks.append(pygame.joystick.Joystick(j))
                 name = joysticks[j].get_name()
@@ -1375,7 +1377,6 @@ class BlockWordsPygame:
 
             for pygame_event in pygame_events:
                 event_type = pygame_event['type']
-
                 if event_type == "QUIT":
                     self.game.game_logger.log_events(now_ms, events_to_log)
                     self.game.game_logger.stop_logging()
@@ -1391,7 +1392,6 @@ class BlockWordsPygame:
                     for input_device in input_devices: 
                         # print(f"input_device: {input_device} {input_device.id}")
                         if str(input_device) == "GamepadInput":
-                            # print(f"processing event {pygame_event}")
                             await input_device.process_event(pygame_event, now_ms)
             
             for mqtt_event in mqtt_events:
