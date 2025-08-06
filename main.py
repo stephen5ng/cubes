@@ -104,6 +104,9 @@ async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.
         except asyncio.CancelledError:
             # Handle graceful shutdown            
             break
+        except aiomqtt.exceptions.MqttCodeError as e:
+            print(f"publish_tasks_in_queue failed {e}")
+            # Don't exit on MqttCodeError, as it might be a transient issue
         except Exception as e:
             import traceback
             traceback.print_exc()
