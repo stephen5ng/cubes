@@ -1414,6 +1414,9 @@ class BlockWordsPygame:
         try:
             async for message in mqtt_client.messages:
                 await message_queue.put(message)
+        except aiomqtt.exceptions.MqttError:
+            # This is expected when the client disconnects, so we can ignore it.
+            pass
         except Exception as e:
             print(f"MQTT processing error: {e}")
             events.trigger("game.abort")
