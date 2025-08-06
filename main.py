@@ -28,7 +28,7 @@ class BaseLogger:
         
     def start_logging(self):
         if self.log_file:
-            self.log_f = open(self.log_file, "w")
+            self.log_f = open(self.log_file, "a")
     
     def stop_logging(self):
         if self.log_f:
@@ -62,12 +62,20 @@ class OutputLogger(BaseLogger):
         self._write_event(event)
 
 class GameLogger(BaseLogger):
+    def log_seed(self, seed: int):
+        event = {
+            "event_type": "seed",
+            "seed": seed
+        }
+        print(f"logging {event}")
+        self._write_event(event)
+        
     def log_events(self, now_ms: int, events: dict):
         log_entry = {
             "timestamp_ms": now_ms,
             "events": events
         }
-
+        
         self._write_event(log_entry)
 
 class PublishLogger(BaseLogger):
@@ -114,47 +122,48 @@ async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.
             sys.exit(1)
 
 
-async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: pygamegameasync.BlockWordsPygame, keyboard_player_number: int) -> None:
+async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: pygamegameasync.BlockWordsPygame, keyboard_player_number: int, seed: int, game_logger: GameLogger) -> None:
     # Set up loggers
     publish_logger = PublishLogger("output/output.publish.jsonl")
-    publish_logger.start_logging()
-    
-    # Set up game loggers
-    game_logger = GameLogger(None if args.replay else "game_replay.jsonl")
     output_logger = OutputLogger("output/output.jsonl")
-    
-    async with aiomqtt.Client(MQTT_SERVER) as subscribe_client:
-        async with aiomqtt.Client(MQTT_SERVER) as publish_client:
-            publish_queue: asyncio.Queue = asyncio.Queue()
-            the_app = app.App(publish_queue, dictionary)
-            
-            await cubes_to_game.init(subscribe_client, args.tags)
-            if args.replay:
-                block_words.get_mock_mqtt_client()
-            else:
-                await subscribe_client.subscribe("game/guess")
 
-            # MQTT subscription is now handled in pygamegameasync main loop
-            publish_task = asyncio.create_task(publish_tasks_in_queue(publish_client, publish_queue, publish_logger),
-                name="mqtt publish handler")
+    try:
+        publish_logger.start_logging()
+        game_logger.start_logging()
+        if not args.replay:
+            game_logger.log_seed(seed)
 
-            await block_words.main(the_app, subscribe_client, args.start, keyboard_player_number, publish_queue, game_logger, output_logger)
+        async with aiomqtt.Client(MQTT_SERVER) as subscribe_client:
+            async with aiomqtt.Client(MQTT_SERVER) as publish_client:
+                publish_queue: asyncio.Queue = asyncio.Queue()
+                the_app = app.App(publish_queue, dictionary)
+                
+                await cubes_to_game.init(subscribe_client, args.tags)
+                if args.replay:
+                    block_words.get_mock_mqtt_client()
+                else:
+                    await subscribe_client.subscribe("game/guess")
 
-            # Wait for the publish queue to be empty before shutting down
-            while not publish_queue.empty():
-                await asyncio.sleep(0.1)
-            
-            publish_queue.shutdown()
-            publish_task.cancel()
-            
-            # Wait for the publish task to complete
-            try:
-                await publish_task
-            except asyncio.CancelledError:
-                pass
-            
+                # MQTT subscription is now handled in pygamegameasync main loop
+                publish_task = asyncio.create_task(publish_tasks_in_queue(publish_client, publish_queue, publish_logger),
+                    name="mqtt publish handler")
 
-            publish_logger.stop_logging()
+                await block_words.main(the_app, subscribe_client, args.start, keyboard_player_number, publish_queue, game_logger, output_logger)
+
+                # Wait for the publish queue to be empty before shutting down
+                while not publish_queue.empty():
+                    await asyncio.sleep(0.1)
+                
+                publish_queue.shutdown()
+                publish_task.cancel()
+                
+                # Wait for the publish task to complete
+                try:
+                    await publish_task
+                except asyncio.CancelledError:
+                    pass
+    finally:
+        publish_logger.stop_logging()
 
 BUNDLE_TEMP_DIR = "."
 
@@ -166,7 +175,22 @@ if __name__ == "__main__":
     parser.add_argument("--replay", type=str, help="Replay a game from a log file")
     args = parser.parse_args()
     
-    random.seed(1)
+    seed = 1
+    if args.replay:
+        with open(args.replay, 'r') as f:
+            try:
+                first_event = json.loads(f.readline())
+                if first_event.get("event_type") == "seed":
+                    seed = first_event["seed"]
+                else:
+                    f.seek(0)
+            except (json.JSONDecodeError, IndexError):
+                pass
+    else:
+        seed = int(datetime.now().timestamp())
+        if os.path.exists("game_replay.jsonl"):
+            os.remove("game_replay.jsonl")
+    random.seed(seed)
 
     # logger.setLevel(logging.DEBUG)
     pygame.mixer.init(frequency=24000, size=-16, channels=2)
@@ -175,8 +199,10 @@ if __name__ == "__main__":
     dictionary.read(f"{BUNDLE_TEMP_DIR}/sowpods.txt", f"{BUNDLE_TEMP_DIR}/bingos.txt")
     pygame.init()
     block_words = pygamegameasync.BlockWordsPygame(replay_file=args.replay or "")
+    
+    game_logger = GameLogger(None if args.replay else "game_replay.jsonl")
     try:
-        asyncio.run(main(args, dictionary, block_words, args.keyboard_player_number-1))
+        asyncio.run(main(args, dictionary, block_words, args.keyboard_player_number-1, seed, game_logger))
         print("asyncio main done")
     except Exception as e:
         import traceback
@@ -185,3 +211,5 @@ if __name__ == "__main__":
         # Still need to quit pygame to stop the window
         pygame.quit()
         sys.exit(1)
+    finally:
+        game_logger.stop_logging()

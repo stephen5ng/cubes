@@ -11,4 +11,3 @@ RGBMatrixEmulator
 types-aiofiles
 types-psutil
 types-requests
-easing-functions
