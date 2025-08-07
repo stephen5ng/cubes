@@ -38,13 +38,13 @@ class TestScoreCard(unittest.TestCase):
         self.assertEqual(17, self.score_card.calculate_score("FRIENDS"))
 
     def test_update_previous_guesses(self):
-        self.score_card.previous_guesses = set(["CAT", "DOG"])
+        self.score_card.guesses = {(0, "CAT"), (0, "DOG")}
         self.score_card.player_rack = tiles.Rack("ABCDEFT")
         self.score_card.update_previous_guesses()
-        self.assertEqual(set(["CAT"]), self.score_card.possible_guessed_words)
+        self.assertEqual(set(["CAT"]), self.score_card.possible_words)
 
     def test_get_previous_guesses(self):
-        self.score_card.possible_guessed_words = set(["CAT", "DOG"])
+        self.score_card.possible_words = set(["CAT", "DOG"])
         self.assertEqual(["CAT", "DOG"],
             self.score_card.get_previous_guesses())
 
