@@ -271,7 +271,7 @@ def set_start_game_callback(f):
 locked_cubes = {}
 async def letter_lock(publish_queue, player, tile_id: str | None, now_ms: int) -> bool:
     global locked_cubes
-    cube_id = cube_managers[player].tiles_to_cubes[tile_id] if tile_id else None
+    cube_id = cube_managers[player].tiles_to_cubes.get(tile_id) if tile_id else None
 
     if last_cube_id := locked_cubes.get(player, None):    
         if last_cube_id == cube_id:
@@ -281,7 +281,8 @@ async def letter_lock(publish_queue, player, tile_id: str | None, now_ms: int) -
         await publish_queue.put((f"cube/{last_cube_id}/lock", None, True, now_ms))
         
     locked_cubes[player] = cube_id
-    await publish_queue.put((f"cube/{cube_id}/lock", "1", True, now_ms))
+    if cube_id:
+        await publish_queue.put((f"cube/{cube_id}/lock", "1", True, now_ms))
     return True
 
 async def guess_last_tiles(publish_queue, player: int, now_ms: int) -> None:

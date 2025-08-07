@@ -415,7 +415,6 @@
 {"time": 67151, "topic": "cube/4/lock", "message": "1", "retain": true}
 {"time": 68258, "topic": "cube/4/letter", "message": "D", "retain": true}
 {"time": 68264, "topic": "cube/4/lock", "message": null, "retain": true}
-{"time": 68264, "topic": "cube/None/lock", "message": "1", "retain": true}
 {"time": 69325, "topic": "cube/4/border_hline_top", "message": "0xFFFF", "retain": true}
 {"time": 69325, "topic": "cube/4/border_hline_bottom", "message": "0xFFFF", "retain": true}
 {"time": 69325, "topic": "cube/4/border_vline_left", "message": "0xFFFF", "retain": false}

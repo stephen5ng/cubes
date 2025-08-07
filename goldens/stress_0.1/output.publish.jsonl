@@ -1281,7 +1281,6 @@
 {"time": 23576, "topic": "game/nfc/1", "message": "30071466080104E0", "retain": true}
 {"time": 23597, "topic": "cube/1/letter", "message": "D", "retain": true}
 {"time": 23603, "topic": "cube/1/lock", "message": null, "retain": true}
-{"time": 23603, "topic": "cube/None/lock", "message": "1", "retain": true}
 {"time": 23681, "topic": "game/nfc/1", "message": "B1FD1366080104E0", "retain": true}
 {"time": 23793, "topic": "game/nfc/6", "message": "A9121466080104E0", "retain": true}
 {"time": 23875, "topic": "game/nfc/2", "message": "", "retain": true}

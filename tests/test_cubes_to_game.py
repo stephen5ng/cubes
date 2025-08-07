@@ -28,6 +28,188 @@ class TestCubesToGame(unittest.TestCase):
         }
 
 
+class TestLetterLock(unittest.IsolatedAsyncioTestCase):
+    """Test cases for the letter_lock function."""
+    
+    def setUp(self):
+        # Set up cube managers for testing
+        cubes_to_game.cube_managers = [cubes_to_game.CubeManager(0), cubes_to_game.CubeManager(1)]
+        
+        # Mock the tiles_to_cubes for both players
+        cubes_to_game.cube_managers[0].tiles_to_cubes = {
+            "0": "cube0",
+            "1": "cube1",
+            "2": "cube2",
+            "3": "cube3",
+            "4": "cube4",
+            "5": "cube5"
+        }
+        cubes_to_game.cube_managers[1].tiles_to_cubes = {
+            "0": "cube6",
+            "1": "cube7",
+            "2": "cube8",
+            "3": "cube9",
+            "4": "cube10",
+            "5": "cube11"
+        }
+        
+        # Clear the global locked_cubes
+        cubes_to_game.locked_cubes.clear()
+        
+        # Create a mock publish queue
+        self.publish_queue = asyncio.Queue()
+
+    async def test_letter_lock_new_cube(self):
+        """Test locking a new cube when no cube is currently locked."""
+        result = await cubes_to_game.letter_lock(self.publish_queue, 0, "1", 1000)
+        
+        self.assertTrue(result)
+        self.assertEqual(cubes_to_game.locked_cubes[0], "cube1")
+        
+        # Check that the lock message was published
+        message = await self.publish_queue.get()
+        self.assertEqual(message[0], "cube/cube1/lock")
+        self.assertEqual(message[1], "1")
+        self.assertTrue(message[2])  # retain flag
+        self.assertEqual(message[3], 1000)
+
+    async def test_letter_lock_same_cube(self):
+        """Test locking the same cube that's already locked."""
+        # First lock
+        await cubes_to_game.letter_lock(self.publish_queue, 0, "1", 1000)
+        
+        # Clear the queue
+        while not self.publish_queue.empty():
+            await self.publish_queue.get()
+        
+        # Try to lock the same cube again
+        result = await cubes_to_game.letter_lock(self.publish_queue, 0, "1", 2000)
+        
+        self.assertFalse(result)  # Should return False for same cube
+        self.assertEqual(cubes_to_game.locked_cubes[0], "cube1")
+        
+        # Should not publish any new messages
+        self.assertTrue(self.publish_queue.empty())
+
+    async def test_letter_lock_different_cube(self):
+        """Test locking a different cube when one is already locked."""
+        # First lock
+        await cubes_to_game.letter_lock(self.publish_queue, 0, "1", 1000)
+        
+        # Clear the queue
+        while not self.publish_queue.empty():
+            await self.publish_queue.get()
+        
+        # Lock a different cube
+        result = await cubes_to_game.letter_lock(self.publish_queue, 0, "2", 2000)
+        
+        self.assertTrue(result)
+        self.assertEqual(cubes_to_game.locked_cubes[0], "cube2")
+        
+        # Should publish unlock for old cube and lock for new cube
+        messages = []
+        while not self.publish_queue.empty():
+            messages.append(await self.publish_queue.get())
+        
+        self.assertEqual(len(messages), 2)
+        
+        # Check unlock message
+        unlock_msg = next(m for m in messages if m[1] is None)
+        self.assertEqual(unlock_msg[0], "cube/cube1/lock")
+        self.assertIsNone(unlock_msg[1])
+        
+        # Check lock message
+        lock_msg = next(m for m in messages if m[1] == "1")
+        self.assertEqual(lock_msg[0], "cube/cube2/lock")
+        self.assertEqual(lock_msg[1], "1")
+
+    async def test_letter_lock_none_tile_id(self):
+        """Test locking with None tile_id (unlocking)."""
+        # First lock a cube
+        await cubes_to_game.letter_lock(self.publish_queue, 0, "1", 1000)
+        
+        # Clear the queue
+        while not self.publish_queue.empty():
+            await self.publish_queue.get()
+        
+        # Unlock by passing None
+        result = await cubes_to_game.letter_lock(self.publish_queue, 0, None, 2000)
+        
+        self.assertTrue(result)
+        self.assertIsNone(cubes_to_game.locked_cubes[0])
+        
+        # Should only publish unlock for old cube, not lock for None
+        messages = []
+        while not self.publish_queue.empty():
+            messages.append(await self.publish_queue.get())
+        
+        self.assertEqual(len(messages), 1, "Should only publish unlock message, not lock for None")
+        
+        # Check unlock message for old cube
+        unlock_msg = messages[0]
+        self.assertEqual(unlock_msg[0], "cube/cube1/lock")
+        self.assertIsNone(unlock_msg[1])
+        
+        # Verify that no "cube/None/lock" message was published
+        none_lock_messages = [m for m in messages if "None" in m[0]]
+        self.assertEqual(len(none_lock_messages), 0, "Should not publish any 'cube/None/lock' messages")
+
+    async def test_letter_lock_multiple_players(self):
+        """Test that different players can have different locked cubes."""
+        # Lock cube for player 0
+        await cubes_to_game.letter_lock(self.publish_queue, 0, "1", 1000)
+        
+        # Lock cube for player 1
+        await cubes_to_game.letter_lock(self.publish_queue, 1, "2", 1000)
+        
+        self.assertEqual(cubes_to_game.locked_cubes[0], "cube1")
+        self.assertEqual(cubes_to_game.locked_cubes[1], "cube8")  # tile 2 for player 1
+        
+        # Clear the queue
+        while not self.publish_queue.empty():
+            await self.publish_queue.get()
+
+    async def test_letter_lock_invalid_tile_id(self):
+        """Test locking with an invalid tile_id."""
+        # This should not crash and should handle gracefully
+        result = await cubes_to_game.letter_lock(self.publish_queue, 0, "999", 1000)
+        
+        # Should still return True and update the locked_cubes
+        self.assertTrue(result)
+        # The cube_id would be None or invalid, but the function should handle it
+
+    async def test_letter_lock_none_tile_id_bug(self):
+        """Test that the bug where cube/None/lock is published is fixed."""
+        # First lock a cube
+        await cubes_to_game.letter_lock(self.publish_queue, 0, "1", 1000)
+        
+        # Clear the queue
+        while not self.publish_queue.empty():
+            await self.publish_queue.get()
+        
+        # Unlock by passing None - this should NOT publish cube/None/lock
+        result = await cubes_to_game.letter_lock(self.publish_queue, 0, None, 2000)
+        
+        self.assertTrue(result)
+        self.assertIsNone(cubes_to_game.locked_cubes[0])
+        
+        # Get all messages
+        messages = []
+        while not self.publish_queue.empty():
+            messages.append(await self.publish_queue.get())
+        
+        # Should only have the unlock message for the old cube
+        self.assertEqual(len(messages), 1, "Should only publish unlock message, not lock for None")
+        
+        # Check that the unlock message is correct
+        unlock_msg = messages[0]
+        self.assertEqual(unlock_msg[0], "cube/cube1/lock")
+        self.assertIsNone(unlock_msg[1])
+        
+        # Verify that no "cube/None/lock" message was published
+        none_lock_messages = [m for m in messages if "None" in m[0]]
+        self.assertEqual(len(none_lock_messages), 0, "Should not publish any 'cube/None/lock' messages")
+
 
 class TestWordFormation(unittest.TestCase):
     def setUp(self):
