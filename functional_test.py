@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import difflib
 import filecmp
 import json
 import os
@@ -62,6 +63,20 @@ def run_replay_test(test_name):
         
         if not filecmp.cmp(golden_file, output_file, shallow=False):
             print(f"Error: Files differ: {golden_file} vs {output_file}")
+            print("Diff:")
+            try:
+                with open(golden_file, 'r') as f1, open(output_file, 'r') as f2:
+                    golden_lines = f1.readlines()
+                    output_lines = f2.readlines()
+                    diff = difflib.unified_diff(
+                        golden_lines, output_lines,
+                        fromfile=str(golden_file), tofile=str(output_file),
+                        lineterm=''
+                    )
+                    for line in diff:
+                        print(line)
+            except Exception as e:
+                print(f"Error reading files for diff: {e}")
             all_match = False
         else:
             print(f"✓ {golden_file.name} matches")
