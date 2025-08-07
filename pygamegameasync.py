@@ -78,13 +78,8 @@ class GameReplayer:
         with open(self.log_file, 'r') as f:
             lines = f.readlines()
 
-        if lines:
-            try:
-                first_event = json.loads(lines[0])
-                if first_event.get("event_type") == "seed":
-                    lines = lines[1:]
-            except (json.JSONDecodeError, IndexError):
-                pass
+        if lines and lines[0].startswith('{"event_type": "seed"'):
+            lines = lines[1:]
 
         for line in lines:
             if line.strip():
@@ -516,9 +511,6 @@ class Shield:
         self.start_time_ms = now_ms
         self.initial_speed = -math.log(1+score)
         self.acceleration_rate = 1.05
-        self.draw()
-
-    def draw(self) -> None:
         self.surface = self.font.render(self.letters, PreviousGuessesDisplay.FADER_PLAYER_COLORS[self.player])[0]
         self.pos[0] = int(SCREEN_WIDTH/2 - self.surface.get_width()/2)
 
