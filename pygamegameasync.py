@@ -1140,7 +1140,7 @@ class BlockWordsPygame:
             pygame.mixer.Sound.play(self.add_sound)
         await self.the_app.guess_word_keyboard(input_device.current_guess, input_device.player_number, now_ms)
     
-    async def handle_delete_action(self, input_device: InputDevice):
+    async def handle_delete_action(self, input_device: InputDevice, now_ms: int):
         if not self.game.running:
             return
         rack = self.game.racks[input_device.player_number]
