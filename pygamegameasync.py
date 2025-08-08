@@ -40,6 +40,8 @@ from src.ui.display_components import (
     LastGuessFader, FaderManager, PreviousGuessesDisplayBase,
     PreviousGuessesDisplay, RemainingPreviousGuessesDisplay
 )
+from src.rendering.animations import get_alpha, LetterSource
+from src.game.components import Score, Shield
 
 logger = logging.getLogger(__name__)
 
@@ -100,23 +102,7 @@ class GameReplayer:
         self.events.reverse()
 
 
-def get_alpha(
-    easing: easing_functions.easing.EasingBase, last_update: float, duration: float, now: int) -> int:
-    """Calculate alpha value for fading animations.
-    
-    Args:
-        easing: Easing function that controls the fade curve
-        last_update: Timestamp when the fade started
-        duration: Total duration of the fade in milliseconds
-        now: Current timestamp
-        
-    Returns:
-        Alpha value between 0-255, or 0 if fade is complete
-    """
-    remaining_ms = duration - (now - last_update)
-    if 0 < remaining_ms < duration:
-        return int(easing(remaining_ms / duration))
-    return 0
+# get_alpha function moved to src/rendering/animations.py
 
 class GuessType(Enum):
     BAD = 0
@@ -379,69 +365,9 @@ class Rack:
         top_left = (top_left[0] + self.left_offset_by_player[player_index], top_left[1])
         window.blit(surface, top_left)
 
-class Shield:
-    def __init__(self, base_pos: tuple[int, int], letters: str, score: int, player: int, now_ms: int) -> None:
-        self.font = pygame.freetype.SysFont("Arial", int(2+math.log(1+score)*8))
-        self.letters = letters
-        self.base_pos = [base_pos[0], float(base_pos[1])]
-        self.base_pos[1] -= self.font.get_rect("A").height
-        self.pos = [self.base_pos[0], self.base_pos[1]]
-        self.rect = pygame.Rect(0, 0, 0, 0)
-        self.score = score
-        self.active = True
-        self.player = player
-        self.start_time_ms = now_ms
-        self.initial_speed = -math.log(1+score)
-        self.acceleration_rate = 1.05
-        self.surface = self.font.render(self.letters, PreviousGuessesDisplay.FADER_PLAYER_COLORS[self.player])[0]
-        self.pos[0] = int(SCREEN_WIDTH/2 - self.surface.get_width()/2)
+# Shield class moved to src/game/components.py
 
-    def update(self, window: pygame.Surface, now_ms: int) -> None:
-        if self.active:
-            update_count = (now_ms - self.start_time_ms) / (1000.0/TICKS_PER_SECOND)
-
-            # Calculate position by summing up all previous speed contributions
-            # This is a geometric series: initial_speed * (1 - (1.05)^update_count) / (1 - 1.05)
-            displacement = self.initial_speed * (1 - (self.acceleration_rate ** update_count)) / (1 - self.acceleration_rate)
-            self.pos[1] = self.base_pos[1] + displacement
-            window.blit(self.surface, self.pos)
-
-            # Get the tightest rectangle around the content for collision detection.
-            self.rect = self.surface.get_bounding_rect().move(self.pos[0], self.pos[1])
-
-    def letter_collision(self) -> None:
-        self.active = False
-        self.pos[1] = SCREEN_HEIGHT
-
-class Score:
-    def __init__(self, the_app: app.App, player: int) -> None:
-        self.the_app = the_app
-        self.player = player
-        self.font = pygame.freetype.SysFont(FONT, RackMetrics.LETTER_SIZE)
-        self.pos = [0, 0]
-        self.x = SCREEN_WIDTH/3 * (player+1)
-        self.midscreen = SCREEN_WIDTH/2
-        self.start()
-        self.draw()
-
-    def get_size(self) -> tuple[int, int]:
-        return self.surface.get_size()
-
-    def start(self) -> None:
-        self.score = 0
-        self.draw()
-
-    def draw(self) -> None:
-        self.surface = self.font.render(str(self.score), SCORE_COLOR)[0]
-        self.pos[0] = int((self.midscreen if self.the_app.player_count == 1 else self.x) 
-                          - self.surface.get_width()/2)
-
-    def update_score(self, score: int) -> None:
-        self.score += score
-        self.draw()
-
-    def update(self, window: pygame.Surface) -> None:
-        window.blit(self.surface, self.pos)
+# Score class moved to src/game/components.py
 
 class LastGuessFader:
     FADE_DURATION_MS = 2000
@@ -608,60 +534,7 @@ class RemainingPreviousGuessesDisplay(PreviousGuessesDisplayBase):
             self.remaining_guesses,
             [self.PLAYER_COLORS[self.guess_to_player.get(guess, 0)] for guess in self.remaining_guesses])
 
-class LetterSource:
-    ALPHA = 128
-    ANIMATION_DURAION_MS = 200
-    MIN_HEIGHT = 1
-    MAX_HEIGHT = 20
-    def __init__(self, letter: Letter, x: int, width: int, initial_y: int) -> None:
-        self.x = x
-        self.last_y = 0
-        self.initial_y = initial_y
-        self.height = LetterSource.MIN_HEIGHT
-        self.width = width
-        self.letter = letter
-        self.easing = easing_functions.QuinticEaseInOut(start=1, end=LetterSource.MAX_HEIGHT, duration=1)
-        self.draw()
-
-    def draw(self) -> None:
-        self.surface = pygame.Surface([self.width, self.height], pygame.SRCALPHA)
-        self.surface.set_alpha(LetterSource.ALPHA)
-        self.surface.fill(LETTER_SOURCE_COLOR)
-
-    def update(self, window: pygame.Surface, now_ms: int) -> None:
-        """Updates the letter source animation and position.
-        
-        The letter source is a visual indicator showing where letters fall from.
-        When a letter starts falling, the source expands to full height and then
-        animates back down to minimum height.
-        
-        Args:
-            window: Surface to draw on
-            now_ms: Current timestamp in milliseconds
-            
-        Returns:
-            List of any incidents that occurred during update
-        """
-        incidents = []
-        if self.last_y != self.letter.start_fall_y:
-            # Letter started falling from a new position
-            self.last_update = now_ms
-            self.height = LetterSource.MAX_HEIGHT
-            self.last_y = self.letter.start_fall_y
-            self.draw()
-        elif self.height > LetterSource.MIN_HEIGHT:
-            # Animate height back down
-            self.height = max(LetterSource.MIN_HEIGHT, 
-                              get_alpha(self.easing, 
-                                    self.last_update, 
-                                    LetterSource.ANIMATION_DURAION_MS, 
-                                    now_ms))
-            self.draw()
-
-        # Position source above falling letter
-        self.pos = [self.x, self.initial_y + self.letter.start_fall_y - self.height]
-        window.blit(self.surface, self.pos)
-        return incidents
+# LetterSource class moved to src/rendering/animations.py
 
 # SoundManager class moved to src/systems/sound_manager.py
 
