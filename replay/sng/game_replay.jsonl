@@ -1,0 +1,1864 @@
+{"event_type": "seed", "seed": 1754572604}
+{"timestamp_ms": 1559, "events": {"pygame": [{"type": "KEYDOWN", "key": "ESCAPE"}]}}
+{"timestamp_ms": 2573, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 3576, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 4582, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 5311, "events": {"pygame": [{"type": "KEYDOWN", "key": "J"}]}}
+{"timestamp_ms": 5505, "events": {"pygame": [{"type": "KEYDOWN", "key": "U"}]}}
+{"timestamp_ms": 5591, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 5735, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 5828, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 6016, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 6595, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 6677, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 7430, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 7603, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 7783, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 7975, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 8146, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 8311, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 8623, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 8738, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 8855, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 9544, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 9635, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 9810, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 10100, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 10278, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 10445, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 10452, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 10626, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 10658, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 11672, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 12025, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 12157, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 12283, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 12688, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 12715, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 13289, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 13478, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 13690, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 14257, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 14374, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 14479, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 14638, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 14691, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 14803, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 15699, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 15901, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 15984, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 16081, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 16448, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 16708, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 16999, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 17028, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 17193, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 17337, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 17389, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 17570, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 17726, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 18729, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 19066, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 19271, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 19346, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 19711, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 19744, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 19925, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 20112, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 20764, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 21765, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 22767, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 23776, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 24786, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 25793, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 26809, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 27817, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 28819, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 29840, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 30846, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 30852, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 30874, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 30881, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 30904, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 30909, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 30932, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 30938, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 30960, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 30966, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 30989, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 30995, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31019, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31024, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31048, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31054, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31078, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31084, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31108, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31114, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31137, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31142, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31164, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31170, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31193, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31198, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31221, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31226, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31250, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31255, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31278, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31284, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31307, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31313, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31337, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31342, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31365, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31371, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31394, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31399, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31422, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31428, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31447, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31456, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31472, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31485, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31497, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31515, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31526, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31543, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31555, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31573, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31583, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31602, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31610, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31631, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31639, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31658, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31664, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31687, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31692, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31715, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31721, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31744, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31749, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31772, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31776, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31797, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31805, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31822, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31833, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31852, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31861, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31880, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31886, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31910, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31916, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31939, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31945, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31968, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31974, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 31997, "events": {"pygame": [{"type": "KEYDOWN", "key": "J"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 32004, "events": {"pygame": [{"type": "KEYDOWN", "key": "H"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 33017, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 33628, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 33800, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 34032, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 34232, "events": {"pygame": [{"type": "KEYDOWN", "key": "D"}]}}
+{"timestamp_ms": 34666, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 34838, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 35009, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 35038, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 35672, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 35874, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 36055, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 36139, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 36339, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 36511, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 36712, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 36857, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 37057, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 37085, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 37200, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 37343, "events": {"pygame": [{"type": "KEYDOWN", "key": "D"}]}}
+{"timestamp_ms": 37459, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 38062, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 38177, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 38264, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 38320, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 38373, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 38558, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 38744, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 38928, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 39069, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 39213, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 39613, "events": {"pygame": [{"type": "KEYDOWN", "key": "D"}]}}
+{"timestamp_ms": 40083, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 40342, "events": {"pygame": [{"type": "KEYDOWN", "key": "D"}]}}
+{"timestamp_ms": 40693, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 40886, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 40999, "events": {"pygame": [{"type": "KEYDOWN", "key": "D"}]}}
+{"timestamp_ms": 41086, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 41167, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 41343, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 42030, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 42089, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 42150, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 42340, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 42783, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 43092, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 43265, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 43464, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 43722, "events": {"pygame": [{"type": "KEYDOWN", "key": "U"}]}}
+{"timestamp_ms": 44110, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 44135, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 44768, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 45122, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 45455, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 45641, "events": {"pygame": [{"type": "KEYDOWN", "key": "U"}]}}
+{"timestamp_ms": 46066, "events": {"pygame": [{"type": "KEYDOWN", "key": "D"}]}}
+{"timestamp_ms": 46143, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 46481, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 46763, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 47163, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 47311, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 47387, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 47602, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 47789, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 47963, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 48137, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 48167, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 49171, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 50194, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 51043, "events": {"pygame": [{"type": "KEYDOWN", "key": "D"}]}}
+{"timestamp_ms": 51203, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 51297, "events": {"pygame": [{"type": "KEYDOWN", "key": "U"}]}}
+{"timestamp_ms": 51408, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 51984, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 52216, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 52301, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 52642, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 52785, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 52842, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 53227, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 54235, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 54696, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 55193, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 55249, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 56251, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 56788, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 57024, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 57185, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 57260, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 57375, "events": {"pygame": [{"type": "KEYDOWN", "key": "U"}]}}
+{"timestamp_ms": 57492, "events": {"pygame": [{"type": "KEYDOWN", "key": "D"}]}}
+{"timestamp_ms": 57680, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 57873, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 58262, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 58346, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 58566, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 58752, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 58941, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 59108, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 59277, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 60285, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 61298, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 62161, "events": {"pygame": [{"type": "KEYDOWN", "key": "D"}]}}
+{"timestamp_ms": 62305, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 62446, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 63232, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 63321, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 63806, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 64338, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 65122, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 65343, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 65626, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 65839, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 66362, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 67376, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 67795, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 67926, "events": {"pygame": [{"type": "KEYDOWN", "key": "U"}]}}
+{"timestamp_ms": 68032, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 68380, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 68403, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 68859, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 69236, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 69390, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 69977, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 70194, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 70383, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 70394, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 71135, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 71395, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 72400, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 73414, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 74108, "events": {"pygame": [{"type": "KEYDOWN", "key": "D"}]}}
+{"timestamp_ms": 74421, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 74481, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 74632, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 74765, "events": {"pygame": [{"type": "KEYDOWN", "key": "U"}]}}
+{"timestamp_ms": 74870, "events": {"pygame": [{"type": "KEYDOWN", "key": "D"}]}}
+{"timestamp_ms": 75443, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 76447, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 76949, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 77169, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 77365, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 77449, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 77535, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 78452, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 79458, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 80463, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 81466, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 81474, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81495, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81501, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81524, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81529, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81552, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81558, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81582, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81588, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81610, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81616, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81640, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81645, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81668, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81674, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81693, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81702, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81721, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81729, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81750, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81756, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81780, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81785, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81808, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81813, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81836, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81841, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81864, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81869, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81892, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81897, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81920, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81926, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81949, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81954, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81977, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 81982, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82005, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82011, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82033, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82039, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82063, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82068, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82091, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82097, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82119, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82125, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82148, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82153, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82176, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82181, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82204, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82209, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82232, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82238, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82262, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82267, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82290, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82295, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82318, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82324, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 82348, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 82355, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 83236, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 83366, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 84230, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 84374, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 84432, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 84929, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 85382, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 85661, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 86223, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 86384, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 86523, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 87386, "events": {"incidents": ["letter_column_move", "shield_letter_collision"]}}
+{"timestamp_ms": 87883, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 88407, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 88698, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 88751, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 89362, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 89415, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 89590, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 89791, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 90134, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 90356, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 90435, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 91447, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 91538, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 92449, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 92534, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 92738, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 93236, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 93470, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 93750, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 93959, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 94492, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 95509, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 96528, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 97529, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 98549, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 99406, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 99527, "events": {"pygame": [{"type": "KEYDOWN", "key": "U"}]}}
+{"timestamp_ms": 99555, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 99569, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99584, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99598, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99614, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99626, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99642, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99655, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99667, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99684, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99695, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99714, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99723, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99743, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99750, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99771, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99776, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99799, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99805, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99827, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99833, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 99857, "events": {"incidents": ["letter_column_move", "letter_lock", "shield_letter_collision"]}}
+{"timestamp_ms": 99863, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 100432, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 100867, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 101151, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 101772, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 101888, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 101980, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 102494, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 102747, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 102871, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 102896, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 103280, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 103471, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 103731, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 103911, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 103995, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 104219, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 104394, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 104597, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 104771, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 104913, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 105930, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 106949, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 107622, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 107795, "events": {"pygame": [{"type": "KEYDOWN", "key": "U"}]}}
+{"timestamp_ms": 107899, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 107958, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 107975, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 108754, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 108961, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 109963, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 110977, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 111981, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 112241, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 112560, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 112785, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 112956, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 112989, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 114002, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 115004, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 116005, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 117022, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 117338, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 117585, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 117731, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 118041, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 118298, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 118667, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 118925, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 119046, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 119442, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 119701, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}], "incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 119908, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 120065, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 120409, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 121069, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 122085, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 122180, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 122427, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 123087, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 124090, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 125095, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 126103, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 127120, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 128139, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 129143, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 130153, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 130158, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130181, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130187, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130210, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130215, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130239, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130245, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130269, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130275, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130299, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130304, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130327, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130333, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130356, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130361, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130385, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130390, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130413, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130418, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130438, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130446, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130467, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130475, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130495, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130502, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130525, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130530, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130554, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130559, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130583, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130588, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130611, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130616, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130639, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130644, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130668, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130674, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130697, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130702, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130725, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130731, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130755, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130759, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130779, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130787, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130807, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130814, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130837, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130843, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130866, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130872, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130895, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130900, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130924, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130929, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130952, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130957, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130981, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 130986, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131009, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131015, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131038, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131043, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131067, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131072, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131095, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131101, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131124, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131130, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131154, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131159, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131183, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131188, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131211, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131217, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131240, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131246, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131269, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131274, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131297, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131303, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131326, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131331, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 131354, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 131360, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 132376, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 132704, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 132845, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 132959, "events": {"pygame": [{"type": "KEYDOWN", "key": "X"}]}}
+{"timestamp_ms": 133386, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 133787, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 134016, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 134276, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 134391, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 135335, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 135393, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 135644, "events": {"pygame": [{"type": "KEYDOWN", "key": "X"}]}}
+{"timestamp_ms": 136395, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 136425, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 136483, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 136651, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 137114, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 137403, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 137431, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 137576, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 137692, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 137867, "events": {"pygame": [{"type": "KEYDOWN", "key": "X"}]}}
+{"timestamp_ms": 138356, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 138412, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 138725, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 139428, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 139490, "events": {"pygame": [{"type": "KEYDOWN", "key": "X"}]}}
+{"timestamp_ms": 140382, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 140444, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 140558, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 140750, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 141243, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 141378, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 141458, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 141628, "events": {"pygame": [{"type": "KEYDOWN", "key": "X"}]}}
+{"timestamp_ms": 142375, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 142479, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 143047, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 143220, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 143400, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 143480, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 144194, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 144330, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 144442, "events": {"pygame": [{"type": "KEYDOWN", "key": "X"}]}}
+{"timestamp_ms": 144493, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 145243, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}], "incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 145423, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 145510, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 146027, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 146174, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 146404, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 146516, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 146602, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 146803, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 146982, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 147205, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 147520, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 148530, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 149532, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 150541, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 151555, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 152567, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 153576, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 154583, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 155557, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 155588, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 155594, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155617, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155622, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155645, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155651, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155673, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155679, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155702, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155708, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155732, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155737, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155760, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155765, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155789, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155794, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155817, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155823, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155846, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155851, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155874, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155880, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155903, "events": {"pygame": [{"type": "KEYDOWN", "key": "X"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 155910, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155933, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155939, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155963, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155968, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155991, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 155997, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156020, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156026, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156049, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156055, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156078, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156084, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156107, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156113, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156137, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156142, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156165, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156170, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156193, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156199, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156222, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156227, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156250, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156256, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156279, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156283, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156306, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156312, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156335, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156340, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156364, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156369, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156392, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156398, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156420, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156425, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 156448, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 156455, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 157305, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 157470, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 158220, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 158476, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 158704, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 159162, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 159484, "events": {"incidents": ["letter_column_move", "shield_letter_collision"]}}
+{"timestamp_ms": 159885, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 159964, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 160167, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 160497, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 160842, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 161215, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 161480, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 161504, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 161939, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 162162, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 162339, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 162519, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 162721, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 162867, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 163043, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 163210, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 163325, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 163440, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 163527, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 163561, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 163844, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 164298, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 164529, "events": {"incidents": ["letter_column_move", "shield_letter_collision"]}}
+{"timestamp_ms": 164704, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 164950, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 165126, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 165328, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 165533, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 165935, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 166133, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 166344, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 166547, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 166748, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 166961, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 167148, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 167470, "events": {"pygame": [{"type": "KEYDOWN", "key": "RETURN"}]}}
+{"timestamp_ms": 167555, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 167973, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 168134, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 168267, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 168365, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 168558, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 168563, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 168999, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 169086, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 169566, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 170578, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 170664, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 170807, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 170945, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 171050, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 171276, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 171581, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 172076, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 172268, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 172463, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 172596, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 172621, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 172823, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 173067, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 173171, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 173323, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 173417, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 173615, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 173644, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 174615, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 174625, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 174852, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 175052, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 175426, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 175593, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 175630, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 176643, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 176648, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176672, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176677, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176700, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176706, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176729, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176735, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176758, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176763, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176786, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176792, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176815, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176820, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176843, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176849, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176871, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176877, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176899, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176905, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176928, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176933, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176957, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176962, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176985, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 176991, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177014, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177021, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177043, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177049, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177072, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177078, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177102, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177107, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177131, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177136, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177160, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177165, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177188, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177194, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177217, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177222, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177245, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177251, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177273, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177279, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177303, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177308, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177330, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177336, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177359, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177365, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177389, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177394, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177417, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177423, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177447, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177452, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177475, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177481, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177505, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177510, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177532, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177538, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177561, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177566, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177589, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177595, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177618, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177624, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177648, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177654, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177677, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177683, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177706, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177712, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177735, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177740, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177763, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177769, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177793, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177799, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177823, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177828, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177851, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177856, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177879, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177885, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177908, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 177914, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177938, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 177943, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 177966, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 178987, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 179043, "events": {"pygame": [{"type": "KEYDOWN", "key": "V"}]}}
+{"timestamp_ms": 179588, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 179903, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 179989, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 180561, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 180734, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 181003, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 181036, "events": {"pygame": [{"type": "KEYDOWN", "key": "V"}]}}
+{"timestamp_ms": 181291, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 181589, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 182023, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 182529, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 182799, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 183034, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 183063, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 183351, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 184011, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 184040, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 184213, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 184387, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 184586, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 184789, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 185054, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 185246, "events": {"pygame": [{"type": "KEYDOWN", "key": "V"}]}}
+{"timestamp_ms": 185337, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 185453, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 186067, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 186210, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 186671, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 186813, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 187072, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 187302, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 187516, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 187728, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 187904, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 188078, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 188256, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 189088, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 189688, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 189768, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 190009, "events": {"pygame": [{"type": "KEYDOWN", "key": "V"}]}}
+{"timestamp_ms": 190097, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 190670, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 190838, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 190965, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 191109, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 191395, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 191678, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 191892, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 192067, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 192124, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 192239, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 192439, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 192613, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 193140, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 194029, "events": {"pygame": [{"type": "KEYDOWN", "key": "V"}]}}
+{"timestamp_ms": 194142, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 194189, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 194365, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 194481, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 195101, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 195157, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 195408, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 195608, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 195828, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 195973, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 196174, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 196203, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 196267, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 196412, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 196577, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 197179, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 197236, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 197536, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 197759, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 197933, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 198112, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 198191, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 199193, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 200202, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 201203, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 202216, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 203220, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 203680, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 203912, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 204048, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 204236, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock", "shield_letter_collision"]}}
+{"timestamp_ms": 204242, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 205176, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 205261, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 205461, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 205976, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 206118, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 206263, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 206634, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 206737, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 206968, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 207177, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 207286, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 207634, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 207658, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 207828, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 207857, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 208062, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 208215, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 208299, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 208388, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 209320, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 210332, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 211350, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 211828, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 211941, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 212075, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 212368, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 212763, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 212955, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 213201, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 213371, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 214393, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 214398, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214422, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214427, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214450, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214455, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214478, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214484, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214506, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214512, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214536, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214541, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214564, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214568, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214590, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214596, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214620, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214625, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214647, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214653, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214677, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214682, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214705, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214711, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214734, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214740, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214763, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214769, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214792, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214798, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214821, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214827, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214850, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214856, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214880, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214885, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214908, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214914, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214937, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214942, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214966, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214971, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 214995, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215000, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215023, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215029, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215052, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215057, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215080, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215086, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215110, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215115, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215139, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215144, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215167, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215173, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215197, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215202, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215225, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215230, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215254, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215259, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215282, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215287, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215310, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215316, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215340, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215345, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215368, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215374, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 215398, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 215404, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 216408, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 216982, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 217263, "events": {"pygame": [{"type": "KEYDOWN", "key": "A"}]}}
+{"timestamp_ms": 217412, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 217436, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 218093, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 218429, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 218828, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 219004, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 219432, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 219544, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 219800, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 220295, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 220450, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 220504, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 220656, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 221451, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 221627, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 221797, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 221959, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 222133, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 222453, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 222475, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 222733, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 223022, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 223215, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 223395, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 223454, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 223568, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 223971, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 224086, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 224236, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 224420, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 224476, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 224643, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 224843, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 225004, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 225184, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 225483, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 226494, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 226591, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 226782, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 226916, "events": {"pygame": [{"type": "KEYDOWN", "key": "A"}]}}
+{"timestamp_ms": 227028, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 227082, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 227451, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 227509, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 228274, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 228472, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 228531, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 228651, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 228853, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 229048, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 229550, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 230283, "events": {"pygame": [{"type": "KEYDOWN", "key": "A"}]}}
+{"timestamp_ms": 230412, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 230468, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 230552, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 230894, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 231011, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 231495, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 231524, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 231554, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 231723, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 231940, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 232114, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 232229, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 232518, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 232577, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 232948, "events": {"pygame": [{"type": "KEYDOWN", "key": "A"}]}}
+{"timestamp_ms": 233142, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 233220, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 233368, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 233593, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 233822, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 233939, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 234156, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 234367, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 234520, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 234601, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 234715, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 234894, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 235148, "events": {"pygame": [{"type": "KEYDOWN", "key": "A"}]}}
+{"timestamp_ms": 235570, "events": {"pygame": [{"type": "KEYDOWN", "key": "I"}]}}
+{"timestamp_ms": 235604, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 235654, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 235911, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 236616, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 236740, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 236992, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 237183, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 237372, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 237629, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 238644, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 239657, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 239663, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239686, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239692, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239715, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239720, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239743, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239749, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239772, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239778, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239800, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239806, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239829, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239834, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239858, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239863, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239887, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239892, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239915, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239921, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239944, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239949, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239973, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 239978, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 240001, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 240006, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 240029, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 240035, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 240058, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 240064, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 240088, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 240093, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 240117, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 240123, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 240147, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 240152, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 240176, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 240181, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 240203, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 240210, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 240233, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 240239, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 240670, "events": {"pygame": [{"type": "KEYDOWN", "key": "H"}]}}
+{"timestamp_ms": 241047, "events": {"pygame": [{"type": "KEYDOWN", "key": "A"}]}}
+{"timestamp_ms": 241253, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 241299, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 241737, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 242256, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 242284, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 242836, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 243258, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 243345, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 243519, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 243731, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 243900, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 244077, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 244280, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 244425, "events": {"pygame": [{"type": "KEYDOWN", "key": "H"}]}}
+{"timestamp_ms": 244511, "events": {"pygame": [{"type": "KEYDOWN", "key": "A"}]}}
+{"timestamp_ms": 244597, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 244799, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 245033, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 245235, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 245289, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 245371, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 245543, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 245843, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 246109, "events": {"pygame": [{"type": "KEYDOWN", "key": "A"}]}}
+{"timestamp_ms": 246252, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 246301, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 246396, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 247307, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 247313, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247336, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247342, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247365, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247371, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247394, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247400, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247423, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247429, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247452, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247458, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247482, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247488, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247511, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247517, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247540, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247547, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247570, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247575, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247599, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247604, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247627, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247633, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247656, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247662, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247685, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247690, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247713, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247719, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247741, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247747, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247770, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247776, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247799, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247805, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247828, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247833, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247856, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247862, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247885, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247891, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247914, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247920, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247943, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247949, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247972, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 247978, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248001, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248006, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248029, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248034, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248058, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248063, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248086, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248092, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248115, "events": {"pygame": [{"type": "KEYDOWN", "key": "H"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 248122, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248145, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248151, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248174, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248180, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248204, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248209, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248232, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248238, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248260, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248266, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248289, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248295, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248319, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248324, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248347, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248353, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248375, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248380, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248403, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248409, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 248431, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 248439, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 248655, "events": {"pygame": [{"type": "KEYDOWN", "key": "A"}]}}
+{"timestamp_ms": 249171, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 249369, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}]}}
+{"timestamp_ms": 249448, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 250283, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 250449, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 250734, "events": {"pygame": [{"type": "KEYDOWN", "key": "D"}]}}
+{"timestamp_ms": 251164, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 251278, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 251452, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 251647, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 251797, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 252162, "events": {"pygame": [{"type": "KEYDOWN", "key": "D"}]}}
+{"timestamp_ms": 252334, "events": {"pygame": [{"type": "KEYDOWN", "key": "A"}]}}
+{"timestamp_ms": 252448, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 252454, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 252593, "events": {"pygame": [{"type": "KEYDOWN", "key": "H"}]}}
+{"timestamp_ms": 253030, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 253463, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 253808, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 254273, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 254467, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 254473, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 254674, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 254856, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 255485, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 255493, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255515, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255517, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255539, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255545, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255568, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255576, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255599, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255605, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255628, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255634, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255657, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255663, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255686, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255692, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255711, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255717, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255740, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255747, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255770, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255776, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255799, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255805, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255828, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255834, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255857, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255863, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255886, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255893, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255916, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255921, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255942, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255948, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255970, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255977, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 255998, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256003, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256027, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256032, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256055, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256061, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256084, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256090, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256114, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256119, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256142, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256148, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256172, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256177, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256200, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256206, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256230, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256235, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256258, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256263, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256286, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256292, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256315, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256321, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256344, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256349, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256369, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256376, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256399, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256404, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256427, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256433, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256456, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256461, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256484, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256489, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256513, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256518, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256542, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256548, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256571, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256576, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256599, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256605, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256628, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256633, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256656, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256662, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256685, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256691, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256714, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256720, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256743, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256749, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256772, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256778, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256802, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256807, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256831, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256837, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256861, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256866, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256889, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256895, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256919, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256924, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256947, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 256954, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256977, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 256982, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257005, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257007, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257030, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257036, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257059, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257064, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257087, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257093, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257116, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257122, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257145, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257149, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257170, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257173, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257195, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257201, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257225, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257231, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257254, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257258, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257279, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257285, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257308, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257313, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257336, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257342, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257360, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257371, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257389, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257396, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257418, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257424, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257445, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257453, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257471, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257477, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257499, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257505, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257529, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257534, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257557, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257561, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257582, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257590, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257611, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257614, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257636, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257642, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257660, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257671, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257685, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257696, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257714, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257724, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257743, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257749, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257768, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257773, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257793, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257797, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257819, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257826, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257848, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257850, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257874, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257876, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257899, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257905, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257928, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257934, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257956, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257962, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257985, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 257987, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258010, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258016, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258039, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258045, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258068, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258074, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258097, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258103, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258125, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258131, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258155, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258160, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258183, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258189, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258212, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258218, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258241, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258247, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258270, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258276, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258300, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258305, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258328, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258333, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258356, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258362, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258386, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258391, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258415, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258420, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258443, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258449, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258472, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258478, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258502, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258508, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258530, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258536, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258559, "events": {"pygame": [{"type": "KEYDOWN", "key": "O"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 258566, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258588, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258594, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258618, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258623, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258646, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258652, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258675, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258680, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258704, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258709, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258732, "events": {"pygame": [{"type": "KEYDOWN", "key": "D"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258739, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258762, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258768, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258792, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258797, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258820, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258826, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258850, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258855, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258879, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258885, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258909, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258914, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258937, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258943, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258965, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258971, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258994, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 258999, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259023, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259028, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259051, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259057, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259080, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259086, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259109, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259115, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259138, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259144, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259167, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259173, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259196, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259201, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259225, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259231, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259254, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259259, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259283, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259288, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259311, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259317, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259340, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259346, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259369, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259375, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259398, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259404, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259428, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259434, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259456, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259462, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259485, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259491, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259514, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259520, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259544, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259549, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259573, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259578, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259601, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259606, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259629, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259635, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259658, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259664, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259688, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259693, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259716, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259722, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259745, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259750, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259773, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259779, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259802, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259808, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259831, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 259838, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259861, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259866, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259889, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259895, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259918, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259924, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259947, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259953, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259975, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 259981, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260003, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260009, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260029, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260034, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260058, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260063, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260086, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260092, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260115, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260121, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260144, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260150, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260172, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260178, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260200, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260202, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260225, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260231, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260254, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260259, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260282, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260284, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260307, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260313, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260336, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260342, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260365, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260369, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260390, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260395, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260418, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260424, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260448, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260449, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260472, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260474, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260497, "events": {"pygame": [{"type": "KEYDOWN", "key": "O"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260504, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260527, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260532, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260552, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260555, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260577, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260584, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260603, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260612, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260631, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260641, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260657, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260665, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260686, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260693, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260710, "events": {"pygame": [{"type": "KEYDOWN", "key": "D"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260717, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260740, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260746, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260770, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260775, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260798, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260804, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260828, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260833, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260857, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260862, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260885, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260891, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260914, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260920, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260944, "events": {"incidents": ["letter_column_move", "letter_lock", "shield_letter_collision"]}}
+{"timestamp_ms": 260950, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260973, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 260979, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261001, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261007, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261030, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261036, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261060, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261065, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261088, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261094, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261117, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261124, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261148, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261153, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261177, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261182, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261205, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261211, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261234, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261240, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261263, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261268, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261290, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261296, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261319, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261325, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261348, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261355, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261378, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261384, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261407, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261412, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261435, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261442, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261463, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261469, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261492, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261498, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261521, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261528, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261551, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261556, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261579, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261585, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261609, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261615, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261638, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261644, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261666, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261673, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261696, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261702, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261725, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261731, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261755, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261761, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261785, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261790, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261813, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261819, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261842, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261848, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261871, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261876, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261899, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261905, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261928, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261934, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261956, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261963, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261984, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 261990, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262014, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262020, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262043, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262049, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262072, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262077, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262100, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262106, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262130, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262135, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262159, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262165, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262188, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}], "incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262195, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262218, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262224, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262246, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262252, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262274, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262280, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262304, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262309, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262332, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262338, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262361, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262367, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262391, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262397, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262420, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262425, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 262448, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262454, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262477, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262483, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262506, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262511, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262534, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262539, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262562, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262568, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262592, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262597, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262620, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262626, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262650, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262656, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 262679, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262685, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262708, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262714, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262738, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262744, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262767, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262772, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262795, "events": {"pygame": [{"type": "KEYDOWN", "key": "N"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 262802, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 262826, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 264139, "events": {"pygame": [{"type": "KEYDOWN", "key": "LEFT META"}]}}
+{"timestamp_ms": 264871, "events": {"pygame": [{"type": "KEYDOWN", "key": "Q"}, {"type": "QUIT"}]}}
