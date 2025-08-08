@@ -96,6 +96,7 @@ class App:
         self._running = False
         # Set moratorium period to prevent accidental cube-based restarts
         cubes_to_game.set_game_end_time(now_ms)
+        # Note: ABC sequence will be activated automatically when moratorium expires
 
     async def load_rack(self, now_ms: int) -> None:
         for player in range(MAX_PLAYERS):

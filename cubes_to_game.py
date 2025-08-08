@@ -29,6 +29,10 @@ _last_game_end_time_ms = 0
 
 # Game state tracking
 _game_running = False
+
+# ABC sequence start system
+_abc_start_active = False
+_abc_cubes = {"A": None, "B": None, "C": None}  # Maps letter to cube ID
 class CubeManager:
     def __init__(self, player_number: int):
         self.player_number = player_number
@@ -318,6 +322,107 @@ def set_game_running(running: bool) -> None:
     global _game_running
     _game_running = running
     logging.info(f"Game running state set to: {running}")
+    
+    # Clear ABC sequence when game starts
+    if running:
+        _clear_abc_start_sequence()
+
+async def _find_non_touching_cubes(publish_queue, now_ms: int) -> List[str]:
+    """Find 3 cubes that are not touching each other."""
+    # Get all available cubes from the first cube manager
+    if not cube_managers or not cube_managers[0].tags_to_cubes:
+        return []
+    
+    all_cubes = list(cube_managers[0].tags_to_cubes.values())
+    
+    if len(all_cubes) < 3:
+        return []
+    
+    # Find 3 cubes that are not connected to each other
+    # We need to ensure none of the selected cubes are directly connected
+    selected_cubes = []
+    
+    for cube in all_cubes:
+        if len(selected_cubes) >= 3:
+            break
+            
+        # Check if this cube is touching any already selected cube
+        is_touching_selected = False
+        for selected_cube in selected_cubes:
+            # Check if cube -> selected_cube or selected_cube -> cube connection exists
+            for manager in cube_managers:
+                if (manager.cube_chain.get(cube) == selected_cube or
+                    manager.cube_chain.get(selected_cube) == cube):
+                    is_touching_selected = True
+                    break
+            if is_touching_selected:
+                break
+        
+        if not is_touching_selected:
+            selected_cubes.append(cube)
+    
+    # If we couldn't find 3 non-touching cubes, just use any 3 cubes
+    # This ensures the system always works even if all cubes are connected
+    if len(selected_cubes) >= 3:
+        return selected_cubes[:3]
+    else:
+        return all_cubes[:3]
+
+async def _activate_abc_start_sequence(publish_queue, now_ms: int) -> None:
+    """Activate the ABC sequence start system after moratorium."""
+    global _abc_start_active, _abc_cubes
+    
+    # Find 3 non-touching cubes
+    selected_cubes = await _find_non_touching_cubes(publish_queue, now_ms)
+    if len(selected_cubes) < 3:
+        logging.warning("Not enough cubes available for ABC start sequence")
+        return
+    
+    # Assign A, B, C to the selected cubes
+    letters = ["A", "B", "C"]
+    for i, letter in enumerate(letters):
+        _abc_cubes[letter] = selected_cubes[i]
+    
+    _abc_start_active = True
+    logging.info(f"ABC start sequence activated: {_abc_cubes}")
+    
+    # Display A, B, C on the selected cubes
+    for letter, cube_id in _abc_cubes.items():
+        await _publish_letter(publish_queue, letter, cube_id, now_ms)
+
+async def _check_abc_sequence_complete() -> bool:
+    """Check if A-B-C cubes are placed in sequence."""
+    if not _abc_start_active or not all(_abc_cubes.values()):
+        return False
+    
+    # Check all cube managers for the ABC sequence
+    for manager in cube_managers:
+        # Look for A-B-C in the cube chain
+        cube_a = _abc_cubes["A"]
+        cube_b = _abc_cubes["B"] 
+        cube_c = _abc_cubes["C"]
+        
+        # Check if A->B->C chain exists
+        if (cube_a in manager.cube_chain and 
+            manager.cube_chain[cube_a] == cube_b and
+            cube_b in manager.cube_chain and 
+            manager.cube_chain[cube_b] == cube_c):
+            return True
+    
+    return False
+
+def _clear_abc_start_sequence() -> None:
+    """Clear the ABC start sequence state."""
+    global _abc_start_active, _abc_cubes
+    _abc_start_active = False
+    _abc_cubes = {"A": None, "B": None, "C": None}
+    logging.info("ABC start sequence cleared")
+
+async def activate_abc_start_if_ready(publish_queue, now_ms: int) -> None:
+    """Activate ABC start sequence if conditions are met (public interface)."""
+    if (not _abc_start_active and not _game_running and 
+        (_last_game_end_time_ms == 0 or _is_cube_start_allowed(now_ms))):
+        await _activate_abc_start_sequence(publish_queue, now_ms)
 
 def _is_cube_start_allowed(now_ms: int) -> bool:
     """Check if cube-based game start is allowed (outside moratorium period)."""
@@ -329,9 +434,12 @@ def _is_cube_start_allowed(now_ms: int) -> bool:
     return time_since_end >= CUBE_START_MORATORIUM_MS
 
 async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str, now_ms: int):
+    global _abc_start_active
     logging.info(f"process_cube_guess: {topic} {data}")
     sender = topic.value.removeprefix("cube/nfc/")
     await publish_queue.put((f"game/nfc/{sender}", data, True, now_ms))
+    
+    # Handle special START_GAME_TAGS (legacy method)
     if data in START_GAME_TAGS:
         if _is_cube_start_allowed(now_ms):
             await start_game_callback(True, now_ms)
@@ -339,7 +447,20 @@ async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str, now
             time_remaining = CUBE_START_MORATORIUM_MS - (now_ms - _last_game_end_time_ms)
             logging.info(f"Cube start blocked by moratorium, {time_remaining}ms remaining")
         return
+    
+    # Check if moratorium just expired and we should activate ABC sequence
+    if (not _abc_start_active and not _game_running and 
+        _last_game_end_time_ms > 0 and _is_cube_start_allowed(now_ms)):
+        await _activate_abc_start_sequence(publish_queue, now_ms)
+    
+    # Process normal cube interactions
     await guess_word_based_on_cubes(sender, data, publish_queue, now_ms)
+    
+    # Check if ABC sequence is complete and start game
+    if _abc_start_active and await _check_abc_sequence_complete():
+        logging.info("ABC sequence complete! Starting game...")
+        _clear_abc_start_sequence()
+        await start_game_callback(True, now_ms)
 
 def read_data(f) -> List[str]:
     """Read all data from file."""
