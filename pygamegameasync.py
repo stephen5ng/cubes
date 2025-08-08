@@ -30,6 +30,16 @@ from mock_mqtt_client import MockMqttClient
 from pygame.image import tobytes as image_to_string
 from pygameasync import Clock, events
 import tiles
+from src.systems.sound_manager import SoundManager
+from src.input.input_devices import (
+    InputDevice, CubesInput, KeyboardInput, GamepadInput, DDRInput, 
+    JOYSTICK_NAMES_TO_INPUTS
+)
+from src.rendering.metrics import RackMetrics
+from src.ui.display_components import (
+    LastGuessFader, FaderManager, PreviousGuessesDisplayBase,
+    PreviousGuessesDisplay, RemainingPreviousGuessesDisplay
+)
 
 logger = logging.getLogger(__name__)
 
@@ -44,6 +54,7 @@ ANTIALIAS = 1
 
 FREE_SCORE = 0
 
+# Global reference to letter beeps - populated by SoundManager
 letter_beeps: list = []
 
 BAD_GUESS_COLOR=Color("red")
@@ -112,137 +123,8 @@ class GuessType(Enum):
     OLD = 1
     GOOD = 2
 
-class InputDevice:
-    def __init__(self, handlers):
-        self.handlers = handlers
-        self._player_number = None
-        self.current_guess = ""
-        self.reversed = False
-        self.id = None
-
-    @property
-    def player_number(self):
-        return self._player_number
-
-    @player_number.setter
-    def player_number(self, value):
-        self._player_number = value
-        self.reversed = (value == 1)
-
-    async def process_event(self, event):
-        """Base method to be overridden by subclasses"""
-        pass
-
-class CubesInput(InputDevice):
-    def __str__(self):
-        return "CubesInput"
-    
-    async def process_event(self, event):
-        pass
-    
-class KeyboardInput(InputDevice):
-    def __str__(self):
-        return "KeyboardInput"
-    
-    async def process_event(self, event):
-        # Keyboard input is handled separately in the main loop
-        pass
-
-class GamepadInput(InputDevice):
-    def __str__(self):
-        return "GamepadInput"
-
-    async def process_event(self, event, now_ms: int):
-        if event["type"] == "JOYBUTTONDOWN" and event["button"] == 9:
-            self.player_number = await self.handlers['start'](self, now_ms)
-            print(f"JOYSTICK player_number: {self.player_number}")
-            return
-
-        if self.player_number is None:
-            return
-
-        if event["type"] == "JOYAXISMOTION":
-            if event["axis"] == 0:
-                if event["value"] < -0.5:
-                    self.handlers['left'](self)
-                elif event["value"] > 0.5:
-                    self.handlers['right'](self)
-            elif event["axis"] == 1:
-                if event["value"] < -0.5:
-                    await self.handlers['insert'](self, now_ms)
-                elif event["value"] > 0.5:
-                    await self.handlers['delete'](self, now_ms)
-        elif event["type"] == "JOYBUTTONDOWN":
-            if event["button"] == 1:
-                await self.handlers['action'](self, now_ms)
-            elif event["button"] == 2:
-                self.handlers['return'](self)
-
-class DDRInput(InputDevice):
-    async def process_event(self, event):
-        if event.type == pygame.JOYBUTTONDOWN:
-            if event.button == 9:
-                self.player_number = await self.handlers['start'](self)
-
-            if self.player_number is None:
-                return
-            if event.button == 1:
-                await self.handlers['action'](self)
-            elif event.button == 0:
-                self.handlers['left'](self)
-            elif event.button == 2:
-                await self.handlers['action'](self)
-            elif event.button == 3:
-                self.handlers['right'](self)
-            elif event.button == 5:
-                self.handlers['return'](self)
-
-JOYSTICK_NAMES_TO_INPUTS = {
-    "USB gamepad": GamepadInput,
-    "USB Gamepad": DDRInput,
-}
-class RackMetrics:
-    LETTER_SIZE = 24
-    LETTER_BORDER = 0
-    BOTTOM_MARGIN = 1
-    def __init__(self) -> None:
-        self.font = pygame.freetype.SysFont(FONT, self.LETTER_SIZE)
-        self.letter_width = self.font.get_rect("A").size[0] + self.LETTER_BORDER
-        self.letter_height = self.font.get_rect("S").size[1] + self.LETTER_BORDER+self.BOTTOM_MARGIN
-        self.x = SCREEN_WIDTH/2 - self.letter_width*tiles.MAX_LETTERS/2
-        self.y = SCREEN_HEIGHT - self.letter_height
-
-    def get_rect(self) -> pygame.Rect:
-        return pygame.Rect(
-            self.x,
-            self.y,
-            self.letter_width*tiles.MAX_LETTERS,
-            self.letter_height)
-
-    def get_letter_rect(self, position: int, letter: str) -> pygame.Rect:
-        this_letter_width = self.font.get_rect(letter).width
-        this_letter_margin = (self.letter_width - this_letter_width) / 2
-        x = self.letter_width*position + this_letter_margin
-        y = self.LETTER_BORDER/2+self.BOTTOM_MARGIN
-        return pygame.Rect(x, y, this_letter_width, self.letter_height - self.LETTER_BORDER)
-
-    def get_largest_letter_rect(self, position: int) -> pygame.Rect:
-        x = self.letter_width*position + self.LETTER_BORDER/2
-        y = self.LETTER_BORDER/2
-        return pygame.Rect(x, y, self.letter_width - self.LETTER_BORDER,
-            self.letter_height - self.LETTER_BORDER)
-
-    def get_size(self) -> tuple[int, int]:
-        return self.get_rect().size
-
-    def get_select_rect(self, select_count: int, player: int) -> pygame.Rect:
-        if player == 1:
-            # For player 1, start from right side and expand left
-            x = self.letter_width * (tiles.MAX_LETTERS - select_count)
-            return pygame.Rect(x, 0, self.letter_width * select_count, self.letter_height)
-        else:
-            # For player 0, start from left side and expand right (original behavior)
-            return pygame.Rect(0, 0, self.letter_width * select_count, self.letter_height)
+# Input device classes moved to src/input/input_devices.py
+# RackMetrics class moved to src/rendering/metrics.py
 
 class Letter:
     DROP_TIME_MS = 15000
@@ -781,61 +663,7 @@ class LetterSource:
         window.blit(self.surface, self.pos)
         return incidents
 
-class SoundManager:
-    DELAY_BETWEEN_WORD_SOUNDS_S = 0.3
-
-    def __init__(self):
-        self.sound_queue: asyncio.Queue = asyncio.Queue()
-        self.start_sound = pygame.mixer.Sound("./sounds/start.wav")
-        self.crash_sound = pygame.mixer.Sound("./sounds/ping.wav")
-        self.crash_sound.set_volume(0.8)
-        self.chunk_sound = pygame.mixer.Sound("./sounds/chunk.wav")
-        self.game_over_sound = pygame.mixer.Sound("./sounds/game_over.wav")
-        self.bloop_sound = pygame.mixer.Sound("./sounds/bloop.wav")
-        self.bloop_sound.set_volume(0.2)
-        
-        for n in range(11):
-            letter_beeps.append(pygame.mixer.Sound(f"sounds/{n}.wav"))
-            
-        self.sound_queue_task = asyncio.create_task(self.play_sounds_in_queue(), name="word sound player")
-
-    async def play_sounds_in_queue(self) -> None:
-        pygame.mixer.set_reserved(2)
-        delay_between_words_s = self.DELAY_BETWEEN_WORD_SOUNDS_S
-        last_sound_time = datetime(year=1, month=1, day=1)
-        while True:
-            try:
-                soundfile = await self.sound_queue.get()
-                async with aiofiles.open(soundfile, mode='rb') as f:
-                    s = pygame.mixer.Sound(buffer=await f.read())
-                    now = datetime.now()
-                    time_since_last_sound_s = (now - last_sound_time).total_seconds()
-                    time_to_sleep_s = delay_between_words_s - time_since_last_sound_s
-                    await asyncio.sleep(time_to_sleep_s)
-                    channel = pygame.mixer.find_channel(force=True)
-                    channel.queue(s)
-                    last_sound_time = datetime.now()
-            except Exception as e:
-                print(f"error playing sound {soundfile}: {e}")
-                continue
-
-    async def queue_word_sound(self, word: str, player: int) -> None:
-        await self.sound_queue.put(f"word_sounds_{player}/{word.lower()}.wav")
-
-    def play_start(self) -> None:
-        pygame.mixer.Sound.play(self.start_sound)
-
-    def play_crash(self) -> None:
-        pygame.mixer.Sound.play(self.crash_sound)
-
-    def play_chunk(self) -> None:
-        pygame.mixer.Sound.play(self.chunk_sound)
-
-    def play_game_over(self) -> None:
-        pygame.mixer.Sound.play(self.game_over_sound)
-
-    def play_bloop(self) -> None:
-        pygame.mixer.Sound.play(self.bloop_sound)
+# SoundManager class moved to src/systems/sound_manager.py
 
 class Game:
     def __init__(self, the_app: app.App, letter_font: pygame.freetype.Font, game_logger, output_logger) -> None:
@@ -861,6 +689,9 @@ class Game:
         self.game_log_f = open("gamelog.csv", "a+")
         self.duration_log_f = open("durationlog.csv", "a+")
         self.sound_manager = SoundManager()
+        # Populate global letter_beeps from sound manager
+        global letter_beeps
+        letter_beeps = self.sound_manager.get_letter_beeps()
         self.input_devices = []
         self.last_lock = False
 
