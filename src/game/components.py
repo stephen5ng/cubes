@@ -26,12 +26,12 @@ FADER_PLAYER_COLORS = [FADER_COLOR_P0, FADER_COLOR_P1]
 class Score:
     """Displays and manages player score."""
     
-    def __init__(self, the_app: app.App, player: int) -> None:
+    def __init__(self, the_app: app.App, player: int, rack_metrics) -> None:
         self.the_app = the_app
         self.player = player
-        # Import RackMetrics to avoid circular imports
-        from src.rendering.metrics import RackMetrics
-        self.font = pygame.freetype.SysFont(FONT, RackMetrics.LETTER_SIZE)
+        
+        # Required dependency injection - no fallback!
+        self.font = pygame.freetype.SysFont(FONT, rack_metrics.LETTER_SIZE)
         self.pos = [0, 0]
         self.x = SCREEN_WIDTH/3 * (player+1)
         self.midscreen = SCREEN_WIDTH/2

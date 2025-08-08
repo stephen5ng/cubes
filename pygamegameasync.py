@@ -539,13 +539,28 @@ class RemainingPreviousGuessesDisplay(PreviousGuessesDisplayBase):
 # SoundManager class moved to src/systems/sound_manager.py
 
 class Game:
-    def __init__(self, the_app: app.App, letter_font: pygame.freetype.Font, game_logger, output_logger) -> None:
+    def __init__(self, 
+                 the_app: app.App, 
+                 letter_font: pygame.freetype.Font, 
+                 game_logger, 
+                 output_logger,
+                 sound_manager: SoundManager,
+                 rack_metrics: RackMetrics) -> None:
         self._app = the_app
-        self.scores = [Score(the_app, player) for player in range(MAX_PLAYERS)]
-        letter_y = self.scores[0].get_size()[1] + 4
-        self.rack_metrics = RackMetrics()
         self.game_logger = game_logger
         self.output_logger = output_logger
+        
+        # Required dependency injection - no defaults!
+        self.sound_manager = sound_manager
+        self.rack_metrics = rack_metrics
+        
+        # Populate global letter_beeps from sound manager (temporary until we remove global)
+        global letter_beeps
+        letter_beeps = self.sound_manager.get_letter_beeps()
+        
+        # Now create components that depend on injected dependencies
+        self.scores = [Score(the_app, player, self.rack_metrics) for player in range(MAX_PLAYERS)]
+        letter_y = self.scores[0].get_size()[1] + 4
         self.letter = Letter(letter_font, letter_y, self.rack_metrics, self.output_logger)
         self.racks = [Rack(the_app, self.rack_metrics, self.letter, player) for player in range(MAX_PLAYERS)]
         self.guess_to_player = {}
@@ -561,10 +576,6 @@ class Game:
         self.aborted = False
         self.game_log_f = open("gamelog.csv", "a+")
         self.duration_log_f = open("durationlog.csv", "a+")
-        self.sound_manager = SoundManager()
-        # Populate global letter_beeps from sound manager
-        global letter_beeps
-        letter_beeps = self.sound_manager.get_letter_beeps()
         self.input_devices = []
         self.last_lock = False
 
@@ -1055,7 +1066,11 @@ class BlockWordsPygame:
         self.left_sound.set_volume(0.5)
         self.right_sound.set_volume(0.5)
 
-        self.game = Game(the_app, self.letter_font, game_logger, output_logger)
+        # Create dependencies for injection
+        sound_manager = SoundManager()
+        rack_metrics = RackMetrics()
+        
+        self.game = Game(the_app, self.letter_font, game_logger, output_logger, sound_manager, rack_metrics)
         
         self.game.game_logger.start_logging()
         self.game.output_logger.start_logging()
