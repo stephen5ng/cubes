@@ -2,6 +2,7 @@
 set -e
 
 tests=(
+    2player
     gamepad
     sng
     stress_0.01
