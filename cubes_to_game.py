@@ -22,6 +22,10 @@ import tiles
 # "Tiles" are the tile number assigned by the app (usually 0-6)
 
 START_GAME_TAGS = ["E8F21366080104E0"]
+
+# Moratorium period configuration
+CUBE_START_MORATORIUM_MS = 15000  # 15 seconds by default, configurable
+_last_game_end_time_ms = 0
 class CubeManager:
     def __init__(self, player_number: int):
         self.player_number = player_number
@@ -295,12 +299,31 @@ async def guess_last_tiles(publish_queue, player: int, now_ms: int) -> None:
 async def flash_guess(publish_queue, tiles: list[str], player: int, now_ms: int):
     await cube_managers[player].flash_guess(publish_queue, tiles, now_ms)
 
+def set_game_end_time(now_ms: int) -> None:
+    """Track when the game ended to enforce moratorium period."""
+    global _last_game_end_time_ms
+    _last_game_end_time_ms = now_ms
+    logging.info(f"Game ended at {now_ms}, cube start moratorium active for {CUBE_START_MORATORIUM_MS}ms")
+
+def _is_cube_start_allowed(now_ms: int) -> bool:
+    """Check if cube-based game start is allowed (outside moratorium period)."""
+    global _last_game_end_time_ms
+    if _last_game_end_time_ms == 0:
+        return True  # No previous game end recorded
+    
+    time_since_end = now_ms - _last_game_end_time_ms
+    return time_since_end >= CUBE_START_MORATORIUM_MS
+
 async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str, now_ms: int):
     logging.info(f"process_cube_guess: {topic} {data}")
     sender = topic.value.removeprefix("cube/nfc/")
     await publish_queue.put((f"game/nfc/{sender}", data, True, now_ms))
     if data in START_GAME_TAGS:
-        await start_game_callback(True, now_ms)
+        if _is_cube_start_allowed(now_ms):
+            await start_game_callback(True, now_ms)
+        else:
+            time_remaining = CUBE_START_MORATORIUM_MS - (now_ms - _last_game_end_time_ms)
+            logging.info(f"Cube start blocked by moratorium, {time_remaining}ms remaining")
         return
     await guess_word_based_on_cubes(sender, data, publish_queue, now_ms)
 
