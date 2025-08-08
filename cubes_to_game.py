@@ -26,6 +26,9 @@ START_GAME_TAGS = ["E8F21366080104E0"]
 # Moratorium period configuration
 CUBE_START_MORATORIUM_MS = 15000  # 15 seconds by default, configurable
 _last_game_end_time_ms = 0
+
+# Game state tracking
+_game_running = False
 class CubeManager:
     def __init__(self, player_number: int):
         self.player_number = player_number
@@ -173,6 +176,10 @@ class CubeManager:
 
     async def _mark_tiles_for_guess(self, publish_queue, guess_tiles: List[str], now_ms: int) -> None:
         """Mark tiles as used/unused for a guess."""
+        # Only draw borders when game is running
+        if not _game_running:
+            return
+            
         unused_tiles = sorted(list(set((str(i) for i in range(tiles.MAX_LETTERS)))))
         for guess in guess_tiles:
             for i, tile in enumerate(guess):
@@ -301,9 +308,16 @@ async def flash_guess(publish_queue, tiles: list[str], player: int, now_ms: int)
 
 def set_game_end_time(now_ms: int) -> None:
     """Track when the game ended to enforce moratorium period."""
-    global _last_game_end_time_ms
+    global _last_game_end_time_ms, _game_running
     _last_game_end_time_ms = now_ms
+    _game_running = False
     logging.info(f"Game ended at {now_ms}, cube start moratorium active for {CUBE_START_MORATORIUM_MS}ms")
+
+def set_game_running(running: bool) -> None:
+    """Set the current game running state."""
+    global _game_running
+    _game_running = running
+    logging.info(f"Game running state set to: {running}")
 
 def _is_cube_start_allowed(now_ms: int) -> bool:
     """Check if cube-based game start is allowed (outside moratorium period)."""

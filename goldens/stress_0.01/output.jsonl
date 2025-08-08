@@ -2175,6 +2175,3 @@
 {"time": 317356, "event_type": "letter_position", "x": 69, "y": 205}
 {"time": 317362, "event_type": "letter_position", "x": 69, "y": 205}
 {"time": 317383, "event_type": "letter_position", "x": 69, "y": 207}
-{"time": 318480, "event_type": "word_formed", "word": "GAY", "player": 0, "score": 3}
-{"time": 318505, "event_type": "letter_position", "x": 66, "y": 0}
-{"time": 318954, "event_type": "word_formed", "word": "ALA", "player": 0, "score": 3}

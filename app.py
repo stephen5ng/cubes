@@ -72,6 +72,8 @@ class App:
     async def start(self, now_ms: int) -> None:
         print(">>>>>>>> app.STARTING")
         self._running = True
+        # Set game running state for cube border logic
+        cubes_to_game.set_game_running(True)
         the_rack = self._dictionary.get_rack()
         for player in range(MAX_PLAYERS):
             self._player_racks[player].set_tiles(the_rack.get_tiles())
