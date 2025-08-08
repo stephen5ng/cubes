@@ -338,8 +338,8 @@ async def _find_non_touching_cubes(publish_queue, now_ms: int) -> List[str]:
     if len(all_cubes) < 3:
         return []
     
-    # Find 3 cubes that are not connected to each other
-    # We need to ensure none of the selected cubes are directly connected
+    # With 6 cubes total and no cycles possible, we can always find 3 non-touching cubes
+    # Simple approach: iterate through cubes and pick ones that aren't connected
     selected_cubes = []
     
     for cube in all_cubes:
@@ -361,12 +361,7 @@ async def _find_non_touching_cubes(publish_queue, now_ms: int) -> List[str]:
         if not is_touching_selected:
             selected_cubes.append(cube)
     
-    # If we couldn't find 3 non-touching cubes, just use any 3 cubes
-    # This ensures the system always works even if all cubes are connected
-    if len(selected_cubes) >= 3:
-        return selected_cubes[:3]
-    else:
-        return all_cubes[:3]
+    return selected_cubes[:3]
 
 async def _activate_abc_start_sequence(publish_queue, now_ms: int) -> None:
     """Activate the ABC sequence start system after moratorium."""
