@@ -23,8 +23,7 @@ import tiles
 
 START_GAME_TAGS = ["E8F21366080104E0"]
 
-# Moratorium period configuration
-CUBE_START_MORATORIUM_MS = 15000  # 15 seconds by default, configurable
+CUBE_START_MORATORIUM_MS = 2000
 _last_game_end_time_ms = 0
 
 # Game state tracking
@@ -317,6 +316,21 @@ def set_game_end_time(now_ms: int) -> None:
     _game_running = False
     logging.info(f"Game ended at {now_ms}, cube start moratorium active for {CUBE_START_MORATORIUM_MS}ms")
 
+async def clear_all_borders(publish_queue, now_ms: int) -> None:
+    """Clear all borders on all cubes across all players."""
+    for manager in cube_managers:
+        for cube_id in manager.cube_list:
+            await publish_queue.put((f"cube/{cube_id}/border_hline_top", None, True, now_ms))
+            await publish_queue.put((f"cube/{cube_id}/border_hline_bottom", None, True, now_ms))
+            await publish_queue.put((f"cube/{cube_id}/border_vline_left", None, True, now_ms))
+            await publish_queue.put((f"cube/{cube_id}/border_vline_right", None, True, now_ms))
+
+async def clear_all_letters(publish_queue, now_ms: int) -> None:
+    """Clear letters on all cubes across all players by setting space and retaining."""
+    for manager in cube_managers:
+        for cube_id in manager.cube_list:
+            await publish_queue.put((f"cube/{cube_id}/letter", " ", True, now_ms))
+
 def set_game_running(running: bool) -> None:
     """Set the current game running state."""
     global _game_running
@@ -380,6 +394,7 @@ async def _activate_abc_start_sequence(publish_queue, now_ms: int) -> None:
     
     _abc_start_active = True
     logging.info(f"ABC start sequence activated: {_abc_cubes}")
+    print(f"ABC start sequence activated: {_abc_cubes}")
     
     # Display A, B, C on the selected cubes
     for letter, cube_id in _abc_cubes.items():
@@ -393,6 +408,7 @@ async def _check_abc_sequence_complete() -> bool:
     # Check all cube managers for the ABC sequence
     for manager in cube_managers:
         # Look for A-B-C in the cube chain
+        print(f"manager.cube_chain: {manager.cube_chain}")
         cube_a = _abc_cubes["A"]
         cube_b = _abc_cubes["B"] 
         cube_c = _abc_cubes["C"]
@@ -421,12 +437,13 @@ def _all_cubes_have_reported_neighbors() -> bool:
     for manager in cube_managers:
         all_cubes = set(manager.tags_to_cubes.values())
         reported_cubes = set(manager.cubes_to_neighbortags.keys())
-        
+        print(f"all_cubes: {all_cubes}, reported_cubes: {reported_cubes}")
         if all_cubes.issubset(reported_cubes):
+            print(f"all cubes have neighbors")
             return True
         else:
             missing_cubes = all_cubes - reported_cubes
-            logging.info(f"Player {manager.player_number}: Still waiting for neighbor reports from cubes: {missing_cubes}")
+            print(f"Player {manager.player_number}: Still waiting for neighbor reports from cubes: {missing_cubes}")
     
     return False
 
@@ -447,8 +464,7 @@ def _is_cube_start_allowed(now_ms: int) -> bool:
     return time_since_end >= CUBE_START_MORATORIUM_MS
 
 async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str, now_ms: int):
-    global _abc_start_active
-    logging.info(f"process_cube_guess: {topic} {data}")
+    global _abc_start_active    
     sender = topic.value.removeprefix("cube/nfc/")
     await publish_queue.put((f"game/nfc/{sender}", data, True, now_ms))
     
@@ -461,10 +477,6 @@ async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str, now
             logging.info(f"Cube start blocked by moratorium, {time_remaining}ms remaining")
         return
     
-    # Check if moratorium just expired and we should activate ABC sequence
-    if (not _abc_start_active and not _game_running and 
-        _last_game_end_time_ms > 0 and _is_cube_start_allowed(now_ms)):
-        await _activate_abc_start_sequence(publish_queue, now_ms)
     
     # Process normal cube interactions
     await guess_word_based_on_cubes(sender, data, publish_queue, now_ms)

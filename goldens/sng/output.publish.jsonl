@@ -1,3 +1,63 @@
+{"time": 0, "topic": "cube/1/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/2/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/3/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/4/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/5/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/6/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/7/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/8/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/9/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/10/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/11/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/12/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/1/border_hline_top", "message": null, "retain": true}
+{"time": 0, "topic": "cube/1/border_hline_bottom", "message": null, "retain": true}
+{"time": 0, "topic": "cube/1/border_vline_left", "message": null, "retain": true}
+{"time": 0, "topic": "cube/1/border_vline_right", "message": null, "retain": true}
+{"time": 0, "topic": "cube/2/border_hline_top", "message": null, "retain": true}
+{"time": 0, "topic": "cube/2/border_hline_bottom", "message": null, "retain": true}
+{"time": 0, "topic": "cube/2/border_vline_left", "message": null, "retain": true}
+{"time": 0, "topic": "cube/2/border_vline_right", "message": null, "retain": true}
+{"time": 0, "topic": "cube/3/border_hline_top", "message": null, "retain": true}
+{"time": 0, "topic": "cube/3/border_hline_bottom", "message": null, "retain": true}
+{"time": 0, "topic": "cube/3/border_vline_left", "message": null, "retain": true}
+{"time": 0, "topic": "cube/3/border_vline_right", "message": null, "retain": true}
+{"time": 0, "topic": "cube/4/border_hline_top", "message": null, "retain": true}
+{"time": 0, "topic": "cube/4/border_hline_bottom", "message": null, "retain": true}
+{"time": 0, "topic": "cube/4/border_vline_left", "message": null, "retain": true}
+{"time": 0, "topic": "cube/4/border_vline_right", "message": null, "retain": true}
+{"time": 0, "topic": "cube/5/border_hline_top", "message": null, "retain": true}
+{"time": 0, "topic": "cube/5/border_hline_bottom", "message": null, "retain": true}
+{"time": 0, "topic": "cube/5/border_vline_left", "message": null, "retain": true}
+{"time": 0, "topic": "cube/5/border_vline_right", "message": null, "retain": true}
+{"time": 0, "topic": "cube/6/border_hline_top", "message": null, "retain": true}
+{"time": 0, "topic": "cube/6/border_hline_bottom", "message": null, "retain": true}
+{"time": 0, "topic": "cube/6/border_vline_left", "message": null, "retain": true}
+{"time": 0, "topic": "cube/6/border_vline_right", "message": null, "retain": true}
+{"time": 0, "topic": "cube/7/border_hline_top", "message": null, "retain": true}
+{"time": 0, "topic": "cube/7/border_hline_bottom", "message": null, "retain": true}
+{"time": 0, "topic": "cube/7/border_vline_left", "message": null, "retain": true}
+{"time": 0, "topic": "cube/7/border_vline_right", "message": null, "retain": true}
+{"time": 0, "topic": "cube/8/border_hline_top", "message": null, "retain": true}
+{"time": 0, "topic": "cube/8/border_hline_bottom", "message": null, "retain": true}
+{"time": 0, "topic": "cube/8/border_vline_left", "message": null, "retain": true}
+{"time": 0, "topic": "cube/8/border_vline_right", "message": null, "retain": true}
+{"time": 0, "topic": "cube/9/border_hline_top", "message": null, "retain": true}
+{"time": 0, "topic": "cube/9/border_hline_bottom", "message": null, "retain": true}
+{"time": 0, "topic": "cube/9/border_vline_left", "message": null, "retain": true}
+{"time": 0, "topic": "cube/9/border_vline_right", "message": null, "retain": true}
+{"time": 0, "topic": "cube/10/border_hline_top", "message": null, "retain": true}
+{"time": 0, "topic": "cube/10/border_hline_bottom", "message": null, "retain": true}
+{"time": 0, "topic": "cube/10/border_vline_left", "message": null, "retain": true}
+{"time": 0, "topic": "cube/10/border_vline_right", "message": null, "retain": true}
+{"time": 0, "topic": "cube/11/border_hline_top", "message": null, "retain": true}
+{"time": 0, "topic": "cube/11/border_hline_bottom", "message": null, "retain": true}
+{"time": 0, "topic": "cube/11/border_vline_left", "message": null, "retain": true}
+{"time": 0, "topic": "cube/11/border_vline_right", "message": null, "retain": true}
+{"time": 0, "topic": "cube/12/border_hline_top", "message": null, "retain": true}
+{"time": 0, "topic": "cube/12/border_hline_bottom", "message": null, "retain": true}
+{"time": 0, "topic": "cube/12/border_vline_left", "message": null, "retain": true}
+{"time": 0, "topic": "cube/12/border_vline_right", "message": null, "retain": true}
 {"time": 1559, "topic": "cube/1/letter", "message": "E", "retain": true}
 {"time": 1559, "topic": "cube/2/letter", "message": "I", "retain": true}
 {"time": 1559, "topic": "cube/3/letter", "message": "J", "retain": true}
@@ -2760,3 +2820,15 @@
 {"time": 262826, "topic": "cube/10/letter", "message": " ", "retain": true}
 {"time": 262826, "topic": "cube/11/letter", "message": " ", "retain": true}
 {"time": 262826, "topic": "cube/12/letter", "message": " ", "retain": true}
+{"time": 262826, "topic": "cube/1/border_hline_top", "message": null, "retain": true}
+{"time": 262826, "topic": "cube/1/border_hline_bottom", "message": null, "retain": true}
+{"time": 262826, "topic": "cube/1/border_vline_left", "message": null, "retain": true}
+{"time": 262826, "topic": "cube/1/border_vline_right", "message": null, "retain": true}
+{"time": 262826, "topic": "cube/3/border_hline_top", "message": null, "retain": true}
+{"time": 262826, "topic": "cube/3/border_hline_bottom", "message": null, "retain": true}
+{"time": 262826, "topic": "cube/3/border_vline_left", "message": null, "retain": true}
+{"time": 262826, "topic": "cube/3/border_vline_right", "message": null, "retain": true}
+{"time": 262826, "topic": "cube/4/border_hline_top", "message": null, "retain": true}
+{"time": 262826, "topic": "cube/4/border_hline_bottom", "message": null, "retain": true}
+{"time": 262826, "topic": "cube/4/border_vline_left", "message": null, "retain": true}
+{"time": 262826, "topic": "cube/4/border_vline_right", "message": null, "retain": true}

@@ -97,6 +97,8 @@ class App:
         self._running = False
         # Set moratorium period to prevent accidental cube-based restarts
         cubes_to_game.set_game_end_time(now_ms)
+        # Ensure all borders are cleared on every cube at game end
+        await cubes_to_game.clear_all_borders(self._publish_queue, now_ms)
         # Note: ABC sequence will be activated automatically when moratorium expires
 
     async def load_rack(self, now_ms: int) -> None:

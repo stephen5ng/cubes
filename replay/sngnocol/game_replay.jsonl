@@ -1,0 +1,142 @@
+{"event_type": "seed", "seed": 1754587354}
+{"timestamp_ms": 1071, "events": {"pygame": [{"type": "KEYDOWN", "key": "ESCAPE"}]}}
+{"timestamp_ms": 2365, "events": {"pygame": [{"type": "KEYDOWN", "key": "L"}]}}
+{"timestamp_ms": 2446, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 2682, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 2857, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 3049, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 3219, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 3643, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 3893, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 4543, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 4773, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 4976, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 5165, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 5363, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 5554, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 5783, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 5913, "events": {"pygame": [{"type": "KEYDOWN", "key": "L"}]}}
+{"timestamp_ms": 6125, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 6397, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 7617, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 7811, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 8001, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 11156, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}], "incidents": ["letter_column_move"]}}
+{"timestamp_ms": 11278, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 11447, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 12236, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 12320, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 13173, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 13370, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 15446, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 15608, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 15760, "events": {"pygame": [{"type": "KEYDOWN", "key": "L"}]}}
+{"timestamp_ms": 16188, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 16688, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 17017, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 17212, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 17382, "events": {"pygame": [{"type": "KEYDOWN", "key": "BACKSPACE"}]}}
+{"timestamp_ms": 17553, "events": {"pygame": [{"type": "KEYDOWN", "key": "R"}]}}
+{"timestamp_ms": 17778, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 17918, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 18057, "events": {"pygame": [{"type": "KEYDOWN", "key": "L"}]}}
+{"timestamp_ms": 18865, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 18948, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 21218, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 26283, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 31334, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 32342, "events": {"incidents": ["letter_lock", "letter_lock"]}}
+{"timestamp_ms": 32347, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32371, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32375, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32398, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32404, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32427, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32433, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32456, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32462, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32486, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32491, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32514, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32519, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32542, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32548, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32570, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32575, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32598, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32602, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32625, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32631, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32654, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32659, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32683, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32688, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32711, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32717, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32740, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32746, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32769, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32774, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32796, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32801, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32824, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32827, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32850, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32855, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32875, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32883, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32899, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32910, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32926, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32937, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32951, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32965, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32981, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 32994, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33005, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33025, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33030, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33052, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33058, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33081, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33087, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33110, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33115, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33136, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33143, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33165, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33168, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33191, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33195, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33219, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33224, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33247, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33253, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33276, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33282, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33304, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33310, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33334, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33340, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33363, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33369, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33392, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33398, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33421, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33427, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33450, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33456, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33480, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33485, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33507, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33512, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33535, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33540, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33563, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33568, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33592, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33597, "events": {"incidents": ["letter_lock"]}}
+{"timestamp_ms": 33620, "events": {"incidents": ["letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 33626, "events": {"incidents": ["letter_lock", "letter_lock"]}}
+{"timestamp_ms": 35204, "events": {"pygame": [{"type": "KEYDOWN", "key": "LEFT META"}]}}
+{"timestamp_ms": 35285, "events": {"pygame": [{"type": "KEYDOWN", "key": "Q"}, {"type": "QUIT"}]}}

@@ -27,8 +27,11 @@ class BaseLogger:
         self.log_f = None
         
     def start_logging(self):
+        print(f"STARTING LOGGING {self.log_file}")
         if self.log_file:
-            self.log_f = open(self.log_file, "a")
+            if self.log_file == "game_replay.jsonl":
+                print("opening game_replay")
+            self.log_f = open(self.log_file, "w")
     
     def stop_logging(self):
         if self.log_f:
@@ -67,7 +70,7 @@ class GameLogger(BaseLogger):
             "event_type": "seed",
             "seed": seed
         }
-        print(f"logging {event}")
+        print(f">>>>>>>> logging seed {event}")
         self._write_event(event)
         
     def log_events(self, now_ms: int, events: dict):
@@ -104,7 +107,7 @@ async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.
                 publish_tasks_in_queue.last_messages = {}
                 
             # Publish retained messages if they changed.
-            if not retain or publish_tasks_in_queue.last_messages.get(topic, None) != message:
+            if not retain or publish_tasks_in_queue.last_messages.get(topic, "INIT") != message:
                 await publish_client.publish(topic, message, retain=retain)
                 publish_tasks_in_queue.last_messages[topic] = message
                 logger.info(f"publishing: {topic}, {message}")
@@ -131,6 +134,7 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
         publish_logger.start_logging()
         game_logger.start_logging()
         if not args.replay:
+            print(f"LOGGING SEED {seed}")
             game_logger.log_seed(seed)
 
         async with aiomqtt.Client(MQTT_SERVER) as subscribe_client:
@@ -139,6 +143,9 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
                 the_app = app.App(publish_queue, dictionary)
                 
                 await cubes_to_game.init(subscribe_client, args.tags)
+                # Clear any retained letters and borders from a previous run
+                await cubes_to_game.clear_all_letters(publish_queue, 0)
+                await cubes_to_game.clear_all_borders(publish_queue, 0)
                 # Activate ABC start sequence at startup (if no moratorium active)
                 await cubes_to_game.activate_abc_start_if_ready(publish_queue, 0)
                 if args.replay:
@@ -190,8 +197,6 @@ if __name__ == "__main__":
                 pass
     else:
         seed = int(datetime.now().timestamp())
-        if os.path.exists("game_replay.jsonl"):
-            os.remove("game_replay.jsonl")
     random.seed(seed)
 
     # logger.setLevel(logging.DEBUG)

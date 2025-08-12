@@ -574,8 +574,8 @@ class Game:
         self.shields: list[Shield] = []
         self.running = False
         self.aborted = False
-        self.game_log_f = open("gamelog.csv", "a+")
-        self.duration_log_f = open("durationlog.csv", "a+")
+        self.game_log_f = open("gamelog.csv", "w")
+        self.duration_log_f = open("durationlog.csv", "w")
         self.input_devices = []
         self.last_lock = False
 
@@ -1072,7 +1072,6 @@ class BlockWordsPygame:
         
         self.game = Game(the_app, self.letter_font, game_logger, output_logger, sound_manager, rack_metrics)
         
-        self.game.game_logger.start_logging()
         self.game.output_logger.start_logging()
         the_app.set_game_logger(self.game.game_logger)
         the_app.set_word_logger(self.game.output_logger)
