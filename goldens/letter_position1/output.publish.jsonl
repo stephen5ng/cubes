@@ -1,0 +1,12 @@
+{"event_type": "mqtt_publish", "topic": "cube/1/letter", "message": "E", "retain": true}
+{"event_type": "mqtt_publish", "topic": "cube/2/letter", "message": "I", "retain": true}
+{"event_type": "mqtt_publish", "topic": "cube/3/letter", "message": "S", "retain": true}
+{"event_type": "mqtt_publish", "topic": "cube/4/letter", "message": "S", "retain": true}
+{"event_type": "mqtt_publish", "topic": "cube/5/letter", "message": "T", "retain": true}
+{"event_type": "mqtt_publish", "topic": "cube/6/letter", "message": "X", "retain": true}
+{"event_type": "mqtt_publish", "topic": "cube/7/letter", "message": "E", "retain": true}
+{"event_type": "mqtt_publish", "topic": "cube/8/letter", "message": "I", "retain": true}
+{"event_type": "mqtt_publish", "topic": "cube/9/letter", "message": "S", "retain": true}
+{"event_type": "mqtt_publish", "topic": "cube/10/letter", "message": "S", "retain": true}
+{"event_type": "mqtt_publish", "topic": "cube/11/letter", "message": "T", "retain": true}
+{"event_type": "mqtt_publish", "topic": "cube/12/letter", "message": "X", "retain": true}

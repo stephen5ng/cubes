@@ -1,6 +1,6 @@
-{"time": 723, "topic": "cube/1/letter", "message": "A", "retain": true}
-{"time": 723, "topic": "cube/2/letter", "message": "B", "retain": true}
-{"time": 723, "topic": "cube/3/letter", "message": "C", "retain": true}
+{"time": 0, "topic": "cube/1/letter", "message": "A", "retain": true}
+{"time": 0, "topic": "cube/2/letter", "message": "B", "retain": true}
+{"time": 0, "topic": "cube/3/letter", "message": "C", "retain": true}
 {"time": 1938, "topic": "cube/1/letter", "message": "E", "retain": true}
 {"time": 1938, "topic": "cube/2/letter", "message": "E", "retain": true}
 {"time": 1938, "topic": "cube/3/letter", "message": "H", "retain": true}

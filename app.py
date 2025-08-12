@@ -35,6 +35,7 @@ class App:
         def make_start_game_callback(the_app: App) -> Callable[[bool],  Coroutine[Any, Any, None]]:
             async def start_game_callback(force: bool, now_ms: int) -> None:
                 if force or not the_app._running:
+                    print("starting from callback")
                     events.trigger("game.start", now_ms)
             return start_game_callback
 
@@ -142,7 +143,7 @@ class App:
     async def guess_tiles(self, word_tile_ids: list[str], move_tiles: bool, player: int, now_ms: int) -> None:
         self._last_guess = word_tile_ids
         logger.info(f"guess_tiles: word_tile_ids {word_tile_ids}")
-        if not self._running:
+        if False and not self._running:
             # Check moratorium period before starting game via cube movement
             if cubes_to_game._is_cube_start_allowed(now_ms):
                 print(f" {now_ms} guess_tiles: not running, triggering game.start")

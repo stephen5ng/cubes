@@ -11,6 +11,13 @@ import sys
 from pathlib import Path
 
 
+def get_test_env():
+    """Get environment variables for functional tests."""
+    env = os.environ.copy()
+    env['MQTT_SERVER'] = 'localhost'
+    return env
+
+
 def run_replay_test(test_name):
     """Run a test in replay mode and compare output with golden files."""
     replay_file = f"replay/{test_name}/game_replay.jsonl"
@@ -35,7 +42,7 @@ def run_replay_test(test_name):
     print(f"Running: {' '.join(cmd)}")
     
     try:
-        result = subprocess.run(cmd)
+        result = subprocess.run(cmd, env=get_test_env())
         print(f"Replay completed with return code: {result.returncode}")
         if result.returncode != 0:
             print(f"Warning: Replay exited with non-zero return code: {result.returncode}")
@@ -104,7 +111,7 @@ def rerecord_test(test_name):
     print(f"Running: {' '.join(cmd)}")
     
     try:
-        result = subprocess.run(cmd)
+        result = subprocess.run(cmd, env=get_test_env())
         print(f"Replay completed with return code: {result.returncode}")
         if result.returncode != 0:
             print(f"Warning: Replay exited with non-zero return code: {result.returncode}")
@@ -162,7 +169,7 @@ def record_golden_files(test_name):
     print(f"Running: {' '.join(cmd)}")
     
     try:
-        result = subprocess.run(cmd)
+        result = subprocess.run(cmd, env=get_test_env())
         print(f"Game completed with return code: {result.returncode}")
         if result.returncode != 0:
             print(f"Warning: Game exited with non-zero return code: {result.returncode}")

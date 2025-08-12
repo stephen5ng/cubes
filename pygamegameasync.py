@@ -609,7 +609,6 @@ class Game:
         self.aborted = True
 
     async def start_cubes(self, now_ms: int) -> None:
-        print(f"start_cubes {now_ms}")
         await self.start(CubesInput(None), now_ms)
 
     async def start(self, input_device: InputDevice, now_ms: int) -> None:
@@ -800,8 +799,8 @@ class BlockWordsPygame:
     async def handle_mqtt_message(self, topic_str: str, payload, now_ms: int) -> None:
         # print(f"{now_ms} Handling message: {topic_str} {payload}")
         if topic_str == "app/start":
+            print("Starting due to topic")
             await self.game.start_cubes(now_ms)
-            # events.trigger("game.start", now_ms)
         elif topic_str == "app/abort":
             events.trigger("game.abort")
         elif topic_str == "game/guess":
@@ -870,7 +869,7 @@ class BlockWordsPygame:
         await self.the_app.guess_word_keyboard(input_device.current_guess, input_device.player_number)
     
     async def start_game(self, input_device: InputDevice, now_ms: int):
-        print(f"start_game {input_device} {now_ms}")
+        print(f"=========start_game {input_device} {now_ms}")
         input_device.current_guess = ""
         player_number = await self.game.start(input_device, now_ms)
         rack = self.game.racks[player_number]
@@ -912,6 +911,7 @@ class BlockWordsPygame:
     async def handle_keyboard_event(self, key: str, keyboard_input: KeyboardInput, now_ms: int) -> None:
         """Handle keyboard events for the game."""
         if key == "ESCAPE":
+            print("starting due to ESC")
             keyboard_input.player_number = await self.start_game(keyboard_input, now_ms)
             return
 
@@ -1114,6 +1114,9 @@ class BlockWordsPygame:
             
             for mqtt_event in mqtt_events:
                 await self.handle_mqtt_message(mqtt_event['topic'], mqtt_event['payload'], now_ms)
+            
+            # Check if ABC start sequence should be activated (after moratorium ends)
+            await cubes_to_game.activate_abc_start_if_ready(publish_queue, now_ms)
             
             screen.fill((0, 0, 0))
             # print(f"UPDATING {now_ms}")

@@ -1,0 +1,2 @@
+{"event_type": "letter_position_change", "x": 49, "y": 0, "debug_str": "now_ms: 3819, start_fall_time_ms: 1513, fall_duration_ms: 15000, fall_percent: 0.15373333333333333, fall_easing: 0.00363332403437037, pos[1]: 0"}
+{"event_type": "letter_position_change", "x": 65, "y": 16, "debug_str": "now_ms: 7784, start_fall_time_ms: 1513, fall_duration_ms: 15000, fall_percent: 0.41806666666666664, fall_easing: 0.07306958237362961, pos[1]: 16"}

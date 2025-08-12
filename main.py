@@ -140,7 +140,7 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
                 
                 await cubes_to_game.init(subscribe_client, args.tags)
                 # Activate ABC start sequence at startup (if no moratorium active)
-                await cubes_to_game.activate_abc_start_if_ready(publish_queue, pygame.time.get_ticks())
+                await cubes_to_game.activate_abc_start_if_ready(publish_queue, 0)
                 if args.replay:
                     block_words.get_mock_mqtt_client()
                 else:
