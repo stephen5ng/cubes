@@ -24,8 +24,8 @@ async def pub(sleep_duration_s: int, identical: bool, players: list[int]) -> Non
     p1_tags = all_tag_ids[6:]
     
     # Add empty tag option to both players
-    p0_tags.append("")
-    p1_tags.append("")
+    p0_tags.append("-")
+    p1_tags.append("-")
     
     # Initialize counters for each player
     p0_count = 0
