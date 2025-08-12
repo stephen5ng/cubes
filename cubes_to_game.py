@@ -413,10 +413,28 @@ def _clear_abc_start_sequence() -> None:
     _abc_cubes = {"A": None, "B": None, "C": None}
     logging.info("ABC start sequence cleared")
 
+def _all_cubes_have_reported_neighbors() -> bool:
+    """Check if all cubes have reported their neighbor status (including '-')."""
+    if not cube_managers:
+        return False    
+    
+    for manager in cube_managers:
+        all_cubes = set(manager.tags_to_cubes.values())
+        reported_cubes = set(manager.cubes_to_neighbortags.keys())
+        
+        if all_cubes.issubset(reported_cubes):
+            return True
+        else:
+            missing_cubes = all_cubes - reported_cubes
+            logging.info(f"Player {manager.player_number}: Still waiting for neighbor reports from cubes: {missing_cubes}")
+    
+    return False
+
 async def activate_abc_start_if_ready(publish_queue, now_ms: int) -> None:
     """Activate ABC start sequence if conditions are met (public interface)."""
     if (not _abc_start_active and not _game_running and 
-        (_last_game_end_time_ms == 0 or _is_cube_start_allowed(now_ms))):
+        (_last_game_end_time_ms == 0 or _is_cube_start_allowed(now_ms)) and
+        _all_cubes_have_reported_neighbors()):
         await _activate_abc_start_sequence(publish_queue, now_ms)
 
 def _is_cube_start_allowed(now_ms: int) -> bool:
