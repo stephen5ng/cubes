@@ -16,6 +16,9 @@
 
 ## Key Insights:
 
+ - MQTT-aware display throttle prioritizes draining MQTT bursts by skipping display updates for ~50ms after recent activity.
+ - Effect: SNG now EXCELLENT (avg ~204ms). On stress_0.1, backlog clears quickly (first-half avg ~5.39s → second-half avg ~0.21s).
+
 ### 🟡 SNG Test (Short workload):
 - **Baseline problem**: Even a short 11-second test created an 11.4-second backlog
 - **Impact**: Cube unresponsive for ~11 seconds after test completion
