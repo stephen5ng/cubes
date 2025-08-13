@@ -6,10 +6,11 @@
 |------|------------|----------|-------------|-------------|---------------|--------|--------|------------|
 | **sng** | Baseline | 11.3s | 11.4s | 2.6s | 0.5s | 🟡 FAIR | ❌ FAIL | - |
 | **sng** | Border Non-Retained (Fixed) | 9.8s | 10.6s | 2.5s | 1.9s | 🟡 FAIR | ❌ FAIL | ✅ 7.0% faster max response |
-| **sng** | NFC Reset Removed from loop() | 20.3s | 4.6s | 0.7s | 0.6s | 🟢 GOOD | ✅ PASS | ✅ Max -60%, Avg -73% vs baseline |
+| **sng** | NFC Reset Removed from loop() (Previous) | 20.3s | 4.6s | 0.7s | 0.6s | 🟢 GOOD | ✅ PASS | ✅ Max -60%, Avg -73% vs baseline |
+| **sng** | NFC Reset + NFC Throttling (20Hz) | 10.0s | 1.56s | 0.31s | 0.2s | ✅ EXCELLENT | ✅ PASS | ✅ Max -86%, Avg -88% vs baseline |
 | **stress_0.1** | Baseline | 13.8s | 81.4s | 38.8s | 2.9s | 🔴 POOR | ❌ FAIL | - |
-| **stress_0.1** | Border Non-Retained | 13.8s | 84.3s | 37.3s | 1.8s | 🔴 POOR | ❌ FAIL | ❌ 3.6% slower max response |
-| **stress_0.1** | NFC Reset Removed from loop() | 30.4s | 48.1s | 14.0s | 2.1s | 🔴 POOR | ❌ FAIL | ✅ Max -41%, Avg -64% vs baseline |
+| **stress_0.1** | Border Non-Retained (Fixed) | 13.6s | 79.6s | 37.6s | 3.0s | 🔴 POOR | ❌ FAIL | ✅ 2.2% faster max response |
+| **stress_0.1** | NFC Reset + NFC Throttling (20Hz) | 14.2s | 25.8s | 4.16s | 0.5s | 🟡 FAIR | ❌ FAIL | ✅ Max -68%, Avg -89% vs baseline |
 
 ## Key Insights:
 
