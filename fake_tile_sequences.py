@@ -32,21 +32,48 @@ async def pub(sleep_duration_s: int, identical: bool, players: list[int]) -> Non
     p1_count = 0
 
     async with aiomqtt.Client(MQTT_SERVER) as client:
+        # Track current letters on cubes
+        cube_to_letter = {}
+
+        async def _consume_letters():
+            await client.subscribe("cube/+/letter")
+            async for message in client.messages:
+                topic = str(message.topic)
+                if not topic.startswith("cube/") or not topic.endswith("/letter"):
+                    continue
+                cube_id = topic.split("/")[1]
+                try:
+                    payload = message.payload.decode() if message.payload else ""
+                except Exception:
+                    payload = ""
+                cube_to_letter[cube_id] = payload
+
+        consumer_task = asyncio.create_task(_consume_letters())
+
+        def group_ready(group_cubes: list[str]) -> bool:
+            # Ready only if all six have a non-space, non-empty letter
+            if not group_cubes:
+                return False
+            for c in group_cubes:
+                letter = cube_to_letter.get(c, "")
+                if not letter or letter == " ":
+                    return False
+            return True
+
         while True:
             if identical:
-                # Generate one random sequence and send to both players
-                cube_ix = random.randint(0, len(p0_cubes) - 1)
-                tag_ix = random.randint(0, len(p0_tags) - 1)
-                
-                # Alternate which player gets the message first
-                if p0_count % 2 == 0:
-                    await client.publish(f"cube/nfc/{p0_cubes[cube_ix]}", payload=p0_tags[tag_ix])
-                    await client.publish(f"cube/nfc/{p1_cubes[cube_ix]}", payload=p1_tags[tag_ix])
-                else:
-                    await client.publish(f"cube/nfc/{p1_cubes[cube_ix]}", payload=p1_tags[tag_ix])
-                    await client.publish(f"cube/nfc/{p0_cubes[cube_ix]}", payload=p0_tags[tag_ix])
-                p0_count += 1
-                p1_count += 1
+                # Only shuffle when both groups have all letters
+                if group_ready(p0_cubes) and group_ready(p1_cubes):
+                    cube_ix = random.randint(0, len(p0_cubes) - 1)
+                    tag_ix = random.randint(0, len(p0_tags) - 1)
+                    if p0_count % 2 == 0:
+                        await client.publish(f"cube/nfc/{p0_cubes[cube_ix]}", payload=p0_tags[tag_ix], retain=True)
+                        await client.publish(f"cube/nfc/{p1_cubes[cube_ix]}", payload=p1_tags[tag_ix], retain=True)
+                    else:
+                        await client.publish(f"cube/nfc/{p1_cubes[cube_ix]}", payload=p1_tags[tag_ix], retain=True)
+                        await client.publish(f"cube/nfc/{p0_cubes[cube_ix]}", payload=p0_tags[tag_ix], retain=True)
+                    p0_count += 1
+                    p1_count += 1
             else:
                 # Original random behavior, but only for selected players
                 if len(players) == 1:
@@ -64,10 +91,11 @@ async def pub(sleep_duration_s: int, identical: bool, players: list[int]) -> Non
                 else:
                     await asyncio.sleep(sleep_duration_s)
                     continue
-                
-                cube = random.choice(cubes)
-                tag = random.choice(tags)
-                await client.publish(f"cube/nfc/{cube}", payload=tag)
+                # Only shuffle when this group has all letters
+                if group_ready(cubes):
+                    cube = random.choice(cubes)
+                    tag = random.choice(tags)
+                    await client.publish(f"cube/nfc/{cube}", payload=tag, retain=True)
             await asyncio.sleep(sleep_duration_s)
 
 parser = argparse.ArgumentParser(description="Generate random cube sequences")
