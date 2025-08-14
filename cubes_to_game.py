@@ -171,10 +171,8 @@ class CubeManager:
             self.cubes_to_letters[cube_id] = letter
             await _publish_letter(publish_queue, letter, cube_id, now_ms)
             if letter == " ":
-                await publish_queue.put((f"cube/{cube_id}/border_hline_top", None, True, now_ms))
-                await publish_queue.put((f"cube/{cube_id}/border_hline_bottom", None, True, now_ms))
-                await publish_queue.put((f"cube/{cube_id}/border_vline_left", None, True, now_ms))
-                await publish_queue.put((f"cube/{cube_id}/border_vline_right", None, True, now_ms))
+                # Clear all borders for empty cubes using consolidated messaging
+                await publish_queue.put((f"cube/{cube_id}/border", ":", True, now_ms))
         logging.info(f"LOAD RACK tiles_with_letters done: {self.cubes_to_letters}")
 
     async def _mark_tiles_for_guess(self, publish_queue, guess_tiles: List[str], now_ms: int) -> None:
@@ -187,24 +185,22 @@ class CubeManager:
         for guess in guess_tiles:
             for i, tile in enumerate(guess):
                 unused_tiles.remove(tile)
-                await publish_queue.put(
-                    (f"cube/{self.tiles_to_cubes[tile]}/border_hline_top", self.border_color, True, now_ms))
-                await publish_queue.put(
-                    (f"cube/{self.tiles_to_cubes[tile]}/border_hline_bottom", self.border_color, True, now_ms))
-                await publish_queue.put(
-                    (f"cube/{self.tiles_to_cubes[tile]}/border_vline_left",
-                                         self.border_color if i == 0 else "",
-                                         not(i == 0), now_ms))
-                await publish_queue.put(
-                    (f"cube/{self.tiles_to_cubes[tile]}/border_vline_right",
-                                         self.border_color if i == len(guess)-1 else "",
-                                         not(i == len(guess)-1), now_ms))
+                
+                # Build consolidated border message for this tile
+                directions = ["N", "S"]  # Always include top and bottom
+                
+                if i == 0:  # First letter in word
+                    directions.append("W")  # Add left border
+                if i == len(guess) - 1:  # Last letter in word  
+                    directions.append("E")  # Add right border
+                
+                # Create consolidated message: "NS:color", "NSW:color", "NSE:color", or "NSEW:color"
+                consolidated_message = f"{''.join(sorted(directions))}:{self.border_color}"
+                await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border", consolidated_message, True, now_ms))
 
         for tile in unused_tiles:
-            await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_hline_top", None, True, now_ms))
-            await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_hline_bottom", None, True, now_ms))
-            await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_vline_left", None, True, now_ms))
-            await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border_vline_right", None, True, now_ms))
+            # Clear all borders for unused tiles using consolidated messaging  
+            await publish_queue.put((f"cube/{self.tiles_to_cubes[tile]}/border", ":", True, now_ms))
 
     async def flash_guess(self, publish_queue, tiles: list[str], now_ms: int) -> None:
         for t in tiles:
@@ -317,13 +313,11 @@ def set_game_end_time(now_ms: int) -> None:
     logging.info(f"Game ended at {now_ms}, cube start moratorium active for {CUBE_START_MORATORIUM_MS}ms")
 
 async def clear_all_borders(publish_queue, now_ms: int) -> None:
-    """Clear all borders on all cubes across all players."""
+    """Clear all borders on all cubes across all players using consolidated messaging."""
     for manager in cube_managers:
         for cube_id in manager.cube_list:
-            await publish_queue.put((f"cube/{cube_id}/border_hline_top", None, True, now_ms))
-            await publish_queue.put((f"cube/{cube_id}/border_hline_bottom", None, True, now_ms))
-            await publish_queue.put((f"cube/{cube_id}/border_vline_left", None, True, now_ms))
-            await publish_queue.put((f"cube/{cube_id}/border_vline_right", None, True, now_ms))
+            # Use consolidated border protocol: ":" clears all borders
+            await publish_queue.put((f"cube/{cube_id}/border", ":", True, now_ms))
 
 async def clear_all_letters(publish_queue, now_ms: int) -> None:
     """Clear letters on all cubes across all players by setting space and retaining."""
