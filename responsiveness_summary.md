@@ -11,13 +11,15 @@
 | **sng** | MQTT-aware Display Throttle (50ms) | 9.8s | 0.80s | 0.20s | 0.0s | ✅ EXCELLENT | ✅ PASS | ✅ Max -93%, Avg -92% vs baseline |
 | **sng** | 30 FPS Display Throttling (Final) | 21.3s | 3.82s | 0.49s | 0.0s | ✅ EXCELLENT | ✅ PASS | ✅ Max -66%, Avg -81% vs baseline |
 | **sng** | Border Filtering (Experimental) | 9.6s | 0.69s | 0.18s | 0.0s | ✅ EXCELLENT | ✅ PASS | ✅ Max -94%, Avg -93% vs baseline |
-| **sng** | UDP Border Implementation | 9.6s | 0.57s | 0.16s | 0.0s | ✅ EXCELLENT | ✅ PASS | ✅ Max -95%, Avg -94% vs baseline |
+| **sng** | UDP Border Implementation (Consolidated /border) | 9.6s | 0.57s | 0.16s | 0.0s | ✅ EXCELLENT | ✅ PASS | ✅ Max -95%, Avg -94% vs baseline |
+| **sng** | No Display Throttle, 1000ms Animation | 9.4s | 0.45s | 0.21s | 0.0s | ✅ EXCELLENT | ✅ PASS | ✅ Max -96%, Avg -92% vs baseline |
 | **stress_0.1** | Baseline | 13.8s | 81.4s | 38.8s | 2.9s | 🔴 POOR | ❌ FAIL | - |
 | **stress_0.1** | Border Non-Retained (Fixed) | 13.6s | 79.6s | 37.6s | 3.0s | 🔴 POOR | ❌ FAIL | ✅ 2.2% faster max response |
 | **stress_0.1** | NFC Reset + NFC Throttling (20Hz) | 14.2s | 25.8s | 4.16s | 0.5s | 🟡 FAIR | ❌ FAIL | ✅ Max -68%, Avg -89% vs baseline |
 | **stress_0.1** | MQTT-aware Display Throttle (50ms) | 14.1s | 20.54s | 2.74s | 0.1s | 🟡 FAIR | ❌ FAIL | ✅ Max -75%, Avg -93% vs baseline |
 | **stress_0.1** | 30 FPS Display Throttling (Final) | 13.4s | 41.17s | 10.09s | 1.0s | 🔴 POOR | ❌ FAIL | ✅ Max -49%, Avg -74% vs baseline |
 | **stress_0.1** | Border Filtering (Experimental) | 12.7s | 0.57s | 0.17s | 0.0s | ✅ EXCELLENT | ✅ PASS | ✅ Max -99%, Avg -99% vs baseline |
+| **stress_0.1** | No Display Throttle, 1000ms Animation | 30.8s | 10.01s | 0.85s | 0.3s | 🟢 GOOD | ✅ PASS | ✅ Max -88%, Avg -98% vs baseline |
 
 ## Key Insights:
 
