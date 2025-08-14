@@ -22,9 +22,8 @@ with open('cube_ids.txt', 'r') as f:
 #CUBE_IDS=CUBE_IDS[:2]
 NUM_CUBES = len(CUBE_IDS)
 
-# Map cube IDs to IP addresses (even numbers from 192.168.8.0 to 192.168.8.30)
-CUBE_IPS = {cube_id: f"192.168.8.{24+i*2}" for i, cube_id in enumerate(CUBE_IDS)}
-CUBE_IPS = {cube_id: f"192.168.8.{20+i*2}" for i, cube_id in enumerate(CUBE_IDS)}
+# Map cube IDs to IP addresses: cube 1 -> .21, cube 2 -> .22, etc.
+CUBE_IPS = {cube_id: f"192.168.8.{20+int(cube_id)}" for cube_id in CUBE_IDS}
 
 class CubeDashboard:
     def __init__(self, root):
