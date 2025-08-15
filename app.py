@@ -95,11 +95,11 @@ class App:
             self._player_racks[player] = tiles.Rack(' ' * tiles.MAX_LETTERS)
         await self.load_rack(now_ms)
         self._running = False
-        # Set moratorium period to prevent accidental cube-based restarts
+        # Set game ended state
         cubes_to_game.set_game_end_time(now_ms)
         # Ensure all borders are cleared on every cube at game end
         await cubes_to_game.clear_all_borders(self._publish_queue, now_ms)
-        # Note: ABC sequence will be activated automatically when moratorium expires
+        # Note: ABC sequence will be activated automatically
 
     async def load_rack(self, now_ms: int) -> None:
         # Only load letters for players who have actually started their games
@@ -149,15 +149,6 @@ class App:
     async def guess_tiles(self, word_tile_ids: list[str], move_tiles: bool, player: int, now_ms: int) -> None:
         self._last_guess = word_tile_ids
         logger.info(f"guess_tiles: word_tile_ids {word_tile_ids}")
-        if False and not self._running:
-            # Check moratorium period before starting game via cube movement
-            if cubes_to_game._is_cube_start_allowed(now_ms):
-                print(f" {now_ms} guess_tiles: not running, triggering game.start")
-                events.trigger("game.start", now_ms)
-            else:
-                time_remaining = cubes_to_game.CUBE_START_MORATORIUM_MS - (now_ms - cubes_to_game._last_game_end_time_ms)
-                logger.info(f"Cube movement game start blocked by moratorium, {time_remaining}ms remaining")
-                return
         guess = self._player_racks[player].ids_to_letters(word_tile_ids)
         guess_tiles = self._player_racks[player].ids_to_tiles(word_tile_ids)
 

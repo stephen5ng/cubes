@@ -146,7 +146,7 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
                 # Clear any retained letters and borders from a previous run
                 await cubes_to_game.clear_all_letters(publish_queue, 0)
                 await cubes_to_game.clear_all_borders(publish_queue, 0)
-                # Activate ABC start sequence at startup (if no moratorium active)
+                # Activate ABC start sequence at startup
                 await cubes_to_game.activate_abc_start_if_ready(publish_queue, 0)
                 if args.replay:
                     block_words.get_mock_mqtt_client()

@@ -1019,7 +1019,6 @@ class BlockWordsPygame:
             if 'JOY' in event_type:
                 for input_device in input_devices: 
                     if str(input_device) == "GamepadInput":
-                        print(f"Processing {pygame_event}")
                         await input_device.process_event(pygame_event, now_ms)
         return False
 
@@ -1120,7 +1119,7 @@ class BlockWordsPygame:
             for mqtt_event in mqtt_events:
                 await self.handle_mqtt_message(mqtt_event['topic'], mqtt_event['payload'], now_ms)
             
-            # Check if ABC start sequence should be activated (after moratorium ends)
+            # Check if ABC start sequence should be activated
             await cubes_to_game.activate_abc_start_if_ready(publish_queue, now_ms)
             
             screen.fill((0, 0, 0))

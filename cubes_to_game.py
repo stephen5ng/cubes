@@ -20,8 +20,6 @@ import tiles
 # "Cubes" are the MAC address of the ESP32
 # "Tiles" are the tile number assigned by the app (usually 0-6)
 
-CUBE_START_MORATORIUM_MS = 2000
-_last_game_end_time_ms = 0
 
 # Game state tracking
 _game_running = False
@@ -281,11 +279,10 @@ async def flash_guess(publish_queue, tiles: list[str], player: int, now_ms: int)
     await cube_managers[player].flash_guess(publish_queue, tiles, now_ms)
 
 def set_game_end_time(now_ms: int) -> None:
-    """Track when the game ended to enforce moratorium period."""
-    global _last_game_end_time_ms, _game_running
-    _last_game_end_time_ms = now_ms
+    """Set game running state to false when game ends."""
+    global _game_running
     _game_running = False
-    logging.info(f"Game ended at {now_ms}, cube start moratorium active for {CUBE_START_MORATORIUM_MS}ms")
+    logging.info(f"Game ended at {now_ms}")
 
 async def clear_all_borders(publish_queue, now_ms: int) -> None:
     """Clear all borders on all cubes across all players using consolidated messaging."""
@@ -369,7 +366,7 @@ def _find_non_touching_cubes_for_player(manager) -> List[str]:
     return selected_cubes[:3]
 
 async def _activate_abc_start_sequence(publish_queue, now_ms: int) -> None:
-    """Activate the ABC sequence start system after moratorium."""
+    """Activate the ABC sequence start system."""
     global _abc_start_active
     
     # Find any player that has enough cubes that have reported neighbors
@@ -470,19 +467,10 @@ def _has_received_initial_neighbor_reports() -> bool:
 
 async def activate_abc_start_if_ready(publish_queue, now_ms: int) -> None:
     """Activate ABC start sequence if conditions are met (public interface)."""
-    if (not _abc_start_active and not _game_running and 
-        (_last_game_end_time_ms == 0 or _is_cube_start_allowed(now_ms)) and
+    if (not _abc_start_active and not _game_running and
         _has_received_initial_neighbor_reports()):
         await _activate_abc_start_sequence(publish_queue, now_ms)
 
-def _is_cube_start_allowed(now_ms: int) -> bool:
-    """Check if cube-based game start is allowed (outside moratorium period)."""
-    global _last_game_end_time_ms
-    if _last_game_end_time_ms == 0:
-        return True  # No previous game end recorded
-    
-    time_since_end = now_ms - _last_game_end_time_ms
-    return time_since_end >= CUBE_START_MORATORIUM_MS
 
 def has_player_started_game(player: int) -> bool:
     """Check if a specific player has started their game."""
