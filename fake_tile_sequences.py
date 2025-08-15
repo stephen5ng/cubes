@@ -8,24 +8,19 @@ import random
 
 MQTT_SERVER = os.environ.get("MQTT_SERVER", "localhost")
 
-def get_lines(filename: str) -> list[str]:
-    with open(filename, 'r') as f:
-        lines = f.readlines()
-        return [line.strip() for line in lines]
+def _player_cubes() -> tuple[list[str], list[str]]:
+    """Return cube ID lists for P0 and P1 using numeric cube IDs.
+
+    P0: 1-6
+    P1: 11-16
+    """
+    p0 = [str(i) for i in range(1, 7)]
+    p1 = [str(i) for i in range(11, 17)]
+    return p0, p1
 
 async def pub(sleep_duration_s: int, identical: bool, players: list[int]) -> None:
-    all_cube_ids = get_lines("cube_ids.txt")
-    all_tag_ids = get_lines("tag_ids.txt")
-    
-    # Split into player groups (first 6 for p0, last 6 for p1)
-    p0_cubes = all_cube_ids[:6]
-    p1_cubes = all_cube_ids[6:]
-    p0_tags = all_tag_ids[:6]
-    p1_tags = all_tag_ids[6:]
-    
-    # Add empty tag option to both players
-    p0_tags.append("-")
-    p1_tags.append("-")
+    # Use numeric cube IDs; no NFC tag IDs
+    p0_cubes, p1_cubes = _player_cubes()
     
     # Initialize counters for each player
     p0_count = 0
@@ -60,18 +55,46 @@ async def pub(sleep_duration_s: int, identical: bool, players: list[int]) -> Non
                     return False
             return True
 
+        def pick_sender_and_neighbor(cubes: list[str]) -> tuple[str, str]:
+            """Pick a sender cube and a neighbor cube (or empty string to clear).
+
+            Ensures neighbor is either different from sender or empty string.
+            """
+            sender_ix = random.randint(0, len(cubes) - 1)
+            sender = cubes[sender_ix]
+            # Choose to clear link ~1/7 of the time
+            if random.randint(0, len(cubes)) == 0:
+                return sender, ""
+            # Otherwise choose a different neighbor cube
+            neighbor_ix = sender_ix
+            while neighbor_ix == sender_ix:
+                neighbor_ix = random.randint(0, len(cubes) - 1)
+            neighbor = cubes[neighbor_ix]
+            return sender, neighbor
+
         while True:
             if identical:
                 # Only shuffle when both groups have all letters
                 if group_ready(p0_cubes) and group_ready(p1_cubes):
-                    cube_ix = random.randint(0, len(p0_cubes) - 1)
-                    tag_ix = random.randint(0, len(p0_tags) - 1)
-                    if p0_count % 2 == 0:
-                        await client.publish(f"cube/nfc/{p0_cubes[cube_ix]}", payload=p0_tags[tag_ix], retain=True)
-                        await client.publish(f"cube/nfc/{p1_cubes[cube_ix]}", payload=p1_tags[tag_ix], retain=True)
+                    # Pick same relative indices for both players
+                    sender_ix = random.randint(0, len(p0_cubes) - 1)
+                    # Clear ~1/7th of the time
+                    if random.randint(0, len(p0_cubes)) == 0:
+                        p0_sender, p0_neighbor = p0_cubes[sender_ix], ""
+                        p1_sender, p1_neighbor = p1_cubes[sender_ix], ""
                     else:
-                        await client.publish(f"cube/nfc/{p1_cubes[cube_ix]}", payload=p1_tags[tag_ix], retain=True)
-                        await client.publish(f"cube/nfc/{p0_cubes[cube_ix]}", payload=p0_tags[tag_ix], retain=True)
+                        neighbor_ix = sender_ix
+                        while neighbor_ix == sender_ix:
+                            neighbor_ix = random.randint(0, len(p0_cubes) - 1)
+                        p0_sender, p0_neighbor = p0_cubes[sender_ix], p0_cubes[neighbor_ix]
+                        p1_sender, p1_neighbor = p1_cubes[sender_ix], p1_cubes[neighbor_ix]
+
+                    if p0_count % 2 == 0:
+                        await client.publish(f"cube/right/{p0_sender}", payload=p0_neighbor, retain=True)
+                        await client.publish(f"cube/right/{p1_sender}", payload=p1_neighbor, retain=True)
+                    else:
+                        await client.publish(f"cube/right/{p1_sender}", payload=p1_neighbor, retain=True)
+                        await client.publish(f"cube/right/{p0_sender}", payload=p0_neighbor, retain=True)
                     p0_count += 1
                     p1_count += 1
             else:
@@ -83,22 +106,19 @@ async def pub(sleep_duration_s: int, identical: bool, players: list[int]) -> Non
                 if player == 0 and 1 in players:
                     p0_count += 1
                     cubes = p0_cubes
-                    tags = p0_tags
                 elif player == 1 and 2 in players:
                     p1_count += 1
                     cubes = p1_cubes
-                    tags = p1_tags
                 else:
                     await asyncio.sleep(sleep_duration_s)
                     continue
                 # Only shuffle when this group has all letters
                 if group_ready(cubes):
-                    cube = random.choice(cubes)
-                    tag = random.choice(tags)
-                    await client.publish(f"cube/nfc/{cube}", payload=tag, retain=True)
+                    sender, neighbor = pick_sender_and_neighbor(cubes)
+                    await client.publish(f"cube/right/{sender}", payload=neighbor, retain=True)
             await asyncio.sleep(sleep_duration_s)
 
-parser = argparse.ArgumentParser(description="Generate random cube sequences")
+parser = argparse.ArgumentParser(description="Generate random cube neighbor sequences (cube/right) using numeric cube IDs")
 parser.add_argument("--duration", type=float, default=0.01,
                     help="Sleep duration in seconds (default: 0.01)")
 parser.add_argument("--identical", action="store_true",

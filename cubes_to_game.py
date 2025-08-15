@@ -30,6 +30,7 @@ _player_game_states = {}  # Maps player number to their game running state
 _abc_start_active = False
 _player_abc_cubes = {}  # Maps player number to their ABC cube assignments
 _player_countdown_active = {}  # Track which players are in countdown phase
+_player_countdown_complete_time = {}  # Track when each player's countdown should complete
 class CubeManager:
     def __init__(self, player_number: int):
         self.player_number = player_number
@@ -480,15 +481,15 @@ def has_player_started_game(player: int) -> bool:
     return player in _player_game_states
 
 async def _start_abc_countdown(publish_queue, player: int, now_ms: int) -> None:
-    """Start the enhanced ABC countdown sequence for a player."""
+    """Start the ABC countdown sequence for a player."""
     # Prevent multiple countdowns for the same player
     if player in _player_countdown_active:
         return
     
     _player_countdown_active[player] = True
     
-    logging.info(f"ABC sequence complete for player {player}! Starting enhanced countdown")
-    print(f"ABC sequence complete for player {player}! Starting enhanced countdown")
+    logging.info(f"ABC sequence complete for player {player}! Starting countdown")
+    print(f"ABC sequence complete for player {player}! Starting countdown")
     
     # Get the ABC cubes for this player
     if player not in _player_abc_cubes:
@@ -497,51 +498,51 @@ async def _start_abc_countdown(publish_queue, player: int, now_ms: int) -> None:
     
     abc_cubes = _player_abc_cubes[player]
     
-    # Get all cubes for this player
-    if player >= len(cube_managers):
-        del _player_countdown_active[player]
-        return
+    # Schedule ABC cube letters; actual timing managed by completion check
+    await publish_queue.put((f"cube/{abc_cubes['A']}/letter", "?", True, now_ms))    
+    await publish_queue.put((f"cube/{abc_cubes['B']}/letter", "?", True, now_ms))    
+    await publish_queue.put((f"cube/{abc_cubes['C']}/letter", "?", True, now_ms))
     
-    player_cube_list = cube_managers[player].cube_list
-    abc_cube_ids = set(abc_cubes.values())  # {A_cube_id, B_cube_id, C_cube_id}
-    
-    # Get non-ABC cubes for this player
-    non_abc_cubes = [cube for cube in player_cube_list if cube not in abc_cube_ids]
-    
-    # Phase 1: Replace non-ABC cubes with '?' one at a time (500ms intervals)
-    for i, cube_id in enumerate(non_abc_cubes):
-        await publish_queue.put((f"cube/{cube_id}/letter", "?", True, now_ms + 3000 + (i * 500)))
-        await asyncio.sleep(0.5)  # 500ms delay between each non-ABC cube
-    
-    # Phase 2: Replace ABC cubes A->?, B->?, C->? (1 second intervals)
-    await publish_queue.put((f"cube/{abc_cubes['A']}/letter", "?", True, now_ms + 3000 + (len(non_abc_cubes) * 500)))
-    await asyncio.sleep(1.0)
-    
-    await publish_queue.put((f"cube/{abc_cubes['B']}/letter", "?", True, now_ms + 3000 + (len(non_abc_cubes) * 500) + 1000))
-    await asyncio.sleep(1.0)
-    
-    await publish_queue.put((f"cube/{abc_cubes['C']}/letter", "?", True, now_ms + 3000 + (len(non_abc_cubes) * 500) + 2000))
-    await asyncio.sleep(1.0)
-    
-    # Start the game immediately after final countdown
-    logging.info(f"ABC countdown complete for player {player}! Starting game") 
-    print(f"ABC countdown complete for player {player}! Starting game")
-    
-    # Mark player as started
-    _player_game_states[player] = True
-    
-    # Clear countdown state for this player
-    if player in _player_countdown_active:
-        del _player_countdown_active[player]
-    if player in _player_abc_cubes:
-        del _player_abc_cubes[player]
-    
-    # If all players have completed ABC, clear the global state
-    if not _player_abc_cubes:
-        _clear_abc_start_sequence()
-    
-    await start_game_callback(True, now_ms, player)
+    # Complete after 3 seconds
+    _player_countdown_complete_time[player] = now_ms + 3000
+    print("countdown started")
 
+async def _check_countdown_completion(publish_queue, now_ms: int) -> list[str]:
+    """Check if any player countdowns should complete and start their games.
+
+    Returns a list of incident strings to be logged by the caller.
+    """
+    incidents: list[str] = []
+    completed_players = []
+    
+    for player, complete_time in _player_countdown_complete_time.items():
+        print(f"now_ms={now_ms} complete_time={complete_time}")
+        if now_ms >= complete_time and player not in _player_game_states:
+            completed_players.append(player)
+    
+    for player in completed_players:
+        logging.info(f"ABC countdown complete for player {player}! Starting game") 
+        print(f"ABC countdown complete for player {player}! Starting game")
+        
+        # Mark player as started
+        _player_game_states[player] = True
+        
+        # Clear countdown state for this player
+        if player in _player_countdown_active:
+            del _player_countdown_active[player]
+        if player in _player_countdown_complete_time:
+            del _player_countdown_complete_time[player]
+        if player in _player_abc_cubes:
+            del _player_abc_cubes[player]
+        
+        # If all players have completed ABC, clear the global state
+        if not _player_abc_cubes:
+            _clear_abc_start_sequence()
+        
+        incidents.append(f"abc_countdown_complete_p{player}")
+        await start_game_callback(True, now_ms, player)
+
+    return incidents
 
 def _get_all_cube_ids() -> List[str]:
     """Get all valid cube IDs (1-6 for Player 0, 11-16 for Player 1)."""
@@ -593,6 +594,8 @@ async def handle_mqtt_message(publish_queue, message, now_ms: int):
                 if completed_player is not None:
                     # Start the countdown sequence instead of immediate game start
                     asyncio.create_task(_start_abc_countdown(publish_queue, completed_player, now_ms))
+            
+            # Countdown completion is polled from the main loop, not per-message
         return
 
 
