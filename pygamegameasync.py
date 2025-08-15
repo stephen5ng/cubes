@@ -365,10 +365,6 @@ class Rack:
         top_left = (top_left[0] + self.left_offset_by_player[player_index], top_left[1])
         window.blit(surface, top_left)
 
-# Shield class moved to src/game/components.py
-
-# Score class moved to src/game/components.py
-
 class LastGuessFader:
     FADE_DURATION_MS = 2000
 
@@ -586,6 +582,7 @@ class Game:
         events.on(f"game.next_tile")(self.next_tile)
         events.on(f"game.abort")(self.abort)
         events.on(f"game.start")(self.start_cubes)
+        events.on(f"game.start_player")(self.start_cubes_player)
         events.on(f"input.remaining_previous_guesses")(self.update_remaining_guesses)
         events.on(f"input.update_previous_guesses")(self.update_previous_guesses)
         events.on(f"input.add_guess")(self.add_guess)
@@ -611,6 +608,13 @@ class Game:
     async def start_cubes(self, now_ms: int) -> None:
         await self.start(CubesInput(None), now_ms)
 
+    async def start_cubes_player(self, now_ms: int, player: int) -> None:
+        # Create player-specific CubesInput to enable proper 2-player mode
+        cubes_input = CubesInput(None)
+        cubes_input.id = f"player_{player}"
+        print(f"Starting cubes for player {player} with input device: {cubes_input.id}")
+        await self.start(cubes_input, now_ms)
+
     async def start(self, input_device: InputDevice, now_ms: int) -> None:
         if self.running:
             if str(input_device) not in self.input_devices:
@@ -626,6 +630,8 @@ class Game:
                 for player in range(2):
                     self.scores[player].draw()
                     self.racks[player].draw()
+                # Load letters for both players when entering 2-player mode
+                await self._app.load_rack(now_ms)
                 return 1
     
         self._app.player_count = 1

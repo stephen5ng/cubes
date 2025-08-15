@@ -27,18 +27,15 @@ if [[ $# -eq 0 ]]; then
     for ip in $(seq 21 26) $(seq 31 36); do
         update_cube $ip
     done
-elif [[ $# -eq 1 ]]; then
-    # One argument - update specific cube
-    cube_num=$1
-    ip=$(cube_to_ip $cube_num)
-    if [[ $? -eq 0 ]]; then
-        update_cube $ip
-    else
-        exit 1
-    fi
 else
-    echo "Usage: $0 [cube_number]"
-    echo "  cube_number: 1-6 or 11-16 (optional)"
-    echo "  If no cube_number provided, updates all cubes"
-    exit 1
+    # One or more arguments - update specific cubes
+    for cube_num in "$@"; do
+        ip=$(cube_to_ip $cube_num)
+        if [[ $? -eq 0 ]]; then
+            update_cube $ip
+        else
+            echo "Skipping invalid cube number: $cube_num"
+            exit 1
+        fi
+    done
 fi

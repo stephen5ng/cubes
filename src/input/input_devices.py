@@ -31,7 +31,7 @@ class CubesInput(InputDevice):
     """Input device for physical cube hardware."""
     
     def __str__(self):
-        return "CubesInput"
+        return self.id if self.id else "CubesInput"
     
     async def process_event(self, event):
         pass

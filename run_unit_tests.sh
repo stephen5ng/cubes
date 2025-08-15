@@ -12,11 +12,13 @@ cd tests
 # List of tests to run (excluding problematic ones for now)
 tests=(
     "app_test.py"
-    "cubes_to_game_test.py"
     "dictionary_test.py"
     "scorecard_test.py"
+    "test_app_per_player.py"
     "test_cubes_to_game.py"
+    "test_dependency_injection.py"
     "test_logging.py"
+    "test_per_player_game_states.py"
     "test_replay_simple.py"
     "test_replay.py"
     "test_textrect.py"

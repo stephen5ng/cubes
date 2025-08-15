@@ -34,7 +34,20 @@
       "Bash(mosquitto_pub:*)",
       "Bash(echo $MQTT_SERVER)",
       "Bash(MQTT_SERVER=192.168.8.247 timeout 45 python3 test_cube_responsiveness.py stress_0.1)",
-      "Bash(MQTT_SERVER=192.168.8.247 timeout 60 python3 test_cube_responsiveness.py stress_0.1)"
+      "Bash(MQTT_SERVER=192.168.8.247 timeout 60 python3 test_cube_responsiveness.py stress_0.1)",
+      "Bash(MQTT_SERVER=192.168.8.247 timeout 30 python3 test_cube_responsiveness.py sng)",
+      "Bash(mkdir:*)",
+      "Bash(pkill:*)",
+      "Bash(./update_goldens.sh:*)",
+      "Bash(for:*)",
+      "Bash(do)",
+      "Bash(if [ -d \"replay/$test\" ])",
+      "Bash(then)",
+      "Bash(echo:*)",
+      "Bash(/dev/null)",
+      "Bash(if [ -f \"output/output.publish.jsonl\" ])",
+      "Bash(fi)",
+      "Bash(done)"
     ],
     "deny": []
   }

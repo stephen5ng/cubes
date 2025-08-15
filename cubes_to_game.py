@@ -25,10 +25,11 @@ _last_game_end_time_ms = 0
 
 # Game state tracking
 _game_running = False
+_player_game_states = {}  # Maps player number to their game running state
 
 # ABC sequence start system
 _abc_start_active = False
-_abc_cubes = {"A": None, "B": None, "C": None}  # Maps letter to cube ID
+_player_abc_cubes = {}  # Maps player number to their ABC cube assignments
 class CubeManager:
     def __init__(self, player_number: int):
         self.player_number = player_number
@@ -152,6 +153,11 @@ class CubeManager:
 
     async def load_rack(self, publish_queue, tiles_with_letters: list[tiles.Tile], now_ms: int) -> None:
         """Load letters onto the rack for this player."""
+        # Only load letters if this player has started their game
+        if self.player_number not in _player_game_states:
+            logging.info(f"LOAD RACK: Player {self.player_number} game not started, skipping letter loading")
+            return
+            
         logging.info(f"LOAD RACK tiles_with_letters: {tiles_with_letters}")
         for tile in tiles_with_letters:
             tile_id = tile.id
@@ -166,8 +172,8 @@ class CubeManager:
 
     async def _mark_tiles_for_guess(self, publish_queue, guess_tiles: List[str], now_ms: int) -> None:
         """Mark tiles as used/unused for a guess."""
-        # Only draw borders when game is running
-        if not _game_running:
+        # Only draw borders when this player's game is running
+        if self.player_number not in _player_game_states:
             return
             
         unused_tiles = sorted(list(set((str(i) for i in range(tiles.MAX_LETTERS)))))
@@ -300,9 +306,7 @@ def set_game_running(running: bool) -> None:
     _game_running = running
     logging.info(f"Game running state set to: {running}")
     
-    # Clear ABC sequence when game starts
-    if running:
-        _clear_abc_start_sequence()
+    # Note: ABC sequence clearing is now handled per-player in ABC completion logic
 
 async def _find_non_touching_cubes(publish_queue, now_ms: int) -> List[str]:
     """Find 3 cubes that are not touching each other."""
@@ -340,57 +344,102 @@ async def _find_non_touching_cubes(publish_queue, now_ms: int) -> List[str]:
     
     return selected_cubes[:3]
 
+def _find_non_touching_cubes_for_player(manager) -> List[str]:
+    """Find 3 non-touching cubes for a specific player."""
+    available_cubes = [cube for cube in manager.cube_list if cube in manager.cubes_to_neighbors]
+    
+    if len(available_cubes) < 3:
+        return available_cubes  # Return what we have, even if less than 3
+    
+    selected_cubes = []
+    for cube in available_cubes:
+        if len(selected_cubes) >= 3:
+            break
+            
+        # Check if this cube touches any already selected cube
+        is_touching = any(
+            manager.cube_chain.get(cube) == selected or 
+            manager.cube_chain.get(selected) == cube
+            for selected in selected_cubes
+        )
+        
+        if not is_touching:
+            selected_cubes.append(cube)
+    
+    return selected_cubes[:3]
+
 async def _activate_abc_start_sequence(publish_queue, now_ms: int) -> None:
     """Activate the ABC sequence start system after moratorium."""
-    global _abc_start_active, _abc_cubes
+    global _abc_start_active
     
-    # Find 3 non-touching cubes
-    selected_cubes = await _find_non_touching_cubes(publish_queue, now_ms)
-    if len(selected_cubes) < 3:
-        logging.warning("Not enough cubes available for ABC start sequence")
-        return
-    
-    # Assign A, B, C to the selected cubes
-    letters = ["A", "B", "C"]
-    for i, letter in enumerate(letters):
-        _abc_cubes[letter] = selected_cubes[i]
-    
-    _abc_start_active = True
-    logging.info(f"ABC start sequence activated: {_abc_cubes}")
-    print(f"ABC start sequence activated: {_abc_cubes}")
-    
-    # Display A, B, C on the selected cubes
-    for letter, cube_id in _abc_cubes.items():
-        logging.info(f"ABC: publishing letter {letter} to cube {cube_id}")
-        await _publish_letter(publish_queue, letter, cube_id, now_ms)
-
-async def _check_abc_sequence_complete() -> bool:
-    """Check if A-B-C cubes are placed in sequence."""
-    if not _abc_start_active or not all(_abc_cubes.values()):
-        return False
-    
-    # Check all cube managers for the ABC sequence
+    # Find any player that has enough cubes that have reported neighbors
+    first_manager_with_cubes = None
     for manager in cube_managers:
-        # Look for A-B-C in the cube chain
-        logging.info(f"ABC check: manager {manager.player_number} cube_chain={manager.cube_chain}")
-        cube_a = _abc_cubes["A"]
-        cube_b = _abc_cubes["B"] 
-        cube_c = _abc_cubes["C"]
-        
-        # Check if A->B->C chain exists
-        if (cube_a in manager.cube_chain and 
-            manager.cube_chain[cube_a] == cube_b and
-            cube_b in manager.cube_chain and 
-            manager.cube_chain[cube_b] == cube_c):
-            return True
+        available_cubes = [cube for cube in manager.cube_list if cube in manager.cubes_to_neighbors]
+        if len(available_cubes) >= 3:
+            first_manager_with_cubes = manager
+            break
     
-    return False
+    if not first_manager_with_cubes:
+        logging.warning("No cube managers with enough cubes available")
+        return
+        
+    _abc_start_active = True
+    
+    # Display A, B, C on non-touching cubes for ALL players that have cubes
+    global _player_abc_cubes
+    _player_abc_cubes = {}  # Reset player ABC assignments
+    letters = ["A", "B", "C"]
+    
+    for manager in cube_managers:
+        if manager.cube_list:  # Ensure the manager has cubes
+            player_abc_cubes = _find_non_touching_cubes_for_player(manager)
+            if len(player_abc_cubes) >= 3:
+                # Store which cubes this player got for ABC
+                _player_abc_cubes[manager.player_number] = {
+                    "A": player_abc_cubes[0],
+                    "B": player_abc_cubes[1], 
+                    "C": player_abc_cubes[2]
+                }
+                for i, letter in enumerate(letters):
+                    cube_id = player_abc_cubes[i]
+                    await _publish_letter(publish_queue, letter, cube_id, now_ms)
+            else:
+                logging.warning(f"Player {manager.player_number}: Not enough non-touching cubes for ABC display")
+
+async def _check_abc_sequence_complete():
+    """Check if A-B-C cubes are placed in sequence. Returns player number if complete, None otherwise."""
+    if not _abc_start_active:
+        return None
+    
+    # Check all cube managers for ABC sequence using the stored assignments
+    for manager in cube_managers:
+        player_num = manager.player_number
+        if player_num in _player_abc_cubes and player_num not in _player_game_states:
+            # Get the specific cubes that were assigned ABC for this player
+            player_abc = _player_abc_cubes[player_num]
+            cube_a = player_abc["A"]
+            cube_b = player_abc["B"] 
+            cube_c = player_abc["C"]
+            
+            logging.info(f"ABC check: manager {player_num} checking {cube_a}->{cube_b}->{cube_c} in chain={manager.cube_chain}")
+            
+            # Check if A->B->C chain exists for this player's assigned ABC cubes
+            if (cube_a in manager.cube_chain and 
+                manager.cube_chain[cube_a] == cube_b and
+                cube_b in manager.cube_chain and 
+                manager.cube_chain[cube_b] == cube_c):
+                logging.info(f"ABC sequence complete for player {player_num}!")
+                return player_num
+    
+    return None
 
 def _clear_abc_start_sequence() -> None:
     """Clear the ABC start sequence state."""
-    global _abc_start_active, _abc_cubes
+    global _abc_start_active, _abc_cubes, _player_abc_cubes
     _abc_start_active = False
     _abc_cubes = {"A": None, "B": None, "C": None}
+    _player_abc_cubes = {}
     logging.info("ABC start sequence cleared")
 
 def _all_cubes_have_reported_neighbors() -> bool:
@@ -412,10 +461,18 @@ def _all_cubes_have_reported_neighbors() -> bool:
     
     return False
 
+def _has_received_initial_neighbor_reports() -> bool:
+    """Check if we've received at least some neighbor reports from cubes."""
+    for manager in cube_managers:
+        if manager.cubes_to_neighbors:  # If any manager has received neighbor reports
+            return True
+    return False
+
 async def activate_abc_start_if_ready(publish_queue, now_ms: int) -> None:
     """Activate ABC start sequence if conditions are met (public interface)."""
     if (not _abc_start_active and not _game_running and 
-        (_last_game_end_time_ms == 0 or _is_cube_start_allowed(now_ms))):
+        (_last_game_end_time_ms == 0 or _is_cube_start_allowed(now_ms)) and
+        _has_received_initial_neighbor_reports()):
         await _activate_abc_start_sequence(publish_queue, now_ms)
 
 def _is_cube_start_allowed(now_ms: int) -> bool:
@@ -427,16 +484,28 @@ def _is_cube_start_allowed(now_ms: int) -> bool:
     time_since_end = now_ms - _last_game_end_time_ms
     return time_since_end >= CUBE_START_MORATORIUM_MS
 
+def has_player_started_game(player: int) -> bool:
+    """Check if a specific player has started their game."""
+    return player in _player_game_states
+
+def _get_all_cube_ids() -> List[str]:
+    """Get all valid cube IDs (1-6 for Player 0, 11-16 for Player 1)."""
+    return [str(i) for i in range(1, 7)] + [str(i) for i in range(11, 17)]
+
     
 
 async def init(subscribe_client):
     # Subscribe to direct neighbor topics only
     await subscribe_client.subscribe("cube/right/#")
     
-    all_cubes = [str(i) for i in range(1, 14)]
+    all_cubes = _get_all_cube_ids()
 
     # Clear and rebuild the global cube_to_player mapping
     cube_to_player.clear()
+    
+    # Initialize player game states
+    global _player_game_states
+    _player_game_states.clear()
     
     # Initialize managers for each player
     for player, manager in enumerate(cube_managers):
@@ -464,11 +533,20 @@ async def handle_mqtt_message(publish_queue, message, now_ms: int):
             await guess_tiles(publish_queue, word_tiles_list, player, now_ms)
 
             # Check ABC completion after processing right-edge updates
-            if _abc_start_active and await _check_abc_sequence_complete():
-                logging.info("ABC sequence complete! Starting game (right)")
-                print("ABC sequence complete! Starting game (right)")
-                _clear_abc_start_sequence()
-                await start_game_callback(True, now_ms)
+            if _abc_start_active:
+                completed_player = await _check_abc_sequence_complete()
+                if completed_player is not None:
+                    logging.info(f"ABC sequence complete for player {completed_player}! Starting game")
+                    print(f"ABC sequence complete for player {completed_player}! Starting game")
+                    # Start game for this specific player
+                    _player_game_states[completed_player] = True
+                    # Clear ABC for this player only
+                    if completed_player in _player_abc_cubes:
+                        del _player_abc_cubes[completed_player]
+                    # If all players have completed ABC, clear the global state
+                    if not _player_abc_cubes:
+                        _clear_abc_start_sequence()
+                    await start_game_callback(True, now_ms, completed_player)
         return
 
 

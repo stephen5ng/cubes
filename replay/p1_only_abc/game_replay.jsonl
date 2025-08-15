@@ -1,0 +1,10 @@
+{"event_type": "seed", "seed": 11111}
+{"timestamp_ms": 500, "events": {"mqtt": [{"topic": "cube/right/1", "payload": "-"}]}}
+{"timestamp_ms": 600, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "-"}]}}
+{"timestamp_ms": 700, "events": {"mqtt": [{"topic": "cube/right/3", "payload": "-"}]}}
+{"timestamp_ms": 800, "events": {"mqtt": [{"topic": "cube/right/4", "payload": "-"}]}}
+{"timestamp_ms": 900, "events": {"mqtt": [{"topic": "cube/right/5", "payload": "-"}]}}
+{"timestamp_ms": 1000, "events": {"mqtt": [{"topic": "cube/right/6", "payload": "-"}]}}
+{"timestamp_ms": 3000, "events": {"mqtt": [{"topic": "cube/right/1", "payload": "2"}]}}
+{"timestamp_ms": 3100, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "4"}]}}
+{"timestamp_ms": 6000, "events": {"pygame": [{"type": "QUIT"}]}}

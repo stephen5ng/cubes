@@ -1,561 +1,635 @@
-{"event_type": "seed", "seed": 1755228638}
-{"timestamp_ms": 878, "events": {"mqtt": [{"topic": "cube/right/6", "payload": "-"}, {"topic": "cube/right/1", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/14", "payload": "-"}, {"topic": "cube/right/16", "payload": "-"}, {"topic": "cube/right/11", "payload": "-"}, {"topic": "cube/right/15", "payload": "-"}, {"topic": "cube/right/3", "payload": "-"}, {"topic": "cube/right/4", "payload": "-"}, {"topic": "cube/right/2", "payload": "3"}, {"topic": "cube/right/5", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 1101, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 2078, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 2365, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 2438, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 2592, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 2644, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 2708, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 2783, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 2939, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 2990, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 3281, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 3328, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 3433, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 3661, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 3686, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 3846, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 3921, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 3996, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 4278, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 4304, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 4424, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 4602, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 4665, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 4741, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 4842, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 4873, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 4978, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 5033, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 5088, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 5135, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 5239, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 5388, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 5519, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 5702, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 5728, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 5892, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 5970, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 6048, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 6187, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 6838, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 7325, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 7719, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 7743, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 7770, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 8146, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 10372, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 10400, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 10455, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 10482, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 10589, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 10662, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 10791, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 10978, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 11423, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 11825, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 11875, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 11925, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 11951, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 13397, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 13552, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 13686, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 14244, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 15390, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 15417, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 15719, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 15877, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 16503, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 16515, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 16715, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 16847, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 16927, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 16982, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 17157, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 17261, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 17621, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 17730, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 17755, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 17810, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 17917, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 17998, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 18102, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 18210, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 18259, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 18374, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 18482, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 18910, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 18986, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 19069, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 19198, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 19273, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 19304, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 19411, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 19570, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 19623, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 19839, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 19945, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 21097, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 21178, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 21434, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 21462, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 21567, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 21673, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 21699, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 21966, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 22045, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 22230, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 22309, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 22472, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 22498, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 22525, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 22602, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 22761, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 22839, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 23023, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 23102, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 23312, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 23550, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 23808, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 23888, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 24048, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 24086, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 24311, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 24391, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 24576, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 24603, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 24848, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 25090, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 25172, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 25199, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 25636, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 26133, "events": {"pygame": [{"type": "KEYDOWN", "key": "LEFT META"}]}}
-{"timestamp_ms": 26455, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 26510, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 26611, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 26850, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 27420, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 28481, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 28722, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 28776, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 28882, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 29043, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 29151, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 29248, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 29327, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 29354, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 29435, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 29536, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 30911, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 30935, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 30960, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 31122, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 31685, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 31713, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 31903, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 31980, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 32508, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 33403, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 33430, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 33509, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 33613, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 33691, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 33821, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 33903, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 33958, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 34013, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 34156, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 34308, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 34414, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 35235, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 35965, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 36396, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 36422, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 36523, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 36660, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 36734, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 36785, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 36866, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 37177, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 37570, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 37832, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 37910, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 38092, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 38144, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 38440, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 39451, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 39633, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 41225, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 42504, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 42582, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 42763, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 42790, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 42873, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 43106, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 43312, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 44480, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 44488, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 44509, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 44587, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 44615, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 44667, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 44748, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 44854, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 45193, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 45270, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 45370, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 45395, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 45631, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 45761, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 45818, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 45896, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 45947, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 46049, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 46102, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 46206, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 47685, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 48936, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 48946, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 49487, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 49512, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 49590, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 49721, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 49832, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 49931, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 50014, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 50198, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 50252, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 50280, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 50331, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 50356, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 51943, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 51958, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 52220, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 53432, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 53458, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 53512, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 53625, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 53761, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 53812, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 53913, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 53975, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 54073, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 54263, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 54474, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 54557, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 54583, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 54695, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 54854, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 54933, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 55066, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 55171, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 55460, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 55622, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 55649, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 55809, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 56470, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 56603, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 56678, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 56786, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 56867, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 57049, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 57176, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 57261, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 57285, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 57366, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 57685, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 57763, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 57925, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 58047, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 59533, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 59536, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 59558, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 59638, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 59793, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 59877, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 61345, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 61449, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 61543, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 61637, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 61770, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 61873, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 61927, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 62579, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 63457, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 63492, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 64147, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 64255, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 65055, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 65061, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 65079, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 65157, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 65237, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 65341, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 66172, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 66453, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 66463, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 66481, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 66538, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 67241, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 68034, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 68061, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 68111, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 68353, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 68414, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 69975, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 69981, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 70000, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 70295, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 70368, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 70471, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 71408, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 71442, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 71487, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 71676, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 72140, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 73041, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 73069, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 73094, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 73145, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 73336, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 73397, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 73545, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 73784, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 73860, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 73911, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 73963, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 74314, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 74433, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 75479, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 75560, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 75590, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 75781, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 75850, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 76035, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 76116, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 76195, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 76355, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 76432, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 76743, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 76872, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 76923, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 77151, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 77228, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 77285, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 77336, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 77441, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 77466, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 77526, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 77545, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 77786, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 78550, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 78763, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 78790, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 78868, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 78886, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 79025, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 79102, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 79123, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 79206, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 79597, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 79701, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 79960, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 80198, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 80305, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 80633, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 80838, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 81627, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 81981, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 82035, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 82126, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 82253, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 82359, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 82387, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 82523, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 82540, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 82783, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 82836, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 82962, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 83021, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 83091, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 83118, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 83171, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 83411, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 83541, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 83552, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 83676, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 83731, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 85025, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 85052, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 85076, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 85103, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 85185, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/1", "payload": "2"}]}}
-{"timestamp_ms": 85351, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 85667, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 86192, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 86808, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 86889, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 87213, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 87373, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 88222, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 89224, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 89527, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 89561, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
-{"timestamp_ms": 90228, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 90518, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 90544, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 90965, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 91229, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 92238, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 92488, "events": {"mqtt": [{"topic": "cube/right/3", "payload": "6"}]}}
-{"timestamp_ms": 93249, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 93851, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 93914, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 94251, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}], "incidents": ["letter_column_move"]}}
-{"timestamp_ms": 94661, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 95259, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 96264, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 96700, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 96728, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 97274, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 97637, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 98279, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 98744, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 99193, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 99300, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
-{"timestamp_ms": 99312, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99335, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99343, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99366, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99373, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99396, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99403, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99422, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99432, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99452, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99461, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99483, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99490, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99513, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99521, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99544, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}], "incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99553, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99576, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99582, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99605, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99611, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99634, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99641, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99664, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99671, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99693, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99700, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99719, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99729, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99749, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99758, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99782, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99789, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99812, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99820, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
-{"timestamp_ms": 99843, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
-{"timestamp_ms": 99852, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
-{"timestamp_ms": 100485, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 100726, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 100854, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 101870, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 102338, "events": {"mqtt": [{"topic": "cube/right/1", "payload": "-"}]}}
-{"timestamp_ms": 102881, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 103745, "events": {"mqtt": [{"topic": "cube/right/3", "payload": "-"}]}}
-{"timestamp_ms": 103884, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 104378, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 104398, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "-"}]}}
-{"timestamp_ms": 104821, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 104906, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 105916, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 106352, "events": {"mqtt": [{"topic": "cube/right/1", "payload": "3"}]}}
-{"timestamp_ms": 106924, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 107272, "events": {"mqtt": [{"topic": "cube/right/3", "payload": "4"}]}}
-{"timestamp_ms": 107938, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 108083, "events": {"incidents": ["shield_letter_collision"]}}
-{"timestamp_ms": 108383, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 108859, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 108881, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 108939, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 109318, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 109941, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 110346, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 110479, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 110914, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 110945, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 111954, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 112969, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 113923, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 113974, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 114978, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 115177, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 115179, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 115989, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 116991, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 118000, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 118088, "events": {"mqtt": [{"topic": "cube/right/5", "payload": "6"}]}}
-{"timestamp_ms": 118320, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 119001, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 119571, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "5"}, {"topic": "cube/right/2", "payload": "-"}, {"topic": "cube/right/2", "payload": "5"}]}}
-{"timestamp_ms": 119683, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 119911, "events": {"incidents": ["shield_letter_collision"]}}
-{"timestamp_ms": 120017, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 121031, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 122040, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 122616, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "-"}]}}
-{"timestamp_ms": 123046, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 123405, "events": {"mqtt": [{"topic": "cube/right/4", "payload": "2"}]}}
-{"timestamp_ms": 123880, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 124049, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 124471, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 124804, "events": {"mqtt": [{"topic": "cube/right/1", "payload": "-"}]}}
-{"timestamp_ms": 125053, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 125184, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 125270, "events": {"mqtt": [{"topic": "cube/right/5", "payload": "-"}]}}
-{"timestamp_ms": 125355, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 126076, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 126393, "events": {"mqtt": [{"topic": "cube/right/5", "payload": "3"}]}}
-{"timestamp_ms": 127077, "events": {"incidents": ["letter_column_move", "shield_letter_collision"]}}
-{"timestamp_ms": 127601, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 127661, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 128035, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 128093, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 128121, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "5"}, {"topic": "cube/right/2", "payload": "1"}]}}
-{"timestamp_ms": 128893, "events": {"incidents": ["shield_letter_collision"]}}
-{"timestamp_ms": 129094, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}], "incidents": ["letter_column_move"]}}
-{"timestamp_ms": 129158, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/2", "payload": "-"}]}}
-{"timestamp_ms": 130096, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 130285, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 130342, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 131100, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}], "incidents": ["letter_column_move"]}}
-{"timestamp_ms": 131272, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "6"}]}}
-{"timestamp_ms": 132070, "events": {"incidents": ["shield_letter_collision"]}}
-{"timestamp_ms": 132104, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 133110, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 133677, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 134129, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 134485, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 134670, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 135137, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 136143, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 136954, "events": {"mqtt": [{"topic": "cube/right/5", "payload": "-"}]}}
-{"timestamp_ms": 137162, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 137762, "events": {"mqtt": [{"topic": "cube/right/5", "payload": "1"}]}}
-{"timestamp_ms": 137791, "events": {"incidents": ["shield_letter_collision"]}}
-{"timestamp_ms": 138179, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 138646, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 139187, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 139300, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 140073, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 140198, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 140259, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
-{"timestamp_ms": 141207, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 142005, "events": {"pygame": [{"type": "KEYDOWN", "key": "LEFT META"}]}}
-{"timestamp_ms": 142216, "events": {"incidents": ["letter_column_move"]}}
-{"timestamp_ms": 142274, "events": {"pygame": [{"type": "KEYDOWN", "key": "Q"}, {"type": "QUIT"}]}}
+{"event_type": "seed", "seed": 1755238662}
+{"timestamp_ms": 899, "events": {"mqtt": [{"topic": "cube/right/6", "payload": "-"}, {"topic": "cube/right/1", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/14", "payload": "-"}, {"topic": "cube/right/16", "payload": "-"}, {"topic": "cube/right/11", "payload": "12"}, {"topic": "cube/right/15", "payload": "-"}, {"topic": "cube/right/3", "payload": "-"}, {"topic": "cube/right/4", "payload": "-"}, {"topic": "cube/right/2", "payload": "4"}, {"topic": "cube/right/5", "payload": "-"}, {"topic": "cube/right/12", "payload": "14"}]}}
+{"timestamp_ms": 6130, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "-"}]}}
+{"timestamp_ms": 6155, "events": {"mqtt": [{"topic": "cube/right/1", "payload": "2"}]}}
+{"timestamp_ms": 6730, "events": {"mqtt": [{"topic": "cube/right/5", "payload": "1"}]}}
+{"timestamp_ms": 8809, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "3"}]}}
+{"timestamp_ms": 9720, "events": {"mqtt": [{"topic": "cube/right/5", "payload": "-"}]}}
+{"timestamp_ms": 9829, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 10848, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 11871, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 12350, "events": {"mqtt": [{"topic": "cube/right/11", "payload": "-"}]}}
+{"timestamp_ms": 12888, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 13892, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 14560, "events": {"mqtt": [{"topic": "cube/right/11", "payload": "13"}, {"topic": "cube/right/13", "payload": "12"}]}}
+{"timestamp_ms": 14732, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
+{"timestamp_ms": 14757, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "12"}]}}
+{"timestamp_ms": 14909, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 15098, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
+{"timestamp_ms": 15126, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "12"}]}}
+{"timestamp_ms": 15181, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
+{"timestamp_ms": 15206, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "12"}]}}
+{"timestamp_ms": 15678, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "-"}]}}
+{"timestamp_ms": 15913, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 16918, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 17922, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 18124, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}]}}
+{"timestamp_ms": 18937, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 19315, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "14"}]}}
+{"timestamp_ms": 19947, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 20949, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 21955, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 22958, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 22966, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 22988, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 22994, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23017, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23024, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23047, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23053, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23077, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23083, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23106, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23112, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23135, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23141, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23164, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23170, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23193, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23198, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23222, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23228, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23251, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23257, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23279, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23285, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23307, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23312, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23336, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23341, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23364, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23369, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23393, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23398, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23421, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23426, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23450, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23455, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 23479, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 23484, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 24489, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 25042, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "-"}]}}
+{"timestamp_ms": 25491, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 25496, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "3"}]}}
+{"timestamp_ms": 25519, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "-"}]}}
+{"timestamp_ms": 25659, "events": {"mqtt": [{"topic": "cube/right/1", "payload": "-"}]}}
+{"timestamp_ms": 26503, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 27206, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "1"}]}}
+{"timestamp_ms": 27403, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "-"}]}}
+{"timestamp_ms": 27465, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "1"}]}}
+{"timestamp_ms": 27516, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 28539, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 29143, "events": {"mqtt": [{"topic": "cube/right/1", "payload": "6"}]}}
+{"timestamp_ms": 29553, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 30002, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 30568, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 31579, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 32580, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 33596, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 33859, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/13", "payload": "14"}, {"topic": "cube/right/13", "payload": "-"}, {"topic": "cube/right/13", "payload": "14"}, {"topic": "cube/right/13", "payload": "-"}]}}
+{"timestamp_ms": 34599, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 35610, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 36621, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 37536, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "14"}, {"topic": "cube/right/12", "payload": "15"}]}}
+{"timestamp_ms": 37630, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 38633, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 38867, "events": {"mqtt": [{"topic": "cube/right/15", "payload": "14"}, {"topic": "cube/right/15", "payload": "-"}, {"topic": "cube/right/15", "payload": "14"}, {"topic": "cube/right/15", "payload": "-"}]}}
+{"timestamp_ms": 38981, "events": {"mqtt": [{"topic": "cube/right/15", "payload": "14"}]}}
+{"timestamp_ms": 39571, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 39650, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 40651, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 41659, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 42660, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 43425, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "-"}]}}
+{"timestamp_ms": 43676, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 44683, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 45705, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 46265, "events": {"mqtt": [{"topic": "cube/right/4", "payload": "5"}]}}
+{"timestamp_ms": 46291, "events": {"mqtt": [{"topic": "cube/right/4", "payload": "1"}]}}
+{"timestamp_ms": 46715, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 47079, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 47716, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 48717, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 49720, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 50033, "events": {"mqtt": [{"topic": "cube/right/11", "payload": "-"}]}}
+{"timestamp_ms": 50741, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 51565, "events": {"mqtt": [{"topic": "cube/right/15", "payload": "-"}]}}
+{"timestamp_ms": 51751, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 52752, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 53761, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 53940, "events": {"mqtt": [{"topic": "cube/right/11", "payload": "14"}]}}
+{"timestamp_ms": 54763, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 55766, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 56786, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 57803, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 58805, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 58813, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 58836, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 58843, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 58866, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 58873, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 58896, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 58901, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 58924, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 58929, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 58952, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 58959, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 58983, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 58989, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59012, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59016, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59039, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59046, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59069, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59075, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59099, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59105, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59129, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59135, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59157, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59164, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59187, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59193, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59216, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59220, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59241, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59247, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59270, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59276, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59300, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59305, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59329, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59334, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59357, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59362, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59385, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59390, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59413, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59418, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59441, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59446, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59469, "events": {"mqtt": [{"topic": "cube/right/14", "payload": "16"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 59476, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59499, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59504, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59528, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 59533, "events": {"incidents": ["letter_column_move", "letter_lock", "shield_letter_collision"]}}
+{"timestamp_ms": 59556, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 60559, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 61573, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 62589, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 63601, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 64612, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 64795, "events": {"mqtt": [{"topic": "cube/right/4", "payload": "-"}]}}
+{"timestamp_ms": 65615, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 66619, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 66678, "events": {"mqtt": [{"topic": "cube/right/6", "payload": "5"}]}}
+{"timestamp_ms": 67365, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 67621, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 68628, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 69637, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 70658, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 71659, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 72670, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 72811, "events": {"mqtt": [{"topic": "cube/right/6", "payload": "-"}]}}
+{"timestamp_ms": 73683, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 73947, "events": {"mqtt": [{"topic": "cube/right/6", "payload": "4"}]}}
+{"timestamp_ms": 74685, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 75695, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 76707, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 77728, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 78729, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 78736, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78759, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78765, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78788, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78794, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78817, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78823, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78845, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78847, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78871, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78875, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78895, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78900, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78924, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78928, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78950, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78955, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78979, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 78983, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79007, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79013, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79036, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79042, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79065, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79072, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79096, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79102, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79125, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79131, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79154, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79160, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79184, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79189, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79213, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79218, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79242, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79248, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79271, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79276, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79300, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79307, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79330, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79336, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79359, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79365, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79388, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79394, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79418, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79422, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79445, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79451, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79473, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79479, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79502, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79507, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79528, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79537, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79552, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79566, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79581, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79596, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79605, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79625, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79633, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79654, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79659, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79683, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79688, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79711, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79717, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79739, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79745, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79767, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79773, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79796, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79802, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79826, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79831, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79854, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79859, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79882, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79887, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79910, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79916, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79940, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79946, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79968, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79974, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 79997, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 80003, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 80027, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 80032, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 81037, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 82047, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 83064, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 84066, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 85068, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 86076, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 87086, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 88089, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 89091, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 90094, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 91103, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 91120, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91130, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91148, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91154, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91176, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91181, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91203, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91208, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91232, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91236, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91259, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91264, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91287, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91292, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91315, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91321, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91344, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91349, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91372, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91377, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91400, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91403, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91426, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91430, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91454, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91458, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91482, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91487, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91510, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91515, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91538, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91543, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91566, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91570, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91594, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91598, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91621, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91626, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91649, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91654, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91677, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91682, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 91705, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 91710, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 92719, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 93730, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 94750, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 95751, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 96113, "events": {"mqtt": [{"topic": "cube/right/1", "payload": "-"}]}}
+{"timestamp_ms": 96400, "events": {"mqtt": [{"topic": "cube/right/1", "payload": "6"}]}}
+{"timestamp_ms": 96768, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 97783, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 97966, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "1"}]}}
+{"timestamp_ms": 98785, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 99506, "events": {"mqtt": [{"topic": "cube/right/6", "payload": "-"}]}}
+{"timestamp_ms": 99798, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 100811, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 100816, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100838, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100845, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100868, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100874, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100898, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100903, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100926, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100932, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100955, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100960, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100980, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 100988, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101009, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101017, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101037, "events": {"mqtt": [{"topic": "cube/right/4", "payload": "2"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 101044, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101066, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101071, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101094, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101100, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101122, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101127, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101150, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101156, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101179, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101185, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101208, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101213, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101237, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101242, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 101265, "events": {"incidents": ["letter_column_move", "letter_lock", "shield_letter_collision"]}}
+{"timestamp_ms": 101271, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 102272, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 103281, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 104285, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 105295, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 106298, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 107309, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 108329, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 109350, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 109357, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109380, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109387, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109410, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109416, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109439, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109444, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109467, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109474, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109497, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109503, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109526, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109531, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109554, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109556, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109579, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109584, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109607, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109615, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109638, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109645, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109668, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109675, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109699, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109705, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109728, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109733, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109756, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109763, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109786, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109792, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109816, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109818, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109841, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109847, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109866, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109877, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109896, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109902, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109924, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109931, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109954, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109960, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109982, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 109988, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110011, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110017, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110039, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110045, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110068, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110074, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110097, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110103, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110126, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110132, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110155, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110160, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110184, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110189, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110212, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110218, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110241, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110247, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110270, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110274, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110297, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110304, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110327, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110332, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110355, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110361, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110385, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "11"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 110390, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110414, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110419, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110442, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "-"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 110448, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110471, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110476, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110499, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110505, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110528, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110533, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110556, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110561, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110584, "events": {"mqtt": [{"topic": "cube/right/13", "payload": "11"}], "incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 110589, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110613, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110618, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110641, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110646, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110669, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110674, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110697, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110702, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110725, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110730, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110754, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110758, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110781, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 110786, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 110809, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 111827, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 112461, "events": {"mqtt": [{"topic": "cube/right/14", "payload": "-"}]}}
+{"timestamp_ms": 112828, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 113254, "events": {"incidents": ["shield_letter_collision"]}}
+{"timestamp_ms": 113830, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 114843, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 115856, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 116584, "events": {"mqtt": [{"topic": "cube/right/4", "payload": "-"}]}}
+{"timestamp_ms": 116860, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 117019, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "-"}]}}
+{"timestamp_ms": 117032, "events": {"mqtt": [{"topic": "cube/right/4", "payload": "2"}]}}
+{"timestamp_ms": 117864, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 118506, "events": {"mqtt": [{"topic": "cube/right/3", "payload": "1"}]}}
+{"timestamp_ms": 118868, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 119575, "events": {"mqtt": [{"topic": "cube/right/4", "payload": "-"}]}}
+{"timestamp_ms": 119870, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 120717, "events": {"mqtt": [{"topic": "cube/right/6", "payload": "2"}]}}
+{"timestamp_ms": 120891, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 120896, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 120919, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 120925, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 120948, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 120953, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 120976, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 120982, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 121005, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 121011, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 121034, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 121039, "events": {"incidents": ["letter_column_move", "letter_lock", "shield_letter_collision"]}}
+{"timestamp_ms": 121063, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 122077, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 123095, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 123305, "events": {"mqtt": [{"topic": "cube/right/3", "payload": "-"}]}}
+{"timestamp_ms": 124103, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 125115, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 126134, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 127148, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 128153, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 128160, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128183, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128188, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128212, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128216, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128237, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128245, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128269, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128274, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128298, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128304, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128328, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128334, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128358, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128363, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128387, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128391, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128414, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128420, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128444, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128449, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128472, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128479, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128502, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128508, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128531, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128535, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128555, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128564, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128581, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128592, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128610, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128620, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128640, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128647, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128669, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128675, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128698, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128703, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128726, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128733, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128754, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128761, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128782, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128788, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128812, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128817, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128840, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128846, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128869, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128875, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128899, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128905, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128928, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128935, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128958, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128964, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128988, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 128995, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129018, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129024, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129047, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129053, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129076, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129082, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129105, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129110, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129133, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129139, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129162, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129167, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129190, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129197, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129221, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129227, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129251, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129256, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129279, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129285, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129309, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129314, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129337, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129343, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129364, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129371, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129389, "events": {"incidents": ["letter_column_move", "letter_lock"]}}
+{"timestamp_ms": 129399, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_rack_collision"]}}
+{"timestamp_ms": 129417, "events": {"incidents": ["letter_column_move", "letter_lock", "letter_lock"]}}
+{"timestamp_ms": 130421, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 131438, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 132460, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 133475, "events": {"incidents": ["letter_column_move"]}}
+{"timestamp_ms": 133986, "events": {"pygame": [{"type": "QUIT"}]}}

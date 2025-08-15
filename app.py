@@ -32,11 +32,11 @@ class App:
                 await the_app.guess_tiles(guess, move_tiles, player, now_ms)
             return guess_tiles_callback
 
-        def make_start_game_callback(the_app: App) -> Callable[[bool],  Coroutine[Any, Any, None]]:
-            async def start_game_callback(force: bool, now_ms: int) -> None:
+        def make_start_game_callback(the_app: App) -> Callable[[bool, int, int],  Coroutine[Any, Any, None]]:
+            async def start_game_callback(force: bool, now_ms: int, player: int) -> None:
                 if force or not the_app._running:
-                    print("starting from callback")
-                    events.trigger("game.start", now_ms)
+                    print(f"starting from callback for player {player}")
+                    events.trigger("game.start_player", now_ms, player)
             return start_game_callback
 
         self._dictionary = dictionary
@@ -102,8 +102,12 @@ class App:
         # Note: ABC sequence will be activated automatically when moratorium expires
 
     async def load_rack(self, now_ms: int) -> None:
+        # Only load letters for players who have actually started their games
         for player in range(MAX_PLAYERS):
-            await cubes_to_game.load_rack(self._publish_queue, self._player_racks[player].get_tiles(), player, now_ms)
+            if cubes_to_game.has_player_started_game(player):
+                await cubes_to_game.load_rack(self._publish_queue, self._player_racks[player].get_tiles(), player, now_ms)
+            else:
+                logging.info(f"LOAD RACK: Skipping player {player} - game not started")
 
     async def accept_new_letter(self, next_letter: str, position: int, now_ms: int) -> None:
         if self._player_count > 1:
