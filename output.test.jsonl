@@ -1,8 +1,0 @@
-{"event_type": "letter_position_change", "x": 49, "y": 0, "timestamp_ms": 1238}
-{"event_type": "letter_position_change", "x": 65, "y": 0, "timestamp_ms": 2241}
-{"event_type": "letter_position_change", "x": 81, "y": 0, "timestamp_ms": 3243}
-{"event_type": "letter_position_change", "x": 97, "y": 1, "timestamp_ms": 4251}
-{"event_type": "word_formed", "word": "SEX", "player": 0, "score": 3}
-{"event_type": "letter_position_change", "x": 113, "y": 4, "timestamp_ms": 5252}
-{"event_type": "letter_position_change", "x": 129, "y": 1, "timestamp_ms": 6254}
-{"event_type": "letter_position_change", "x": 113, "y": 1, "timestamp_ms": 7268}
