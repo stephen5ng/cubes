@@ -1,0 +1,155 @@
+diff --git a/monitor_cubes.py b/monitor_cubes.py
+index 3bb03d1..2df8dcf 100755
+--- a/monitor_cubes.py
++++ b/monitor_cubes.py
+@@ -45,16 +45,28 @@ async def pub():
+ 
+             # print(f"c2l {cubes_to_letters}")
+             # print(f"c2n {cubes_to_neighbortags}")
+-
++            letters = []
+             for cube in cubes:
+                 print(f"{cube}", end="")
+                 print(f"[{cubes_to_letters.get(cube, '')}]", end="")
++                from_letter = cubes_to_letters.get(cube, 'BLANK')
++                to_letter = 'NOT'
+                 if cube in cubes_to_neighbortags:
+                     neighbor = cubes_to_neighbortags[cube]
+                     neighbor_cube = TAGS_TO_CUBES.get(neighbor, "")
+                     print(f"-> {neighbor},{neighbor_cube}", end="")
+                     print(f"[{cubes_to_letters.get(neighbor_cube, '')}]", end="")
++                    to_letter = cubes_to_letters.get(neighbor_cube, 'BLANK')
++                    to_letter
+                 print(f"")
++                letters.append([from_letter, to_letter])
++            print(f"letters: {letters}")
++            speak_me = ""
++            print_me = ""
++            for l in letters:
++                speak_me += f"'{l[0]}' to '{l[1]}',"
++            print(speak_me)
++            # os.system("say " + speak_me)
+             print("")
+ 
+ 
+diff --git a/pygamegameasync.py b/pygamegameasync.py
+index 18e446d..156497a 100755
+--- a/pygamegameasync.py
++++ b/pygamegameasync.py
+@@ -237,9 +237,9 @@ class Score():
+ class LastGuessFader():
+     FADE_DURATION_MS = 2000
+ 
+-    def __init__(self, last_update_ms, font, textrect, color):
++    def __init__(self, last_update_ms, previous_guesses, textrect, color):
+         self.alpha = 255
+-        self.font = font
++        self.previous_guesses = previous_guesses
+         self.textrect = textrect
+         self.last_update_ms = last_update_ms
+         self.easing = easing_functions.QuinticEaseInOut(start=0, end = 255, duration = 1)
+@@ -247,12 +247,13 @@ class LastGuessFader():
+         self.color = color
+ 
+     def render(self, previous_guesses, last_guess):
++        font = self.previous_guesses.get_font()
+         self.last_guess = last_guess
+-        last_guess_rect = self.font.get_rect(last_guess)
++        last_guess_rect = font.get_rect(last_guess)
+         ix = previous_guesses.index(last_guess)
+         up_thru_last_guess = ' '.join(previous_guesses[:ix+1])
+         last_line_rect = self.textrect.get_last_rect(up_thru_last_guess)
+-        font_surf = self.font.render(last_guess, self.color)[0]
++        font_surf = font.render(last_guess, self.color)[0]
+         self.last_guess_surface = pygame.Surface(font_surf.size, pygame.SRCALPHA)
+         self.last_guess_surface.blit(font_surf, (0, 0), special_flags=pygame.BLEND_RGBA_ADD)
+         self.last_guess_position = (
+@@ -271,13 +272,17 @@ class PreviousGuessesBase():
+ 
+     def __init__(self, font_size, color):
+         self.font = pygame.freetype.SysFont(PreviousGuessesBase.FONT, font_size)
++        self.font_size = font_size
+         self.font.kerning = True
+         self.previous_guesses = ""
+         self.textrect = textrect.TextRectRenderer(self.font,
+-                pygame.Rect(0,0, SCREEN_WIDTH, SCREEN_HEIGHT),
++                pygame.Rect(0,0, SCREEN_WIDTH, SCREEN_HEIGHT/2),
+                 color)
+         self.draw()
+ 
++    def get_font(self):
++        return self.textrect._font
++
+     async def update_previous_guesses(self, previous_guesses):
+         self.previous_guesses = previous_guesses
+         self.draw()
+@@ -290,7 +295,7 @@ class PreviousGuessesBase():
+ 
+ class PreviousGuesses(PreviousGuessesBase):
+     COLOR = Color("skyblue")
+-    FONT_SIZE = 12
++    FONT_SIZE = 24
+     POSITION_TOP = 24
+     FADE_DURATION_NEW_GUESS = 2000
+     FADE_DURATION_OLD_GUESS = 1000
+@@ -319,7 +324,7 @@ class PreviousGuesses(PreviousGuessesBase):
+         self.faders = []
+         for last_guess, last_update_ms, color, duration in self.fader_inputs:
+             if last_guess in previous_guesses:
+-                fader = LastGuessFader(last_update_ms, self.font, self.textrect, color)
++                fader = LastGuessFader(last_update_ms, self, self.textrect, color)
+                 fader.render(previous_guesses, last_guess)
+                 self.faders.append(fader)
+         await super(PreviousGuesses, self).update_previous_guesses(previous_guesses)
+@@ -339,7 +344,7 @@ class PreviousGuesses(PreviousGuessesBase):
+ 
+ class RemainingPreviousGuesses(PreviousGuessesBase):
+     COLOR = Color("grey")
+-    FONT_SIZE = 10
++    FONT_SIZE = 30
+     TOP_GAP = 3
+ 
+     def __init__(self):
+diff --git a/textrect.py b/textrect.py
+index 8146676..5fcda9a 100755
+--- a/textrect.py
++++ b/textrect.py
+@@ -48,11 +48,35 @@ class TextRectRenderer():
+         self._blitter = Blitter(font, color, rect)
+ 
+     def render(self, string):
+-        return render_textrect(string, self._blitter, self._font, self._rect, self._color, self._font_rect_getter)
++        try:
++            print(f"old font: {self._font}, {self._font.size}")
++            return render_textrect(string, self._blitter, self._font,
++                self._rect, self._color, self._font_rect_getter)
++        except TextRectException:
++            print("exception in renderer0")
++            # self._font = pygame.freetype.SysFont(self._font.name, self._font.size*3/2)
++            self._font = pygame.freetype.SysFont(self._font.name, self._font.size/2)
++            self._blitter = Blitter(self._font, self._color, self._rect)
++            self._font_rect_getter = FontRectGetter(self._font)
++            print(f"new font: {self._font}, {self._font.size}")
++            return render_textrect(string, self._blitter, self._font,
++                self._rect, self._color, self._font_rect_getter)
+ 
+     def get_last_rect(self, string):
+-        return render_textrect(string, self._blitter, self._font,
+-            self._rect, self._color, self._font_rect_getter, rect_only=True)
++        try:
++            return render_textrect(string, self._blitter, self._font,
++                self._rect, self._color, self._font_rect_getter, rect_only=True)
++        except TextRectException:
++            print("exception in renderer1")
++            self._font = pygame.freetype.SysFont(self._font.name, self._font.size/2)
++            self._blitter = Blitter(self._font, self._color, self._rect)
++            self._font_rect_getter = FontRectGetter(self._font)
++            print(f"new font: {self._font}")
++            # self._font = pygame.freetype.SysFont(self._font.name, 2)
++            return render_textrect(string, self._blitter, self._font,
++                self._rect, self._color, self._font_rect_getter, rect_only=True)
++        # return render_textrect(string, self._blitter, self._font,
++        #     self._rect, self._color, self._font_rect_getter, rect_only=True)
+ 
+ def render_textrect(string, blitter, font, rect, text_color, rg, rect_only=False):
+     """Returns a surface containing the passed text string, reformatted

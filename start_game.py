@@ -42,12 +42,13 @@ async def _start_letter_consumer(client: aiomqtt.Client, cube_to_letter: Dict[st
 async def align_abc(sleep_duration_s: float) -> None:
     """Monitor cube letters and align ABC by publishing A->B, B->C when groups show only A/B/C."""
     all_cube_ids = get_lines("cube_ids.txt")
-    all_tag_ids = get_lines("tag_ids.txt")
+    # tag_ids no longer used for control path; keep for compatibility if present
+    all_tag_ids = get_lines("tag_ids.txt") if os.path.exists("tag_ids.txt") else []
 
     p0_cubes = all_cube_ids[:6]
     p1_cubes = all_cube_ids[6:]
-    p0_tags = all_tag_ids[:6]
-    p1_tags = all_tag_ids[6:]
+    p0_tags = all_tag_ids[:6] if all_tag_ids else []
+    p1_tags = all_tag_ids[6:] if all_tag_ids else []
     print(f"p0_cubes {p0_cubes}")
 
     # Allow publishing neighbor tags; '-' can exist but is not mapped
@@ -82,8 +83,9 @@ async def align_abc(sleep_duration_s: float) -> None:
                         if not wait_for_scramble and cube_a and cube_b and cube_c:
                             print("start_game STARTING GAME")
                             wait_for_scramble = True
-                            await client.publish(f"cube/nfc/{cube_a}", payload=cube_to_tag[cube_b])
-                            await client.publish(f"cube/nfc/{cube_b}", payload=cube_to_tag[cube_c])
+                            # Publish direct neighbor cubes on new protocol
+                            await client.publish(f"cube/right/{cube_a}", payload=cube_b)
+                            await client.publish(f"cube/right/{cube_b}", payload=cube_c)
                     else:
                         wait_for_scramble = False
                 await asyncio.sleep(sleep_duration_s)

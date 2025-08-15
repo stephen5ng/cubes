@@ -1,0 +1,9 @@
+Bottle v0.13.2 server starting up (using GeventServer())...
+Listening on http://localhost:8080/
+Hit Ctrl-C to quit.
+
+127.0.0.1 - - [2024-12-31 16:13:17] "GET /get_current_score HTTP/1.1" 404 884 0.050008
+127.0.0.1 - - [2024-12-31 16:13:17] "GET /get_rack_letters HTTP/1.1" 404 882 0.000709
+127.0.0.1 - - [2024-12-31 16:13:17] "GET /get_previous_guesses HTTP/1.1" 404 890 0.000644
+127.0.0.1 - - [2024-12-31 16:13:17] "GET /get_remaining_previous_guesses HTTP/1.1" 404 910 0.000679
+127.0.0.1 - - [2024-12-31 16:13:17] "GET /start HTTP/1.1" 404 860 0.000684

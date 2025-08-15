@@ -1,0 +1,111 @@
+diff --git a/main.py b/main.py
+index 506af4ea..71139214 100755
+--- a/main.py
++++ b/main.py
+@@ -50,18 +50,17 @@ class OutputLogger(BaseLogger):
+         }
+         self._write_event(event)
+     
+-    def log_letter_position_change(self, x: int, y: int):
++    def log_letter_position_change(self, x: int, y: int, debug_str: str):
+         event = {
+             "event_type": "letter_position_change",
+             "x": x,
+-            "y": y
++            "y": y,
++            "debug_str": debug_str
+         }
+         self._write_event(event)
+ 
+ class GameLogger(BaseLogger):
+-    def log_event(self, event_type: str, data: dict):
+-        now_ms = pygame.time.get_ticks()
+-        
++    def log_event(self, event_type: str, data: dict, now_ms: int):        
+         log_entry = {
+             "timestamp_ms": now_ms,
+             "event_type": event_type,
+diff --git a/pygamegameasync.py b/pygamegameasync.py
+index ea5455f4..9779463a 100755
+--- a/pygamegameasync.py
++++ b/pygamegameasync.py
+@@ -273,7 +273,7 @@ class Letter():
+         self.start_fall_y = 0
+         self.current_fall_start_y = 0
+         self.column_move_direction = 1
+-        self.next_column_move_time_ms = now_ms
++        self.next_column_move_time_ms = now_ms + self.NEXT_COLUMN_MS
+         self.fall_duration_ms = self.DROP_TIME_MS
+         self.rect = pygame.Rect(0, 0, 0, 0)
+         self.pos = [0, 0]
+@@ -306,6 +306,7 @@ class Letter():
+         fall_percent = (now_ms - self.start_fall_time_ms)/self.fall_duration_ms
+         fall_easing = self.top_bottom_easing(fall_percent)
+         self.pos[1] = int(self.current_fall_start_y + fall_easing * self.height)
++        debug_str = f"now_ms: {now_ms}, start_fall_time_ms: {self.start_fall_time_ms}, fall_duration_ms: {self.fall_duration_ms}, fall_percent: {fall_percent}, fall_easing: {fall_easing}, pos[1]: {self.pos[1]}"
+         distance_from_top = self.pos[1] / SCREEN_HEIGHT
+         distance_from_bottom = 1 - distance_from_top
+         if now_ms > self.last_beep_time_ms + (distance_from_bottom*distance_from_bottom)*7000:
+@@ -330,7 +331,7 @@ class Letter():
+                 self.next_column_move_time_ms = now_ms + self.NEXT_COLUMN_MS
+                 pygame.mixer.Sound.play(self.bounce_sound)
+             
+-            self.output_logger.log_letter_position_change(self.pos[0], self.pos[1])
++            self.output_logger.log_letter_position_change(self.pos[0], self.pos[1], debug_str)
+         return incidents
+ 
+     def shield_collision(self, now_ms: int) -> None:
+@@ -1287,20 +1288,19 @@ class BlockWordsPygame():
+ 
+         time_offset = 0  # so that time doesn't go backwards after playing a replay file
+         while True:
+-            now_ms = pygame.time.get_ticks() + time_offset
+-
+             if self.game.aborted:
+                 return
+                 
+             events_to_process = []
+             
++            now_ms = pygame.time.get_ticks() + time_offset
+             for event in pygame.event.get():
+                 events_to_process.append((EventType.PYGAME, event, now_ms))
+             self._add_mqtt_events_to_queue(mqtt_message_queue, events_to_process, now_ms)
+ 
+             if self.replayer.events:
+                 replay_event = self.replayer.events.pop()
+-                time_offset = now_ms = replay_event['timestamp_ms']
++                time_offset = replay_event['timestamp_ms']
+                 if replay_event['event_type'] == 'keyboard_event':
+                     key = replay_event['data']['key']
+                     real_event = pygame.event.Event(pygame.KEYDOWN, key=pygame.key.key_code(key))
+@@ -1321,7 +1321,7 @@ class BlockWordsPygame():
+                 
+                 if event_type == EventType.PYGAME:
+                     if event.type == pygame.QUIT:
+-                        self.game.game_logger.log_event("quit", {"timestamp": now_ms})
++                        self.game.game_logger.log_event("quit", {}, event_time_ms)
+                         self.game.game_logger.stop_logging()
+                         self.game.output_logger.stop_logging()
+                         return
+@@ -1331,8 +1331,8 @@ class BlockWordsPygame():
+                         key = pygame.key.name(event.key).upper()
+                         self.game.game_logger.log_event("keyboard_event", {
+                             "key": key,
+-                            "timestamp": event_time_ms
+-                        })
++                            # "timestamp": event_time_ms
++                        }, event_time_ms)
+                         await self.handle_keyboard_event(event, keyboard_input, event_time_ms)
+                     
+                     if hasattr(event, 'joy'):  # Only process joystick events
+@@ -1345,8 +1345,8 @@ class BlockWordsPygame():
+                     await self.handle_mqtt_message(topic, payload, event_time_ms)
+             
+             screen.fill((0, 0, 0))            
+-            if len(incidents := await self.game.update(screen, now_ms)) > 0:
+-                self.game.game_logger.log_event("incident_event", {"incidents": incidents})
++            if len(incidents := await self.game.update(screen, event_time_ms)) > 0:
++                self.game.game_logger.log_event("incident_event", {"incidents": incidents}, event_time_ms)
+             hub75.update(screen)
+             pygame.transform.scale(screen, self._window.get_rect().size, dest_surface=self._window)
+             pygame.display.flip()

@@ -806,7 +806,7 @@ class BlockWordsPygame:
         elif topic_str == "game/guess":
             payload_str = payload.decode() if payload else ""
             await self.the_app.guess_word_keyboard(payload_str, 1, now_ms)
-        elif topic_str.startswith("cube/nfc/"):
+        elif topic_str.startswith("cube/right/"):
             # Handle None payload by converting to empty string
             # payload_data = payload.decode() if payload is not None else ""
             # Create a simple message-like object for cubes_to_game
@@ -1013,6 +1013,7 @@ class BlockWordsPygame:
             if 'JOY' in event_type:
                 for input_device in input_devices: 
                     if str(input_device) == "GamepadInput":
+                        print(f"Processing {pygame_event}")
                         await input_device.process_event(pygame_event, now_ms)
         return False
 
@@ -1037,7 +1038,7 @@ class BlockWordsPygame:
         self.replayer = GameReplayer(self.replay_file)
         if self.replay_file:
             self.replayer.load_events()
-            # print(f"Replay mode: loaded {len(self.replayer.events)} events from {self.replay_file}")
+            print(f"Replay mode: loaded {len(self.replayer.events)} events from {self.replay_file}")
             mqtt_client = self.get_mock_mqtt_client()
         else:
             await subscribe_client.subscribe("app/#")
@@ -1097,7 +1098,6 @@ class BlockWordsPygame:
                 return
             
             pygame_events = self._get_pygame_events()
-
             events_to_log = {}
             if pygame_events:
                 events_to_log['pygame'] = pygame_events

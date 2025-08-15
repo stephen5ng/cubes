@@ -17,11 +17,8 @@ import tiles
 #     handlers=[logging.StreamHandler(sys.stdout)]
 # )
 
-# "Tags" are nfc ids
 # "Cubes" are the MAC address of the ESP32
 # "Tiles" are the tile number assigned by the app (usually 0-6)
-
-START_GAME_TAGS = ["E8F21366080104E0"]
 
 CUBE_START_MORATORIUM_MS = 2000
 _last_game_end_time_ms = 0
@@ -35,12 +32,11 @@ _abc_cubes = {"A": None, "B": None, "C": None}  # Maps letter to cube ID
 class CubeManager:
     def __init__(self, player_number: int):
         self.player_number = player_number
-        self.tags_to_cubes: Dict[str, str] = {}
         self.cube_chain: Dict[str, str] = {}
         self.cubes_to_letters: Dict[str, str] = {}
         self.tiles_to_cubes: Dict[str, str] = {}
         self.cubes_to_tileid: Dict[str, str] = {}
-        self.cubes_to_neighbortags: Dict[str, str] = {}
+        self.cubes_to_neighbors: Dict[str, str] = {}
         self.border_color: str = "0xffff"
         self.cube_list: List[str] = []  # Store ordered list of cubes
 
@@ -60,13 +56,14 @@ class CubeManager:
         except Exception as e:
             logging.error(f"print_cube_chain ERROR: {e}")
 
-    def _dump_cubes_to_neighbortags(self):
-        for cube in self.tags_to_cubes.values():
+    def _dump_cubes_to_neighbors(self):
+        # Prefer explicit cube list for stable ordering
+        cubes_iter = list(self.cube_list)
+        for cube in cubes_iter:
             log_str = f"Player {self.player_number}: {cube} [{self.cubes_to_letters.get(cube, '')}]"
-            if cube in self.cubes_to_neighbortags:
-                neighbor = self.cubes_to_neighbortags[cube]
-                neighbor_cube = self.tags_to_cubes.get(neighbor, "")
-                log_str += f"-> {neighbor},{neighbor_cube}"
+            if cube in self.cubes_to_neighbors:
+                neighbor_cube = self.cubes_to_neighbors[cube]
+                log_str += f"-> {neighbor_cube}"
                 log_str += f"[{self.cubes_to_letters.get(neighbor_cube, '')}]"
             logging.info(log_str)
         logging.info("")
@@ -121,43 +118,35 @@ class CubeManager:
             return False
         return True
 
-    def process_tag(self, sender_cube: str, tag: str) -> List[str]:
-        # Update neighbor tracking
-        self.cubes_to_neighbortags[sender_cube] = tag
-        self._dump_cubes_to_neighbortags()
-        logging.info(f"process_tag {sender_cube}: {tag}")
-        logging.info(f"process_tag cube_chain {self.cube_chain}")
+    def process_neighbor_cube(self, sender_cube: str, neighbor_cube: str) -> List[str]:
+        # Update neighbor tracking with direct cube id
+        self.cubes_to_neighbors[sender_cube] = neighbor_cube
+        self._dump_cubes_to_neighbors()
+        logging.info(f"process_neighbor_cube {sender_cube} -> {neighbor_cube}")
 
-        # Handle empty or invalid tag case
-        if not tag or tag not in self.tags_to_cubes:
-            logging.info(f"bad tag: {tag}")
+        # Handle empty or invalid neighbor case
+        if not neighbor_cube or neighbor_cube not in self.cube_list:
             if sender_cube in self.cube_chain:
                 del self.cube_chain[sender_cube]
             return self._form_words_from_chain()
 
-        target_cube = self.tags_to_cubes[tag]
-        
         # Update chain if valid
-        if not self._update_chain(sender_cube, target_cube):
+        if not self._update_chain(sender_cube, neighbor_cube):
             return []
-
-        logging.info(f"process_tag final cube_chain: {self._print_cube_chain()}")
+        logging.info(f"process_neighbor final cube_chain: {self._print_cube_chain()}")
         return self._form_words_from_chain()
 
     def _initialize_arrays(self):
-        cubes = list(self.tags_to_cubes.values())
+        cubes = self.cube_list
         self.tiles_to_cubes = {str(i): cubes[i] for i in range(len(cubes))}
         self.cubes_to_tileid = {cube: tile_id for tile_id, cube in self.tiles_to_cubes.items()}
 
-    async def init(self, all_cubes: List[str], all_tags: List[str]):
+    async def init(self, all_cubes: List[str]):
         """Initialize cube manager for a specific player."""
         start_idx = self.player_number * tiles.MAX_LETTERS
         end_idx = start_idx + tiles.MAX_LETTERS
         
         cubes = all_cubes[start_idx:end_idx]
-        tags = all_tags[start_idx:end_idx]
-
-        self.tags_to_cubes = {tag: cube for cube, tag in zip(cubes, tags)}
         self.cube_list = cubes
         self._initialize_arrays()
 
@@ -213,23 +202,6 @@ class GuessManager:
         self.last_guess_time_s = time.time()
         self.DEBOUNCE_TIME_S = 10
 
-    async def guess_word_based_on_cubes(self, sender: str, tag: str, publish_queue, cube_to_player: Dict[str, int], cube_managers: List[CubeManager], now_ms: int):
-        now_s = now_ms / 1000
-        
-        player = cube_to_player.get(sender)
-        if player is None:
-            logging.error(f"Unknown cube: {sender}")
-            return
-        
-        word_tiles_list = cube_managers[player].process_tag(sender, tag)
-        logging.info(f"WORD_TILES: {word_tiles_list}")
-        if word_tiles_list == self.last_guess_tiles and now_s - self.last_guess_time_s < self.DEBOUNCE_TIME_S:
-            logging.info(f"debounce ignoring guess")
-            self.last_guess_time_s = now_s
-            return
-        self.last_guess_time_s = now_s
-        await self.guess_tiles(publish_queue, word_tiles_list, player, now_ms)
-
     async def guess_tiles(self, publish_queue, word_tiles_list, player: int, now_ms: int):
         self.last_guess_tiles = word_tiles_list
         await guess_last_tiles(publish_queue, player, now_ms)
@@ -264,9 +236,6 @@ async def load_rack(publish_queue, tiles_with_letters: list[tiles.Tile], player:
 
 async def guess_tiles(publish_queue, word_tiles_list, player: int, now_ms: int):
     await guess_manager.guess_tiles(publish_queue, word_tiles_list, player, now_ms)
-
-async def guess_word_based_on_cubes(sender: str, tag: str, publish_queue, now_ms: int):
-    await guess_manager.guess_word_based_on_cubes(sender, tag, publish_queue, cube_to_player, cube_managers, now_ms)
 
 guess_tiles_callback: Callable[[str, bool], Coroutine[None, None, None]]
 
@@ -338,10 +307,10 @@ def set_game_running(running: bool) -> None:
 async def _find_non_touching_cubes(publish_queue, now_ms: int) -> List[str]:
     """Find 3 cubes that are not touching each other."""
     # Get all available cubes from the first cube manager
-    if not cube_managers or not cube_managers[0].tags_to_cubes:
+    if not cube_managers or not cube_managers[0].cube_list:
         return []
     
-    all_cubes = list(cube_managers[0].tags_to_cubes.values())
+    all_cubes = list(cube_managers[0].cube_list)
     
     if len(all_cubes) < 3:
         return []
@@ -392,6 +361,7 @@ async def _activate_abc_start_sequence(publish_queue, now_ms: int) -> None:
     
     # Display A, B, C on the selected cubes
     for letter, cube_id in _abc_cubes.items():
+        logging.info(f"ABC: publishing letter {letter} to cube {cube_id}")
         await _publish_letter(publish_queue, letter, cube_id, now_ms)
 
 async def _check_abc_sequence_complete() -> bool:
@@ -402,7 +372,7 @@ async def _check_abc_sequence_complete() -> bool:
     # Check all cube managers for the ABC sequence
     for manager in cube_managers:
         # Look for A-B-C in the cube chain
-        print(f"manager.cube_chain: {manager.cube_chain}")
+        logging.info(f"ABC check: manager {manager.player_number} cube_chain={manager.cube_chain}")
         cube_a = _abc_cubes["A"]
         cube_b = _abc_cubes["B"] 
         cube_c = _abc_cubes["C"]
@@ -429,23 +399,23 @@ def _all_cubes_have_reported_neighbors() -> bool:
         return False    
     
     for manager in cube_managers:
-        all_cubes = set(manager.tags_to_cubes.values())
-        reported_cubes = set(manager.cubes_to_neighbortags.keys())
-        print(f"all_cubes: {all_cubes}, reported_cubes: {reported_cubes}")
+        all_cubes = set(manager.cube_list)
+        reported_cubes = set(manager.cubes_to_neighbors.keys())
+        # print(f"all_cubes: {all_cubes}, reported_cubes: {reported_cubes}")
         if all_cubes.issubset(reported_cubes):
-            print(f"all cubes have neighbors")
+            # print(f"all cubes have neighbors")
             return True
         else:
             missing_cubes = all_cubes - reported_cubes
-            print(f"Player {manager.player_number}: Still waiting for neighbor reports from cubes: {missing_cubes}")
+            if missing_cubes:  # Only print if there are actually missing cubes
+                print(f"Player {manager.player_number}: Still waiting for neighbor reports from cubes: {missing_cubes}")
     
     return False
 
 async def activate_abc_start_if_ready(publish_queue, now_ms: int) -> None:
     """Activate ABC start sequence if conditions are met (public interface)."""
     if (not _abc_start_active and not _game_running and 
-        (_last_game_end_time_ms == 0 or _is_cube_start_allowed(now_ms)) and
-        _all_cubes_have_reported_neighbors()):
+        (_last_game_end_time_ms == 0 or _is_cube_start_allowed(now_ms))):
         await _activate_abc_start_sequence(publish_queue, now_ms)
 
 def _is_cube_start_allowed(now_ms: int) -> bool:
@@ -457,58 +427,50 @@ def _is_cube_start_allowed(now_ms: int) -> bool:
     time_since_end = now_ms - _last_game_end_time_ms
     return time_since_end >= CUBE_START_MORATORIUM_MS
 
-async def process_cube_guess(publish_queue, topic: aiomqtt.Topic, data: str, now_ms: int):
-    global _abc_start_active    
-    sender = topic.value.removeprefix("cube/nfc/")
-    await publish_queue.put((f"game/nfc/{sender}", data, True, now_ms))
     
-    # Handle special START_GAME_TAGS (legacy method)
-    if data in START_GAME_TAGS:
-        if _is_cube_start_allowed(now_ms):
-            await start_game_callback(True, now_ms)
-        else:
-            time_remaining = CUBE_START_MORATORIUM_MS - (now_ms - _last_game_end_time_ms)
-            logging.info(f"Cube start blocked by moratorium, {time_remaining}ms remaining")
-        return
-    
-    
-    # Process normal cube interactions
-    await guess_word_based_on_cubes(sender, data, publish_queue, now_ms)
-    
-    # Check if ABC sequence is complete and start game
-    if _abc_start_active and await _check_abc_sequence_complete():
-        logging.info("ABC sequence complete! Starting game...")
-        _clear_abc_start_sequence()
-        await start_game_callback(True, now_ms)
 
-def read_data(f) -> List[str]:
-    """Read all data from file."""
-    data = f.readlines()
-    return [l.strip() for l in data]
-
-async def init(subscribe_client, tags_file):
-    await subscribe_client.subscribe("cube/nfc/#")
+async def init(subscribe_client):
+    # Subscribe to direct neighbor topics only
+    await subscribe_client.subscribe("cube/right/#")
     
     all_cubes = [str(i) for i in range(1, 14)]
 
-    # Read all data first
-    with open(tags_file) as tags_f:
-        all_tags = read_data(tags_f)
-    
     # Clear and rebuild the global cube_to_player mapping
     cube_to_player.clear()
     
     # Initialize managers for each player
     for player, manager in enumerate(cube_managers):
-        await manager.init(all_cubes, all_tags)
-        
+        await manager.init(all_cubes)
         # Add to global cube_to_player mapping
         for cube in manager.cube_list:
             cube_to_player[cube] = player
+    logging.info(f"INIT: cube_list p0={cube_managers[0].cube_list} p1={cube_managers[1].cube_list}")
+    logging.info(f"INIT: cube_to_player={cube_to_player}")
 
 async def handle_mqtt_message(publish_queue, message, now_ms: int):
+    topic_str = getattr(message.topic, 'value', str(message.topic))
     payload_data = message.payload.decode() if message.payload is not None else ""
-    await process_cube_guess(publish_queue, message.topic, payload_data, now_ms)
+    logging.info(f"MQTT recv: topic={topic_str} payload={payload_data}")
+    
+    # Direct neighbor cube id from /cube/right/SENDER
+    if topic_str.startswith("cube/right/"):
+        sender_cube = topic_str.removeprefix("cube/right/")
+        neighbor_cube = payload_data
+        player = cube_to_player.get(sender_cube)
+        if player is not None:
+            logging.info(f"RIGHT msg: sender={sender_cube} neighbor={neighbor_cube} player={player}")
+            word_tiles_list = cube_managers[player].process_neighbor_cube(sender_cube, neighbor_cube)
+            logging.info(f"WORD_TILES (right): {word_tiles_list}")
+            await guess_tiles(publish_queue, word_tiles_list, player, now_ms)
+
+            # Check ABC completion after processing right-edge updates
+            if _abc_start_active and await _check_abc_sequence_complete():
+                logging.info("ABC sequence complete! Starting game (right)")
+                print("ABC sequence complete! Starting game (right)")
+                _clear_abc_start_sequence()
+                await start_game_callback(True, now_ms)
+        return
+
 
 async def good_guess(publish_queue, tiles: list[str], player: int, now_ms: int):
     cube_managers[player].border_color = "0x07E0"

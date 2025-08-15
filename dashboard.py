@@ -411,11 +411,11 @@ async def udp_monitor(dashboard):
 async def mqtt_listener(dashboard):
     async with aiomqtt.Client(MQTT_SERVER) as client:
         await client.subscribe("cube/+/letter")
-        await client.subscribe("cube/nfc/+")
+        await client.subscribe("cube/right/+")
         async for message in client.messages:
             topic_parts = str(message.topic).split('/')
             if len(topic_parts) == 3:
-                if topic_parts[1] == "nfc":
+                if topic_parts[1] == "right":
                     cube_id = topic_parts[2]
                     nfc_data = message.payload.decode()
                     dashboard.root.after(0, dashboard.update_nfc, cube_id, nfc_data)

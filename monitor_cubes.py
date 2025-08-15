@@ -19,7 +19,7 @@ tags = get_lines("tag_ids.txt")
 # cubes_to_tags = {}
 TAGS_TO_CUBES = {}
 cubes_to_letters = {}
-cubes_to_neighbortags = {}
+cubes_to_neighbors = {}
 for cube, tag in zip(cubes, tags):
     # cubes_to_tags[cube] = tag
     TAGS_TO_CUBES[tag] = cube
@@ -38,7 +38,7 @@ async def pub():
             elif "nfc" in str(message.topic):
                 cube = str(message.topic).split('/')[2]
                 neighbor = message.payload.decode()
-                cubes_to_neighbortags[cube] = neighbor
+                cubes_to_neighbors[cube] = neighbor
                 print(f"msg {cube} -> {neighbor}")
             else:
                 continue
@@ -49,8 +49,8 @@ async def pub():
             for cube in cubes:
                 print(f"{cube}", end="")
                 print(f"[{cubes_to_letters.get(cube, '')}]", end="")
-                if cube in cubes_to_neighbortags:
-                    neighbor = cubes_to_neighbortags[cube]
+                if cube in cubes_to_neighbors:
+                    neighbor = cubes_to_neighbors[cube]
                     neighbor_cube = TAGS_TO_CUBES.get(neighbor, "")
                     print(f"-> {neighbor},{neighbor_cube}", end="")
                     print(f"[{cubes_to_letters.get(neighbor_cube, '')}]", end="")

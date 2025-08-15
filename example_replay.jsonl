@@ -1,0 +1,6 @@
+{"timestamp_ms": 0, "event_type": "game_start", "data": {"start_time_ms": 1000}}
+{"timestamp_ms": 100, "event_type": "keyboard_event", "data": {"key": "RIGHT", "timestamp": 1100}}
+{"timestamp_ms": 200, "event_type": "keyboard_event", "data": {"key": "A", "timestamp": 1200}}
+{"timestamp_ms": 300, "event_type": "keyboard_event", "data": {"key": "RIGHT", "timestamp": 1300}}
+{"timestamp_ms": 400, "event_type": "keyboard_event", "data": {"key": "B", "timestamp": 1400}}
+{"timestamp_ms": 500, "event_type": "keyboard_event", "data": {"key": "SPACE", "timestamp": 1500}} 

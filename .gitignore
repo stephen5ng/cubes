@@ -1,0 +1,11 @@
+cube_env
+htmlcov
+voices
+gcptts*
+.coverage
+.cursor
+__pycache__
+.vscode
+fonts
+word_sounds*
+sounds

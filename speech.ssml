@@ -1,0 +1,13 @@
+<speak>
+  <par>
+    <media begin="0.0s">
+      <speak><voice name="en-US-Standard-C">search</voice></speak>
+    </media>
+    <media begin="0.03s">
+      <speak><voice name="en-GB-Standard-D">search</voice></speak>
+    </media>
+    <media begin="0.15s">
+      <speak><voice name="en-AU-Standard-D">search</voice></speak>
+    </media>
+  </par>
+</speak>

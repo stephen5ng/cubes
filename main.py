@@ -142,7 +142,7 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
                 publish_queue: asyncio.Queue = asyncio.Queue()
                 the_app = app.App(publish_queue, dictionary)
                 
-                await cubes_to_game.init(subscribe_client, args.tags)
+                await cubes_to_game.init(subscribe_client)
                 # Clear any retained letters and borders from a previous run
                 await cubes_to_game.clear_all_letters(publish_queue, 0)
                 await cubes_to_game.clear_all_borders(publish_queue, 0)
@@ -178,7 +178,7 @@ BUNDLE_TEMP_DIR = "."
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--tags", default="tag_ids.txt", type=str)
+    # Legacy tags file no longer used (cube/right adopted)
     parser.add_argument('--start', action=argparse.BooleanOptionalAction)
     parser.add_argument("--keyboard-player-number", default=1, type=int, help="Player number (1 or 2) that uses keyboard input")
     parser.add_argument("--replay", type=str, help="Replay a game from a log file")

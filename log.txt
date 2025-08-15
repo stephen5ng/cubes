@@ -1,0 +1,375 @@
+02fe561c tweak player color
+58404680 show player colors on remaining guesses
+3f35fc21 minor optimizations, rename previousdisplay classes'
+7142054d increase hspace
+d5c18279 deadcode
+d379e86f refactored to use from_instance
+285ce7e1 extract fader manager
+67f1cd10 remove unneeded update, since add guess already calls it
+7ec096dd no qs
+959c337c rename previous guesses to display
+ea1f51ed previousguesses refactoring
+b5b02e92 (probably excessive) textrect optimizations
+c7f61dcf refactor textrect
+389c2162 refactor textrect
+3baa8b8d fix test
+ec99cad9 fix test
+d47f2f47 fix test
+faac26a6 Merge branch 'reapply-fixes'
+e64e73b5 refactor scorecard
+0b234ce9 extract sound manager
+c04c20a9 separate scores
+1f893bc2 Support 2 player racks
+c19e06c1 refactor Rack
+54ce06b2 fix fader
+4964f228 Support 2 player racks
+f3e542af more refactor tiles
+49e1eb1b simplify guess()
+dc4b3b52 optimize letters_to_ids
+8b4f7df7 unused imports
+9acb9bfa make vertical spacing more consistent
+9e9d460c refactor Rack
+07b2f831 fix fader
+97ee3126 separate scores
+59c62bdc extract sound manager
+b9eaf943 refactor scorecard
+cd518f85 Support 2 player racks
+ef545bfc more refactor tiles
+289c03c3 simplify guess()
+1c37f64d optimize letters_to_ids
+96e8f605 unused imports
+6e983443 make vertical spacing more consistent
+325ee924 refactor Rack
+9a697f65 fix fader
+1ee1a55f remove PreviousGuessesBase
+00775046 simplify _prerender_textrect
+59cead5b make render a member
+aae11f3a store positions instead of rects
+2aada25a simplify
+d3dc5d53 simplify
+e04eca36 rework to store word-level rects
+9838d15c optimize lastguessfader
+ae782c8d simplify fader
+fb6ec0fc remove trailing space for wrap
+e0eb67bf remove recursion
+67a5ed5c more refactor textrect
+c49e24c7 fix tests, more simplification
+0133259e simply textrect
+c1250dc6 simply textrect
+8578dc27 remove newline support
+a2072220 fader fixes. make min font size 1
+c28bfd06 add test for textrect
+45f17f8a remove unused args
+a381c48e unSCruz fixes: reduce shield bounce, add autostart
+98b9ad38 add clit
+57a32935 fix import
+21beed80 fix fader bug
+40282441 store player number with score
+c362c203 fix fade duration
+ba5eab0c remove word from bingos
+e0305e13 more p1 fixes
+e4f987e8 fix accept letter bug
+e3842d9d missing words
+75dcec10 colors for p2
+4943db74 rename debounce
+6a18e3ea coop mode
+ab51b6b2 simply guess_last_tiles code
+26c74067 guess_last_tiles tests.
+f2454775 random_letters.sh
+a36af3ca dashboard
+ca967bed unSCruz
+e404706a ids
+9db05a51 update ids, frequency
+3c385351 update ids, change prev guess color
+21f7c582 fixes for pi: pythonpath and mixer
+281bb545 new ids
+4335689c remove samplebase
+48f738e7 typing and some refactoring
+0e8bc246 fix falling letter bug
+0870f9f5 fix types
+352f01e5 remove serial
+ebfc00a8 fix delay bug from last checkin
+f9d1e8e4 more typechecking
+b1a597c0 tweak bingos
+f161c0e9 remove argparse
+1c9358eb more type checking fixes
+9a7b55d5 remove debug
+5d3cfd6b fix tests
+ce9123a8 mypy all non-test files, etract hub75 stuff to separate file, always run emulator on non-pi
+2aa5b1fe Move Letter class above Rack
+2ed1ea28 Use word list from https://www.kaggle.com/datasets/rtatman/english-word-frequency?resource=download instead of https://github.com/IlyaSemenov/wikipedia-word-frequency/blob/master/results/enwiki-2023-04-13.txt.
+3acd3c4a falling letter fixes
+6b632930 big cleanup of letter and rack painting
+d95c7266 removed some bingos
+31ca6110 revert letter move code
+4be897da simplify margin code
+1e670cb2 refactor rack code
+921e6e5c greeen is good red is bad
+b06380d7 move colors to file-wide constants
+3255ed11 fix sounds
+2e195de6 scale previous guesses dynamically
+ec0b41e9 add rect highlighting based on guess type. only update guess on new letter if it lands on it
+17c4e6fc get mqtt server from environment
+58e96148 flicker when falling letter gets close
+1de44f89 more highlight fixes, add bounce sound
+cd2bb256 fix some alpha bugs
+4f24e944 parameterize speed
+35d564b8 fix bug in word sound
+c5007826 add draw to prevent highlight collision"
+56322468 move tiles to front on guess, use rect instead of in-progress surface, highlight previous guesses
+9a96858c fixes to word sound playing
+52a922d7 comment out a lot of debugging
+fc26f52f acknowledge cube/nfc so that cubes can retry send to handle missed packets
+2db72f4c remove qs
+d387fe9b add common words for bingos
+5670d9ed kayak
+f38740bf add responsiveness logging
+bfc1536f fix topic pattern
+f0671f48 add start/stop via mqtt
+052f0075 use env variable
+59e7ea83 use queue to play sound, fixes choppiness on pi
+9431dcc2 unused
+c9669804 get mqtt server from MQTT_SERVER environment var
+08aa1022 fix stresstest
+b3492b63 pi fixes
+59aa4181 border support, many bugfixes
+1f135b12 update game over sound
+9d4b7868 pi fixes
+11b77e0a switch to using publish_queue
+e06befda update cube id
+8afc5c2f app.stop is async
+457d8473 clear tiles at end of game
+1875a12f fix async warning
+9035a8bd use constant
+16d91345 previous commit
+1db0ce8f previous commit
+b8843390 add border messages, remove sleep
+a4b55a5b previous commit
+970ab3ef partial fixes for async too long warnings
+d2e94546 add monitor_cubes.py
+c5320243 animate letter source plus cleanup
+4f81ef12 multiple faders
+a044bbcd single fader for previous guesses
+09a4e70c Cache blitting
+29f9aef6 moved faketilesequences to python to reduce mqtt connnections
+c5f658fb update test
+55946cb6 bugfix
+f0286e28 remove used args
+4885b9a1 extract textrect classes
+3e742374 Profiler snapshot
+957a6d73 add textrect test
+90c1132d write textrect to file for testing
+518a641f dead code
+4ad3eb07 update previous guesses after collision
+739d19f3 refactor scorecard
+c83dcce0 Print exception and stack
+59d0ba87 remove calls to obsolete methods, guess previous tiles when restarting
+605140f4 add different start sound
+8d58c4e6 fixup stresstest
+69fccfbc fix tile change crash and in-progress
+a5d5f6ee update id files
+be5f60e8 publish empty guess. remove HANDLERS and move cube sender from message into the topic
+bb0a48bf Add 'letter' to topic and make it a retained message
+aea304b0 Fix bug where wrong cube was updated
+7a6d4af0 dead code
+0708ce18 update tests
+7a8201de dead code
+46d30396 dead rack code
+54f394d9 fewer calls to makeword
+9508ae18 rename
+35214f94 rename inprogress
+15a95d76 covert textrect to freetype
+47931b56 convert to freetype
+4d94bd5b use color values
+bab1917e highlight guessed words
+16429738 remove unneeded asyncs from updates
+f8b06e65 Fix transition bug
+0b627446 Animate letter color change. Switch to freetype for many
+1869824e put guess in center
+ceffec4b ids_to_letters
+ca123306 extract letters_to_ids
+23f840df cubes_to_game.cubes_to_tiles -> cubes_to_game.cubes_to_tileid
+5aaddfc3 getter
+e6a9848d simplify tile class
+1d88a58f less verbose
+9e2ae6e7 fix stop bug
+028447e0 remove globals from app.py
+cf6b1771 fix keyboard input
+75d2078d move app code into object
+6847da15 remove print statements
+27a6bdb2 fix up tests
+958d18b7 fix start (using ESCAPE)
+bfa6d96a fix stress test
+6546eb42 replace remaining mqtt message with direct calls
+3e25a49f replace most messages with direct calls. fix exception propagation in asyncio
+4a84d145 test for mqtt server
+ecc358c4 fix warning: don't kill current process on exit
+df2c7713 add main.py
+964002d9 extract main.py
+ea69785b fold app.py into pygamegameasync
+f34f6fd7 bugfixes
+6ab06cf4 fix bug with doubled letters
+adaab25a convert app.py from http server to mqtt server
+27d29b77 use table for handler
+98bb4469 move cubes_to_game into same app
+6812c205 add types to requirements.txt
+ea598457 more simplification
+1f884773 always update score so that in progress shield is updated
+7166dfc7 fewer updates on bad word. force keyboard guesses to go through tile code
+e86167ef convert cubes to mqtt
+48f79d71 replace guess_tiles http with mqtt
+6c164ea7 test guess_last_tiles
+4d0a1c96 remove debug statement
+2098562f convert tile id to str, add test_guess_tiles_not_word
+c408d472 update test for simpler scoring
+60267da6 fix app.py tests
+fcdb2748 removed unused /started
+e7a9cc95 Convert http to mqtt
+2903f55e monday checkpoint
+b330aba0 Merge branch 'master' of https://github.com/stephen5ng/cubes
+65c2e50d fix change letter bug, remove print statement
+2b474cc7 fixes
+82f2aa42 Merge branch 'master' of https://github.com/stephen5ng/cubes
+f167578b add /shutdown
+db79f78b add font
+8a497b7c pi fixes
+526e8092 Merge branch 'master' of https://github.com/stephen5ng/cubes
+dcc84b76 portrait
+046f0836 fix sound crash
+b10bab6a Fixes for OS X
+8012c6f8 fix sound on pi
+1fe4d1f5 add aiofiles
+2dd1bf5d add cubes_to_game.sh
+f005b951 switch to pygame-ce
+b4d2d231 changes for pi
+9acbb067 Merge branch 'master' of https://github.com/stephen5ng/cubes
+2079e12b sounds
+ae59fef5 Merge branch 'master' of https://github.com/stephen5ng/cubes
+a6a9bbb0 update requirements.txt
+6002c707 remove beepy, add falling sounds
+9498b798 add free score, use english frequences instead of scrabble
+2fd4f72f Letter fall speed is no longer dependent on frame rate. Added csv logs.
+1b2b3d3d Extract TICKS_PER_SECOND
+9bf9e1b7 Logging
+c9433adc Stop scoring after game end.
+cd3e78aa Set random seed for robot
+f14ab50e Letter source improvements.
+16e0b403 Add drop line for attack letters
+6dfbca46 logging
+874fde5e use python logging.
+4eaad52c added runpygame.sh
+496245cc auto start
+278c186b handle multiple word spans
+4f619a69 Support multiple chains of cubes.
+4a309f20 Remove styles.css. Remove cubes_to_game.cubes_to_letters, which is no longer needed now that the guess is based on tiles and not letters (due to race condition).
+91b11849 Fix tests for equinox
+83885fb9 undo last accidental commit
+46856fcc more type checking
+9a02b64c more type checking
+268d5aed bump attack column on collision
+c976d024 Add mypy checking.
+96327e81 Add mypy checking.
+333d8ff0 Version for Equinox: mostly GAME OVER fixes.
+82d48715 Add cube 6
+99973e2e Add cube 6
+ef9fcf11 Put back tiles_updated
+f41ea368 Add start().
+33b70731 Remove unused tiles_updated.
+71bdfe23 Fixes to keyboard play.
+fd38b556 Fix await error in context manager.
+57f716ec Fix tests.
+5b42ba80 Refactor: remove a lot of dead code
+31ab9f49 Add column moving logic.
+263711a2 press space to start game
+f2351cd7 More UI changes.
+114240fd many ui changes. checkpoint
+8613824f Add textrect.py.
+1ec52081 Keyboard input.
+551b585c Collision of falling letter.
+fcfe3199 Current score.
+56d5848c Previous guesses.
+514ab8ee Refactor: use local.
+bcf316b4 Raise exception if trying to trigger an event that hasn't been setup.
+ff881585 Show formatted rack data.
+38b55b00 Add /guess_tiles for cubes, /guess_word for webui.
+2fd0e501 Add newline.
+e8bf6bd3 Don't speak non-words.
+ac3bce1c Replace ESP32 D8BC38FDD0BC with E465B8770340.
+c47106c7 Add retransmitting every n seconds so that tiles will be updated even if they are rebooted.
+eb20e291 Pygame cleanup
+d535d60b add testpygame.sh, bug fixes.
+3d361afc Remove word from process_tag--use word_id. Add many tests to cubes_to_game_test. Async fixes to pygamegameasync (still a prototype).
+4b39cbdd wrap lines
+f2109084 Add requirements.txt.
+03389aa3 Many changes: move cube/tag ids in files, parameterize serial port, speak words as they are formed.
+9148bdc3 Add a bunch of new files.
+281a44a2 Add speak.sh
+10773644 Extend timeout to one week.
+b39aa2ef Add rack support to pygamegameasync.py
+53b108ee assertEquals -> assertEqual
+a3e1801e Add #! to test files.
+19615914 Only print content if there is any.
+ed057e32 Use sowpods. Remove frequency count from dictionary. Require at least 3 letter words, and at most 5.
+6ae2d251 Merge branch 'temp-branch'
+211f25db make Letter a sprite, simplify code.
+5cf3907a Player -> Letter. Update letter based on SSE.
+cfe8ebf8 add sse client.
+f062f749 Extract common async code.
+064ba0e5 Extract common async code.
+786f512e Added pygame plus sse shell from https://github.com/aio-libs/aiohttp-sse
+c2816b12 Add runtests.sh, fix app_test.py.
+884ea1a1 Pass in serial url as argument.
+d7fb1d14 Return self instead of display at replace_letter.
+df0a73d9 Rename async methods
+b1b58274 Add async handlers and tests.
+b7ecea70 Add new /get_tiles stream.
+61ef8d7c Call index() from init so that globals are setup.
+5b3acf4b Inline eventsource vars.
+c5760abf Reload page if server has been restarted.
+04183874 Stream rack when getting new letter.
+d3b04f62 Use SSE to display for all state changes after guess_word()
+24b561c9 Extract stream_content().
+ba6d46ed Extract tiles_test.py.
+fe6cfedf Extract scorecard.py.
+041db7cb Use a member for player_rack, dictionary in ScoreCard instead of globals.
+4384b63e Refactor: extract dictionary.py.
+473c48bb Extract ScoreCard class, finish moving previous guess to event, a lot of refactoring.
+978a51dd Refactor: Tiles -> Rack.
+7e153f9e Refactor: rename tiles -> player_rack.
+3217de68 Add #! header.
+7a492912 Refactor: score -> total_score
+6f58b887 Create a new Tile class to track an individual cube.
+e61b75fa Refactor: extract tiles.py.
+d56627cc fix bugs, update tests
+10f3990c refactor: move functions around
+67793900 Switch to SSE (Server Sent Events) to push previous guesses out; this will allow guesses to come from a non-web-based channel (like the cubes).
+9a6f9fc7 Increase font size, always start with a bingo
+8b78ccb2 change fall algorithm, update prev guesses when new letter, reduce max letters to 6
+b2481cb2 T-shape, remove status text and put it all in rack
+4a6f6b1e Show missing letters on failure, tweak other messages.
+e9243d48 add panels
+4802a6bc remove binary
+210417cb add binary
+80a84171 added pyinstaller support
+4c108d87 add words.txt
+9cced4e2 Replace random least-used letter. Add bingo bonus. Add fast score bonus.
+ee19b94f only replace unused letters
+3504763b tiles() -> letters()
+fe374051 extract unused letters
+1651ff17 don't return score on error
+437012ce always return total score to save an RPC in the normal case
+18c6272a tweak falling letter drop zone; add score
+7eae5eac scrabble scoring
+9dc4f83c round diving board, check for previous guesses
+f822cdc2 add previous guesses
+f33f3be0 don't push back if bad guess
+a1812ffd extract styles file, rotate on fall, add fall line
+71c7d4b5 add error handling
+ea75de93 add styles.css
+839b92b6 falling letters
+cd3ddb36 check if word
+661418cf Add form to submit guess
+9d63c12d fix init
+647ef5e2 mock open
+6518b50b 7-letter word
+61c8eb4a load random word
