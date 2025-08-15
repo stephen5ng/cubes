@@ -8,8 +8,7 @@ performance improvements.
 
 Usage:
     ./test_cube_responsiveness.py sng          # Quick test
-    ./test_cube_responsiveness.py stress_0.1   # Medium test  
-    ./test_cube_responsiveness.py stress_0.01  # Long test
+    ./test_cube_responsiveness.py stress_0.1   # Long stress test
 """
 
 import asyncio

@@ -2,7 +2,7 @@
 """
 Long Stress Test Analysis: BEFORE vs AFTER Aggressive Strategy
 
-Compares the stress_0.01 test (longer duration) showing the full impact
+Compares the stress_0.1 test showing the impact
 of the aggressive non-retained strategy on queue buildup over time.
 """
 
@@ -22,7 +22,7 @@ def analyze_long_stress_test(before_file, after_file):
     
     print("🚨 LONG STRESS TEST: CATASTROPHIC vs FIXED")
     print("=" * 60)
-    print("stress_0.01 test - Shows the full queue explosion over time")
+    print("stress_0.1 test - Shows the queue behavior over time")
     print()
     
     # Extract key metrics
