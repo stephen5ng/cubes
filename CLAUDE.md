@@ -1,0 +1,1 @@
+- Be sure to run all functional tests before any commit

@@ -28,4 +28,6 @@
 {"time": 700, "topic": "cube/11/letter", "message": "A", "retain": true}
 {"time": 700, "topic": "cube/12/letter", "message": "B", "retain": true}
 {"time": 700, "topic": "cube/13/letter", "message": "C", "retain": true}
-{"time": 6100, "topic": "cube/14/letter", "message": "?", "retain": true}
+{"time": 3100, "topic": "cube/11/letter", "message": "?", "retain": true}
+{"time": 3100, "topic": "cube/12/letter", "message": "?", "retain": true}
+{"time": 3100, "topic": "cube/13/letter", "message": "?", "retain": true}
