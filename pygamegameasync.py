@@ -1121,6 +1121,8 @@ class BlockWordsPygame:
             
             # Check if ABC start sequence should be activated
             await cubes_to_game.activate_abc_start_if_ready(publish_queue, now_ms)
+            # Poll countdown completion regardless of incoming MQTT, so replays/idle periods advance
+            await cubes_to_game._check_countdown_completion(publish_queue, now_ms)
             
             screen.fill((0, 0, 0))
             # print(f"UPDATING {now_ms}")

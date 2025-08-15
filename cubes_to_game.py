@@ -500,23 +500,19 @@ async def _start_abc_countdown(publish_queue, player: int, now_ms: int) -> None:
     abc_cubes = _player_abc_cubes[player]
     
     # Schedule all countdown steps with proper timing
-    # Step 1: A -> ? at +3000ms
-    await publish_queue.put((f"cube/{abc_cubes['A']}/letter", "?", True, now_ms + 3000))
+    await publish_queue.put((f"cube/{abc_cubes['A']}/letter", "?", True, now_ms))    
+    await publish_queue.put((f"cube/{abc_cubes['B']}/letter", "?", True, now_ms))    
+    await publish_queue.put((f"cube/{abc_cubes['C']}/letter", "?", True, now_ms))
     
-    # Step 2: B -> ? at +4000ms 
-    await publish_queue.put((f"cube/{abc_cubes['B']}/letter", "?", True, now_ms + 4000))
-    
-    # Step 3: C -> ? at +5000ms
-    await publish_queue.put((f"cube/{abc_cubes['C']}/letter", "?", True, now_ms + 5000))
-    
-    # Schedule game start for +6000ms
-    _player_countdown_complete_time[player] = now_ms + 6000
+    _player_countdown_complete_time[player] = now_ms
+    print("countdown started")
 
 async def _check_countdown_completion(publish_queue, now_ms: int) -> None:
     """Check if any player countdowns should complete and start their games."""
     completed_players = []
     
     for player, complete_time in _player_countdown_complete_time.items():
+        print(f"now_ms={now_ms} complete_time={complete_time}")
         if now_ms >= complete_time and player not in _player_game_states:
             completed_players.append(player)
     
@@ -592,8 +588,7 @@ async def handle_mqtt_message(publish_queue, message, now_ms: int):
                     # Start the countdown sequence instead of immediate game start
                     asyncio.create_task(_start_abc_countdown(publish_queue, completed_player, now_ms))
             
-            # Check if any countdown sequences should complete
-            await _check_countdown_completion(publish_queue, now_ms)
+            # Countdown completion is polled from the main loop, not per-message
         return
 
 
