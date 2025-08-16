@@ -3,3 +3,4 @@
 - P0 cube IDs: 1-6; P1 cube IDs: 11-16.
 - ABC start countdown is frame-polled (not tied to incoming MQTT). Incidents are logged once per frame.
 - Avoid committing large binaries or generated outputs. Use `.gitignore` to exclude `output/*`, audio assets, and credentials.
+- When updating functional tests, be sure to examine the updated goldens and that you understand them. Flag any changes that don't make sense.

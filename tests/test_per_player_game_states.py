@@ -11,8 +11,8 @@ class TestPerPlayerGameStates(unittest.TestCase):
     
     def setUp(self):
         # Clear global state before each test
-        cubes_to_game._player_game_states.clear()
-        cubes_to_game._player_abc_cubes.clear()
+        cubes_to_game._game_started_players.clear()
+        cubes_to_game.abc_manager.player_abc_cubes.clear()
         
     def test_has_player_started_game_empty(self):
         """Test has_player_started_game returns False when no players have started."""
@@ -22,7 +22,7 @@ class TestPerPlayerGameStates(unittest.TestCase):
     def test_has_player_started_game_after_start(self):
         """Test has_player_started_game returns True after player starts game."""
         # Manually add player to game states (simulating game start)
-        cubes_to_game._player_game_states[0] = True
+        cubes_to_game._game_started_players.add(0)
         
         self.assertTrue(cubes_to_game.has_player_started_game(0))
         self.assertFalse(cubes_to_game.has_player_started_game(1))
@@ -30,19 +30,19 @@ class TestPerPlayerGameStates(unittest.TestCase):
     def test_multiple_players_independent_states(self):
         """Test that multiple players can have independent game states."""
         # Start player 0
-        cubes_to_game._player_game_states[0] = True
+        cubes_to_game._game_started_players.add(0)
         
         self.assertTrue(cubes_to_game.has_player_started_game(0))
         self.assertFalse(cubes_to_game.has_player_started_game(1))
         
         # Start player 1
-        cubes_to_game._player_game_states[1] = True
+        cubes_to_game._game_started_players.add(1)
         
         self.assertTrue(cubes_to_game.has_player_started_game(0))
         self.assertTrue(cubes_to_game.has_player_started_game(1))
         
         # Remove player 0
-        del cubes_to_game._player_game_states[0]
+        cubes_to_game._game_started_players.discard(0)
         
         self.assertFalse(cubes_to_game.has_player_started_game(0))
         self.assertTrue(cubes_to_game.has_player_started_game(1))
@@ -53,8 +53,8 @@ class TestABCSequencePerPlayer(unittest.IsolatedAsyncioTestCase):
     
     async def asyncSetUp(self):
         # Clear global state
-        cubes_to_game._player_abc_cubes.clear()
-        cubes_to_game._player_game_states.clear()
+        cubes_to_game.abc_manager.player_abc_cubes.clear()
+        cubes_to_game._game_started_players.clear()
         
         # Set up cube managers for both players
         cubes_to_game.cube_managers = [
@@ -93,11 +93,12 @@ class TestABCSequencePerPlayer(unittest.IsolatedAsyncioTestCase):
     async def test_abc_sequence_detection_function_exists(self):
         """Test that ABC sequence detection function exists and is callable."""
         # Test function exists
-        self.assertTrue(hasattr(cubes_to_game, '_check_abc_sequence_complete'))
-        self.assertTrue(callable(cubes_to_game._check_abc_sequence_complete))
+        self.assertTrue(hasattr(cubes_to_game, 'abc_manager'))
+        self.assertTrue(hasattr(cubes_to_game.abc_manager, 'check_abc_sequence_complete'))
+        self.assertTrue(callable(cubes_to_game.abc_manager.check_abc_sequence_complete))
         
         # Test it returns something (None when no completion)
-        result = await cubes_to_game._check_abc_sequence_complete()
+        result = await cubes_to_game.abc_manager.check_abc_sequence_complete()
         # Should return None when no ABC sequences are set up
         self.assertIsNone(result)
 
@@ -107,7 +108,7 @@ class TestLoadRackPerPlayer(unittest.IsolatedAsyncioTestCase):
     
     async def asyncSetUp(self):
         # Clear global state
-        cubes_to_game._player_game_states.clear()
+        cubes_to_game._game_started_players.clear()
         
         # Create cube manager
         self.cube_manager = cubes_to_game.CubeManager(0)
@@ -127,7 +128,7 @@ class TestLoadRackPerPlayer(unittest.IsolatedAsyncioTestCase):
             
     async def test_load_rack_player_not_started(self):
         """Test load_rack skips loading when player hasn't started game."""
-        # Player 0 hasn't started game (not in _player_game_states)
+        # Player 0 hasn't started game (not in _game_started_players)
         
         result = await self.cube_manager.load_rack(
             self.publish_queue, self.mock_tiles, 1000

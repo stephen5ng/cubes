@@ -25,7 +25,7 @@
 {"time": 1048, "topic": "cube/1/letter", "message": "A", "retain": true}
 {"time": 1048, "topic": "cube/3/letter", "message": "B", "retain": true}
 {"time": 1048, "topic": "cube/4/letter", "message": "C", "retain": true}
-{"time": 33900, "topic": "cube/2/letter", "message": "?", "retain": true}
+{"time": 33783, "topic": "cube/2/letter", "message": "?", "retain": true}
 {"time": 34309, "topic": "cube/5/letter", "message": "?", "retain": true}
 {"time": 34812, "topic": "cube/6/letter", "message": "?", "retain": true}
 {"time": 35338, "topic": "cube/1/letter", "message": "?", "retain": true}

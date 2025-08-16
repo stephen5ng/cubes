@@ -15,7 +15,7 @@ class TestAppPerPlayerIntegration(unittest.IsolatedAsyncioTestCase):
     
     async def asyncSetUp(self):
         # Clear global state
-        cubes_to_game._player_game_states.clear()
+        cubes_to_game._game_started_players.clear()
         
         # Create mock dictionary
         mock_open = lambda filename, mode: StringIO("\n".join([
