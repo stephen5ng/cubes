@@ -1121,16 +1121,24 @@ class BlockWordsPygame:
             
             # Check if ABC start sequence should be activated
             await cubes_to_game.activate_abc_start_if_ready(publish_queue, now_ms)
-            # Poll countdown completion regardless of incoming MQTT, so replays/idle periods advance
-            await cubes_to_game._check_countdown_completion(publish_queue, now_ms)
+            
+            # Check if any ABC countdown has completed
+            countdown_incidents = await cubes_to_game._check_countdown_completion(publish_queue, now_ms)
             
             screen.fill((0, 0, 0))
             # print(f"UPDATING {now_ms}")
-            if len(incidents := await self.game.update(screen, now_ms)) > 0:
-                events_to_log['incidents'] = incidents
-                # print(f"{now_ms} incidents {incidents}")
+            
+            # Collect incidents from game update
+            game_incidents = await self.game.update(screen, now_ms)
+            
+            # Combine countdown incidents with game incidents
+            all_incidents = countdown_incidents + game_incidents
+            
+            if len(all_incidents) > 0:
+                events_to_log['incidents'] = all_incidents
+                # print(f"{now_ms} incidents {all_incidents}")
 
-            if mqtt_events or pygame_events or incidents:
+            if mqtt_events or pygame_events or all_incidents:
                 self.game.game_logger.log_events(now_ms, events_to_log)
                 
             hub75.update(screen)
