@@ -1,1 +1,5 @@
-- Be sure to run all functional tests before any commit
+- Run unit tests before committing. Functional replays are heavy; prefer targeted unit tests unless explicitly updating goldens.
+- MQTT neighbor protocol now uses numeric cube IDs with `cube/right/{sender}` and payload `"{neighbor_cube_id}"` or empty string to clear.
+- P0 cube IDs: 1-6; P1 cube IDs: 11-16.
+- ABC start countdown is frame-polled (not tied to incoming MQTT). Incidents are logged once per frame.
+- Avoid committing large binaries or generated outputs. Use `.gitignore` to exclude `output/*`, audio assets, and credentials.
