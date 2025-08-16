@@ -7,4 +7,9 @@
 {"timestamp_ms": 1000, "events": {"mqtt": [{"topic": "cube/right/6", "payload": "-"}, {"topic": "cube/right/16", "payload": "-"}]}}
 {"timestamp_ms": 3000, "events": {"mqtt": [{"topic": "cube/right/11", "payload": "12"}]}}
 {"timestamp_ms": 3100, "events": {"mqtt": [{"topic": "cube/right/12", "payload": "13"}]}}
+{"timestamp_ms": 3600, "events": {"incidents": ["abc_animation_tick"]}}
+{"timestamp_ms": 4100, "events": {"incidents": ["abc_animation_tick"]}}
+{"timestamp_ms": 4600, "events": {"incidents": ["abc_animation_tick"]}}
+{"timestamp_ms": 5100, "events": {"incidents": ["abc_animation_tick"]}}
+{"timestamp_ms": 5600, "events": {"incidents": ["abc_animation_tick"]}}
 {"timestamp_ms": 8000, "events": {"pygame": [{"type": "QUIT"}]}}

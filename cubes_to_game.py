@@ -502,17 +502,34 @@ async def _start_abc_countdown(publish_queue, player: int, now_ms: int) -> None:
     
     print("countdown started")
     
-    # Immediately replace A with "?"
-    await publish_queue.put((f"cube/{abc_cubes['A']}/letter", "?", True, now_ms))
+    # Get all cubes for this player
+    all_player_cubes = cube_managers[player].cube_list
+    abc_cube_ids = set(abc_cubes.values())  # {A_cube_id, B_cube_id, C_cube_id}
     
-    # Schedule B and C replacements
-    _player_staged_replacements[player] = [
-        (now_ms + 500, abc_cubes['B']),
-        (now_ms + 1000, abc_cubes['C'])
-    ]
+    # Get non-ABC cubes (cubes that are not A, B, or C)
+    non_abc_cubes = [cube for cube in all_player_cubes if cube not in abc_cube_ids]
+    
+    # Schedule replacements: non-ABC cubes first, then A, B, C
+    replacements = []
+    current_time = now_ms
+    
+    # Schedule non-ABC cubes (500ms intervals)
+    for cube in non_abc_cubes:
+        replacements.append((current_time, cube))
+        current_time += 500
+    
+    # Schedule ABC cubes: A, B, C (500ms intervals)
+    replacements.append((current_time, abc_cubes['A']))
+    current_time += 500
+    replacements.append((current_time, abc_cubes['B']))
+    current_time += 500
+    replacements.append((current_time, abc_cubes['C']))
+    current_time += 500
+    
+    _player_staged_replacements[player] = replacements
     
     # Game will start 0.5s after the last replacement
-    _player_countdown_complete_time[player] = now_ms + 1500
+    _player_countdown_complete_time[player] = current_time
 
 async def _check_countdown_completion(publish_queue, now_ms: int) -> list:
     """Check if any player's countdown has completed and start their game. Also handle staged replacements.
