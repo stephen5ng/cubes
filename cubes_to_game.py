@@ -110,27 +110,6 @@ class ABCManager:
         
         return None
 
-    async def clear_abc_state_for_all_players(self, publish_queue, now_ms: int, game_starting: bool = False) -> None:
-        """Clear ABC state for all players and remove ABC letters from their cubes.
-        
-        This is called when any player completes their countdown, ensuring a clean
-        visual state and preventing late joins.
-        
-        Args:
-            game_starting: If True, skip clearing letters to spaces since game start will overwrite them
-        """
-        # Clear ABC letters from all cubes that currently have them (unless game is starting)
-        if not game_starting:
-            for player_num, abc_assignments in self.player_abc_cubes.items():
-                if player_num < len(cube_managers):
-                    for letter, cube_id in abc_assignments.items():
-                        # Clear the ABC letter from this cube
-                        await publish_queue.put((f"cube/{cube_id}/letter", " ", True, now_ms))
-        
-        self.reset()
-        
-        logging.info("ABC state cleared for all players - ABC letters removed from cubes")
-
     async def execute_letter_stage_for_player(self, publish_queue, player: int, stage_type: str, now_ms: int) -> None:
         """Execute a letter stage for a specific player."""
         abc_cubes = self.player_abc_cubes[player]
@@ -232,9 +211,8 @@ class ABCManager:
                 
                 await start_game_callback(True, self.countdown_complete_time, player)
         
-        # If any player completed countdown, clear ABC state for ALL players and clean up cubes
+        # If any player completed countdown, clean up countdown state
         if completed_players:
-            await self.clear_abc_state_for_all_players(publish_queue, now_ms, game_starting=True)
             # Clear global countdown state
             self.global_countdown_schedule = []
             self.countdown_complete_time = None
@@ -511,6 +489,16 @@ async def clear_all_letters(publish_queue, now_ms: int) -> None:
     for manager in cube_managers:
         for cube_id in manager.cube_list:
             await publish_queue.put((f"cube/{cube_id}/letter", " ", True, now_ms))
+
+async def clear_remaining_abc_cubes(publish_queue, now_ms: int) -> None:
+    """Clear ABC cubes for any remaining players in abc_manager.player_abc_cubes."""
+    for player_num in list(abc_manager.player_abc_cubes.keys()):
+        # Clear ABC letters for this player
+        abc_assignments = abc_manager.player_abc_cubes[player_num]
+        for _, cube_id in abc_assignments.items():
+            await publish_queue.put((f"cube/{cube_id}/letter", " ", True, now_ms))
+        # Remove this player from ABC tracking
+        del abc_manager.player_abc_cubes[player_num]
 
 def set_game_running(running: bool) -> None:
     """Set the current game running state."""

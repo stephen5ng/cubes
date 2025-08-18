@@ -81,6 +81,15 @@ class App:
         
         self._update_next_tile(self._player_racks[0].next_letter())
         self._score_card = ScoreCard(self._player_racks[0], self._dictionary)
+        
+        # Remove participating players from ABC tracking (their cubes will get game letters)
+        for player in range(cubes_to_game.MAX_PLAYERS):
+            if cubes_to_game.has_player_started_game(player) and player in cubes_to_game.abc_manager.player_abc_cubes:
+                del cubes_to_game.abc_manager.player_abc_cubes[player]
+        
+        # Clear ABC cubes for any remaining players (non-participants)
+        await cubes_to_game.clear_remaining_abc_cubes(self._publish_queue, now_ms)
+        
         await self.load_rack(now_ms)
         for player in range(MAX_PLAYERS):
             self._update_rack_display(0, 0, player)
