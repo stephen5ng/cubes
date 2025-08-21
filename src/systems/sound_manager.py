@@ -2,7 +2,6 @@
 
 import asyncio
 from datetime import datetime
-import aiofiles
 import pygame
 
 
@@ -40,15 +39,14 @@ class SoundManager:
         while True:
             try:
                 soundfile = await self.sound_queue.get()
-                async with aiofiles.open(soundfile, mode='rb') as f:
-                    s = pygame.mixer.Sound(buffer=await f.read())
-                    now = datetime.now()
-                    time_since_last_sound_s = (now - last_sound_time).total_seconds()
-                    time_to_sleep_s = delay_between_words_s - time_since_last_sound_s
-                    await asyncio.sleep(time_to_sleep_s)
-                    channel = pygame.mixer.find_channel(force=True)
-                    channel.queue(s)
-                    last_sound_time = datetime.now()
+                s = pygame.mixer.Sound(soundfile)
+                now = datetime.now()
+                time_since_last_sound_s = (now - last_sound_time).total_seconds()
+                time_to_sleep_s = delay_between_words_s - time_since_last_sound_s
+                await asyncio.sleep(time_to_sleep_s)
+                channel = pygame.mixer.find_channel(force=True)
+                channel.queue(s)
+                last_sound_time = datetime.now()
             except Exception as e:
                 print(f"error playing sound {soundfile}: {e}")
                 continue
