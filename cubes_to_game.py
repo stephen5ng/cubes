@@ -51,6 +51,27 @@ class ABCManager:
         """Check if any player is currently in countdown phase."""
         return bool(self.player_countdown_active)
     
+    async def assign_abc_letters_to_available_players(self, publish_queue, now_ms: int) -> None:
+        """Assign ABC letters to players who have enough cubes but don't have ABC assignments yet."""
+        self.abc_start_active = True
+        letters = ["A", "B", "C"]
+        
+        for manager in cube_managers:
+            # Skip if this player already has ABC assignments
+            if manager.player_number in self.player_abc_cubes:
+                continue
+                
+            player_abc_cubes = _find_non_touching_cubes_for_player(manager)
+            if len(player_abc_cubes) >= 3:
+                self.player_abc_cubes[manager.player_number] = {
+                    "A": player_abc_cubes[0],
+                    "B": player_abc_cubes[1], 
+                    "C": player_abc_cubes[2]
+                }
+                for i, letter in enumerate(letters):
+                    cube_id = player_abc_cubes[i]
+                    await _publish_letter(publish_queue, letter, cube_id, now_ms)
+
     async def activate_abc_start_sequence(self, publish_queue, now_ms: int) -> None:
         """Activate the ABC sequence start system."""
         # Check if any player has at least 3 cubes with neighbor reports
@@ -64,23 +85,7 @@ class ABCManager:
         if not has_enough_cubes:
             return  # Wait until at least one player has enough cubes
             
-        self.abc_start_active = True
-        
-        # Display A, B, C on non-touching cubes for ALL players that have cubes
-        self.player_abc_cubes = {}
-        letters = ["A", "B", "C"]
-        
-        for manager in cube_managers:
-            player_abc_cubes = _find_non_touching_cubes_for_player(manager)
-            if len(player_abc_cubes) >= 3:
-                self.player_abc_cubes[manager.player_number] = {
-                    "A": player_abc_cubes[0],
-                    "B": player_abc_cubes[1], 
-                    "C": player_abc_cubes[2]
-                }
-                for i, letter in enumerate(letters):
-                    cube_id = player_abc_cubes[i]
-                    await _publish_letter(publish_queue, letter, cube_id, now_ms)
+        await self.assign_abc_letters_to_available_players(publish_queue, now_ms)
 
     async def check_abc_sequence_complete(self):
         """Check if A-B-C cubes are placed in sequence. Returns player number if complete, None otherwise."""
@@ -595,10 +600,9 @@ def _has_received_initial_neighbor_reports() -> bool:
     return False
 
 async def activate_abc_start_if_ready(publish_queue, now_ms: int) -> None:
-    """Activate ABC start sequence if conditions are met."""
-    if (not abc_manager.abc_start_active and not _game_running and
-        _has_received_initial_neighbor_reports()):
-        await abc_manager.activate_abc_start_sequence(publish_queue, now_ms)
+    """Activate ABC start sequence if conditions are met and assign letters to new players."""
+    if not _game_running and _has_received_initial_neighbor_reports():
+        await abc_manager.assign_abc_letters_to_available_players(publish_queue, now_ms)
 
 def has_player_started_game(player: int) -> bool:
     """Check if a specific player has started their game."""
