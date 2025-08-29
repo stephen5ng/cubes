@@ -71,6 +71,7 @@ class ABCManager:
                 for i, letter in enumerate(letters):
                     cube_id = player_abc_cubes[i]
                     await _publish_letter(publish_queue, letter, cube_id, now_ms)
+                    print(f"activating abc: {cube_id}: {letter}")
 
     async def activate_abc_start_sequence(self, publish_queue, now_ms: int) -> None:
         """Activate the ABC sequence start system."""
@@ -89,11 +90,13 @@ class ABCManager:
 
     async def check_abc_sequence_complete(self):
         """Check if A-B-C cubes are placed in sequence. Returns player number if complete, None otherwise."""
+
         if not self.abc_start_active:
             return None
-        
+        print(f"checking abc sequence")        
         # Check all cube managers for ABC sequence using the stored assignments
         for manager in cube_managers:
+            print(f"checking abc sequence: {manager.player_number}: {self.player_abc_cubes} {self.player_countdown_active} ")        
             player_num = manager.player_number
             if (player_num in self.player_abc_cubes and 
                 player_num not in self.player_countdown_active):
@@ -104,12 +107,14 @@ class ABCManager:
                 cube_c = player_abc["C"]
                 
                 logging.info(f"ABC check: manager {player_num} checking {cube_a}->{cube_b}->{cube_c} in chain={manager.cube_chain}")
+                print(f"ABC check: manager {player_num} checking {cube_a}->{cube_b}->{cube_c} in chain={manager.cube_chain}")
                 
                 # Check if A->B->C chain exists for this player's assigned ABC cubes
                 if (cube_a in manager.cube_chain and 
                     manager.cube_chain[cube_a] == cube_b and
                     cube_b in manager.cube_chain and 
                     manager.cube_chain[cube_b] == cube_c):
+                    print(f"ABC sequence complete for player {player_num}!")
                     logging.info(f"ABC sequence complete for player {player_num}!")
                     return player_num
         
@@ -215,6 +220,7 @@ class ABCManager:
                 completed_players.append(player)
                 
                 await start_game_callback(True, self.countdown_complete_time, player)
+                abc_manager.reset()
         
         # If any player completed countdown, clean up countdown state
         if completed_players:
@@ -510,44 +516,6 @@ def set_game_running(running: bool) -> None:
     global _game_running
     _game_running = running
     logging.info(f"Game running state set to: {running}")
-    
-    # Note: ABC sequence clearing is now handled per-player in ABC completion logic
-
-async def _find_non_touching_cubes(publish_queue, now_ms: int) -> List[str]:
-    """Find 3 cubes that are not touching each other."""
-    # Get all available cubes from the first cube manager
-    if not cube_managers or not cube_managers[0].cube_list:
-        return []
-    
-    all_cubes = list(cube_managers[0].cube_list)
-    
-    if len(all_cubes) < 3:
-        return []
-    
-    # With 6 cubes total and no cycles possible, we can always find 3 non-touching cubes
-    # Simple approach: iterate through cubes and pick ones that aren't connected
-    selected_cubes = []
-    
-    for cube in all_cubes:
-        if len(selected_cubes) >= 3:
-            break
-            
-        # Check if this cube is touching any already selected cube
-        is_touching_selected = False
-        for selected_cube in selected_cubes:
-            # Check if cube -> selected_cube or selected_cube -> cube connection exists
-            for manager in cube_managers:
-                if (manager.cube_chain.get(cube) == selected_cube or
-                    manager.cube_chain.get(selected_cube) == cube):
-                    is_touching_selected = True
-                    break
-            if is_touching_selected:
-                break
-        
-        if not is_touching_selected:
-            selected_cubes.append(cube)
-    
-    return selected_cubes[:3]
 
 def _find_non_touching_cubes_for_player(manager) -> List[str]:
     """Find 3 non-touching cubes for a specific player."""
@@ -555,12 +523,12 @@ def _find_non_touching_cubes_for_player(manager) -> List[str]:
     
     if len(available_cubes) < 3:
         return available_cubes  # Return what we have, even if less than 3
-    
+    print(f"manager cube chain: {manager.cube_chain}")
     selected_cubes = []
     for cube in available_cubes:
         if len(selected_cubes) >= 3:
             break
-            
+        print(f"checking cube {cube}")
         # Check if this cube touches any already selected cube
         is_touching = any(
             manager.cube_chain.get(cube) == selected or 
@@ -571,26 +539,8 @@ def _find_non_touching_cubes_for_player(manager) -> List[str]:
         if not is_touching:
             selected_cubes.append(cube)
     
+    print(f"selected: {selected_cubes}")
     return selected_cubes[:3]
-
-def _all_cubes_have_reported_neighbors() -> bool:
-    """Check if all cubes have reported their neighbor status (including '-')."""
-    if not cube_managers:
-        return False    
-    
-    for manager in cube_managers:
-        all_cubes = set(manager.cube_list)
-        reported_cubes = set(manager.cubes_to_neighbors.keys())
-        # print(f"all_cubes: {all_cubes}, reported_cubes: {reported_cubes}")
-        if all_cubes.issubset(reported_cubes):
-            # print(f"all cubes have neighbors")
-            return True
-        else:
-            missing_cubes = all_cubes - reported_cubes
-            if missing_cubes:  # Only print if there are actually missing cubes
-                print(f"Player {manager.player_number}: Still waiting for neighbor reports from cubes: {missing_cubes}")
-    
-    return False
 
 def _has_received_initial_neighbor_reports() -> bool:
     """Check if we've received at least some neighbor reports from cubes."""
