@@ -47,7 +47,9 @@
       "Bash(/dev/null)",
       "Bash(if [ -f \"output/output.publish.jsonl\" ])",
       "Bash(fi)",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(./update.sh:*)",
+      "Bash(ping:*)"
     ],
     "deny": []
   }

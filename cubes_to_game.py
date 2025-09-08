@@ -76,15 +76,15 @@ class ABCManager:
     async def activate_abc_start_sequence(self, publish_queue, now_ms: int) -> None:
         """Activate the ABC sequence start system."""
         # Check if any player has at least 3 cubes with neighbor reports
-        has_enough_cubes = False
-        for manager in cube_managers:
-            available_cubes = [cube for cube in manager.cube_list if cube in manager.cubes_to_neighbors]
-            if len(available_cubes) >= 3:
-                has_enough_cubes = True
-                break
+        # has_enough_cubes = False
+        # for manager in cube_managers:
+        #     available_cubes = [cube for cube in manager.cube_list if cube in manager.cubes_to_neighbors]
+        #     if len(available_cubes) >= 3:
+        #         has_enough_cubes = True
+        #         break
         
-        if not has_enough_cubes:
-            return  # Wait until at least one player has enough cubes
+        # if not has_enough_cubes:
+        #     return  # Wait until at least one player has enough cubes
             
         await self.assign_abc_letters_to_available_players(publish_queue, now_ms)
 
@@ -220,7 +220,7 @@ class ABCManager:
                 completed_players.append(player)
                 
                 await start_game_callback(True, self.countdown_complete_time, player)
-                abc_manager.reset()
+            abc_manager.reset()
         
         # If any player completed countdown, clean up countdown state
         if completed_players:
