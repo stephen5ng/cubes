@@ -34,9 +34,6 @@
 {"time": 8000, "topic": "cube/1/letter", "message": "?", "retain": true}
 {"time": 8000, "topic": "cube/2/letter", "message": "?", "retain": true}
 {"time": 8000, "topic": "cube/3/letter", "message": "?", "retain": true}
-{"time": 6100, "topic": "cube/11/letter", "message": " ", "retain": true}
-{"time": 6100, "topic": "cube/12/letter", "message": " ", "retain": true}
-{"time": 6100, "topic": "cube/13/letter", "message": " ", "retain": true}
 {"time": 6100, "topic": "cube/1/letter", "message": "A", "retain": true}
 {"time": 6100, "topic": "cube/2/letter", "message": "D", "retain": true}
 {"time": 6100, "topic": "cube/3/letter", "message": "E", "retain": true}
