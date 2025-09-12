@@ -10,7 +10,6 @@
       "Bash(cube_env/bin/python functional_test.py rerecord stress_0.1)",
       "Bash(cube_env/bin/python:*)",
       "Bash(grep:*)",
-      "Bash(git commit:*)",
       "Bash(./run_unit_tests.sh:*)",
       "Bash(python -m pytest tests/unit/ -v)",
       "Bash(python3 -m pytest tests/unit/ -v)",
@@ -49,7 +48,10 @@
       "Bash(fi)",
       "Bash(done)",
       "Bash(./update.sh:*)",
-      "Bash(ping:*)"
+      "Bash(ping:*)",
+      "Bash(/Users/stephenng/Documents/PlatformIO/Projects/cube-pn5180/venv/bin/pio run -e esp32dev --target upload --upload-port 192.168.8.26)",
+      "Bash(/Users/stephenng/Documents/PlatformIO/Projects/cube-pn5180/venv/bin/pio run -e esp32dev --target upload --upload-port 192.168.8.25)",
+      "Read(//Users/stephenng/Documents/PlatformIO/Projects/**)"
     ],
     "deny": []
   }

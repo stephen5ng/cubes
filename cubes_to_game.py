@@ -55,7 +55,6 @@ class ABCManager:
         """Assign ABC letters to players who have enough cubes but don't have ABC assignments yet."""
         self.abc_start_active = True
         letters = ["A", "B", "C"]
-        
         for manager in cube_managers:
             # Skip if this player already has ABC assignments
             if manager.player_number in self.player_abc_cubes:
@@ -76,15 +75,15 @@ class ABCManager:
     async def activate_abc_start_sequence(self, publish_queue, now_ms: int) -> None:
         """Activate the ABC sequence start system."""
         # Check if any player has at least 3 cubes with neighbor reports
-        # has_enough_cubes = False
-        # for manager in cube_managers:
-        #     available_cubes = [cube for cube in manager.cube_list if cube in manager.cubes_to_neighbors]
-        #     if len(available_cubes) >= 3:
-        #         has_enough_cubes = True
-        #         break
+        has_enough_cubes = False
+        for manager in cube_managers:
+            available_cubes = [cube for cube in manager.cube_list if cube in manager.cubes_to_neighbors]
+            if len(available_cubes) >= 3:
+                has_enough_cubes = True
+                break
         
-        # if not has_enough_cubes:
-        #     return  # Wait until at least one player has enough cubes
+        if not has_enough_cubes:
+            return  # Wait until at least one player has enough cubes
             
         await self.assign_abc_letters_to_available_players(publish_queue, now_ms)
 
@@ -93,7 +92,6 @@ class ABCManager:
 
         if not self.abc_start_active:
             return None
-        print(f"checking abc sequence")        
         # Check all cube managers for ABC sequence using the stored assignments
         for manager in cube_managers:
             print(f"checking abc sequence: {manager.player_number}: {self.player_abc_cubes} {self.player_countdown_active} ")        
@@ -535,10 +533,10 @@ def _find_non_touching_cubes_for_player(manager) -> List[str]:
             manager.cube_chain.get(selected) == cube
             for selected in selected_cubes
         )
-        
+
         if not is_touching:
             selected_cubes.append(cube)
-    
+
     print(f"selected: {selected_cubes}")
     return selected_cubes[:3]
 
