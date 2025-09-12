@@ -17,7 +17,7 @@ cleanup() {
 }
 
 trap cleanup EXIT
-
+./delete_all_mqtt.sh
 
 #python -X dev -X tracemalloc=5 ./main.py "$@"
 python ./main.py "$@"

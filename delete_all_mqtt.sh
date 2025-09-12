@@ -14,10 +14,10 @@ if [[ -n "$USERNAME" && -n "$PASSWORD" ]]; then
     AUTH=(-u "$USERNAME" -P "$PASSWORD")
 fi
 
-echo "Scanning retained messages under topic: $TOPIC_ROOT"
+echo "Scanning retained messages under topic: $TOPIC_ROOT (preserving cube/right/* topics)"
 
-# Collect retained topics
-TOPICS=$(mosquitto_sub -h "$BROKER" -p "$PORT" "${AUTH[@]}" -v -t "$TOPIC_ROOT" -W "$TIMEOUT" | awk '{print $1}' | sort | uniq)
+# Collect retained topics (excluding cube/right/* topics)
+TOPICS=$(mosquitto_sub -h "$BROKER" -p "$PORT" "${AUTH[@]}" -v -t "$TOPIC_ROOT" -W "$TIMEOUT" | awk '{print $1}' | grep -v '^cube/right/' | sort | uniq)
 
 if [[ -z "$TOPICS" ]]; then
     echo "No retained messages found."
