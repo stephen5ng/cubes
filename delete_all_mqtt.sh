@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuration
-BROKER="$MQTT_SERVER"
+BROKER="${MQTT_SERVER:-localhost}"
 PORT=1883
 TOPIC_ROOT="#"
 USERNAME=""   # optional
