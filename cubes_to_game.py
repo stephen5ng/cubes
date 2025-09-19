@@ -488,14 +488,14 @@ def set_game_end_time(now_ms: int) -> None:
 
 async def clear_all_borders(publish_queue, now_ms: int) -> None:
     """Clear all borders on all cubes across all players using consolidated messaging."""
-    for manager in cube_managers:
+    for manager in cube_set_managers:
         for cube_id in manager.cube_list:
             # Use consolidated border protocol: ":" clears all borders
             await publish_queue.put((f"cube/{cube_id}/border", ":", True, now_ms))
 
 async def clear_all_letters(publish_queue, now_ms: int) -> None:
     """Clear letters on all cubes across all players by setting space and retaining."""
-    for manager in cube_managers:
+    for manager in cube_set_managers:
         for cube_id in manager.cube_list:
             await publish_queue.put((f"cube/{cube_id}/letter", " ", True, now_ms))
 
@@ -542,7 +542,7 @@ def _find_non_touching_cubes_for_player(manager) -> List[str]:
 
 def _has_received_initial_neighbor_reports() -> bool:
     """Check if we've received at least some neighbor reports from cubes."""
-    for manager in cube_managers:
+    for manager in cube_set_managers:
         if manager.cubes_to_neighbors:  # If any manager has received neighbor reports
             return True
     return False
