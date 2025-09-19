@@ -58,8 +58,8 @@ class TestABCSequencePerPlayer(unittest.IsolatedAsyncioTestCase):
         
         # Set up cube managers for both players
         cubes_to_game.cube_managers = [
-            cubes_to_game.CubeManager(0),
-            cubes_to_game.CubeManager(1)
+            cubes_to_game.CubeSetManager(0),
+            cubes_to_game.CubeSetManager(1)
         ]
         
         # Player 0: cubes 1-6
@@ -111,7 +111,7 @@ class TestLoadRackPerPlayer(unittest.IsolatedAsyncioTestCase):
         cubes_to_game._game_started_players.clear()
         
         # Create cube manager
-        self.cube_manager = cubes_to_game.CubeManager(0)
+        self.cube_manager = cubes_to_game.CubeSetManager(0)
         self.cube_manager.cube_list = ["1", "2", "3", "4", "5", "6"]
         self.cube_manager.tiles_to_cubes = {
             "0": "1", "1": "2", "2": "3", "3": "4", "4": "5", "5": "6"
@@ -175,8 +175,8 @@ class TestCubeAssignmentUpdates(unittest.TestCase):
     def test_cube_manager_player_assignments(self):
         """Test that CubeManager instances get correct cube lists per player."""
         # Create managers
-        manager_0 = cubes_to_game.CubeManager(0)
-        manager_1 = cubes_to_game.CubeManager(1)
+        manager_0 = cubes_to_game.CubeSetManager(0)
+        manager_1 = cubes_to_game.CubeSetManager(1)
         
         # Player 0 should get cubes 1-6
         manager_0.cube_list = ["1", "2", "3", "4", "5", "6"]

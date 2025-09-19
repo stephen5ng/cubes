@@ -7,7 +7,7 @@ import tiles
 class TestCubesToGame(unittest.TestCase):
     def setUp(self):
         # Create a cube manager instance for testing
-        self.cube_manager = cubes_to_game.CubeManager(0)
+        self.cube_manager = cubes_to_game.CubeSetManager(0)
         self.cube_manager.cube_list = [
             "cube0", "cube1", "cube2", "cube3", "cube4", "cube5"
         ]
@@ -28,10 +28,10 @@ class TestLetterLock(unittest.IsolatedAsyncioTestCase):
     
     def setUp(self):
         # Set up cube managers for testing
-        cubes_to_game.cube_managers = [cubes_to_game.CubeManager(0), cubes_to_game.CubeManager(1)]
+        cubes_to_game.cube_set_managers = [cubes_to_game.CubeSetManager(0), cubes_to_game.CubeSetManager(1)]
         
         # Mock the tiles_to_cubes for both players
-        cubes_to_game.cube_managers[0].tiles_to_cubes = {
+        cubes_to_game.cube_set_managers[0].tiles_to_cubes = {
             "0": "cube0",
             "1": "cube1",
             "2": "cube2",
@@ -39,7 +39,7 @@ class TestLetterLock(unittest.IsolatedAsyncioTestCase):
             "4": "cube4",
             "5": "cube5"
         }
-        cubes_to_game.cube_managers[1].tiles_to_cubes = {
+        cubes_to_game.cube_set_managers[1].tiles_to_cubes = {
             "0": "cube6",
             "1": "cube7",
             "2": "cube8",
@@ -209,7 +209,7 @@ class TestLetterLock(unittest.IsolatedAsyncioTestCase):
 class TestWordFormation(unittest.TestCase):
     def setUp(self):
         # Setup test data
-        self.cube_manager = cubes_to_game.CubeManager(0)
+        self.cube_manager = cubes_to_game.CubeSetManager(0)
         self.cube_manager.cube_list = [
             "cube0", "cube1", "cube2", "cube3", "cube4", "cube5"
         ]
@@ -295,7 +295,7 @@ class TestWordFormation(unittest.TestCase):
 class TestLoopDetection(unittest.TestCase):
     def setUp(self):
         # Setup test data
-        self.cube_manager = cubes_to_game.CubeManager(0)
+        self.cube_manager = cubes_to_game.CubeSetManager(0)
         self.cube_manager.cubes_to_tileid = {
             "cube0": "0",
             "cube1": "1",

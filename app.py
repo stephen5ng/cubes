@@ -45,6 +45,8 @@ class App:
         self._player_racks = [tiles.Rack('?' * tiles.MAX_LETTERS) for _ in range(MAX_PLAYERS)]
         self._score_card = ScoreCard(self._player_racks[0], self._dictionary)
         self._player_count = 1
+        # Map logical players to physical cube sets
+        self._player_to_cube_set = {0: 0, 1: 1}  # Default: player 0 → cube set 0, player 1 → cube set 1
         self._game_logger = None  # Will be set by the game
         cubes_to_game.set_guess_tiles_callback(make_guess_tiles_callback(self))
         cubes_to_game.set_start_game_callback(make_start_game_callback(self))
@@ -65,6 +67,36 @@ class App:
     def get_game_logger(self):
         """Get the game logger for MQTT event logging."""
         return self._game_logger
+
+    def _determine_active_cube_sets(self) -> set[int]:
+        """Determine which cube sets are currently active (have ABC assignments or started games)."""
+        active_cube_sets = set()
+
+        # Add cube sets with ABC assignments
+        active_cube_sets.update(cubes_to_game.abc_manager.player_abc_cubes.keys())
+
+        # Add cube sets with started games
+        active_cube_sets.update(cubes_to_game._game_started_players)
+
+        return active_cube_sets
+
+    def _update_player_to_cube_set_mapping(self) -> None:
+        """Update the player-to-cube-set mapping based on active cube sets."""
+        active_cube_sets = self._determine_active_cube_sets()
+
+        if not active_cube_sets:
+            # No active cube sets, keep default mapping
+            return
+
+        # For single player mode, map player 0 to the first active cube set
+        if self._player_count == 1:
+            first_active = min(active_cube_sets)
+            self._player_to_cube_set[0] = first_active
+        else:
+            # For multi-player, maintain current mapping or assign in order
+            active_list = sorted(active_cube_sets)
+            for i in range(min(self._player_count, len(active_list))):
+                self._player_to_cube_set[i] = active_list[i]
 
     def set_word_logger(self, word_logger) -> None:
         """Set the word logger for new word formation logging."""
@@ -130,8 +162,12 @@ class App:
             changed_tile = self._player_racks[0].replace_letter(next_letter, position)
 
         self._score_card.update_previous_guesses()
+        # Update player-to-cube-set mapping before sending letters
+        self._update_player_to_cube_set_mapping()
         for player in range(self._player_count):
-            await cubes_to_game.accept_new_letter(self._publish_queue, next_letter, changed_tile.id, player, now_ms)
+            cube_set_id = self._player_to_cube_set.get(player)
+            if cube_set_id is not None:
+                await cubes_to_game.accept_new_letter(self._publish_queue, next_letter, changed_tile.id, cube_set_id, now_ms)
 
         self._update_previous_guesses()
         self._update_remaining_previous_guesses()
@@ -144,11 +180,15 @@ class App:
 
     async def letter_lock(self, position: int | None, now_ms: int) -> bool:
         lock_change = False
+        # Update player-to-cube-set mapping before sending locks
+        self._update_player_to_cube_set_mapping()
         for player in range(self._player_count):
-            lock_change |= await cubes_to_game.letter_lock(self._publish_queue,
-                player,
-                self._player_racks[player].position_to_id(position) if position else None,
-                now_ms)
+            cube_set_id = self._player_to_cube_set.get(player)
+            if cube_set_id is not None:
+                lock_change |= await cubes_to_game.letter_lock(self._publish_queue,
+                    cube_set_id,
+                    self._player_racks[player].position_to_id(position) if position else None,
+                    now_ms)
         return lock_change
 
     def add_guess(self, guess: str, player: int) -> None:

@@ -55,14 +55,14 @@ class ABCManager:
         """Assign ABC letters to players who have enough cubes but don't have ABC assignments yet."""
         self.abc_start_active = True
         letters = ["A", "B", "C"]
-        for manager in cube_managers:
+        for manager in cube_set_managers:
             # Skip if this player already has ABC assignments
-            if manager.player_number in self.player_abc_cubes:
+            if manager.cube_set_id in self.player_abc_cubes:
                 continue
                 
             player_abc_cubes = _find_non_touching_cubes_for_player(manager)
             if len(player_abc_cubes) >= 3:
-                self.player_abc_cubes[manager.player_number] = {
+                self.player_abc_cubes[manager.cube_set_id] = {
                     "A": player_abc_cubes[0],
                     "B": player_abc_cubes[1], 
                     "C": player_abc_cubes[2]
@@ -76,7 +76,7 @@ class ABCManager:
         """Activate the ABC sequence start system."""
         # Check if any player has at least 3 cubes with neighbor reports
         has_enough_cubes = False
-        for manager in cube_managers:
+        for manager in cube_set_managers:
             available_cubes = [cube for cube in manager.cube_list if cube in manager.cubes_to_neighbors]
             if len(available_cubes) >= 3:
                 has_enough_cubes = True
@@ -93,9 +93,9 @@ class ABCManager:
         if not self.abc_start_active:
             return None
         # Check all cube managers for ABC sequence using the stored assignments
-        for manager in cube_managers:
-            print(f"checking abc sequence: {manager.player_number}: {self.player_abc_cubes} {self.player_countdown_active} ")        
-            player_num = manager.player_number
+        for manager in cube_set_managers:
+            print(f"checking abc sequence: {manager.cube_set_id}: {self.player_abc_cubes} {self.player_countdown_active} ")
+            player_num = manager.cube_set_id
             if (player_num in self.player_abc_cubes and 
                 player_num not in self.player_countdown_active):
                 # Get the specific cubes that were assigned ABC for this player
@@ -121,7 +121,7 @@ class ABCManager:
     async def execute_letter_stage_for_player(self, publish_queue, player: int, stage_type: str, now_ms: int) -> None:
         """Execute a letter stage for a specific player."""
         abc_cubes = self.player_abc_cubes[player]
-        all_player_cubes = cube_managers[player].cube_list
+        all_player_cubes = cube_set_managers[player].cube_list
         abc_cube_ids = set(abc_cubes.values())
         non_abc_cubes = [cube for cube in all_player_cubes if cube not in abc_cube_ids]
         
@@ -230,9 +230,9 @@ class ABCManager:
 
 # Global ABC manager instance
 abc_manager = ABCManager()
-class CubeManager:
-    def __init__(self, player_number: int):
-        self.player_number = player_number
+class CubeSetManager:
+    def __init__(self, cube_set_id: int):
+        self.cube_set_id = cube_set_id
         self.cube_chain: Dict[str, str] = {}
         self.cubes_to_letters: Dict[str, str] = {}
         self.tiles_to_cubes: Dict[str, str] = {}
@@ -250,7 +250,7 @@ class CubeManager:
         if not self.cubes_to_letters:
             return
         try:
-            s = f"Player {self.player_number}: "
+            s = f"Cube set {self.cube_set_id}: "
             for source, target in self.cube_chain.items():
                 s += f"{source} [{self.cubes_to_letters.get(source, '')}] -> {target} [{self.cubes_to_letters.get(target, '')}]; "
             return s
@@ -261,7 +261,7 @@ class CubeManager:
         # Prefer explicit cube list for stable ordering
         cubes_iter = list(self.cube_list)
         for cube in cubes_iter:
-            log_str = f"Player {self.player_number}: {cube} [{self.cubes_to_letters.get(cube, '')}]"
+            log_str = f"Cube set {self.cube_set_id}: {cube} [{self.cubes_to_letters.get(cube, '')}]"
             if cube in self.cubes_to_neighbors:
                 neighbor_cube = self.cubes_to_neighbors[cube]
                 log_str += f"-> {neighbor_cube}"
@@ -344,7 +344,7 @@ class CubeManager:
 
     async def init(self, all_cubes: List[str]):
         """Initialize cube manager for a specific player."""
-        start_idx = self.player_number * tiles.MAX_LETTERS
+        start_idx = self.cube_set_id * tiles.MAX_LETTERS
         end_idx = start_idx + tiles.MAX_LETTERS
         
         cubes = all_cubes[start_idx:end_idx]
@@ -354,8 +354,8 @@ class CubeManager:
     async def load_rack(self, publish_queue, tiles_with_letters: list[tiles.Tile], now_ms: int) -> None:
         """Load letters onto the rack for this player."""
         # Only load letters if this player has started their game
-        if self.player_number not in _game_started_players:
-            logging.info(f"LOAD RACK: Player {self.player_number} game not started, skipping letter loading")
+        if self.cube_set_id not in _game_started_players:
+            logging.info(f"LOAD RACK: Cube set {self.cube_set_id} game not started, skipping letter loading")
             return
             
         logging.info(f"LOAD RACK tiles_with_letters: {tiles_with_letters}")
@@ -373,7 +373,7 @@ class CubeManager:
     async def _mark_tiles_for_guess(self, publish_queue, guess_tiles: List[str], now_ms: int) -> None:
         """Mark tiles as used/unused for a guess."""
         # Only draw borders when this player's game is running
-        if self.player_number not in _game_started_players:
+        if self.cube_set_id not in _game_started_players:
             return
             
         unused_tiles = sorted(list(set((str(i) for i in range(tiles.MAX_LETTERS)))))
@@ -413,7 +413,7 @@ class GuessManager:
         await guess_last_tiles(publish_queue, player, now_ms)
 
     async def load_rack(self, publish_queue, tiles_with_letters: list[tiles.Tile], player: int, now_ms: int):
-        await cube_managers[player].load_rack(publish_queue, tiles_with_letters, now_ms)
+        await cube_set_managers[player].load_rack(publish_queue, tiles_with_letters, now_ms)
 
         if self.last_tiles_with_letters != tiles_with_letters:
             # Some of the tiles changed. Make a guess, just in case one of them
@@ -422,10 +422,10 @@ class GuessManager:
             await guess_last_tiles(publish_queue, player, now_ms)
             self.last_tiles_with_letters = tiles_with_letters
 
-# Global managers for each player
-cube_managers: List[CubeManager] = [CubeManager(player) for player in range(MAX_PLAYERS)]
-# Global mapping of cube IDs to player numbers for O(1) lookup
-cube_to_player: Dict[str, int] = {}
+# Global managers for each cube set
+cube_set_managers: List[CubeSetManager] = [CubeSetManager(cube_set_id) for cube_set_id in range(MAX_PLAYERS)]
+# Global mapping of cube IDs to cube set IDs for O(1) lookup
+cube_to_cube_set: Dict[str, int] = {}
 # Global guess manager
 guess_manager = GuessManager()
 
@@ -433,8 +433,8 @@ async def _publish_letter(publish_queue, letter, cube_id, now_ms):
     await publish_queue.put((f"cube/{cube_id}/letter", letter, True, now_ms))
 
 async def accept_new_letter(publish_queue, letter, tile_id, player: int, now_ms: int):
-    cube_id = cube_managers[player].tiles_to_cubes[tile_id]
-    cube_managers[player].cubes_to_letters[cube_id] = letter
+    cube_id = cube_set_managers[player].tiles_to_cubes[tile_id]
+    cube_set_managers[player].cubes_to_letters[cube_id] = letter
     await _publish_letter(publish_queue, letter, cube_id, now_ms)
 
 async def load_rack(publish_queue, tiles_with_letters: list[tiles.Tile], player: int, now_ms: int):
@@ -456,7 +456,7 @@ def set_start_game_callback(f):
 locked_cubes = {}
 async def letter_lock(publish_queue, player, tile_id: str | None, now_ms: int) -> bool:
     global locked_cubes
-    cube_id = cube_managers[player].tiles_to_cubes.get(tile_id) if tile_id else None
+    cube_id = cube_set_managers[player].tiles_to_cubes.get(tile_id) if tile_id else None
 
     if last_cube_id := locked_cubes.get(player, None):    
         if last_cube_id == cube_id:
@@ -475,10 +475,10 @@ async def guess_last_tiles(publish_queue, player: int, now_ms: int) -> None:
     for guess in guess_manager.last_guess_tiles:
         await guess_tiles_callback(guess, True, player, now_ms)
 
-    await cube_managers[player]._mark_tiles_for_guess(publish_queue, guess_manager.last_guess_tiles, now_ms)
+    await cube_set_managers[player]._mark_tiles_for_guess(publish_queue, guess_manager.last_guess_tiles, now_ms)
 
 async def flash_guess(publish_queue, tiles: list[str], player: int, now_ms: int):
-    await cube_managers[player].flash_guess(publish_queue, tiles, now_ms)
+    await cube_set_managers[player].flash_guess(publish_queue, tiles, now_ms)
 
 def set_game_end_time(now_ms: int) -> None:
     """Set game running state to false when game ends."""
@@ -570,8 +570,8 @@ async def init(subscribe_client):
     
     all_cubes = _get_all_cube_ids()
 
-    # Clear and rebuild the global cube_to_player mapping
-    cube_to_player.clear()
+    # Clear and rebuild the global cube_to_cube_set mapping
+    cube_to_cube_set.clear()
     
     # Initialize player game states
     global _game_started_players
@@ -580,14 +580,14 @@ async def init(subscribe_client):
     # Reset ABC manager state
     abc_manager.reset()
     
-    # Initialize managers for each player
-    for player, manager in enumerate(cube_managers):
+    # Initialize managers for each cube set
+    for cube_set_id, manager in enumerate(cube_set_managers):
         await manager.init(all_cubes)
-        # Add to global cube_to_player mapping
+        # Add to global cube_to_cube_set mapping
         for cube in manager.cube_list:
-            cube_to_player[cube] = player
-    logging.info(f"INIT: cube_list p0={cube_managers[0].cube_list} p1={cube_managers[1].cube_list}")
-    logging.info(f"INIT: cube_to_player={cube_to_player}")
+            cube_to_cube_set[cube] = cube_set_id
+    logging.info(f"INIT: cube_list p0={cube_set_managers[0].cube_list} p1={cube_set_managers[1].cube_list}")
+    logging.info(f"INIT: cube_to_cube_set={cube_to_cube_set}")
 
 async def handle_mqtt_message(publish_queue, message, now_ms: int):
     topic_str = getattr(message.topic, 'value', str(message.topic))
@@ -598,12 +598,12 @@ async def handle_mqtt_message(publish_queue, message, now_ms: int):
     if topic_str.startswith("cube/right/"):
         sender_cube = topic_str.removeprefix("cube/right/")
         neighbor_cube = payload_data
-        player = cube_to_player.get(sender_cube)
-        if player is not None:
-            logging.info(f"RIGHT msg: sender={sender_cube} neighbor={neighbor_cube} player={player}")
-            word_tiles_list = cube_managers[player].process_neighbor_cube(sender_cube, neighbor_cube)
+        cube_set_id = cube_to_cube_set.get(sender_cube)
+        if cube_set_id is not None:
+            logging.info(f"RIGHT msg: sender={sender_cube} neighbor={neighbor_cube} cube_set={cube_set_id}")
+            word_tiles_list = cube_set_managers[cube_set_id].process_neighbor_cube(sender_cube, neighbor_cube)
             logging.info(f"WORD_TILES (right): {word_tiles_list}")
-            await guess_tiles(publish_queue, word_tiles_list, player, now_ms)
+            await guess_tiles(publish_queue, word_tiles_list, cube_set_id, now_ms)
 
             # Check ABC completion after processing right-edge updates
             if abc_manager.abc_start_active:
@@ -616,11 +616,11 @@ async def handle_mqtt_message(publish_queue, message, now_ms: int):
 
 
 async def good_guess(publish_queue, tiles: list[str], player: int, now_ms: int):
-    cube_managers[player].border_color = "0x07E0"
+    cube_set_managers[player].border_color = "0x07E0"
     await flash_guess(publish_queue, tiles, player, now_ms)
 
 async def old_guess(publish_queue, tiles: list[str], player: int):
-    cube_managers[player].border_color = "0xFFE0"
+    cube_set_managers[player].border_color = "0xFFE0"
 
 async def bad_guess(publish_queue, tiles: list[str], player: int):
-    cube_managers[player].border_color = "0xFFFF"
+    cube_set_managers[player].border_color = "0xFFFF"
