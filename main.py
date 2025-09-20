@@ -196,6 +196,7 @@ if __name__ == "__main__":
     
     seed = 1
     if args.replay:
+        delay_ms = 500  # Default for old replay files
         with open(args.replay, 'r') as f:
             try:
                 # Read first line for seed
@@ -213,6 +214,7 @@ if __name__ == "__main__":
                     f.seek(0)
             except (json.JSONDecodeError, IndexError):
                 pass
+        cubes_to_game.set_abc_countdown_delay(delay_ms)
     else:
         seed = int(datetime.now().timestamp())
     random.seed(seed)
