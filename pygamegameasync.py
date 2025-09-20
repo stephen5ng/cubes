@@ -530,9 +530,6 @@ class RemainingPreviousGuessesDisplay(PreviousGuessesDisplayBase):
             self.remaining_guesses,
             [self.PLAYER_COLORS[self.guess_to_player.get(guess, 0)] for guess in self.remaining_guesses])
 
-# LetterSource class moved to src/rendering/animations.py
-
-# SoundManager class moved to src/systems/sound_manager.py
 
 class Game:
     def __init__(self, 
@@ -748,9 +745,7 @@ class Game:
 
             if self.letter.locked_on or self.last_lock:
                 self.last_lock = self.letter.locked_on
-                letter_index = self.letter.letter_index() if self.letter.locked_on else None
-                incidents.append("letter_lock")
-                if await self._app.letter_lock(letter_index, now_ms):
+                if await self._app.letter_lock(self.letter.letter_index(), self.letter.locked_on, now_ms):
                     incidents.append("letter_lock")
 
         for player in range(self._app.player_count):

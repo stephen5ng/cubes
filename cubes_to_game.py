@@ -165,6 +165,7 @@ class ABCManager:
 
     async def start_abc_countdown(self, publish_queue, player: int, now_ms: int) -> None:
         """Start the global ABC countdown sequence."""
+        delay_ms = 500
         self.player_countdown_active[player] = True
         
         logging.info(f"ABC sequence complete for player {player}! Starting global countdown")
@@ -172,10 +173,10 @@ class ABCManager:
         
         # Create global countdown schedule: 3 non-ABC stages, then A, B, C (500ms intervals)
         stages = ['non_abc_1', 'non_abc_2', 'non_abc_3', 'A', 'B', 'C']
-        self.global_countdown_schedule = [(now_ms + i * 500, stage) for i, stage in enumerate(stages)]
+        self.global_countdown_schedule = [(now_ms + i * delay_ms, stage) for i, stage in enumerate(stages)]
         
-        # Game will start 0.5s after the last replacement
-        self.countdown_complete_time = now_ms + len(stages) * 500
+        # Game will start after the last replacement
+        self.countdown_complete_time = now_ms + len(stages) * delay_ms
 
     async def handle_abc_completion(self, publish_queue, completed_player: int, now_ms: int) -> None:
         """Handle when a player completes their ABC sequence.
@@ -432,9 +433,9 @@ guess_manager = GuessManager()
 async def _publish_letter(publish_queue, letter, cube_id, now_ms):
     await publish_queue.put((f"cube/{cube_id}/letter", letter, True, now_ms))
 
-async def accept_new_letter(publish_queue, letter, tile_id, player: int, now_ms: int):
-    cube_id = cube_set_managers[player].tiles_to_cubes[tile_id]
-    cube_set_managers[player].cubes_to_letters[cube_id] = letter
+async def accept_new_letter(publish_queue, letter, tile_id, cube_set_id: int, now_ms: int):
+    cube_id = cube_set_managers[cube_set_id].tiles_to_cubes[tile_id]
+    cube_set_managers[cube_set_id].cubes_to_letters[cube_id] = letter
     await _publish_letter(publish_queue, letter, cube_id, now_ms)
 
 async def load_rack(publish_queue, tiles_with_letters: list[tiles.Tile], player: int, now_ms: int):
@@ -454,18 +455,18 @@ def set_start_game_callback(f):
     start_game_callback = f
 
 locked_cubes = {}
-async def letter_lock(publish_queue, player, tile_id: str | None, now_ms: int) -> bool:
+async def letter_lock(publish_queue, cube_set_id, tile_id: str | None, now_ms: int) -> bool:
     global locked_cubes
-    cube_id = cube_set_managers[player].tiles_to_cubes.get(tile_id) if tile_id else None
+    cube_id = cube_set_managers[cube_set_id].tiles_to_cubes.get(tile_id) if tile_id else None
 
-    if last_cube_id := locked_cubes.get(player, None):    
+    if last_cube_id := locked_cubes.get(cube_set_id, None):    
         if last_cube_id == cube_id:
             return False
 
         # Unlock last cube
         await publish_queue.put((f"cube/{last_cube_id}/lock", None, True, now_ms))
         
-    locked_cubes[player] = cube_id
+    locked_cubes[cube_set_id] = cube_id
     if cube_id:
         await publish_queue.put((f"cube/{cube_id}/lock", "1", True, now_ms))
     return True

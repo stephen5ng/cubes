@@ -166,8 +166,8 @@ class App:
         self._update_player_to_cube_set_mapping()
         for player in range(self._player_count):
             cube_set_id = self._player_to_cube_set.get(player)
-            if cube_set_id is not None:
-                await cubes_to_game.accept_new_letter(self._publish_queue, next_letter, changed_tile.id, cube_set_id, now_ms)
+            await cubes_to_game.accept_new_letter(self._publish_queue, next_letter,
+                                                  changed_tile.id, cube_set_id, now_ms)
 
         self._update_previous_guesses()
         self._update_remaining_previous_guesses()
@@ -178,18 +178,21 @@ class App:
             for player in range(self._player_count):
                 await self.guess_tiles(self._last_guess, False, player, now_ms)
 
-    async def letter_lock(self, position: int | None, now_ms: int) -> bool:
-        lock_change = False
-        # Update player-to-cube-set mapping before sending locks
+    async def letter_lock(self, position: int, locked: bool, now_ms: int) -> bool:
+        position_offset = 0
+        hit_rack = 0
+        if self._player_count > 1:
+            hit_rack, position_offset = (0, 3) if position < 3 else (1, -3)
+
+        locked_tile_id = self._player_racks[hit_rack].position_to_id(position + position_offset)
+
+        lock_changed = False
         self._update_player_to_cube_set_mapping()
         for player in range(self._player_count):
-            cube_set_id = self._player_to_cube_set.get(player)
-            if cube_set_id is not None:
-                lock_change |= await cubes_to_game.letter_lock(self._publish_queue,
-                    cube_set_id,
-                    self._player_racks[player].position_to_id(position) if position else None,
-                    now_ms)
-        return lock_change
+            cube_set_id = self._player_to_cube_set.get(player)            
+            lock_changed |= await cubes_to_game.letter_lock(self._publish_queue, cube_set_id,
+                                            locked_tile_id if locked else None, now_ms)
+        return lock_changed
 
     def add_guess(self, guess: str, player: int) -> None:
         self._score_card.add_guess(guess, player)
