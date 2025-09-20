@@ -603,7 +603,9 @@ async def handle_mqtt_message(publish_queue, message, now_ms: int):
             logging.info(f"RIGHT msg: sender={sender_cube} neighbor={neighbor_cube} cube_set={cube_set_id}")
             word_tiles_list = cube_set_managers[cube_set_id].process_neighbor_cube(sender_cube, neighbor_cube)
             logging.info(f"WORD_TILES (right): {word_tiles_list}")
-            await guess_tiles(publish_queue, word_tiles_list, cube_set_id, now_ms)
+            # In single player mode, player_id is always 0; in multi-player, cube_set_id maps to player_id
+            player_id = 0 if len(_game_started_players) <= 1 else cube_set_id
+            await guess_tiles(publish_queue, word_tiles_list, player_id, now_ms)
 
             # Check ABC completion after processing right-edge updates
             if abc_manager.abc_start_active:
