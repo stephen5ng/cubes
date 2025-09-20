@@ -1,4 +1,5 @@
 {"event_type": "seed", "seed": 44444}
+{"event_type": "delay_ms", "delay_ms": 500}
 {"timestamp_ms": 500, "events": {"mqtt": [{"topic": "cube/right/1", "payload": "-"}, {"topic": "cube/right/11", "payload": "-"}]}}
 {"timestamp_ms": 600, "events": {"mqtt": [{"topic": "cube/right/2", "payload": "-"}, {"topic": "cube/right/12", "payload": "-"}]}}
 {"timestamp_ms": 700, "events": {"mqtt": [{"topic": "cube/right/3", "payload": "-"}, {"topic": "cube/right/13", "payload": "-"}]}}

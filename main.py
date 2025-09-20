@@ -72,6 +72,14 @@ class GameLogger(BaseLogger):
         }
         print(f">>>>>>>> logging seed {event}")
         self._write_event(event)
+
+    def log_delay_ms(self, delay_ms: int):
+        event = {
+            "event_type": "delay_ms",
+            "delay_ms": delay_ms
+        }
+        print(f">>>>>>>> logging delay_ms {event}")
+        self._write_event(event)
         
     def log_events(self, now_ms: int, events: dict):
         log_entry = {
@@ -136,6 +144,8 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
         if not args.replay:
             print(f"LOGGING SEED {seed}")
             game_logger.log_seed(seed)
+            # Log the ABC countdown delay used in cubes_to_game.py
+            game_logger.log_delay_ms(1000)
 
         async with aiomqtt.Client(MQTT_SERVER) as subscribe_client:
             async with aiomqtt.Client(MQTT_SERVER) as publish_client:
@@ -185,12 +195,21 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     seed = 1
+    delay_ms = 500  # Default for old replay files
     if args.replay:
         with open(args.replay, 'r') as f:
             try:
+                # Read first line for seed
                 first_event = json.loads(f.readline())
                 if first_event.get("event_type") == "seed":
                     seed = first_event["seed"]
+                    # Try to read second line for delay_ms
+                    try:
+                        second_event = json.loads(f.readline())
+                        if second_event.get("event_type") == "delay_ms":
+                            delay_ms = second_event["delay_ms"]
+                    except (json.JSONDecodeError, IndexError):
+                        pass  # Use default delay_ms if not found
                 else:
                     f.seek(0)
             except (json.JSONDecodeError, IndexError):
@@ -198,6 +217,7 @@ if __name__ == "__main__":
     else:
         seed = int(datetime.now().timestamp())
     random.seed(seed)
+    cubes_to_game.set_abc_countdown_delay(delay_ms)
 
     # logger.setLevel(logging.DEBUG)
     pygame.mixer.init(frequency=24000, size=-16, channels=2)

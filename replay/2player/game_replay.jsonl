@@ -1,4 +1,5 @@
 {"event_type": "seed", "seed": 1754584959}
+{"event_type": "delay_ms", "delay_ms": 500}
 {"timestamp_ms": 1938, "events": {"pygame": [{"type": "KEYDOWN", "key": "ESCAPE"}]}}
 {"timestamp_ms": 2959, "events": {"pygame": [{"type": "JOYBUTTONDOWN", "button": 9}], "incidents": ["letter_column_move"]}}
 {"timestamp_ms": 3960, "events": {"incidents": ["letter_column_move"]}}

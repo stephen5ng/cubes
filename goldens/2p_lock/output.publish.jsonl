@@ -1,0 +1,69 @@
+{"time": 0, "topic": "cube/1/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/2/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/3/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/4/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/5/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/6/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/11/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/12/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/13/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/14/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/15/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/16/letter", "message": " ", "retain": true}
+{"time": 0, "topic": "cube/1/border", "message": ":", "retain": true}
+{"time": 0, "topic": "cube/2/border", "message": ":", "retain": true}
+{"time": 0, "topic": "cube/3/border", "message": ":", "retain": true}
+{"time": 0, "topic": "cube/4/border", "message": ":", "retain": true}
+{"time": 0, "topic": "cube/5/border", "message": ":", "retain": true}
+{"time": 0, "topic": "cube/6/border", "message": ":", "retain": true}
+{"time": 0, "topic": "cube/11/border", "message": ":", "retain": true}
+{"time": 0, "topic": "cube/12/border", "message": ":", "retain": true}
+{"time": 0, "topic": "cube/13/border", "message": ":", "retain": true}
+{"time": 0, "topic": "cube/14/border", "message": ":", "retain": true}
+{"time": 0, "topic": "cube/15/border", "message": ":", "retain": true}
+{"time": 0, "topic": "cube/16/border", "message": ":", "retain": true}
+{"time": 1082, "topic": "cube/1/letter", "message": "A", "retain": true}
+{"time": 1082, "topic": "cube/3/letter", "message": "B", "retain": true}
+{"time": 1082, "topic": "cube/4/letter", "message": "C", "retain": true}
+{"time": 1082, "topic": "cube/11/letter", "message": "A", "retain": true}
+{"time": 1082, "topic": "cube/13/letter", "message": "B", "retain": true}
+{"time": 1082, "topic": "cube/14/letter", "message": "C", "retain": true}
+{"time": 6835, "topic": "cube/2/letter", "message": "?", "retain": true}
+{"time": 7857, "topic": "cube/5/letter", "message": "?", "retain": true}
+{"time": 8835, "topic": "cube/6/letter", "message": "?", "retain": true}
+{"time": 9842, "topic": "cube/1/letter", "message": "?", "retain": true}
+{"time": 9842, "topic": "cube/11/letter", "message": "?", "retain": true}
+{"time": 10849, "topic": "cube/3/letter", "message": "?", "retain": true}
+{"time": 10849, "topic": "cube/13/letter", "message": "?", "retain": true}
+{"time": 11845, "topic": "cube/4/letter", "message": "?", "retain": true}
+{"time": 11845, "topic": "cube/14/letter", "message": "?", "retain": true}
+{"time": 12835, "topic": "cube/1/letter", "message": "A", "retain": true}
+{"time": 12835, "topic": "cube/2/letter", "message": "L", "retain": true}
+{"time": 12835, "topic": "cube/3/letter", "message": "O", "retain": true}
+{"time": 12835, "topic": "cube/4/letter", "message": "P", "retain": true}
+{"time": 12835, "topic": "cube/5/letter", "message": "S", "retain": true}
+{"time": 12835, "topic": "cube/6/letter", "message": "T", "retain": true}
+{"time": 12835, "topic": "cube/1/border", "message": "NSW:0xFFFF", "retain": true}
+{"time": 12835, "topic": "cube/3/border", "message": "NS:0xFFFF", "retain": true}
+{"time": 12835, "topic": "cube/4/border", "message": "ENS:0xFFFF", "retain": true}
+{"time": 12835, "topic": "cube/11/letter", "message": "A", "retain": true}
+{"time": 12835, "topic": "cube/12/letter", "message": "L", "retain": true}
+{"time": 12835, "topic": "cube/13/letter", "message": "O", "retain": true}
+{"time": 12835, "topic": "cube/14/letter", "message": "P", "retain": true}
+{"time": 12835, "topic": "cube/15/letter", "message": "S", "retain": true}
+{"time": 12835, "topic": "cube/16/letter", "message": "T", "retain": true}
+{"time": 12835, "topic": "cube/11/border", "message": "NSW:0xFFFF", "retain": true}
+{"time": 12835, "topic": "cube/13/border", "message": "NS:0xFFFF", "retain": true}
+{"time": 12835, "topic": "cube/14/border", "message": "ENS:0xFFFF", "retain": true}
+{"time": 26949, "topic": "cube/5/lock", "message": "1", "retain": true}
+{"time": 26949, "topic": "cube/15/lock", "message": "1", "retain": true}
+{"time": 27488, "topic": "cube/5/letter", "message": "D", "retain": true}
+{"time": 27488, "topic": "cube/15/letter", "message": "D", "retain": true}
+{"time": 27495, "topic": "cube/5/lock", "message": null, "retain": true}
+{"time": 27495, "topic": "cube/15/lock", "message": null, "retain": true}
+{"time": 39622, "topic": "cube/5/lock", "message": "1", "retain": true}
+{"time": 39622, "topic": "cube/15/lock", "message": "1", "retain": true}
+{"time": 40646, "topic": "cube/5/letter", "message": "E", "retain": true}
+{"time": 40646, "topic": "cube/15/letter", "message": "E", "retain": true}
+{"time": 40653, "topic": "cube/5/lock", "message": null, "retain": true}
+{"time": 40653, "topic": "cube/15/lock", "message": null, "retain": true}

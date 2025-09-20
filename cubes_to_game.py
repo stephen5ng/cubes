@@ -10,6 +10,14 @@ from typing import Callable, Coroutine, Dict, List
 from config import MAX_PLAYERS
 import tiles
 
+# ABC countdown delay configuration
+ABC_COUNTDOWN_DELAY_MS = 1000
+
+def set_abc_countdown_delay(delay_ms: int):
+    """Set the ABC countdown delay for replay compatibility."""
+    global ABC_COUNTDOWN_DELAY_MS
+    ABC_COUNTDOWN_DELAY_MS = delay_ms
+
 # Configure logging to print to console
 # import sys
 # logging.basicConfig(
@@ -165,7 +173,7 @@ class ABCManager:
 
     async def start_abc_countdown(self, publish_queue, player: int, now_ms: int) -> None:
         """Start the global ABC countdown sequence."""
-        delay_ms = 500
+        delay_ms = ABC_COUNTDOWN_DELAY_MS
         self.player_countdown_active[player] = True
         
         logging.info(f"ABC sequence complete for player {player}! Starting global countdown")
