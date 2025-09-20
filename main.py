@@ -145,7 +145,7 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
             print(f"LOGGING SEED {seed}")
             game_logger.log_seed(seed)
             # Log the ABC countdown delay used in cubes_to_game.py
-            game_logger.log_delay_ms(1000)
+            game_logger.log_delay_ms(cubes_to_game.ABC_COUNTDOWN_DELAY_MS)
 
         async with aiomqtt.Client(MQTT_SERVER) as subscribe_client:
             async with aiomqtt.Client(MQTT_SERVER) as publish_client:
@@ -195,7 +195,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     seed = 1
-    delay_ms = 500  # Default for old replay files
     if args.replay:
         with open(args.replay, 'r') as f:
             try:
@@ -217,7 +216,6 @@ if __name__ == "__main__":
     else:
         seed = int(datetime.now().timestamp())
     random.seed(seed)
-    cubes_to_game.set_abc_countdown_delay(delay_ms)
 
     # logger.setLevel(logging.DEBUG)
     pygame.mixer.init(frequency=24000, size=-16, channels=2)
