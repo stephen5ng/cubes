@@ -126,39 +126,44 @@ class ABCManager:
         
         return None
 
-    async def execute_letter_stage_for_player(self, publish_queue, player: int, stage_type: str, now_ms: int) -> None:
+    async def execute_letter_stage_for_player(self, publish_queue, player: int, stage_type: str, now_ms: int, sound_manager) -> None:
         """Execute a letter stage for a specific player."""
         abc_cubes = self.player_abc_cubes[player]
         all_player_cubes = cube_set_managers[player].cube_list
         abc_cube_ids = set(abc_cubes.values())
         non_abc_cubes = [cube for cube in all_player_cubes if cube not in abc_cube_ids]
-        
-        if stage_type == 'non_abc_1' and len(non_abc_cubes) > 0:
-            await publish_queue.put((f"cube/{non_abc_cubes[0]}/letter", "?", True, now_ms))
-        elif stage_type == 'non_abc_2' and len(non_abc_cubes) > 1:
-            await publish_queue.put((f"cube/{non_abc_cubes[1]}/letter", "?", True, now_ms))
-        elif stage_type == 'non_abc_3' and len(non_abc_cubes) > 2:
-            await publish_queue.put((f"cube/{non_abc_cubes[2]}/letter", "?", True, now_ms))
-        elif stage_type == 'A':
-            await publish_queue.put((f"cube/{abc_cubes['A']}/letter", "?", True, now_ms))
-        elif stage_type == 'B':
-            await publish_queue.put((f"cube/{abc_cubes['B']}/letter", "?", True, now_ms))
-        elif stage_type == 'C':
-            await publish_queue.put((f"cube/{abc_cubes['C']}/letter", "?", True, now_ms))
 
-    async def apply_past_letter_stages(self, publish_queue, player: int, now_ms: int) -> None:
+        cube_id = None
+        if stage_type == 'non_abc_1':
+            cube_id = non_abc_cubes[0]
+        elif stage_type == 'non_abc_2':
+            cube_id = non_abc_cubes[1]
+        elif stage_type == 'non_abc_3':
+            cube_id = non_abc_cubes[2]
+        elif stage_type == 'A':
+            cube_id = abc_cubes['A']
+        elif stage_type == 'B':
+            cube_id = abc_cubes['B']
+        elif stage_type == 'C':
+            cube_id = abc_cubes['C']
+
+        if cube_id:
+            await publish_queue.put((f"cube/{cube_id}/letter", "?", True, now_ms))
+            sound_manager.play_chunk()
+
+    async def apply_past_letter_stages(self, publish_queue, player: int, now_ms: int, sound_manager) -> None:
         """Apply letter stages that have already occurred for a player joining mid-countdown."""
         # Apply all stages that should have already happened
         for stage_time, stage_type in self.global_countdown_schedule:
             if stage_time < now_ms:  # This stage is in the past
-                await self.execute_letter_stage_for_player(publish_queue, player, stage_type, now_ms)
+                await self.execute_letter_stage_for_player(publish_queue, player, stage_type, now_ms, sound_manager)
 
-    async def execute_countdown_stage(self, publish_queue, stage_type: str, now_ms: int) -> None:
+    async def execute_countdown_stage(self, publish_queue, stage_type: str, now_ms: int, sound_manager) -> None:
         """Execute a countdown stage for all active countdown players."""
         for player in self.player_countdown_active:
-            await self.execute_letter_stage_for_player(publish_queue, player, stage_type, now_ms)
+            await self.execute_letter_stage_for_player(publish_queue, player, stage_type, now_ms, sound_manager)
 
-    async def sync_player_with_countdown(self, publish_queue, player: int, now_ms: int) -> None:
+    async def sync_player_with_countdown(self, publish_queue, player: int, now_ms: int, sound_manager) -> None:
         """Sync a player's cubes with the existing countdown animation.
         
         This function makes the second player's cubes change to '?' in sync with 
@@ -169,7 +174,7 @@ class ABCManager:
         logging.info(f"Player {player} joining countdown - will sync with global letter progression")
         print(f"Player {player} joining countdown - synchronized start")
         
-        await self.apply_past_letter_stages(publish_queue, player, now_ms)
+        await self.apply_past_letter_stages(publish_queue, player, now_ms, sound_manager)
 
     async def start_abc_countdown(self, publish_queue, player: int, now_ms: int) -> None:
         """Start the global ABC countdown sequence."""
@@ -192,16 +197,15 @@ class ABCManager:
         If someone is already in countdown, join them. Otherwise start a new countdown.
         """
         # Play ping sound when ABC cubes are connected
-        if sound_manager:
-            sound_manager.play_crash()
+        sound_manager.play_crash()
         if self.is_any_player_in_countdown():
             logging.info(f"Player {completed_player} joining active countdown")
-            await self.sync_player_with_countdown(publish_queue, completed_player, now_ms)
+            await self.sync_player_with_countdown(publish_queue, completed_player, now_ms, sound_manager)
         else:
             logging.info(f"Player {completed_player} starting new countdown")
             await self.start_abc_countdown(publish_queue, completed_player, now_ms)
 
-    async def check_countdown_completion(self, publish_queue, now_ms: int) -> list:
+    async def check_countdown_completion(self, publish_queue, now_ms: int, sound_manager) -> list:
         """Check if countdown stages need to be executed and if countdown has completed.
         Returns incidents for any countdown replacements that occurred."""
         incidents = []
@@ -212,7 +216,7 @@ class ABCManager:
             for stage_time, stage_type in self.global_countdown_schedule:
                 if now_ms >= stage_time:
                     # Execute this stage for all active countdown players
-                    await self.execute_countdown_stage(publish_queue, stage_type, now_ms)
+                    await self.execute_countdown_stage(publish_queue, stage_type, now_ms, sound_manager)
                     incidents.append(f"abc_countdown_replacement: {stage_type}")
                 else:
                     remaining_stages.append((stage_time, stage_type))

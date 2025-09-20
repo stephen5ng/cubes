@@ -136,7 +136,7 @@ async def test_countdown_join():
     print("\n5. SIMULATE COUNTDOWN COMPLETION")
     # Simulate time progression to complete countdown for both players
     for time_step in range(4000, 10000, 100):  # Advance time until both countdowns complete
-        incidents = await cubes_to_game.abc_manager.check_countdown_completion(publish_queue, time_step)
+        incidents = await cubes_to_game.abc_manager.check_countdown_completion(publish_queue, time_step, mock_sound_manager)
         
         # Check if both players have started
         if 0 in cubes_to_game._game_started_players and 1 in cubes_to_game._game_started_players:

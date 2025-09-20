@@ -119,7 +119,7 @@ async def test_simplified_abc_clearing():
     print("\n4. ADVANCE TIME UNTIL PLAYER 0 COMPLETES COUNTDOWN")
     # Simulate time progression to complete countdown
     for time_step in range(4000, 10000, 100):  # Advance time until countdown completes
-        incidents = await cubes_to_game.abc_manager.check_countdown_completion(publish_queue, time_step)
+        incidents = await cubes_to_game.abc_manager.check_countdown_completion(publish_queue, time_step, mock_sound_manager)
         
         # Check if Player 0 has completed countdown
         if 0 in cubes_to_game._game_started_players:

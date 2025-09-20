@@ -176,7 +176,7 @@ async def test_per_player_abc_sequence():
     # Wait for countdown to complete - simulate the polling that happens in the main loop
     countdown_complete = False
     for wait_time in range(current_time + 1000, current_time + 5000, 100):  # Wait up to 4 seconds
-        incidents = await cubes_to_game.abc_manager.check_countdown_completion(publish_queue, wait_time)
+        incidents = await cubes_to_game.abc_manager.check_countdown_completion(publish_queue, wait_time, mock_sound_manager)
         if 0 in cubes_to_game._game_started_players:
             countdown_complete = True
             break
