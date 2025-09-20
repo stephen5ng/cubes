@@ -68,35 +68,22 @@ class App:
         """Get the game logger for MQTT event logging."""
         return self._game_logger
 
-    def _determine_active_cube_sets(self) -> set[int]:
-        """Determine which cube sets are currently active (have ABC assignments or started games)."""
-        active_cube_sets = set()
+    def _set_player_to_cube_set_mapping(self) -> None:
+        """Set the player-to-cube-set mapping once when game starts."""
+        started_cube_sets = list(cubes_to_game._game_started_players)
 
-        # Add cube sets with ABC assignments
-        active_cube_sets.update(cubes_to_game.abc_manager.player_abc_cubes.keys())
-
-        # Add cube sets with started games
-        active_cube_sets.update(cubes_to_game._game_started_players)
-
-        return active_cube_sets
-
-    def _update_player_to_cube_set_mapping(self) -> None:
-        """Update the player-to-cube-set mapping based on active cube sets."""
-        active_cube_sets = self._determine_active_cube_sets()
-
-        if not active_cube_sets:
-            # No active cube sets, keep default mapping
+        if not started_cube_sets:
+            # No cube sets started, keep default mapping
             return
 
-        # For single player mode, map player 0 to the first active cube set
         if self._player_count == 1:
-            first_active = min(active_cube_sets)
-            self._player_to_cube_set[0] = first_active
+            # Single player: map player 0 to the cube set that started
+            self._player_to_cube_set[0] = started_cube_sets[0]
         else:
-            # For multi-player, maintain current mapping or assign in order
-            active_list = sorted(active_cube_sets)
-            for i in range(min(self._player_count, len(active_list))):
-                self._player_to_cube_set[i] = active_list[i]
+            # Multi-player: map players to their respective cube sets
+            for i, cube_set_id in enumerate(sorted(started_cube_sets)):
+                if i < self._player_count:
+                    self._player_to_cube_set[i] = cube_set_id
 
     def set_word_logger(self, word_logger) -> None:
         """Set the word logger for new word formation logging."""
@@ -121,7 +108,10 @@ class App:
         
         # Clear ABC cubes for any remaining players (non-participants)
         await cubes_to_game.clear_remaining_abc_cubes(self._publish_queue, now_ms)
-        
+
+        # Set player-to-cube-set mapping once for this game session
+        self._set_player_to_cube_set_mapping()
+
         await self.load_rack(now_ms)
         for player in range(MAX_PLAYERS):
             self._update_rack_display(0, 0, player)
@@ -162,8 +152,6 @@ class App:
             changed_tile = self._player_racks[0].replace_letter(next_letter, position)
 
         self._score_card.update_previous_guesses()
-        # Update player-to-cube-set mapping before sending letters
-        self._update_player_to_cube_set_mapping()
         for player in range(self._player_count):
             cube_set_id = self._player_to_cube_set.get(player)
             await cubes_to_game.accept_new_letter(self._publish_queue, next_letter,
@@ -187,7 +175,6 @@ class App:
         locked_tile_id = self._player_racks[hit_rack].position_to_id(position + position_offset)
 
         lock_changed = False
-        self._update_player_to_cube_set_mapping()
         for player in range(self._player_count):
             cube_set_id = self._player_to_cube_set.get(player)            
             lock_changed |= await cubes_to_game.letter_lock(self._publish_queue, cube_set_id,
