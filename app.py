@@ -118,7 +118,8 @@ class App:
         self._update_previous_guesses()
         self._update_remaining_previous_guesses()
         for player in range(self._player_count):
-            await cubes_to_game.guess_last_tiles(self._publish_queue, player, now_ms)
+            cube_set_id = self._player_to_cube_set.get(player)
+            await cubes_to_game.guess_last_tiles(self._publish_queue, cube_set_id, player, now_ms)
         print(">>>>>>>> app.STARTED")
 
     async def stop(self, now_ms: int) -> None:
@@ -136,7 +137,8 @@ class App:
         # Only load letters for players who have actually started their games
         for player in range(MAX_PLAYERS):
             if cubes_to_game.has_player_started_game(player):
-                await cubes_to_game.load_rack(self._publish_queue, self._player_racks[player].get_tiles(), player, now_ms)
+                cube_set_id = self._player_to_cube_set.get(player)
+                await cubes_to_game.load_rack(self._publish_queue, self._player_racks[player].get_tiles(), cube_set_id, player, now_ms)
             else:
                 logging.info(f"LOAD RACK: Skipping player {player} - game not started")
 
@@ -203,12 +205,13 @@ class App:
                 self._player_racks[player].set_tiles(remaining_tiles + guess_tiles)
             tiles_dirty = True
 
+        cube_set_id = self._player_to_cube_set.get(player)
         if self._score_card.is_old_guess(guess):
             events.trigger("game.old_guess", guess, player, pygame.time.get_ticks())
-            await cubes_to_game.old_guess(self._publish_queue, word_tile_ids, player)
+            await cubes_to_game.old_guess(self._publish_queue, word_tile_ids, cube_set_id, player)
             tiles_dirty = True
         elif self._score_card.is_good_guess(guess):
-            await cubes_to_game.good_guess(self._publish_queue, word_tile_ids, player, now_ms)
+            await cubes_to_game.good_guess(self._publish_queue, word_tile_ids, cube_set_id, player, now_ms)
             self._score_card.add_staged_guess(guess)
             score = self._score_card.calculate_score(guess)
             events.trigger("game.stage_guess", score, guess, player, now_ms)
@@ -217,7 +220,7 @@ class App:
             tiles_dirty = True
         else:
             events.trigger("game.bad_guess", player)
-            await cubes_to_game.bad_guess(self._publish_queue, word_tile_ids, player)
+            await cubes_to_game.bad_guess(self._publish_queue, word_tile_ids, cube_set_id, player)
 
         if tiles_dirty:
             self._update_rack_display(good_guess_highlight, len(guess), player)
@@ -226,8 +229,9 @@ class App:
         # not sure why this is here.
         # if MAX_PLAYERS == 1 and player > 0:
         #     return
+        cube_set_id = self._player_to_cube_set.get(player)
         await cubes_to_game.guess_tiles(self._publish_queue,
-            [self._player_racks[player].letters_to_ids(guess)], player, now_ms)
+            [self._player_racks[player].letters_to_ids(guess)], cube_set_id, player, now_ms)
 
     def _update_next_tile(self, next_tile: str) -> None:
         events.trigger("game.next_tile", next_tile, pygame.time.get_ticks())
