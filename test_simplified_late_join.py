@@ -14,6 +14,7 @@ import logging
 from unittest.mock import Mock
 import cubes_to_game
 import tiles
+from src.testing.mock_sound_manager import MockSoundManager
 
 # Set up basic logging to see what's happening
 logging.basicConfig(level=logging.INFO)
@@ -36,6 +37,7 @@ async def test_simplified_late_join():
     
     # Setup test environment
     publish_queue = TestPublishQueue()
+    mock_sound_manager = MockSoundManager()
     
     # Mock callbacks
     def mock_start_game_callback(auto_start, now_ms, player):
@@ -71,14 +73,14 @@ async def test_simplified_late_join():
         neighbor = "-"  # All cubes report no neighbors for simplicity
         await cubes_to_game.handle_mqtt_message(publish_queue,
             Mock(topic=Mock(value=f"cube/right/{cube}"), payload=Mock(decode=lambda n=neighbor: n)),
-            current_time)
+            current_time, mock_sound_manager)
     
     # Player 1: Set up neighbor reports
     for cube in ['11', '12', '13', '14', '15', '16']:
         neighbor = "-"  # All cubes report no neighbors for simplicity
         await cubes_to_game.handle_mqtt_message(publish_queue,
             Mock(topic=Mock(value=f"cube/right/{cube}"), payload=Mock(decode=lambda n=neighbor: n)),
-            current_time)
+            current_time, mock_sound_manager)
     
     print("✓ Neighbor reports set up for both players")
     
@@ -104,11 +106,11 @@ async def test_simplified_late_join():
     # Connect Player 0's ABC cubes in sequence: A->B->C
     await cubes_to_game.handle_mqtt_message(publish_queue,
         Mock(topic=Mock(value=f"cube/right/{p0_abc['A']}"), payload=Mock(decode=lambda: p0_abc['B'])),
-        current_time)
+        current_time, mock_sound_manager)
     
     await cubes_to_game.handle_mqtt_message(publish_queue,
         Mock(topic=Mock(value=f"cube/right/{p0_abc['B']}"), payload=Mock(decode=lambda: p0_abc['C'])),
-        current_time)
+        current_time, mock_sound_manager)
     
     # Verify Player 0 is in countdown
     assert 0 in cubes_to_game.abc_manager.player_countdown_active, "Player 0 should be in countdown"
@@ -137,11 +139,11 @@ async def test_simplified_late_join():
     # Player 1 tries to connect cubes, but ABC state is cleared so this should do nothing special
     await cubes_to_game.handle_mqtt_message(publish_queue,
         Mock(topic=Mock(value=f"cube/right/{p1_abc['A']}"), payload=Mock(decode=lambda: p1_abc['B'])),
-        current_time)
+        current_time, mock_sound_manager)
     
     await cubes_to_game.handle_mqtt_message(publish_queue,
         Mock(topic=Mock(value=f"cube/right/{p1_abc['B']}"), payload=Mock(decode=lambda: p1_abc['C'])),
-        current_time)
+        current_time, mock_sound_manager)
     
     # Verify Player 1 cannot start countdown (ABC is cleared)
     assert 1 not in cubes_to_game.abc_manager.player_countdown_active, "Player 1 should not be in countdown"

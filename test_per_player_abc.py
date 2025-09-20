@@ -21,6 +21,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 import cubes_to_game
 import tiles
+from src.testing.mock_sound_manager import MockSoundManager
 
 # Test configuration
 TEST_TIMEOUT = 10.0
@@ -57,6 +58,7 @@ async def test_per_player_abc_sequence():
     
     # Setup test queue and results
     publish_queue = TestPublishQueue()
+    mock_sound_manager = MockSoundManager()
     results = TestResults()
     
     # Mock the callbacks
@@ -80,44 +82,44 @@ async def test_per_player_abc_sequence():
     current_time = 1000
     
     # Player 0: More neighbor reports to meet the 3-cube minimum
-    await cubes_to_game.handle_mqtt_message(publish_queue, 
-        Mock(topic=Mock(value="cube/right/1"), payload=Mock(decode=lambda: "-")), 
-        current_time)
-    await cubes_to_game.handle_mqtt_message(publish_queue, 
-        Mock(topic=Mock(value="cube/right/2"), payload=Mock(decode=lambda: "3")), 
-        current_time)
-    await cubes_to_game.handle_mqtt_message(publish_queue, 
-        Mock(topic=Mock(value="cube/right/3"), payload=Mock(decode=lambda: "-")), 
-        current_time)
-    await cubes_to_game.handle_mqtt_message(publish_queue, 
-        Mock(topic=Mock(value="cube/right/4"), payload=Mock(decode=lambda: "-")), 
-        current_time)
-    await cubes_to_game.handle_mqtt_message(publish_queue, 
-        Mock(topic=Mock(value="cube/right/5"), payload=Mock(decode=lambda: "-")), 
-        current_time)
-    await cubes_to_game.handle_mqtt_message(publish_queue, 
-        Mock(topic=Mock(value="cube/right/6"), payload=Mock(decode=lambda: "-")), 
-        current_time)
+    await cubes_to_game.handle_mqtt_message(publish_queue,
+        Mock(topic=Mock(value="cube/right/1"), payload=Mock(decode=lambda: "-")),
+        current_time, mock_sound_manager)
+    await cubes_to_game.handle_mqtt_message(publish_queue,
+        Mock(topic=Mock(value="cube/right/2"), payload=Mock(decode=lambda: "3")),
+        current_time, mock_sound_manager)
+    await cubes_to_game.handle_mqtt_message(publish_queue,
+        Mock(topic=Mock(value="cube/right/3"), payload=Mock(decode=lambda: "-")),
+        current_time, mock_sound_manager)
+    await cubes_to_game.handle_mqtt_message(publish_queue,
+        Mock(topic=Mock(value="cube/right/4"), payload=Mock(decode=lambda: "-")),
+        current_time, mock_sound_manager)
+    await cubes_to_game.handle_mqtt_message(publish_queue,
+        Mock(topic=Mock(value="cube/right/5"), payload=Mock(decode=lambda: "-")),
+        current_time, mock_sound_manager)
+    await cubes_to_game.handle_mqtt_message(publish_queue,
+        Mock(topic=Mock(value="cube/right/6"), payload=Mock(decode=lambda: "-")),
+        current_time, mock_sound_manager)
     
     # Player 1: Also add enough reports for player 1
-    await cubes_to_game.handle_mqtt_message(publish_queue, 
-        Mock(topic=Mock(value="cube/right/11"), payload=Mock(decode=lambda: "-")), 
-        current_time)
-    await cubes_to_game.handle_mqtt_message(publish_queue, 
-        Mock(topic=Mock(value="cube/right/12"), payload=Mock(decode=lambda: "13")), 
-        current_time)
-    await cubes_to_game.handle_mqtt_message(publish_queue, 
-        Mock(topic=Mock(value="cube/right/13"), payload=Mock(decode=lambda: "-")), 
-        current_time)
-    await cubes_to_game.handle_mqtt_message(publish_queue, 
-        Mock(topic=Mock(value="cube/right/14"), payload=Mock(decode=lambda: "-")), 
-        current_time)
-    await cubes_to_game.handle_mqtt_message(publish_queue, 
-        Mock(topic=Mock(value="cube/right/15"), payload=Mock(decode=lambda: "-")), 
-        current_time)
-    await cubes_to_game.handle_mqtt_message(publish_queue, 
-        Mock(topic=Mock(value="cube/right/16"), payload=Mock(decode=lambda: "-")), 
-        current_time)
+    await cubes_to_game.handle_mqtt_message(publish_queue,
+        Mock(topic=Mock(value="cube/right/11"), payload=Mock(decode=lambda: "-")),
+        current_time, mock_sound_manager)
+    await cubes_to_game.handle_mqtt_message(publish_queue,
+        Mock(topic=Mock(value="cube/right/12"), payload=Mock(decode=lambda: "13")),
+        current_time, mock_sound_manager)
+    await cubes_to_game.handle_mqtt_message(publish_queue,
+        Mock(topic=Mock(value="cube/right/13"), payload=Mock(decode=lambda: "-")),
+        current_time, mock_sound_manager)
+    await cubes_to_game.handle_mqtt_message(publish_queue,
+        Mock(topic=Mock(value="cube/right/14"), payload=Mock(decode=lambda: "-")),
+        current_time, mock_sound_manager)
+    await cubes_to_game.handle_mqtt_message(publish_queue,
+        Mock(topic=Mock(value="cube/right/15"), payload=Mock(decode=lambda: "-")),
+        current_time, mock_sound_manager)
+    await cubes_to_game.handle_mqtt_message(publish_queue,
+        Mock(topic=Mock(value="cube/right/16"), payload=Mock(decode=lambda: "-")),
+        current_time, mock_sound_manager)
     
     print("✓ Neighbor reports processed")
     
@@ -165,11 +167,11 @@ async def test_per_player_abc_sequence():
     # Simulate Player 0 connecting their ABC cubes in sequence
     await cubes_to_game.handle_mqtt_message(publish_queue,
         Mock(topic=Mock(value=f"cube/right/{p0_cubes[0]}"), payload=Mock(decode=lambda: p0_cubes[1])),
-        current_time)
+        current_time, mock_sound_manager)
     
     await cubes_to_game.handle_mqtt_message(publish_queue,
         Mock(topic=Mock(value=f"cube/right/{p0_cubes[1]}"), payload=Mock(decode=lambda: p0_cubes[2])),
-        current_time)
+        current_time, mock_sound_manager)
     
     # Wait for countdown to complete - simulate the polling that happens in the main loop
     countdown_complete = False
@@ -226,11 +228,11 @@ async def test_per_player_abc_sequence():
     # Simulate Player 1 trying to connect their ABC cubes, but ABC state is already cleared
     await cubes_to_game.handle_mqtt_message(publish_queue,
         Mock(topic=Mock(value=f"cube/right/{p1_cubes[0]}"), payload=Mock(decode=lambda: p1_cubes[1])),
-        current_time)
+        current_time, mock_sound_manager)
     
     await cubes_to_game.handle_mqtt_message(publish_queue,
         Mock(topic=Mock(value=f"cube/right/{p1_cubes[1]}"), payload=Mock(decode=lambda: p1_cubes[2])),
-        current_time)
+        current_time, mock_sound_manager)
     
     # Check that Player 1 cannot start countdown (ABC state was cleared)
     assert 1 not in cubes_to_game.abc_manager.player_countdown_active, "Player 1 should not be able to start countdown"

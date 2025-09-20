@@ -186,11 +186,14 @@ class ABCManager:
         # Game will start after the last replacement
         self.countdown_complete_time = now_ms + len(stages) * delay_ms
 
-    async def handle_abc_completion(self, publish_queue, completed_player: int, now_ms: int) -> None:
+    async def handle_abc_completion(self, publish_queue, completed_player: int, now_ms: int, sound_manager) -> None:
         """Handle when a player completes their ABC sequence.
-        
+
         If someone is already in countdown, join them. Otherwise start a new countdown.
         """
+        # Play ping sound when ABC cubes are connected
+        if sound_manager:
+            sound_manager.play_crash()
         if self.is_any_player_in_countdown():
             logging.info(f"Player {completed_player} joining active countdown")
             await self.sync_player_with_countdown(publish_queue, completed_player, now_ms)
@@ -606,7 +609,7 @@ async def init(subscribe_client):
     logging.info(f"INIT: cube_list p0={cube_set_managers[0].cube_list} p1={cube_set_managers[1].cube_list}")
     logging.info(f"INIT: cube_to_cube_set={cube_to_cube_set}")
 
-async def handle_mqtt_message(publish_queue, message, now_ms: int):
+async def handle_mqtt_message(publish_queue, message, now_ms: int, sound_manager):
     topic_str = getattr(message.topic, 'value', str(message.topic))
     payload_data = message.payload.decode() if message.payload is not None else ""
     logging.info(f"MQTT recv: topic={topic_str} payload={payload_data}")
@@ -628,7 +631,7 @@ async def handle_mqtt_message(publish_queue, message, now_ms: int):
             if abc_manager.abc_start_active:
                 completed_player = await abc_manager.check_abc_sequence_complete()
                 if completed_player is not None:
-                    await abc_manager.handle_abc_completion(publish_queue, completed_player, now_ms)
+                    await abc_manager.handle_abc_completion(publish_queue, completed_player, now_ms, sound_manager)
             
             # Countdown completion is polled from the main loop, not per-message
         return

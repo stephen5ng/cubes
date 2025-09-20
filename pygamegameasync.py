@@ -821,7 +821,7 @@ class BlockWordsPygame:
                 'payload': payload.encode() if payload is not None else b''
             })()
             # print(f"!!!-----> message: {message}")
-            await cubes_to_game.handle_mqtt_message(self._publish_queue, message, now_ms)
+            await cubes_to_game.handle_mqtt_message(self._publish_queue, message, now_ms, self.game.sound_manager)
 
     async def handle_space_action(self, input_device: InputDevice, now_ms: int):
         if not self.game.running:
