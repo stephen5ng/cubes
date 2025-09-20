@@ -178,3 +178,4 @@
 {"time": 249818, "topic": "cube/3/lock", "message": null, "retain": true}
 {"time": 249818, "topic": "cube/5/lock", "message": "1", "retain": true}
 {"time": 251061, "topic": "cube/5/letter", "message": "I", "retain": true}
+{"time": 252952, "topic": "cube/5/lock", "message": null, "retain": true}

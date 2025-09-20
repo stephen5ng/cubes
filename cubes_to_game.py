@@ -471,6 +471,14 @@ async def letter_lock(publish_queue, cube_set_id, tile_id: str | None, now_ms: i
         await publish_queue.put((f"cube/{cube_id}/lock", "1", True, now_ms))
     return True
 
+async def unlock_all_letters(publish_queue, now_ms: int) -> None:
+    """Unlock all locked letters across all cube sets."""
+    global locked_cubes
+    for cube_set_id, cube_id in locked_cubes.items():
+        if cube_id:
+            await publish_queue.put((f"cube/{cube_id}/lock", None, True, now_ms))
+    locked_cubes.clear()
+
 async def guess_last_tiles(publish_queue, cube_set_id: int, player: int, now_ms: int) -> None:
     logging.info(f"guess_last_tiles last_guess_tiles {guess_manager.last_guess_tiles}")
     for guess in guess_manager.last_guess_tiles:

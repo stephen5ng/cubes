@@ -129,6 +129,8 @@ class App:
         self._running = False
         # Set game ended state
         cubes_to_game.set_game_end_time(now_ms)
+        # Unlock all letters when game ends
+        await cubes_to_game.unlock_all_letters(self._publish_queue, now_ms)
         # Ensure all borders are cleared on every cube at game end
         await cubes_to_game.clear_all_borders(self._publish_queue, now_ms)
         # Note: ABC sequence will be activated automatically
