@@ -6,7 +6,7 @@ PORT=1883
 TOPIC_ROOT="#"
 USERNAME=""   # optional
 PASSWORD=""   # optional
-TIMEOUT=5     # seconds to wait for retained messages
+TIMEOUT=1     # seconds to wait for retained messages
 
 # Optional auth
 AUTH=()
