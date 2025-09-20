@@ -42,3 +42,5 @@
 {"time": 6100, "topic": "cube/6/letter", "message": "U", "retain": true}
 {"time": 6100, "topic": "cube/1/border", "message": "NSW:0xFFFF", "retain": true}
 {"time": 6100, "topic": "cube/2/border", "message": "ENS:0xFFFF", "retain": true}
+{"time": 8100, "topic": "cube/2/border", "message": "NS:0xFFFF", "retain": true}
+{"time": 8100, "topic": "cube/3/border", "message": "ENS:0xFFFF", "retain": true}
