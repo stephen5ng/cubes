@@ -227,7 +227,7 @@ if __name__ == "__main__":
     pygame.init()
     block_words = pygamegameasync.BlockWordsPygame(replay_file=args.replay or "")
     
-    game_logger = GameLogger(None if args.replay else "game_replay.jsonl")
+    game_logger = GameLogger(None if args.replay else "output/game_replay.jsonl")
     try:
         asyncio.run(main(args, dictionary, block_words, args.keyboard_player_number-1, seed, game_logger))
         print("asyncio main done")

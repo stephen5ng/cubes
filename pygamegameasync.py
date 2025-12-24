@@ -572,8 +572,8 @@ class Game:
         self.shields: list[Shield] = []
         self.running = False
         self.aborted = False
-        self.game_log_f = open("gamelog.csv", "w")
-        self.duration_log_f = open("durationlog.csv", "w")
+        self.game_log_f = open("output/gamelog.csv", "w")
+        self.duration_log_f = open("output/durationlog.csv", "w")
         self.input_devices = []
         self.last_lock = False
 
