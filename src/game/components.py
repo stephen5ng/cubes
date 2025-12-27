@@ -8,7 +8,7 @@ import os
 
 # Add parent directories to path for imports
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
-import app
+from blockwords.core import app
 
 # Constants from main game
 SCREEN_WIDTH = 192

@@ -11,7 +11,7 @@ import pygame
 import random
 import sys
 
-import app
+from blockwords.core import app
 from blockwords.hardware import cubes_to_game
 from blockwords.core.dictionary import Dictionary
 from blockwords.utils.pygameasync import events

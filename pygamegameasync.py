@@ -23,7 +23,7 @@ class EventType(Enum):
     PYGAME = "pygame"
     MQTT = "mqtt"
 
-import app
+from blockwords.core import app
 from blockwords.core.config import MAX_PLAYERS
 from blockwords.hardware import cubes_to_game
 from blockwords.testing.mock_mqtt_client import MockMqttClient

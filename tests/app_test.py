@@ -6,7 +6,7 @@ import random
 import unittest
 from unittest import IsolatedAsyncioTestCase
 
-import app
+from blockwords.core import app
 from blockwords.core import dictionary
 from blockwords.utils.pygameasync import events
 from blockwords.hardware import cubes_to_game
