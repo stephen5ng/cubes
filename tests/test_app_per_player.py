@@ -8,7 +8,7 @@ from io import StringIO
 import app
 import cubes_to_game
 import dictionary
-import tiles
+from blockwords.core import tiles
 
 class TestAppPerPlayerIntegration(unittest.IsolatedAsyncioTestCase):
     """Test cases for app-level per-player integration."""

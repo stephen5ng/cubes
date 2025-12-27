@@ -10,7 +10,7 @@ import app
 import dictionary
 from pygameasync import events
 import cubes_to_game
-import tiles
+from blockwords.core import tiles
 
 class TestCubeGame(IsolatedAsyncioTestCase):
     async def asyncSetUp(self) -> None:

@@ -8,7 +8,7 @@ import time
 from typing import Callable, Coroutine, Dict, List
 
 from blockwords.core.config import MAX_PLAYERS
-import tiles
+from blockwords.core import tiles
 
 # ABC countdown delay configuration
 ABC_COUNTDOWN_DELAY_MS = 1000

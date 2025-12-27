@@ -13,7 +13,7 @@ import asyncio
 import logging
 from unittest.mock import Mock
 import cubes_to_game
-import tiles
+from blockwords.core import tiles
 from src.testing.mock_sound_manager import MockSoundManager
 
 # Set up basic logging to see what's happening

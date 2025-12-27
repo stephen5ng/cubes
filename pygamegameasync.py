@@ -29,7 +29,7 @@ import cubes_to_game
 from mock_mqtt_client import MockMqttClient
 from pygame.image import tobytes as image_to_string
 from pygameasync import Clock, events
-import tiles
+from blockwords.core import tiles
 from src.systems.sound_manager import SoundManager
 from src.input.input_devices import (
     InputDevice, CubesInput, KeyboardInput, GamepadInput, DDRInput, 

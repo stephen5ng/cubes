@@ -16,7 +16,7 @@ import cubes_to_game
 from dictionary import Dictionary
 from pygameasync import events
 import pygamegameasync
-import tiles
+from blockwords.core import tiles
 import hub75
 import json
 import pygame

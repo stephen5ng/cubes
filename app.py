@@ -10,7 +10,7 @@ from blockwords.core.config import MAX_PLAYERS, MQTT_CLIENT_ID, MQTT_CLIENT_PORT
 from dictionary import Dictionary
 from pygameasync import events
 import pygame
-import tiles
+from blockwords.core import tiles
 from scorecard import ScoreCard
 
 logger = logging.getLogger("app:"+__name__)

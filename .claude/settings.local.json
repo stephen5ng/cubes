@@ -51,7 +51,21 @@
       "Bash(ping:*)",
       "Bash(/Users/stephenng/Documents/PlatformIO/Projects/cube-pn5180/venv/bin/pio run -e esp32dev --target upload --upload-port 192.168.8.26)",
       "Bash(/Users/stephenng/Documents/PlatformIO/Projects/cube-pn5180/venv/bin/pio run -e esp32dev --target upload --upload-port 192.168.8.25)",
-      "Read(//Users/stephenng/Documents/PlatformIO/Projects/**)"
+      "Read(//Users/stephenng/Documents/PlatformIO/Projects/**)",
+      "Bash(git checkout:*)",
+      "Bash(awk:*)",
+      "Bash(do echo -n \"Cube $cube: \")",
+      "Bash(rg:*)",
+      "Bash(if [ \"$cube\" = \"1\" ])",
+      "Bash(then pattern='\"\"\"\"cube_id\"\"\"\": 1[^0-9]')",
+      "Bash(else pattern=\"\"\"cube_id\"\": $cube[^0-9]\")",
+      "Bash(do echo \"=== $file ===\")",
+      "Bash(git grep:*)",
+      "Bash(git mv:*)",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(git stash:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   }

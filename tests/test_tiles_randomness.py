@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import random
-from tiles import Rack
+from blockwords.core.tiles import Rack
 
 def test_rack_randomness():
     """Test that Rack instances generate consistent letter sequences with the same seed."""

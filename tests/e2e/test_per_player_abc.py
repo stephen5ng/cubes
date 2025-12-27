@@ -20,7 +20,7 @@ import os
 sys.path.insert(0, os.path.dirname(__file__))
 
 import cubes_to_game
-import tiles
+from blockwords.core import tiles
 from src.testing.mock_sound_manager import MockSoundManager
 
 # Test configuration

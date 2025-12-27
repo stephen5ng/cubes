@@ -2,7 +2,7 @@ import unittest
 import asyncio
 from unittest.mock import Mock, patch, AsyncMock
 import cubes_to_game
-import tiles
+from blockwords.core import tiles
 
 class TestCubesToGame(unittest.TestCase):
     def setUp(self):
