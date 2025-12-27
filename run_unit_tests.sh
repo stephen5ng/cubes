@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-# Add current directory to Python path
-export PYTHONPATH="${PYTHONPATH}:$(pwd)"
+# Add current directory and src to Python path
+export PYTHONPATH="${PYTHONPATH}:$(pwd):$(pwd)/src"
 
 # Set environment variables for tests that need them
 export RGBME_SUPPRESS_ADAPTER_LOAD_ERRORS=1

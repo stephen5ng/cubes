@@ -24,7 +24,7 @@ class EventType(Enum):
     MQTT = "mqtt"
 
 import app
-from config import MAX_PLAYERS
+from blockwords.core.config import MAX_PLAYERS
 import cubes_to_game
 from mock_mqtt_client import MockMqttClient
 from pygame.image import tobytes as image_to_string

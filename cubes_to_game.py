@@ -7,7 +7,7 @@ import logging
 import time
 from typing import Callable, Coroutine, Dict, List
 
-from config import MAX_PLAYERS
+from blockwords.core.config import MAX_PLAYERS
 import tiles
 
 # ABC countdown delay configuration

@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 . cube_env/bin/activate
-export PYTHONPATH=../easing-functions:../rpi-rgb-led-matrix/bindings/python:$PYTHONPATH
+export PYTHONPATH=src:../easing-functions:../rpi-rgb-led-matrix/bindings/python:$PYTHONPATH
 mqtt_server=${MQTT_SERVER:-localhost}
 mosquitto_pid=""
 if ! nc -zv $mqtt_server 1883 > /dev/null 2>&1; then

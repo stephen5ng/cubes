@@ -6,7 +6,7 @@ import logging
 from typing import Any, Callable, Coroutine
 
 import cubes_to_game
-from config import MAX_PLAYERS, MQTT_CLIENT_ID, MQTT_CLIENT_PORT
+from blockwords.core.config import MAX_PLAYERS, MQTT_CLIENT_ID, MQTT_CLIENT_PORT
 from dictionary import Dictionary
 from pygameasync import events
 import pygame
