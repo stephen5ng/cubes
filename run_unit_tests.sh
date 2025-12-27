@@ -11,9 +11,9 @@ cd tests
 
 # List of tests to run (excluding problematic ones for now)
 tests=(
-    "app_test.py"
-    "dictionary_test.py"
-    "scorecard_test.py"
+    "test_app.py"
+    "test_dictionary.py"
+    "test_scorecard.py"
     "test_app_per_player.py"
     "test_cubes_to_game.py"
     "test_dependency_injection.py"
@@ -23,7 +23,7 @@ tests=(
     "test_replay.py"
     "test_textrect.py"
     "test_tiles_randomness.py"
-    "tiles_test.py"
+    "test_tiles.py"
 )
 
 failed_tests=()
