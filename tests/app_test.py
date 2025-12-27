@@ -7,7 +7,7 @@ import unittest
 from unittest import IsolatedAsyncioTestCase
 
 import app
-import dictionary
+from blockwords.core import dictionary
 from pygameasync import events
 import cubes_to_game
 from blockwords.core import tiles

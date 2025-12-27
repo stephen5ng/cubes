@@ -4,7 +4,7 @@ from io import StringIO
 import random
 import unittest
 
-import dictionary
+from blockwords.core import dictionary
 
 class TestDictionary(unittest.TestCase):
     def setUp(self) -> None:

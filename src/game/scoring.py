@@ -6,7 +6,7 @@ from pathlib import Path
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
-import dictionary
+from blockwords.core import dictionary
 from blockwords.core import tiles
 
 SCRABBLE_LETTER_SCORES = {

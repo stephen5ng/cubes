@@ -3,7 +3,7 @@ import logging
 import os
 from pathlib import Path
 
-import dictionary
+from blockwords.core import dictionary
 from blockwords.core import tiles
 
 SCRABBLE_LETTER_SCORES = {

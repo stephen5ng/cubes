@@ -3,7 +3,7 @@
 import unittest
 from io import StringIO
 
-from dictionary import Dictionary
+from blockwords.core.dictionary import Dictionary
 import random
 from scorecard import ScoreCard
 from blockwords.core import tiles

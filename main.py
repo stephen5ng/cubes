@@ -13,7 +13,7 @@ import sys
 
 import app
 import cubes_to_game
-from dictionary import Dictionary
+from blockwords.core.dictionary import Dictionary
 from pygameasync import events
 import pygamegameasync
 from blockwords.core import tiles
