@@ -11,7 +11,7 @@ from blockwords.core.dictionary import Dictionary
 from pygameasync import events
 import pygame
 from blockwords.core import tiles
-from scorecard import ScoreCard
+from blockwords.core.scorecard import ScoreCard
 
 logger = logging.getLogger("app:"+__name__)
 

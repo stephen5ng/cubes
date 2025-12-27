@@ -5,7 +5,7 @@ from io import StringIO
 
 from blockwords.core.dictionary import Dictionary
 import random
-from scorecard import ScoreCard
+from blockwords.core.scorecard import ScoreCard
 from blockwords.core import tiles
 
 class TestScoreCard(unittest.TestCase):
