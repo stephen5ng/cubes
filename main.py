@@ -12,7 +12,7 @@ import random
 import sys
 
 import app
-import cubes_to_game
+from blockwords.hardware import cubes_to_game
 from blockwords.core.dictionary import Dictionary
 from blockwords.utils.pygameasync import events
 import pygamegameasync

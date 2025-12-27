@@ -3,7 +3,7 @@
 import unittest
 import asyncio
 from unittest.mock import Mock, patch, AsyncMock
-import cubes_to_game
+from blockwords.hardware import cubes_to_game
 from blockwords.core import tiles
 
 class TestPerPlayerGameStates(unittest.TestCase):

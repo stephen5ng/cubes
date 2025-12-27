@@ -7,7 +7,7 @@ Test for the feature where second player can join during first player's ABC coun
 import asyncio
 import logging
 from unittest.mock import Mock
-import cubes_to_game
+from blockwords.hardware import cubes_to_game
 from blockwords.core import tiles
 from src.testing.mock_sound_manager import MockSoundManager
 

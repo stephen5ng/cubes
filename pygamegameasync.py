@@ -25,7 +25,7 @@ class EventType(Enum):
 
 import app
 from blockwords.core.config import MAX_PLAYERS
-import cubes_to_game
+from blockwords.hardware import cubes_to_game
 from blockwords.testing.mock_mqtt_client import MockMqttClient
 from pygame.image import tobytes as image_to_string
 from blockwords.utils.pygameasync import Clock, events

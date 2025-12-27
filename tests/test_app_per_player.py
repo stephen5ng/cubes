@@ -6,7 +6,7 @@ from unittest.mock import Mock, patch, AsyncMock
 from io import StringIO
 
 import app
-import cubes_to_game
+from blockwords.hardware import cubes_to_game
 from blockwords.core import dictionary
 from blockwords.core import tiles
 

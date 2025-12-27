@@ -21,7 +21,7 @@ for file_path in test_files:
         # Add MockSoundManager import if not present
         if "from src.testing.mock_sound_manager import MockSoundManager" not in content:
             # Find the imports section and add the import
-            imports_pattern = r"(import cubes_to_game\nimport tiles)"
+            imports_pattern = r"(from blockwords\.hardware import cubes_to_game\nfrom blockwords\.core import tiles)"
             if re.search(imports_pattern, content):
                 content = re.sub(
                     imports_pattern,
@@ -30,7 +30,7 @@ for file_path in test_files:
                 )
             else:
                 # Add after other imports
-                imports_pattern = r"(import cubes_to_game)"
+                imports_pattern = r"(from blockwords\.hardware import cubes_to_game)"
                 content = re.sub(
                     imports_pattern,
                     r"\1\nfrom src.testing.mock_sound_manager import MockSoundManager",
