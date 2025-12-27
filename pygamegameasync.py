@@ -36,75 +36,23 @@ from src.input.input_devices import (
     JOYSTICK_NAMES_TO_INPUTS
 )
 from src.rendering.metrics import RackMetrics
-from src.ui.display_components import (
-    LastGuessFader, FaderManager, PreviousGuessesDisplayBase,
-    PreviousGuessesDisplay, RemainingPreviousGuessesDisplay
-)
 from src.rendering.animations import get_alpha, LetterSource
 from src.game.components import Score, Shield
+from src.config.display_constants import (
+    SCREEN_WIDTH, SCREEN_HEIGHT, SCALING_FACTOR,
+    TICKS_PER_SECOND, FONT, ANTIALIAS, FONT_SIZE_DELTA, FREE_SCORE,
+    BAD_GUESS_COLOR, GOOD_GUESS_COLOR, OLD_GUESS_COLOR, LETTER_SOURCE_COLOR,
+    RACK_COLOR, SHIELD_COLOR_P0, SHIELD_COLOR_P1, SCORE_COLOR,
+    FADER_COLOR_P0, FADER_COLOR_P1,
+    REMAINING_PREVIOUS_GUESSES_COLOR, PREVIOUS_GUESSES_COLOR,
+    PLAYER_COLORS, FADER_PLAYER_COLORS
+)
+from src.testing.game_replayer import GameReplayer
 
 logger = logging.getLogger(__name__)
 
-SCREEN_WIDTH = 192
-SCREEN_HEIGHT = 256
-SCALING_FACTOR = 3
-
-TICKS_PER_SECOND = 45
-
-FONT = "Courier"
-ANTIALIAS = 1
-
-FREE_SCORE = 0
-
 # Global reference to letter beeps - populated by SoundManager
 letter_beeps: list = []
-
-BAD_GUESS_COLOR=Color("red")
-GOOD_GUESS_COLOR=Color("Green")
-OLD_GUESS_COLOR=Color("yellow")
-LETTER_SOURCE_COLOR=Color("Red")
-
-RACK_COLOR=Color("LightGrey")
-SHIELD_COLOR_P0=Color("DarkOrange4")
-SHIELD_COLOR_P1=Color("DarkSlateBlue")
-SCORE_COLOR=Color("White")
-FADER_COLOR_P0=Color("orange")
-FADER_COLOR_P1=Color("lightblue")
-REMAINING_PREVIOUS_GUESSES_COLOR = Color("grey")
-PREVIOUS_GUESSES_COLOR = Color("orange")
-
-FONT_SIZE_DELTA = 4
-
-# Player colors for shields and faders
-PLAYER_COLORS = [SHIELD_COLOR_P0, SHIELD_COLOR_P1]
-FADER_PLAYER_COLORS = [FADER_COLOR_P0, FADER_COLOR_P1]
-
-class GameReplayer:
-    def __init__(self, log_file: str):
-        self.log_file = log_file
-        self.events = []
-        
-    def load_events(self):
-        if not self.log_file:
-            return
-            
-        with open(self.log_file, 'r') as f:
-            lines = f.readlines()
-
-        # Skip seed and delay_ms metadata lines at the beginning
-        while lines and lines[0].startswith('{"event_type": "'):
-            first_event = json.loads(lines[0])
-            if first_event.get("event_type") in ["seed", "delay_ms"]:
-                lines = lines[1:]
-            else:
-                break
-
-        for line in lines:
-            if line.strip():
-                event = json.loads(line)
-                self.events.append(event)
-        
-        self.events.reverse()
 
 
 # get_alpha function moved to src/rendering/animations.py
