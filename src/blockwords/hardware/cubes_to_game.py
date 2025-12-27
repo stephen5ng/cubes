@@ -7,11 +7,11 @@ import logging
 import time
 from typing import Callable, Coroutine, Dict, List
 
-from blockwords.core.config import MAX_PLAYERS
+from blockwords.core import config
 from blockwords.core import tiles
 
-# ABC countdown delay configuration
-ABC_COUNTDOWN_DELAY_MS = 1000
+# ABC countdown delay - use config value by default, but allow override for replay
+ABC_COUNTDOWN_DELAY_MS = config.ABC_COUNTDOWN_DELAY_MS
 
 def set_abc_countdown_delay(delay_ms: int):
     """Set the ABC countdown delay for replay compatibility."""
@@ -440,7 +440,7 @@ class GuessManager:
             self.last_tiles_with_letters = tiles_with_letters
 
 # Global managers for each cube set
-cube_set_managers: List[CubeSetManager] = [CubeSetManager(cube_set_id) for cube_set_id in range(MAX_PLAYERS)]
+cube_set_managers: List[CubeSetManager] = [CubeSetManager(cube_set_id) for cube_set_id in range(config.MAX_PLAYERS)]
 # Global mapping of cube IDs to cube set IDs for O(1) lookup
 cube_to_cube_set: Dict[str, int] = {}
 # Global guess manager

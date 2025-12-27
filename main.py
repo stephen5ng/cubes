@@ -12,6 +12,7 @@ import random
 import sys
 
 from blockwords.core import app
+from blockwords.core import config
 from blockwords.hardware import cubes_to_game
 from blockwords.core.dictionary import Dictionary
 from blockwords.utils.pygameasync import events
@@ -222,7 +223,7 @@ if __name__ == "__main__":
     # logger.setLevel(logging.DEBUG)
     pygame.mixer.init(frequency=24000, size=-16, channels=2)
     hub75.init()
-    dictionary = Dictionary(tiles.MIN_LETTERS, tiles.MAX_LETTERS, open=my_open)
+    dictionary = Dictionary(config.MIN_LETTERS, config.MAX_LETTERS, open=my_open)
     dictionary.read(f"{BUNDLE_TEMP_DIR}/sowpods.txt", f"{BUNDLE_TEMP_DIR}/bingos.txt")
     pygame.init()
     block_words = pygamegameasync.BlockWordsPygame(replay_file=args.replay or "")

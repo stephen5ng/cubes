@@ -4,8 +4,7 @@ import logging
 import random
 from typing import Sequence
 
-MIN_LETTERS = 3
-MAX_LETTERS = 6
+from blockwords.core.config import MIN_LETTERS, MAX_LETTERS
 
 SCRABBLE_LETTER_FREQUENCIES = Counter({
     'A': 9, 'B': 2, 'C': 2, 'D': 4, 'E': 12, 'F': 2, 'G': 3, 'H': 2, 'I': 9, 'J': 1, 'K': 1, 'L': 4, 'M': 2,

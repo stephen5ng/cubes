@@ -3,13 +3,9 @@ import logging
 import os
 from pathlib import Path
 
+from blockwords.core import config
 from blockwords.core import dictionary
 from blockwords.core import tiles
-
-SCRABBLE_LETTER_SCORES = {
-    'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1, 'F': 4, 'G': 2, 'H': 4, 'I': 1, 'J': 8, 'K': 5, 'L': 1, 'M': 3,
-    'N': 1, 'O': 1, 'P': 3, 'Q': 10, 'R': 1, 'S': 1, 'T': 1, 'U': 1, 'V': 4, 'W': 4, 'X': 8, 'Y': 4, 'Z': 10
-}
 
 Play = Enum("Play", ["GOOD", "MISSING_LETTERS", "DUPE_WORD", "BAD_WORD"])
 
@@ -23,7 +19,7 @@ class ScoreCard:
         self.dictionary = dictionary
 
     def calculate_score(self, word: str) -> int:
-        return len(word) + (10 if len(word) == tiles.MAX_LETTERS else 0)
+        return len(word) + (10 if len(word) == config.MAX_LETTERS else 0)
 
     def is_old_guess(self, guess: str) -> bool:
         return guess in self.staged_words

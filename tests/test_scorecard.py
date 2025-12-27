@@ -3,6 +3,7 @@
 import unittest
 from io import StringIO
 
+from blockwords.core import config
 from blockwords.core.dictionary import Dictionary
 import random
 from blockwords.core.scorecard import ScoreCard
@@ -19,9 +20,10 @@ class TestScoreCard(unittest.TestCase):
             "contact", # ACCNOTT
             "service"
         ]))
-        tiles.MAX_LETTERS = 7
+        # Override config for this test
+        config.MAX_LETTERS = 7
         random.seed(1)
-        dictionary = Dictionary(tiles.MIN_LETTERS, tiles.MAX_LETTERS, open=my_open)
+        dictionary = Dictionary(config.MIN_LETTERS, config.MAX_LETTERS, open=my_open)
         dictionary.read("sowpods.txt", "bingos.txt")
         player_rack = dictionary.get_rack()
         self.score_card = ScoreCard(player_rack, dictionary)

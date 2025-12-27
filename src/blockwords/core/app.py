@@ -6,7 +6,7 @@ import logging
 from typing import Any, Callable, Coroutine
 
 from blockwords.hardware import cubes_to_game
-from blockwords.core.config import MAX_PLAYERS, MQTT_CLIENT_ID, MQTT_CLIENT_PORT
+from blockwords.core import config
 from blockwords.core.dictionary import Dictionary
 from blockwords.utils.pygameasync import events
 import pygame
@@ -14,16 +14,6 @@ from blockwords.core import tiles
 from blockwords.core.scorecard import ScoreCard
 
 logger = logging.getLogger("app:"+__name__)
-
-UPDATE_TILES_REBROADCAST_S = 8
-
-SCRABBLE_LETTER_SCORES = {
-    'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1, 'F': 4,
-    'G': 2, 'H': 4, 'I': 1, 'J': 8, 'K': 5, 'L': 1,
-    'M': 3, 'N': 1, 'O': 1, 'P': 3, 'Q': 10, 'R': 1,
-    'S': 1, 'T': 1, 'U': 1, 'V': 4, 'W': 4, 'X': 8,
-    'Y': 4, 'Z': 10
-}
 
 class App:
     def __init__(self, publish_queue: asyncio.Queue, dictionary: Dictionary) -> None:
@@ -42,7 +32,7 @@ class App:
         self._dictionary = dictionary
         self._publish_queue = publish_queue
         self._last_guess: list[str] = []
-        self._player_racks = [tiles.Rack('?' * tiles.MAX_LETTERS) for _ in range(MAX_PLAYERS)]
+        self._player_racks = [tiles.Rack('?' * config.MAX_LETTERS) for _ in range(config.MAX_PLAYERS)]
         self._score_card = ScoreCard(self._player_racks[0], self._dictionary)
         self._player_count = 1
         # Map logical players to physical cube sets
@@ -95,14 +85,14 @@ class App:
         # Set game running state for cube border logic
         cubes_to_game.set_game_running(True)
         the_rack = self._dictionary.get_rack()
-        for player in range(MAX_PLAYERS):
+        for player in range(config.MAX_PLAYERS):
             self._player_racks[player].set_tiles(the_rack.get_tiles())
         
         self._update_next_tile(self._player_racks[0].next_letter())
         self._score_card = ScoreCard(self._player_racks[0], self._dictionary)
         
         # Remove participating players from ABC tracking (their cubes will get game letters)
-        for player in range(cubes_to_game.MAX_PLAYERS):
+        for player in range(config.MAX_PLAYERS):
             if cubes_to_game.has_player_started_game(player) and player in cubes_to_game.abc_manager.player_abc_cubes:
                 del cubes_to_game.abc_manager.player_abc_cubes[player]
         
@@ -113,7 +103,7 @@ class App:
         self._set_player_to_cube_set_mapping()
 
         await self.load_rack(now_ms)
-        for player in range(MAX_PLAYERS):
+        for player in range(config.MAX_PLAYERS):
             self._update_rack_display(0, 0, player)
         self._update_previous_guesses()
         self._update_remaining_previous_guesses()
@@ -123,8 +113,8 @@ class App:
         print(">>>>>>>> app.STARTED")
 
     async def stop(self, now_ms: int) -> None:
-        for player in range(MAX_PLAYERS):
-            self._player_racks[player] = tiles.Rack(' ' * tiles.MAX_LETTERS)
+        for player in range(config.MAX_PLAYERS):
+            self._player_racks[player] = tiles.Rack(' ' * config.MAX_LETTERS)
         await self.load_rack(now_ms)
         self._running = False
         # Set game ended state
@@ -137,7 +127,7 @@ class App:
 
     async def load_rack(self, now_ms: int) -> None:
         # Only load letters for players who have actually started their games
-        for player in range(MAX_PLAYERS):
+        for player in range(config.MAX_PLAYERS):
             if cubes_to_game.has_player_started_game(player):
                 cube_set_id = self._player_to_cube_set.get(player)
                 await cubes_to_game.load_rack(self._publish_queue, self._player_racks[player].get_tiles(), cube_set_id, player, now_ms)
