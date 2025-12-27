@@ -1,16 +1,101 @@
-cube_env
-htmlcov
-voices
-gcptts*
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+.Python
+
+# Virtual environments
+cube_env/
+venv/
+env/
+ENV/
+
+# Testing
 .coverage
-.cursor
-__pycache__
-.vscode
-fonts
-word_sounds*
-sounds
-dark-granite-267721-abb4f420d300.json
+htmlcov/
+.pytest_cache/
+.tox/
+*.cover
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+\#*\#
+.cursor/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Project-specific outputs
+output/
 game_replay.jsonl
-output/*
+gamelog.csv
+durationlog.csv
+
+# Log files
+*.log
 .log
+
+# Data files (pickles, temporary data)
+*.pkl
+*.pickle
+
+# Test data (JSONL files are often test outputs)
+*_test.jsonl
+cleaner_format_test.jsonl
+complete_monitoring_test.jsonl
+cube_latency.jsonl
+dual_protocol_test.jsonl
+full_monitoring_test.jsonl
+simple_test.jsonl
+test_latency.jsonl
+
+# Audio assets (large binary files)
+sounds/
+voices/
+word_sounds*/
+gcptts*
+fonts/
+
+# Credentials (CRITICAL - don't commit!)
+dark-granite-267721-abb4f420d300.json
+*.json.key
+*credentials*.json
+.env
+.env.local
+
+# Claude Code settings (user-specific)
 .claude/settings.local.json
+
+# Mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Distribution / packaging
+.Python
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
