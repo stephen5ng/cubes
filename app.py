@@ -8,7 +8,7 @@ from typing import Any, Callable, Coroutine
 import cubes_to_game
 from blockwords.core.config import MAX_PLAYERS, MQTT_CLIENT_ID, MQTT_CLIENT_PORT
 from blockwords.core.dictionary import Dictionary
-from pygameasync import events
+from blockwords.utils.pygameasync import events
 import pygame
 from blockwords.core import tiles
 from blockwords.core.scorecard import ScoreCard

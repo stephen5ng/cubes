@@ -3,7 +3,7 @@
 import unittest
 import pygame
 import pygame.freetype
-from textrect import TextRectException, FontRectGetter, Blitter, TextRectRenderer
+from blockwords.utils.textrect import TextRectException, FontRectGetter, Blitter, TextRectRenderer
 
 class TestPrerenderTextrect(unittest.TestCase):
     def setUp(self):

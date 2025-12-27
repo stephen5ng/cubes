@@ -7,7 +7,7 @@ import os
 
 # Add parent directories to path for imports
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
-import textrect
+from blockwords.utils import textrect
 
 # Constants from main game
 SCREEN_WIDTH = 192
