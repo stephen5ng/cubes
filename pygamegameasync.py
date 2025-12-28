@@ -48,6 +48,12 @@ from src.config.display_constants import (
     PLAYER_COLORS, FADER_PLAYER_COLORS
 )
 from src.testing.game_replayer import GameReplayer
+from src.ui.guess_faders import LastGuessFader, FaderManager
+from src.ui.guess_display import (
+    PreviousGuessesDisplayBase,
+    PreviousGuessesDisplay,
+    RemainingPreviousGuessesDisplay
+)
 
 logger = logging.getLogger(__name__)
 
@@ -317,171 +323,6 @@ class Rack:
         player_index = 0 if self.the_app.player_count == 1 else self.player+1
         top_left = (top_left[0] + self.left_offset_by_player[player_index], top_left[1])
         window.blit(surface, top_left)
-
-class LastGuessFader:
-    FADE_DURATION_MS = 2000
-
-    def __init__(self, last_update_ms: int, duration: int, surface: pygame.Surface, position: tuple[int, int]) -> None:
-        self.last_update_ms = last_update_ms
-        self.duration = duration
-        self.easing = easing_functions.QuinticEaseInOut(start=0, end = 255, duration = 1)
-        self.last_guess = ""
-        self.last_guess_surface = surface
-        self.last_guess_position = position
-        self.alpha = 1
-
-    def blit(self, target: pygame.Surface, now: int) -> None:
-        self.alpha = get_alpha(self.easing, self.last_update_ms, self.duration, now)
-        if self.alpha:
-            self.last_guess_surface.set_alpha(self.alpha)
-            target.blit(self.last_guess_surface, self.last_guess_position)
-
-class FaderManager:
-    def __init__(self, previous_guesses: list[str], font: pygame.freetype.Font, text_rect_renderer: textrect.TextRectRenderer):
-        self._previous_guesses = previous_guesses
-        self._text_rect_renderer = text_rect_renderer
-        self._font = font
-        
-    @staticmethod
-    @functools.lru_cache(maxsize=64)
-    def _cached_render(font: pygame.freetype.Font, text: str, color_rgb: tuple[int, int, int]) -> pygame.Surface:
-        return font.render(text, pygame.Color(*color_rgb))[0]
-
-    def create_fader(self, last_guess: str, last_update_ms: int, duration: int, color: pygame.Color) -> LastGuessFader:
-        last_guess_surface = self._cached_render(self._font, last_guess, (color.r, color.g, color.b))
-        last_guess_position = self._text_rect_renderer.get_pos(last_guess)
-        return LastGuessFader(last_update_ms, duration, last_guess_surface, last_guess_position)
-class PreviousGuessesDisplayBase:
-    FONT = "Arial"
-
-    def __init__(self, font_size: int) -> None:
-        self.font = pygame.freetype.SysFont(PreviousGuessesDisplayBase.FONT, font_size)
-        self.font.kerning = True
-        self._text_rect_renderer = textrect.TextRectRenderer(self.font,
-                pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT))
-
-class PreviousGuessesDisplay(PreviousGuessesDisplayBase):
-    FONT_SIZE = 30
-    POSITION_TOP = 24
-    FADE_DURATION_NEW_GUESS = 2000
-    FADE_DURATION_OLD_GUESS = 500
-    PLAYER_COLORS = [SHIELD_COLOR_P0, SHIELD_COLOR_P1]  # Static array for player colors
-    FADER_PLAYER_COLORS = [FADER_COLOR_P0, FADER_COLOR_P1]
-
-    def __init__(self, font_size: int, guess_to_player: dict[str, int]) -> None:
-        super().__init__(font_size)
-        self.fader_inputs = []
-        self.previous_guesses = []
-        self.bloop_sound = pygame.mixer.Sound("./sounds/bloop.wav")
-        self.bloop_sound.set_volume(0.2)
-        self.guess_to_player = guess_to_player
-        self.fader_manager = FaderManager(self.previous_guesses, self.font, self._text_rect_renderer)
-        self.faders: list[LastGuessFader] = []
-        self.draw()
-
-    @classmethod
-    def from_instance(cls, instance: 'PreviousGuessesDisplay', font_size: int, now_ms: int) -> 'PreviousGuessesDisplay':
-        """Create a new instance from an existing one with a new font size."""
-        new_instance = cls(font_size, instance.guess_to_player)
-        new_instance.previous_guesses = instance.previous_guesses
-        new_instance.fader_inputs = instance.fader_inputs
-        new_instance.bloop_sound = instance.bloop_sound
-        if instance.previous_guesses and instance.fader_inputs:
-            new_instance._recreate_faders(now_ms)
-        return new_instance
-
-    def _try_add_fader(self, guess: str, color: pygame.Color, duration: int, now_ms: int) -> None:
-        """Try to add a fader for the given guess if it exists in previous_guesses."""
-        if guess in self.previous_guesses:
-            fader = self.fader_manager.create_fader(guess, now_ms, duration, color)
-            self.faders.append(fader)
-
-    def _recreate_faders(self, now_ms: int) -> None:
-        self.faders = []
-        for last_guess, last_update_ms, color, duration in self.fader_inputs:
-            self._try_add_fader(last_guess, color, duration, now_ms)
-
-    def draw(self) -> None:
-        self.surface = self._text_rect_renderer.render(
-            self.previous_guesses,
-            [self.PLAYER_COLORS[self.guess_to_player.get(guess, 0)] for guess in self.previous_guesses])
-
-    def old_guess(self, old_guess: str, now_ms: int) -> None:
-        self.fader_inputs.append(
-            [old_guess, now_ms, OLD_GUESS_COLOR, PreviousGuessesDisplay.FADE_DURATION_OLD_GUESS])
-        self._try_add_fader(old_guess,
-                            OLD_GUESS_COLOR,
-                            PreviousGuessesDisplay.FADE_DURATION_OLD_GUESS,
-                            now_ms)
-        self.draw()
-        pygame.mixer.Sound.play(self.bloop_sound)
-
-    def add_guess(self, previous_guesses: list[str], guess: str, player: int, now_ms: int) -> None:
-        self.fader_inputs.append(
-            [guess, now_ms, self.FADER_PLAYER_COLORS[player], PreviousGuessesDisplay.FADE_DURATION_NEW_GUESS])
-        self.update_previous_guesses(previous_guesses, now_ms)
-        self._try_add_fader(guess, 
-                            self.FADER_PLAYER_COLORS[player],
-                            PreviousGuessesDisplay.FADE_DURATION_NEW_GUESS,
-                            now_ms)
-
-    def update_previous_guesses(self, previous_guesses: list[str], now_ms: int) -> None:
-        self.previous_guesses = previous_guesses
-        self._text_rect_renderer.update_pos_dict(self.previous_guesses)
-        self.fader_manager = FaderManager(self.previous_guesses, self.font, self._text_rect_renderer)        
-        self._recreate_faders(now_ms)
-        self.draw()
-
-    def update(self, window: pygame.Surface, now: int) -> None:
-        surface_with_faders = self.surface.copy()
-        for fader in self.faders:
-            fader.blit(surface_with_faders, now)
-
-        # remove finished faders
-        self.faders[:] = [f for f in self.faders if f.alpha]
-
-        # remove finished faders from fader_inputs
-        fader_guesses = [f.last_guess for f in self.faders]
-        self.fader_inputs = [f for f in self.fader_inputs if f[0] in fader_guesses]
-
-        window.blit(surface_with_faders, [0, PreviousGuessesDisplay.POSITION_TOP])
-
-class RemainingPreviousGuessesDisplay(PreviousGuessesDisplayBase):
-    COLOR = Color("grey")
-    TOP_GAP = 3
-    PLAYER_COLORS = [pygame.Color(SHIELD_COLOR_P0.r, SHIELD_COLOR_P0.g, SHIELD_COLOR_P0.b, 192),
-                     pygame.Color(SHIELD_COLOR_P1.r, SHIELD_COLOR_P1.g, SHIELD_COLOR_P1.b, 192)]  # Static array for player colors with 0.5 alpha
-
-    def __init__(self, font_size: int, guess_to_player: dict[str, int]) -> None:
-        super().__init__(font_size)
-        self.guess_to_player = guess_to_player
-        self.color = REMAINING_PREVIOUS_GUESSES_COLOR
-        self.surface = pygame.Surface((0, 0))
-        self.remaining_guesses = []
-
-    @classmethod
-    def from_instance(cls, instance: 'RemainingPreviousGuessesDisplay', font_size: int) -> 'RemainingPreviousGuessesDisplay':
-        """Create a new instance from an existing one with a new font size."""
-        new_instance = cls(font_size, instance.guess_to_player)
-        new_instance.remaining_guesses = instance.remaining_guesses
-        new_instance.color = instance.color
-        return new_instance
-
-    def update(self, window: pygame.Surface, height: int) -> None:
-        top = height + PreviousGuessesDisplay.POSITION_TOP + RemainingPreviousGuessesDisplay.TOP_GAP
-        total_height = top + self.surface.get_bounding_rect().height
-        if total_height > SCREEN_HEIGHT:
-            raise textrect.TextRectException("can't update RemainingPreviousGuessesDisplay")
-        window.blit(self.surface, [0, top])
-
-    def update_remaining_guesses(self, remaining_guesses: list[str]) -> None:
-        self.remaining_guesses = remaining_guesses
-        self.draw()
-
-    def draw(self) -> None:
-        self.surface = self._text_rect_renderer.render(
-            self.remaining_guesses,
-            [self.PLAYER_COLORS[self.guess_to_player.get(guess, 0)] for guess in self.remaining_guesses])
 
 
 class Game:
