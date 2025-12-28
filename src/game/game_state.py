@@ -69,7 +69,6 @@ class Game:
         events.on(f"game.bad_guess")(self.bad_guess)
         events.on(f"game.next_tile")(self.next_tile)
         events.on(f"game.abort")(self.abort)
-        events.on(f"game.start")(self.start_cubes)
         events.on(f"game.start_player")(self.start_cubes_player)
         events.on(f"input.remaining_previous_guesses")(self.update_remaining_guesses)
         events.on(f"input.update_previous_guesses")(self.update_previous_guesses)

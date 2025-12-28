@@ -12,6 +12,18 @@ from blockwords.utils.pygameasync import events
 import pygame
 from blockwords.core import tiles
 from blockwords.core.scorecard import ScoreCard
+from src.events.game_events import (
+    GameStartPlayerEvent,
+    GameStageGuessEvent,
+    GameOldGuessEvent,
+    GameBadGuessEvent,
+    GameNextTileEvent,
+    RackUpdateRackEvent,
+    RackUpdateLetterEvent,
+    InputAddGuessEvent,
+    InputUpdatePreviousGuessesEvent,
+    InputRemainingPreviousGuessesEvent,
+)
 
 logger = logging.getLogger("app:"+__name__)
 
@@ -26,7 +38,7 @@ class App:
             async def start_game_callback(force: bool, now_ms: int, player: int) -> None:
                 if force or not the_app._running:
                     print(f"starting from callback for player {player}")
-                    events.trigger("game.start_player", now_ms, player)
+                    events.trigger(GameStartPlayerEvent(now_ms, player))
             return start_game_callback
 
         self._dictionary = dictionary
@@ -154,7 +166,7 @@ class App:
         self._update_previous_guesses()
         self._update_remaining_previous_guesses()
         for player in range(self._player_count):
-            events.trigger("rack.update_letter", changed_tile, player, now_ms)
+            events.trigger(RackUpdateLetterEvent(changed_tile, player, now_ms))
         self._update_next_tile(self._player_racks[0].next_letter())
         if changed_tile.id in self._last_guess:
             for player in range(self._player_count):
@@ -177,7 +189,7 @@ class App:
 
     def add_guess(self, guess: str, player: int) -> None:
         self._score_card.add_guess(guess, player)
-        events.trigger("input.add_guess", self._score_card.get_previous_guesses(), guess, player, pygame.time.get_ticks())
+        events.trigger(InputAddGuessEvent(self._score_card.get_previous_guesses(), guess, player, pygame.time.get_ticks()))
 
     async def guess_tiles(self, word_tile_ids: list[str], move_tiles: bool, player: int, now_ms: int) -> None:
         self._last_guess = word_tile_ids
@@ -199,19 +211,19 @@ class App:
 
         cube_set_id = self._player_to_cube_set.get(player)
         if self._score_card.is_old_guess(guess):
-            events.trigger("game.old_guess", guess, player, pygame.time.get_ticks())
+            events.trigger(GameOldGuessEvent(guess, player, pygame.time.get_ticks()))
             await cubes_to_game.old_guess(self._publish_queue, word_tile_ids, cube_set_id, player)
             tiles_dirty = True
         elif self._score_card.is_good_guess(guess):
             await cubes_to_game.good_guess(self._publish_queue, word_tile_ids, cube_set_id, player, now_ms)
             self._score_card.add_staged_guess(guess)
             score = self._score_card.calculate_score(guess)
-            events.trigger("game.stage_guess", score, guess, player, now_ms)
+            events.trigger(GameStageGuessEvent(score, guess, player, now_ms))
             self._word_logger.log_word_formed(guess, player, score, now_ms)
             good_guess_highlight = len(guess_tiles)
             tiles_dirty = True
         else:
-            events.trigger("game.bad_guess", player)
+            events.trigger(GameBadGuessEvent(player))
             await cubes_to_game.bad_guess(self._publish_queue, word_tile_ids, cube_set_id, player)
 
         if tiles_dirty:
@@ -226,21 +238,21 @@ class App:
             [self._player_racks[player].letters_to_ids(guess)], cube_set_id, player, now_ms)
 
     def _update_next_tile(self, next_tile: str) -> None:
-        events.trigger("game.next_tile", next_tile, pygame.time.get_ticks())
+        events.trigger(GameNextTileEvent(next_tile, pygame.time.get_ticks()))
 
     def _update_previous_guesses(self) -> None:
-        events.trigger("input.update_previous_guesses",
-            self._score_card.get_previous_guesses(), pygame.time.get_ticks())
+        events.trigger(InputUpdatePreviousGuessesEvent(
+            self._score_card.get_previous_guesses(), pygame.time.get_ticks()))
 
     def _update_remaining_previous_guesses(self) -> None:
-        events.trigger("input.remaining_previous_guesses", 
+        events.trigger(InputRemainingPreviousGuessesEvent(
                        self._score_card.get_remaining_previous_guesses(),
-                       pygame.time.get_ticks())
+                       pygame.time.get_ticks()))
 
     def _update_rack_display(self, highlight_length: int, guess_length: int, player: int):
-        events.trigger("rack.update_rack", 
+        events.trigger(RackUpdateRackEvent(
                        self._player_racks[player].get_tiles(),
                        highlight_length,
                        guess_length,
                        player,
-                       pygame.time.get_ticks())
+                       pygame.time.get_ticks()))

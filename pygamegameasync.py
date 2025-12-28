@@ -57,6 +57,7 @@ from src.ui.guess_display import (
 from src.game.letter import GuessType, Letter
 from src.rendering.rack_display import Rack
 from src.game.game_state import Game
+from src.events.game_events import GameAbortEvent
 
 logger = logging.getLogger(__name__)
 
@@ -98,7 +99,7 @@ class BlockWordsPygame:
             print("Starting due to topic")
             await self.game.start_cubes(now_ms)
         elif topic_str == "app/abort":
-            events.trigger("game.abort")
+            events.trigger(GameAbortEvent())
         elif topic_str == "game/guess":
             payload_str = payload.decode() if payload else ""
             await self.the_app.guess_word_keyboard(payload_str, 1, now_ms)
@@ -451,5 +452,5 @@ class BlockWordsPygame:
             pass
         except Exception as e:
             print(f"MQTT processing error: {e}")
-            events.trigger("game.abort")
+            events.trigger(GameAbortEvent())
             raise e

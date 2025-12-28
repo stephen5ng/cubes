@@ -3,6 +3,7 @@ import logging
 import pygame
 from typing import Callable
 from collections import defaultdict
+from dataclasses import fields
 
 class Clock:
     def __init__(self, time_func: Callable[[], int] = pygame.time.get_ticks) -> None:
@@ -33,9 +34,18 @@ class EventEngine:
             return func
         return wrapper
 
-    def trigger(self, event: str, *args, **kwargs) -> None:
+    def trigger(self, event: any) -> None:
+        """Trigger a typed event.
+
+        Args:
+            event: A GameEvent object with event_type and typed fields
+        """
         if self.running:
-            self.queue.put_nowait((event, args, kwargs))
+            # Typed event - extract event name and convert fields to args
+            event_name = event.event_type.value if hasattr(event.event_type, 'value') else str(event.event_type)
+            # Extract all fields except event_type as positional arguments
+            event_args = tuple(getattr(event, f.name) for f in fields(event) if f.name != 'event_type')
+            self.queue.put_nowait((event_name, event_args, {}))
 
     async def start(self) -> None:
         self.running = True
