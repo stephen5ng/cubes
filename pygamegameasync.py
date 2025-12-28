@@ -60,9 +60,6 @@ from src.game.game_state import Game
 
 logger = logging.getLogger(__name__)
 
-# Global reference to letter beeps - populated by SoundManager
-letter_beeps: list = []
-
 
 # get_alpha function moved to src/rendering/animations.py
 # GuessType enum moved to src/game/letter.py
@@ -369,11 +366,8 @@ class BlockWordsPygame:
         sound_manager = SoundManager()
         rack_metrics = RackMetrics()
 
-        # Populate global letter_beeps from sound manager (temporary until we remove global)
-        global letter_beeps
-        letter_beeps = sound_manager.get_letter_beeps()
-
-        self.game = Game(the_app, self.letter_font, game_logger, output_logger, sound_manager, rack_metrics, letter_beeps)
+        # Get letter beeps from sound manager for injection into Game
+        self.game = Game(the_app, self.letter_font, game_logger, output_logger, sound_manager, rack_metrics, sound_manager.get_letter_beeps())
         
         self.game.output_logger.start_logging()
         the_app.set_game_logger(self.game.game_logger)
