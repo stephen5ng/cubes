@@ -3,24 +3,16 @@
 import math
 import pygame
 import pygame.freetype
-import sys
-import os
 
-# Add parent directories to path for imports
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 from blockwords.core import app
-
-# Constants from main game
-SCREEN_WIDTH = 192
-SCREEN_HEIGHT = 256
-FONT = "Courier"
-SCORE_COLOR = pygame.Color("White")
-TICKS_PER_SECOND = 45
-
-# Import color constants that we need
-FADER_COLOR_P0 = pygame.Color("orange")
-FADER_COLOR_P1 = pygame.Color("lightblue")
-FADER_PLAYER_COLORS = [FADER_COLOR_P0, FADER_COLOR_P1]
+from src.config.display_constants import (
+    SCREEN_WIDTH,
+    SCREEN_HEIGHT,
+    FONT,
+    SCORE_COLOR,
+    TICKS_PER_SECOND,
+    FADER_PLAYER_COLORS
+)
 
 
 class Score:
