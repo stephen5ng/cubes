@@ -5,8 +5,8 @@ import pygame
 from pygame import Color
 import random
 
-from blockwords.core import app
-from blockwords.core import tiles
+from core import app
+from core import tiles
 from src.config.display_constants import (
     SCREEN_WIDTH,
     BAD_GUESS_COLOR, GOOD_GUESS_COLOR, OLD_GUESS_COLOR,

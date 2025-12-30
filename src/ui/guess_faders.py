@@ -5,7 +5,7 @@ import functools
 import pygame
 import pygame.freetype
 
-from blockwords.utils import textrect
+from utils import textrect
 from src.rendering.animations import get_alpha
 
 

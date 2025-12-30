@@ -3,7 +3,7 @@
 import random
 import unittest
 
-from blockwords.core import tiles
+from core import tiles
 
 class TestRack(unittest.TestCase):
     def setUp(self):

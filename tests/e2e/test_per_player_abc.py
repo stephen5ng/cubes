@@ -19,8 +19,8 @@ import os
 # Add the project root to the path
 sys.path.insert(0, os.path.dirname(__file__))
 
-from blockwords.hardware import cubes_to_game
-from blockwords.core import tiles
+from hardware import cubes_to_game
+from core import tiles
 from src.testing.mock_sound_manager import MockSoundManager
 
 # Test configuration

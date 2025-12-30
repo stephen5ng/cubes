@@ -1,9 +1,9 @@
 import unittest
 import asyncio
 from unittest.mock import Mock, patch, AsyncMock
-from blockwords.hardware import cubes_to_game
-from blockwords.hardware.cubes_to_game import state as ctg_state
-from blockwords.core import tiles
+from hardware import cubes_to_game
+from hardware.cubes_to_game import state as ctg_state
+from core import tiles
 
 class TestCubesToGame(unittest.TestCase):
     def setUp(self):

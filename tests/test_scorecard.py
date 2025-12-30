@@ -3,11 +3,11 @@
 import unittest
 from io import StringIO
 
-from blockwords.core import config
-from blockwords.core.dictionary import Dictionary
+from core import config
+from core.dictionary import Dictionary
 import random
-from blockwords.core.scorecard import ScoreCard
-from blockwords.core import tiles
+from core.scorecard import ScoreCard
+from core import tiles
 
 class TestScoreCard(unittest.TestCase):
     def setUp(self):

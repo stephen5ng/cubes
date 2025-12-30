@@ -1,6 +1,6 @@
 # From https://python-forum.io/thread-23029.html
 
-from blockwords.utils import hub75
+from utils import hub75
 import aiofiles
 import aiomqtt
 import argparse
@@ -15,7 +15,7 @@ import pygame
 import pygame.freetype
 from pygame import Color
 import random
-from blockwords.utils import textrect
+from utils import textrect
 from typing import cast
 import functools
 
@@ -23,13 +23,13 @@ class EventType(Enum):
     PYGAME = "pygame"
     MQTT = "mqtt"
 
-from blockwords.core import app
-from blockwords.core.config import MAX_PLAYERS
-from blockwords.hardware import cubes_to_game
-from blockwords.testing.mock_mqtt_client import MockMqttClient
+from core import app
+from core.config import MAX_PLAYERS
+from hardware import cubes_to_game
+from testing.mock_mqtt_client import MockMqttClient
 from pygame.image import tobytes as image_to_string
-from blockwords.utils.pygameasync import Clock, events
-from blockwords.core import tiles
+from utils.pygameasync import Clock, events
+from core import tiles
 from src.systems.sound_manager import SoundManager
 from src.input.input_devices import (
     InputDevice, CubesInput, KeyboardInput, GamepadInput, DDRInput, 

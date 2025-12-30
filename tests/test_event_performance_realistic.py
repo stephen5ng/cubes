@@ -9,7 +9,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # Import the modified event system
-from blockwords.utils import pygameasync
+from utils import pygameasync
 
 async def test_event_system():
     """Test the queue-based event system with realistic patterns"""

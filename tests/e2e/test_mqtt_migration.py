@@ -12,7 +12,7 @@ import json
 import logging
 from typing import Dict, Any
 
-from blockwords.monitoring.mqtt_metrics import mqtt_metrics, MqttMetricsLogger
+from monitoring.mqtt_metrics import mqtt_metrics, MqttMetricsLogger
 from non_retained_mqtt import NonRetainedMqttManager, MIGRATION_STRATEGIES, migrate_to_non_retained
 
 async def run_migration_test(strategy_name: str, duration_seconds: int = 60):
@@ -162,7 +162,7 @@ async def compare_all_strategies(duration_seconds: int = 30):
         
         # Reset metrics for each test
         global mqtt_metrics
-        from blockwords.monitoring.mqtt_metrics import MqttMetrics
+        from monitoring.mqtt_metrics import MqttMetrics
         mqtt_metrics = MqttMetrics()
         
         try:

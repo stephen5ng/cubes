@@ -4,7 +4,7 @@ import math
 import pygame
 import pygame.freetype
 
-from blockwords.core import app
+from core import app
 from src.config.display_constants import (
     SCREEN_WIDTH,
     SCREEN_HEIGHT,

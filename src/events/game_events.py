@@ -7,7 +7,7 @@ replacing the string-based event system with compile-time type safety.
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any
-from blockwords.core import tiles
+from core import tiles
 
 
 class EventType(str, Enum):

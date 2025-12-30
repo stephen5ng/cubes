@@ -8,7 +8,7 @@ modules to avoid circular imports.
 import logging
 from typing import Callable, Coroutine, Dict
 
-from blockwords.core import config
+from core import config
 
 # ABC countdown delay - use config value by default, but allow override for replay
 ABC_COUNTDOWN_DELAY_MS = config.ABC_COUNTDOWN_DELAY_MS

@@ -3,8 +3,8 @@
 import unittest
 import asyncio
 from unittest.mock import Mock, patch, AsyncMock
-from blockwords.hardware import cubes_to_game
-from blockwords.core import tiles
+from hardware import cubes_to_game
+from core import tiles
 
 class TestPerPlayerGameStates(unittest.TestCase):
     """Test cases for per-player game state management."""

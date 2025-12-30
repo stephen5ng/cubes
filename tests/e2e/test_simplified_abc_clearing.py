@@ -12,8 +12,8 @@ This test verifies:
 import asyncio
 import logging
 from unittest.mock import Mock
-from blockwords.hardware import cubes_to_game
-from blockwords.core import tiles
+from hardware import cubes_to_game
+from core import tiles
 from src.testing.mock_sound_manager import MockSoundManager
 
 # Set up basic logging to see what's happening

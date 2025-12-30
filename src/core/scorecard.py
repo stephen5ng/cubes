@@ -3,9 +3,9 @@ import logging
 import os
 from pathlib import Path
 
-from blockwords.core import config
-from blockwords.core import dictionary
-from blockwords.core import tiles
+from core import config
+from core import dictionary
+from core import tiles
 
 Play = Enum("Play", ["GOOD", "MISSING_LETTERS", "DUPE_WORD", "BAD_WORD"])
 

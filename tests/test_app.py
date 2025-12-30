@@ -6,11 +6,11 @@ import random
 import unittest
 from unittest import IsolatedAsyncioTestCase
 
-from blockwords.core import app
-from blockwords.core import dictionary
-from blockwords.utils.pygameasync import events
-from blockwords.hardware import cubes_to_game
-from blockwords.core import tiles
+from core import app
+from core import dictionary
+from utils.pygameasync import events
+from hardware import cubes_to_game
+from core import tiles
 
 class TestCubeGame(IsolatedAsyncioTestCase):
     async def asyncSetUp(self) -> None:

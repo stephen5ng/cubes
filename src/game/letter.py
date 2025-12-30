@@ -5,7 +5,7 @@ import easing_functions
 import pygame
 import pygame.freetype
 
-from blockwords.core import tiles
+from core import tiles
 from src.config.display_constants import SCREEN_HEIGHT, LETTER_SOURCE_COLOR
 from src.rendering.metrics import RackMetrics
 

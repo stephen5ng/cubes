@@ -5,11 +5,11 @@ import pygame
 import pygame.freetype
 from typing import cast
 
-from blockwords.core import app
-from blockwords.core import tiles
-from blockwords.core.config import MAX_PLAYERS
-from blockwords.utils.pygameasync import events
-from blockwords.utils import textrect
+from core import app
+from core import tiles
+from core.config import MAX_PLAYERS
+from utils.pygameasync import events
+from utils import textrect
 from src.config.display_constants import FONT_SIZE_DELTA
 from src.game.components import Score, Shield
 from src.game.letter import GuessType, Letter

@@ -5,13 +5,13 @@ from functools import wraps
 import logging
 from typing import Any, Callable, Coroutine
 
-from blockwords.hardware import cubes_to_game
-from blockwords.core import config
-from blockwords.core.dictionary import Dictionary
-from blockwords.utils.pygameasync import events
+from hardware import cubes_to_game
+from core import config
+from core.dictionary import Dictionary
+from utils.pygameasync import events
 import pygame
-from blockwords.core import tiles
-from blockwords.core.scorecard import ScoreCard
+from core import tiles
+from core.scorecard import ScoreCard
 from src.events.game_events import (
     GameStartPlayerEvent,
     GameStageGuessEvent,

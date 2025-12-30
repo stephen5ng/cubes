@@ -3,7 +3,7 @@
 import pygame
 import pygame.freetype
 
-from blockwords.utils import textrect
+from utils import textrect
 from src.config.display_constants import (
     SCREEN_WIDTH, SCREEN_HEIGHT,
     OLD_GUESS_COLOR, SHIELD_COLOR_P0, SHIELD_COLOR_P1,

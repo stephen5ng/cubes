@@ -7,8 +7,8 @@ and providing the public API for the cubes-to-game system.
 import logging
 from typing import List
 
-from blockwords.core import config
-from blockwords.core import tiles
+from core import config
+from core import tiles
 
 # Import our modules
 from . import state

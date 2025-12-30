@@ -2,8 +2,8 @@ import logging
 import random
 from typing import Callable
 
-from blockwords.core import tiles
-from blockwords.core.tiles import Rack
+from core import tiles
+from core.tiles import Rack
 
 def _sort_word(word):
     return "".join(sorted(word))

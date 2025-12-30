@@ -11,14 +11,14 @@ import pygame
 import random
 import sys
 
-from blockwords.core import app
-from blockwords.core import config
-from blockwords.hardware import cubes_to_game
-from blockwords.core.dictionary import Dictionary
-from blockwords.utils.pygameasync import events
+from core import app
+from core import config
+from hardware import cubes_to_game
+from core.dictionary import Dictionary
+from utils.pygameasync import events
 import pygamegameasync
-from blockwords.core import tiles
-from blockwords.utils import hub75
+from core import tiles
+from utils import hub75
 import json
 import pygame
 

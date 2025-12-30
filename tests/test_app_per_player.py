@@ -5,10 +5,10 @@ import unittest
 from unittest.mock import Mock, patch, AsyncMock
 from io import StringIO
 
-from blockwords.core import app
-from blockwords.hardware import cubes_to_game
-from blockwords.core import dictionary
-from blockwords.core import tiles
+from core import app
+from hardware import cubes_to_game
+from core import dictionary
+from core import tiles
 
 class TestAppPerPlayerIntegration(unittest.IsolatedAsyncioTestCase):
     """Test cases for app-level per-player integration."""
