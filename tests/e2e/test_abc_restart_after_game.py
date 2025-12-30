@@ -109,7 +109,7 @@ async def test_abc_restart_after_game():
     now_ms = countdown_complete_time + 100
     
     # Process countdown completion
-    incidents = await cubes_to_game.abc_manager.check_countdown_completion(publish_queue, now_ms, mock_sound_manager)
+    incidents = await cubes_to_game.check_countdown_completion(publish_queue, now_ms, mock_sound_manager)
     
     # Verify game started and state was reset
     assert len(game_starts) == 1, f"Expected 1 game start, got {len(game_starts)}"
@@ -161,7 +161,7 @@ async def test_abc_restart_after_game():
     now_ms = countdown_complete_time + 100
     
     # Process countdown completion for second game
-    incidents = await cubes_to_game.abc_manager.check_countdown_completion(publish_queue, now_ms, mock_sound_manager)
+    incidents = await cubes_to_game.check_countdown_completion(publish_queue, now_ms, mock_sound_manager)
     
     # Verify second game started
     assert len(game_starts) == 1, f"Expected 1 game start in second round, got {len(game_starts)}"

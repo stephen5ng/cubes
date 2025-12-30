@@ -118,7 +118,7 @@ async def test_simplified_late_join():
     
     # Let Player 0's countdown complete fully
     for time_step in range(3100, 10000, 100):
-        incidents = await cubes_to_game.abc_manager.check_countdown_completion(publish_queue, time_step, mock_sound_manager)
+        incidents = await cubes_to_game.check_countdown_completion(publish_queue, time_step, mock_sound_manager)
         if 0 in cubes_to_game._game_started_players:
             print(f"✓ Player 0 completed countdown at time {time_step}ms")
             break

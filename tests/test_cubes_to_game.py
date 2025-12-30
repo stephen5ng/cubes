@@ -2,6 +2,7 @@ import unittest
 import asyncio
 from unittest.mock import Mock, patch, AsyncMock
 from blockwords.hardware import cubes_to_game
+from blockwords.hardware.cubes_to_game import state as ctg_state
 from blockwords.core import tiles
 
 class TestCubesToGame(unittest.TestCase):
@@ -27,11 +28,11 @@ class TestLetterLock(unittest.IsolatedAsyncioTestCase):
     """Test cases for the letter_lock function."""
     
     def setUp(self):
-        # Set up cube managers for testing
-        cubes_to_game.cube_set_managers = [cubes_to_game.CubeSetManager(0), cubes_to_game.CubeSetManager(1)]
-        
+        # Set up cube managers for testing - must set on state module to be seen by functions
+        ctg_state.cube_set_managers = [cubes_to_game.CubeSetManager(0), cubes_to_game.CubeSetManager(1)]
+
         # Mock the tiles_to_cubes for both players
-        cubes_to_game.cube_set_managers[0].tiles_to_cubes = {
+        ctg_state.cube_set_managers[0].tiles_to_cubes = {
             "0": "cube0",
             "1": "cube1",
             "2": "cube2",
@@ -39,7 +40,7 @@ class TestLetterLock(unittest.IsolatedAsyncioTestCase):
             "4": "cube4",
             "5": "cube5"
         }
-        cubes_to_game.cube_set_managers[1].tiles_to_cubes = {
+        ctg_state.cube_set_managers[1].tiles_to_cubes = {
             "0": "cube6",
             "1": "cube7",
             "2": "cube8",

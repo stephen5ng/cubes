@@ -415,7 +415,7 @@ class BlockWordsPygame:
             await cubes_to_game.activate_abc_start_if_ready(publish_queue, now_ms)
             
             # Check if any ABC countdown has completed
-            countdown_incidents = await cubes_to_game.abc_manager.check_countdown_completion(publish_queue, now_ms, self.game.sound_manager)
+            countdown_incidents = await cubes_to_game.check_countdown_completion(publish_queue, now_ms, self.game.sound_manager)
             
             screen.fill((0, 0, 0))
             # print(f"UPDATING {now_ms}")
