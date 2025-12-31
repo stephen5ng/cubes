@@ -99,3 +99,10 @@ parts/
 sdist/
 var/
 wheels/
+word_sounds_0/
+word_sounds_1/
+spoken_sowpods*.txt
+
+# Credentials
+client_secret*.json
+dark-granite*.json
