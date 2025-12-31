@@ -21,7 +21,7 @@ class CubeSetManager:
         self.tiles_to_cubes: Dict[str, str] = {}
         self.cubes_to_tileid: Dict[str, str] = {}
         self.cubes_to_neighbors: Dict[str, str] = {}
-        self.border_color: str = "0xffff"
+        self.border_color: str = "0xFFFF"
         self.cube_list: List[str] = []  # Store ordered list of cubes
 
     def _find_unmatched_cubes(self):
