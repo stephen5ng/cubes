@@ -140,9 +140,10 @@ class Letter:
 
     def shield_collision(self, now_ms: int) -> None:
         """Handle collision with shield - bounce back the letter."""
-        # logger.debug(f"---------- {self.start_fall_y}, {self.pos[1]}, {new_pos}, {self.pos[1] - new_pos}")
-        self.pos[1] = int(self.start_fall_y + (self.pos[1] - self.start_fall_y)/2)
-        self.current_fall_start_y = int(self.start_fall_y + (self.pos[1] - self.start_fall_y)/2)
+        # Calculate midpoint between start and current position
+        midpoint = int(self.start_fall_y + (self.pos[1] - self.start_fall_y) / 2)
+        self.pos[1] = midpoint
+        self.current_fall_start_y = midpoint
         self.start_fall_time_ms = now_ms
 
     def change_letter(self, new_letter: str, now_ms: int) -> None:
@@ -152,7 +153,12 @@ class Letter:
 
     def new_fall(self, now_ms: int) -> None:
         """Start a new falling segment."""
-        self.start_fall_y += Letter.Y_INCREMENT
-        self.fall_duration_ms = self.DROP_TIME_MS * (self.height - self.start_fall_y) / self.height
+        # Cap at height to prevent overflow
+        self.start_fall_y = min(self.start_fall_y + Letter.Y_INCREMENT, self.height)
+
+        # Ensure duration is never negative
+        remaining_height = max(0, self.height - self.start_fall_y)
+        self.fall_duration_ms = self.DROP_TIME_MS * remaining_height / self.height
+
         self.pos[1] = self.current_fall_start_y = self.start_fall_y
         self.start_fall_time_ms = now_ms
