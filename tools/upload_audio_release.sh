@@ -2,7 +2,7 @@
 # Upload word sounds to GitHub release
 
 RELEASE_TAG="${1:-audio-assets}"
-CHUNK_SIZE="100M"
+CHUNK_SIZE="1500M"
 
 echo "Creating audio archive..."
 tar czf word_sounds.tar.gz word_sounds_0/ word_sounds_1/
@@ -29,8 +29,13 @@ To download and extract:
 ./tools/download_audio_release.sh
 \`\`\`
 
-Generated using tools/speak_sowpods_female.sh and tools/speak_sowpods.sh" \
-    word_sounds.tar.gz.part.*
+Generated using tools/speak_sowpods_female.sh and tools/speak_sowpods.sh"
+
+echo "Uploading chunks with progress..."
+for chunk in word_sounds.tar.gz.part.*; do
+    echo "Uploading $(basename $chunk)..."
+    gh release upload ${RELEASE_TAG} "$chunk"
+done
 
 echo "Cleaning up temporary files..."
 rm -f word_sounds.tar.gz word_sounds.tar.gz.part.*
