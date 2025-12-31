@@ -17,6 +17,8 @@ tests=(
     "test_app_per_player.py"
     "test_cubes_to_game.py"
     "test_dependency_injection.py"
+    "test_descent_strategy.py"
+    "test_letter_descent.py"
     "test_logging.py"
     "test_per_player_game_states.py"
     "test_replay_simple.py"

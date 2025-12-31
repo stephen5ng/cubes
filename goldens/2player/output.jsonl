@@ -7,14 +7,14 @@
 {"time": 8590, "event_type": "word_formed", "word": "HEM", "player": 1, "score": 3}
 {"time": 9010, "event_type": "letter_position", "x": 97, "y": 23}
 {"time": 9398, "event_type": "word_formed", "word": "HEMS", "player": 1, "score": 4}
-{"time": 10012, "event_type": "letter_position", "x": 81, "y": 7}
-{"time": 11016, "event_type": "letter_position", "x": 65, "y": 1}
-{"time": 12017, "event_type": "letter_position", "x": 49, "y": 1}
-{"time": 13036, "event_type": "letter_position", "x": 65, "y": 2}
-{"time": 14051, "event_type": "letter_position", "x": 81, "y": 4}
-{"time": 15054, "event_type": "letter_position", "x": 97, "y": 8}
-{"time": 16060, "event_type": "letter_position", "x": 113, "y": 13}
+{"time": 10012, "event_type": "letter_position", "x": 81, "y": 14}
+{"time": 11016, "event_type": "letter_position", "x": 65, "y": 7}
+{"time": 12017, "event_type": "letter_position", "x": 49, "y": 7}
+{"time": 13036, "event_type": "letter_position", "x": 65, "y": 8}
+{"time": 14051, "event_type": "letter_position", "x": 81, "y": 10}
+{"time": 15054, "event_type": "letter_position", "x": 97, "y": 14}
+{"time": 16060, "event_type": "letter_position", "x": 113, "y": 19}
 {"time": 16339, "event_type": "word_formed", "word": "SHE", "player": 0, "score": 3}
 {"time": 17037, "event_type": "word_formed", "word": "SHES", "player": 0, "score": 4}
-{"time": 17065, "event_type": "letter_position", "x": 129, "y": 21}
-{"time": 18080, "event_type": "letter_position", "x": 113, "y": 1}
+{"time": 17065, "event_type": "letter_position", "x": 129, "y": 27}
+{"time": 18080, "event_type": "letter_position", "x": 113, "y": 7}

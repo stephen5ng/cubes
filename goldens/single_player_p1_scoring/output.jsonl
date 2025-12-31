@@ -10,6 +10,6 @@
 {"time": 19693, "event_type": "word_formed", "word": "ARE", "player": 0, "score": 3}
 {"time": 19980, "event_type": "letter_position", "x": 49, "y": 90}
 {"time": 20003, "event_type": "word_formed", "word": "ARES", "player": 0, "score": 4}
-{"time": 20996, "event_type": "letter_position", "x": 65, "y": 6}
-{"time": 22017, "event_type": "letter_position", "x": 81, "y": 6}
-{"time": 23031, "event_type": "letter_position", "x": 97, "y": 6}
+{"time": 20996, "event_type": "letter_position", "x": 65, "y": 25}
+{"time": 22017, "event_type": "letter_position", "x": 81, "y": 25}
+{"time": 23031, "event_type": "letter_position", "x": 97, "y": 25}

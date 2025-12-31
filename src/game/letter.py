@@ -4,10 +4,12 @@ from enum import Enum
 import easing_functions
 import pygame
 import pygame.freetype
+from typing import Optional
 
 from core import tiles
 from src.config.display_constants import SCREEN_HEIGHT, LETTER_SOURCE_COLOR
 from src.rendering.metrics import RackMetrics
+from src.game.descent_strategy import DescentStrategy, DiscreteDescentStrategy
 
 
 class GuessType(Enum):
@@ -28,7 +30,8 @@ class Letter:
     COLUMN_SHIFT_INTERVAL_MS = 10000
 
     def __init__(
-        self, font: pygame.freetype.Font, initial_y: int, rack_metrics: RackMetrics, output_logger, letter_beeps: list) -> None:
+        self, font: pygame.freetype.Font, initial_y: int, rack_metrics: RackMetrics, output_logger, letter_beeps: list,
+        descent_strategy: Optional[DescentStrategy] = None) -> None:
         self.rack_metrics = rack_metrics
         self.game_area_offset_y = initial_y  # Offset from screen top to game area
         self.font = font
@@ -46,6 +49,11 @@ class Letter:
         self.output_logger = output_logger
         self.letter_beeps = letter_beeps
 
+        # Use strategy pattern for descent control
+        if descent_strategy is None:
+            descent_strategy = DiscreteDescentStrategy(Letter.Y_INCREMENT)
+        self.descent_strategy = descent_strategy
+
         self.start(0)
         self.draw(0)
 
@@ -62,6 +70,9 @@ class Letter:
         self.pos = [0, 0]
         self.start_fall_time_ms = now_ms
         self.last_beep_time_ms = now_ms
+
+        # Reset the descent strategy for new game
+        self.descent_strategy.reset(now_ms)
 
     def stop(self) -> None:
         """Stop the letter animation."""
@@ -151,10 +162,14 @@ class Letter:
         self.letter = new_letter
         self.draw(now_ms)
 
-    def new_fall(self, now_ms: int) -> None:
-        """Start a new falling segment."""
-        # Cap at height to prevent overflow
-        self.start_fall_y = min(self.start_fall_y + Letter.Y_INCREMENT, self.height)
+    def _apply_descent(self, new_y: int, now_ms: int) -> None:
+        """Apply descent to a specific Y position.
+
+        Args:
+            new_y: The new start_fall_y position
+            now_ms: Current timestamp
+        """
+        self.start_fall_y = new_y
 
         # Ensure duration is never negative
         remaining_height = max(0, self.height - self.start_fall_y)
@@ -162,3 +177,17 @@ class Letter:
 
         self.pos[1] = self.current_fall_start_y = self.start_fall_y
         self.start_fall_time_ms = now_ms
+
+    def new_fall(self, now_ms: int) -> None:
+        """Start a new falling segment.
+
+        For DiscreteDescentStrategy, this triggers and immediately applies descent.
+        """
+        # Trigger descent in the strategy (if it supports it)
+        if hasattr(self.descent_strategy, 'trigger_descent'):
+            self.descent_strategy.trigger_descent()
+
+        # Apply descent immediately to maintain original behavior timing
+        new_y, should_trigger = self.descent_strategy.update(self.start_fall_y, now_ms, self.height)
+        if should_trigger:
+            self._apply_descent(new_y, now_ms)
