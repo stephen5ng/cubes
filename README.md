@@ -58,6 +58,32 @@ export MQTT_SERVER=localhost  # Or your MQTT broker IP
 export PYTHONPATH=../easing-functions:../rpi-rgb-led-matrix/bindings/python:$PYTHONPATH
 ```
 
+### 5. Download Audio Assets
+The game uses pregenerated TTS audio files (~2.3GB, 60k files) stored in GitHub Releases:
+
+```bash
+./tools/download_audio_release.sh
+```
+
+This downloads and extracts:
+- **word_sounds_0/** - Female voice (en-US-Standard-C, pitch +5) for Player 0
+- **word_sounds_1/** - Male voice (en-US-Standard-D) for Player 1
+
+The script checks if files already exist and prompts before re-downloading.
+
+#### Regenerating Audio (Optional)
+To regenerate audio files from scratch (requires Google Cloud TTS credentials):
+```bash
+# Generate female voice (Player 0)
+./tools/speak_sowpods_female.sh
+
+# Generate male voice (Player 1)
+./tools/speak_sowpods.sh
+
+# Upload to GitHub Releases
+./tools/upload_audio_release.sh
+```
+
 ## Running the Game
 
 ### Start the Game Server
@@ -117,40 +143,46 @@ Functional tests use replay files to ensure consistent behavior:
 
 ```
 cubes/
-├── src/                          # Organized source code
-│   └── blockwords/
-│       ├── core/                 # Core game logic (in progress)
-│       ├── game/                 # Game components
-│       ├── input/                # Input device handlers
-│       ├── rendering/            # Display and animations
-│       ├── systems/              # Sound, events
-│       └── ui/                   # UI components
+├── src/                          # Source code
+│   ├── blockwords/               # (Refactoring in progress)
+│   ├── core/                     # Core game logic
+│   ├── game/                     # Game state, scoring, tiles
+│   ├── hardware/                 # Cube communication (MQTT)
+│   ├── input/                    # Input handlers (keyboard, gamepad, cubes)
+│   ├── rendering/                # Display, animations, effects
+│   ├── systems/                  # Sound, event system
+│   ├── ui/                       # UI components
+│   ├── config/                   # Configuration
+│   ├── data/                     # Dictionary, word lists
+│   ├── events/                   # Event definitions
+│   ├── logging/                  # Logging utilities
+│   ├── monitoring/               # Monitoring tools
+│   ├── testing/                  # Test utilities
+│   └── utils/                    # General utilities
 │
 ├── tests/                        # Test suite
-│   ├── e2e/                     # End-to-end tests
-│   ├── integration/             # Integration tests
-│   └── *.py                     # Unit tests
+│   └── *.py                     # Unit and integration tests
 │
 ├── scripts/                      # Utility scripts
 │   ├── monitoring/              # Cube monitoring tools
-│   ├── analysis/                # Performance analysis
-│   └── utilities/               # Test utilities
+│   └── analysis/                # Performance analysis
 │
 ├── tools/                        # Development tools
-│   └── *.sh                     # Shell utilities
+│   ├── download_audio_release.sh # Download audio from GitHub Releases
+│   ├── upload_audio_release.sh   # Upload audio to GitHub Releases
+│   ├── speak_sowpods_female.sh   # Generate female voice TTS
+│   └── speak_sowpods.sh          # Generate male voice TTS
 │
-├── replay/                       # Replay files for tests
-├── goldens/                      # Golden output files
-├── sounds/                       # Audio assets
-├── data/                         # Dictionary files
+├── replay/                       # Replay files for functional tests
+├── goldens/                      # Golden output files for tests
+├── assets/                       # Game assets
+├── sounds/                       # Sound effects (dings, etc.)
+├── word_sounds_0/                # Player 0 audio (downloaded from releases)
+├── word_sounds_1/                # Player 1 audio (downloaded from releases)
 │
-├── app.py                        # Main application logic
 ├── main.py                       # Entry point
-├── cubes_to_game.py             # MQTT cube communication
 ├── pygamegameasync.py           # Game loop and rendering
-├── tiles.py                      # Tile/letter management
-├── dictionary.py                 # Word validation
-├── scorecard.py                  # Scoring logic
+├── functional_test.py           # Functional test framework
 │
 ├── run_unit_tests.sh            # Test runner
 ├── run_functional_tests.sh      # Functional test runner
