@@ -6,6 +6,7 @@ import logging
 from typing import Any, Callable, Coroutine
 
 from hardware import cubes_to_game
+from hardware.cubes_to_game import state as ctg_state
 from core import config
 from core.dictionary import Dictionary
 from utils.pygameasync import events
@@ -72,6 +73,7 @@ class App:
 
     def _set_player_to_cube_set_mapping(self) -> None:
         """Set the player-to-cube-set mapping once when game starts."""
+        # _game_started_players currently contains cube set IDs from ABC completion
         started_cube_sets = list(cubes_to_game._game_started_players)
 
         if not started_cube_sets:
@@ -81,6 +83,9 @@ class App:
         if self._player_count == 1:
             # Single player: map player 0 to the cube set that started
             self._player_to_cube_set[0] = started_cube_sets[0]
+            # Fix _game_started_players to contain player ID (0) instead of cube set ID
+            cubes_to_game.reset_player_started_state()
+            cubes_to_game.add_player_started(0)
         else:
             # Multi-player: map players to their respective cube sets
             for i, cube_set_id in enumerate(sorted(started_cube_sets)):
@@ -105,8 +110,8 @@ class App:
         
         # Remove participating players from ABC tracking (their cubes will get game letters)
         for player in range(config.MAX_PLAYERS):
-            if cubes_to_game.has_player_started_game(player) and player in cubes_to_game.abc_manager.player_abc_cubes:
-                del cubes_to_game.abc_manager.player_abc_cubes[player]
+            if cubes_to_game.has_player_started_game(player) and player in ctg_state.abc_manager.player_abc_cubes:
+                del ctg_state.abc_manager.player_abc_cubes[player]
         
         # Clear ABC cubes for any remaining players (non-participants)
         await cubes_to_game.clear_remaining_abc_cubes(self._publish_queue, now_ms)

@@ -8,6 +8,7 @@ from typing import cast
 from core import app
 from core import tiles
 from core.config import MAX_PLAYERS
+from hardware import cubes_to_game
 from utils.pygameasync import events
 from utils import textrect
 from src.config.display_constants import FONT_SIZE_DELTA
@@ -133,6 +134,7 @@ class Game:
         print(f"{now_ms} starting new game with input_device: {input_device}")
         self.input_devices = [str(input_device)]
         print(f"ADDED {str(input_device)} in self.input_devices: {str(input_device) in self.input_devices}")
+
         self.guess_to_player = {}
         self.previous_guesses_display = PreviousGuessesDisplay(PreviousGuessesDisplay.FONT_SIZE, self.guess_to_player)
         self.remaining_previous_guesses_display = RemainingPreviousGuessesDisplay(

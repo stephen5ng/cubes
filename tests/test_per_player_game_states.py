@@ -4,15 +4,17 @@ import unittest
 import asyncio
 from unittest.mock import Mock, patch, AsyncMock
 from hardware import cubes_to_game
+from hardware.cubes_to_game import state as ctg_state
+from hardware.cubes_to_game.abc_manager import _find_non_touching_cubes_for_player
 from core import tiles
 
 class TestPerPlayerGameStates(unittest.TestCase):
     """Test cases for per-player game state management."""
-    
+
     def setUp(self):
         # Clear global state before each test
         cubes_to_game._game_started_players.clear()
-        cubes_to_game.abc_manager.player_abc_cubes.clear()
+        ctg_state.abc_manager.player_abc_cubes.clear()
         
     def test_has_player_started_game_empty(self):
         """Test has_player_started_game returns False when no players have started."""
@@ -53,7 +55,7 @@ class TestABCSequencePerPlayer(unittest.IsolatedAsyncioTestCase):
     
     async def asyncSetUp(self):
         # Clear global state
-        cubes_to_game.abc_manager.player_abc_cubes.clear()
+        ctg_state.abc_manager.player_abc_cubes.clear()
         cubes_to_game._game_started_players.clear()
         
         # Set up cube managers for both players
@@ -72,7 +74,7 @@ class TestABCSequencePerPlayer(unittest.IsolatedAsyncioTestCase):
         manager = cubes_to_game.cube_managers[0]
         
         # Test function exists and returns a list
-        result = cubes_to_game._find_non_touching_cubes_for_player(manager)
+        result = _find_non_touching_cubes_for_player(manager)
         
         # Should return a list of cubes 
         self.assertIsInstance(result, list)
@@ -84,7 +86,7 @@ class TestABCSequencePerPlayer(unittest.IsolatedAsyncioTestCase):
         manager = cubes_to_game.cube_managers[0]
         manager.cube_list = ["1", "2"]  # Only 2 cubes available
         
-        result = cubes_to_game._find_non_touching_cubes_for_player(manager)
+        result = _find_non_touching_cubes_for_player(manager)
         
         # Should return available cubes (up to what's available)
         self.assertIsInstance(result, list)
@@ -93,12 +95,12 @@ class TestABCSequencePerPlayer(unittest.IsolatedAsyncioTestCase):
     async def test_abc_sequence_detection_function_exists(self):
         """Test that ABC sequence detection function exists and is callable."""
         # Test function exists
-        self.assertTrue(hasattr(cubes_to_game, 'abc_manager'))
-        self.assertTrue(hasattr(cubes_to_game.abc_manager, 'check_abc_sequence_complete'))
-        self.assertTrue(callable(cubes_to_game.abc_manager.check_abc_sequence_complete))
-        
+        self.assertTrue(hasattr(ctg_state, 'abc_manager'))
+        self.assertTrue(hasattr(ctg_state.abc_manager, 'check_abc_sequence_complete'))
+        self.assertTrue(callable(ctg_state.abc_manager.check_abc_sequence_complete))
+
         # Test it returns something (None when no completion)
-        result = await cubes_to_game.abc_manager.check_abc_sequence_complete()
+        result = await ctg_state.abc_manager.check_abc_sequence_complete(ctg_state.cube_set_managers)
         # Should return None when no ABC sequences are set up
         self.assertIsNone(result)
 
@@ -128,27 +130,29 @@ class TestLoadRackPerPlayer(unittest.IsolatedAsyncioTestCase):
             
     async def test_load_rack_player_not_started(self):
         """Test load_rack skips loading when player hasn't started game."""
-        # Player 0 hasn't started game (not in _game_started_players)
-        
+        # Player 0 hasn't started game (not in game_started_players)
+        game_started_players = set()  # Empty set - no players started
+
         result = await self.cube_manager.load_rack(
-            self.publish_queue, self.mock_tiles, 1000
+            self.publish_queue, self.mock_tiles, 1000, game_started_players
         )
-        
+
         # Should return early without loading letters
         self.assertIsNone(result)
-        
+
         # No messages should be published
         self.assertTrue(self.publish_queue.empty())
-        
+
     async def test_load_rack_player_started_basic(self):
         """Test basic load_rack behavior."""
         # Test that the method exists and can be called
         self.assertTrue(hasattr(self.cube_manager, 'load_rack'))
         self.assertTrue(callable(self.cube_manager.load_rack))
-        
+
         # Test early return when player not started
+        game_started_players = set()  # Empty set - player 0 not started
         result = await self.cube_manager.load_rack(
-            self.publish_queue, self.mock_tiles, 1000
+            self.publish_queue, self.mock_tiles, 1000, game_started_players
         )
         self.assertIsNone(result)
 
