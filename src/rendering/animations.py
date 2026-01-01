@@ -35,7 +35,7 @@ class LetterSource:
     """Visual indicator showing where letters fall from."""
 
     ALPHA = 128
-    ANIMATION_DURAION_MS = 200
+    ANIMATION_DURATION_MS = 200
     MIN_HEIGHT = 1
     MAX_HEIGHT = 20
 
@@ -90,7 +90,7 @@ class LetterSource:
             self.height = max(LetterSource.MIN_HEIGHT,
                               get_alpha(self.easing,
                                     self.last_update,
-                                    LetterSource.ANIMATION_DURAION_MS,
+                                    LetterSource.ANIMATION_DURATION_MS,
                                     now_ms))
             self.draw()
 
