@@ -193,8 +193,8 @@ if __name__ == "__main__":
     parser.add_argument('--start', action=argparse.BooleanOptionalAction)
     parser.add_argument("--keyboard-player-number", default=1, type=int, help="Player number (1 or 2) that uses keyboard input")
     parser.add_argument("--replay", type=str, help="Replay a game from a log file")
-    parser.add_argument("--descent-mode", type=str, default="discrete", choices=["discrete", "timed", "hybrid"],
-                       help="Descent strategy: discrete (classic), timed (3-minute mode), or hybrid")
+    parser.add_argument("--descent-mode", type=str, default="discrete", choices=["discrete", "timed"],
+                       help="Descent strategy: discrete (classic) or timed (3-minute mode)")
     args = parser.parse_args()
     
     seed = 1

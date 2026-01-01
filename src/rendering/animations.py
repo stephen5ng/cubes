@@ -62,7 +62,7 @@ class LetterSource:
 
         The letter source is a visual indicator showing where letters fall from.
         When using discrete descent mode, the source expands when a letter falls
-        and animates back down. For continuous descent (timed/hybrid), the animation
+        and animates back down. For continuous descent (timed mode), the animation
         is disabled to avoid constant flashing.
 
         Args:

@@ -15,7 +15,7 @@ from src.config.display_constants import FONT_SIZE_DELTA
 from src.game.components import Score, Shield
 from src.game.letter import GuessType, Letter
 from src.game.descent_strategy import (
-    DiscreteDescentStrategy, TimeBasedDescentStrategy, HybridDescentStrategy
+    DiscreteDescentStrategy, TimeBasedDescentStrategy
 )
 from src.input.input_devices import InputDevice, CubesInput
 from src.rendering.animations import LetterSource
@@ -57,12 +57,6 @@ class Game:
 
         if descent_mode == "timed":
             descent_strategy = TimeBasedDescentStrategy(game_duration_ms=180000, total_height=game_height)
-        elif descent_mode == "hybrid":
-            descent_strategy = HybridDescentStrategy(
-                game_duration_ms=180000,
-                total_height=game_height,
-                event_increment=Letter.Y_INCREMENT
-            )
         else:  # discrete (default)
             descent_strategy = DiscreteDescentStrategy(Letter.Y_INCREMENT)
 
