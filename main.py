@@ -19,8 +19,6 @@ from utils.pygameasync import events
 import pygamegameasync
 from core import tiles
 from utils import hub75
-import json
-import pygame
 
 class BaseLogger:
     def __init__(self, log_file: str):
