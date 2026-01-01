@@ -24,4 +24,4 @@ mosquitto_pub -h $MQTT_SERVER -t cube/right/12 -r -m "-"
 python scripts/utilities/fake_tile_sequences.py --duration $duration --player 1 &
 python start_game.py &
 
-./runpygame.sh --descent-mode hybrid
+./runpygame.sh --descent-mode timed
