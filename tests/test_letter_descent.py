@@ -138,7 +138,8 @@ class TestLetterSourceIntegration:
             letter=letter,
             x=0,
             width=32,
-            initial_y=0
+            initial_y=0,
+            descent_mode="discrete"
         )
 
         assert letter_source.last_y == 0

@@ -33,19 +33,20 @@ def get_alpha(
 
 class LetterSource:
     """Visual indicator showing where letters fall from."""
-    
+
     ALPHA = 128
     ANIMATION_DURAION_MS = 200
     MIN_HEIGHT = 1
     MAX_HEIGHT = 20
-    
-    def __init__(self, letter, x: int, width: int, initial_y: int) -> None:
+
+    def __init__(self, letter, x: int, width: int, initial_y: int, descent_mode: str = "discrete") -> None:
         self.x = x
         self.last_y = 0
         self.initial_y = initial_y
         self.height = LetterSource.MIN_HEIGHT
         self.width = width
         self.letter = letter
+        self.descent_mode = descent_mode
         self.easing = easing_functions.QuinticEaseInOut(start=1, end=LetterSource.MAX_HEIGHT, duration=1)
         self.last_update = 0
         self.draw()
@@ -58,31 +59,35 @@ class LetterSource:
 
     def update(self, window: pygame.Surface, now_ms: int) -> list:
         """Updates the letter source animation and position.
-        
+
         The letter source is a visual indicator showing where letters fall from.
-        When a letter starts falling, the source expands to full height and then
-        animates back down to minimum height.
-        
+        When using discrete descent mode, the source expands when a letter falls
+        and animates back down. For continuous descent (timed/hybrid), the animation
+        is disabled to avoid constant flashing.
+
         Args:
             window: Surface to draw on
             now_ms: Current timestamp in milliseconds
-            
+
         Returns:
             List of any incidents that occurred during update
         """
         incidents = []
         if self.last_y != self.letter.start_fall_y:
-            # Letter started falling from a new position
-            self.last_update = now_ms
-            self.height = LetterSource.MAX_HEIGHT
+            # Letter source position changed
             self.last_y = self.letter.start_fall_y
-            self.draw()
-        elif self.height > LetterSource.MIN_HEIGHT:
-            # Animate height back down
-            self.height = max(LetterSource.MIN_HEIGHT, 
-                              get_alpha(self.easing, 
-                                    self.last_update, 
-                                    LetterSource.ANIMATION_DURAION_MS, 
+
+            # Only animate for discrete mode (avoid constant flashing in timed mode)
+            if self.descent_mode == "discrete":
+                self.last_update = now_ms
+                self.height = LetterSource.MAX_HEIGHT
+                self.draw()
+        elif self.height > LetterSource.MIN_HEIGHT and self.descent_mode == "discrete":
+            # Animate height back down (discrete mode only)
+            self.height = max(LetterSource.MIN_HEIGHT,
+                              get_alpha(self.easing,
+                                    self.last_update,
+                                    LetterSource.ANIMATION_DURAION_MS,
                                     now_ms))
             self.draw()
 

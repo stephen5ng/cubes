@@ -4,9 +4,10 @@
 trap "kill 0" EXIT
 
 duration="${1:-0.1}"
-export MQTT_SERVER=localhost
+# Use existing MQTT_SERVER or default to localhost
+export MQTT_SERVER="${MQTT_SERVER:-localhost}"
 
-#python fake_tile_sequences.py --duration $duration --player 2 &
+#python scripts/utilities/fake_tile_sequences.py --duration $duration --player 2 &
 mosquitto_pub -h $MQTT_SERVER -t cube/right/1 -r -m "-"
 mosquitto_pub -h $MQTT_SERVER -t cube/right/2 -r -m "-"
 mosquitto_pub -h $MQTT_SERVER -t cube/right/3 -r -m "-"
@@ -20,7 +21,7 @@ mosquitto_pub -h $MQTT_SERVER -t cube/right/10 -r -m "-"
 mosquitto_pub -h $MQTT_SERVER -t cube/right/11 -r -m "-"
 mosquitto_pub -h $MQTT_SERVER -t cube/right/12 -r -m "-"
 
-python fake_tile_sequences.py --duration $duration --player 1 &
+python scripts/utilities/fake_tile_sequences.py --duration $duration --player 1 &
 python start_game.py &
 
-./runpygame.sh
+./runpygame.sh --descent-mode hybrid

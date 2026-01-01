@@ -148,7 +148,8 @@ class Letter:
 
         fall_percent = (now_ms - self.start_fall_time_ms)/self.fall_duration_ms
         fall_easing = self.top_bottom_easing(fall_percent)
-        self.pos[1] = int(self.current_fall_start_y + fall_easing * self.height)
+        # Ensure letter never appears above the red line (start_fall_y)
+        self.pos[1] = max(self.start_fall_y, int(self.current_fall_start_y + fall_easing * self.height))
 
         self._update_beeping(now_ms)
         self.draw(now_ms)

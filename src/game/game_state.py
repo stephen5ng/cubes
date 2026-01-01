@@ -75,7 +75,8 @@ class Game:
         self.letter_source = LetterSource(
             self.letter,
             self.rack_metrics.get_rect().x, self.rack_metrics.get_rect().width,
-            letter_y)
+            letter_y,
+            descent_mode)
         self.shields: list[Shield] = []
         self.running = False
         self.aborted = False
