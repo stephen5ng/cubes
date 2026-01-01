@@ -193,6 +193,8 @@ if __name__ == "__main__":
     parser.add_argument('--start', action=argparse.BooleanOptionalAction)
     parser.add_argument("--keyboard-player-number", default=1, type=int, help="Player number (1 or 2) that uses keyboard input")
     parser.add_argument("--replay", type=str, help="Replay a game from a log file")
+    parser.add_argument("--descent-mode", type=str, default="discrete", choices=["discrete", "timed", "hybrid"],
+                       help="Descent strategy: discrete (classic), timed (3-minute mode), or hybrid")
     args = parser.parse_args()
     
     seed = 1
@@ -226,7 +228,7 @@ if __name__ == "__main__":
     dictionary = Dictionary(config.MIN_LETTERS, config.MAX_LETTERS, open=my_open)
     dictionary.read(f"{BUNDLE_TEMP_DIR}/sowpods.txt", f"{BUNDLE_TEMP_DIR}/bingos.txt")
     pygame.init()
-    block_words = pygamegameasync.BlockWordsPygame(replay_file=args.replay or "")
+    block_words = pygamegameasync.BlockWordsPygame(replay_file=args.replay or "", descent_mode=args.descent_mode)
     
     game_logger = GameLogger(None if args.replay else "output/game_replay.jsonl")
     try:

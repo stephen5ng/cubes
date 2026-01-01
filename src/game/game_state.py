@@ -14,6 +14,9 @@ from utils import textrect
 from src.config.display_constants import FONT_SIZE_DELTA
 from src.game.components import Score, Shield
 from src.game.letter import GuessType, Letter
+from src.game.descent_strategy import (
+    DiscreteDescentStrategy, TimeBasedDescentStrategy, HybridDescentStrategy
+)
 from src.input.input_devices import InputDevice, CubesInput
 from src.rendering.animations import LetterSource
 from src.rendering.metrics import RackMetrics
@@ -34,7 +37,8 @@ class Game:
                  output_logger,
                  sound_manager: SoundManager,
                  rack_metrics: RackMetrics,
-                 letter_beeps: list) -> None:
+                 letter_beeps: list,
+                 descent_mode: str = "discrete") -> None:
         self._app = the_app
         self.game_logger = game_logger
         self.output_logger = output_logger
@@ -46,7 +50,23 @@ class Game:
         # Now create components that depend on injected dependencies
         self.scores = [Score(the_app, player, self.rack_metrics) for player in range(MAX_PLAYERS)]
         letter_y = self.scores[0].get_size()[1] + 4
-        self.letter = Letter(letter_font, letter_y, self.rack_metrics, self.output_logger, letter_beeps)
+
+        # Choose descent strategy based on mode
+        from src.config.display_constants import SCREEN_HEIGHT
+        game_height = SCREEN_HEIGHT - (self.rack_metrics.letter_height + letter_y)
+
+        if descent_mode == "timed":
+            descent_strategy = TimeBasedDescentStrategy(game_duration_ms=180000, total_height=game_height)
+        elif descent_mode == "hybrid":
+            descent_strategy = HybridDescentStrategy(
+                game_duration_ms=180000,
+                total_height=game_height,
+                event_increment=Letter.Y_INCREMENT
+            )
+        else:  # discrete (default)
+            descent_strategy = DiscreteDescentStrategy(Letter.Y_INCREMENT)
+
+        self.letter = Letter(letter_font, letter_y, self.rack_metrics, self.output_logger, letter_beeps, descent_strategy)
         self.racks = [Rack(the_app, self.rack_metrics, self.letter, player) for player in range(MAX_PLAYERS)]
         self.guess_to_player = {}
         self.previous_guesses_display = PreviousGuessesDisplay(PreviousGuessesDisplay.FONT_SIZE, self.guess_to_player)

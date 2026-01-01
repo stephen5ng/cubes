@@ -135,6 +135,17 @@ class Letter:
     def update(self, window: pygame.Surface, now_ms: int) -> None:
         """Update and render the letter, returning incidents."""
         incidents = []
+
+        # Update red line position from strategy
+        new_y, should_trigger_fall = self.descent_strategy.update(self.start_fall_y, now_ms, self.height)
+        self.start_fall_y = new_y  # Update red line position without resetting fall
+
+        # Only reset the fall if strategy explicitly triggers it (for DiscreteDescentStrategy)
+        if should_trigger_fall:
+            # Recalculate fall duration based on new starting position
+            remaining_height = max(0, self.height - self.start_fall_y)
+            self.fall_duration_ms = self.DROP_TIME_MS * remaining_height / self.height
+
         fall_percent = (now_ms - self.start_fall_time_ms)/self.fall_duration_ms
         fall_easing = self.top_bottom_easing(fall_percent)
         self.pos[1] = int(self.current_fall_start_y + fall_easing * self.height)
@@ -181,13 +192,15 @@ class Letter:
     def new_fall(self, now_ms: int) -> None:
         """Start a new falling segment.
 
-        For DiscreteDescentStrategy, this triggers and immediately applies descent.
+        For DiscreteDescentStrategy: triggers descent increment
+        For TimeBasedDescentStrategy: starts from current red line position
         """
         # Trigger descent in the strategy (if it supports it)
         if hasattr(self.descent_strategy, 'trigger_descent'):
             self.descent_strategy.trigger_descent()
 
-        # Apply descent immediately to maintain original behavior timing
+        # Get current red line position and start new fall from there
+        # For DiscreteDescentStrategy: this gets the incremented position
+        # For TimeBasedDescentStrategy: this gets the time-based position
         new_y, should_trigger = self.descent_strategy.update(self.start_fall_y, now_ms, self.height)
-        if should_trigger:
-            self._apply_descent(new_y, now_ms)
+        self._apply_descent(new_y, now_ms)

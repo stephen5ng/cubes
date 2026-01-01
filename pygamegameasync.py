@@ -72,13 +72,14 @@ logger = logging.getLogger(__name__)
 
 
 class BlockWordsPygame:
-    def __init__(self, replay_file: str) -> None:
+    def __init__(self, replay_file: str, descent_mode: str = "discrete") -> None:
         self._window = pygame.display.set_mode(
             (SCREEN_WIDTH*SCALING_FACTOR, SCREEN_HEIGHT*SCALING_FACTOR))
         self.letter_font = pygame.freetype.SysFont(FONT, RackMetrics.LETTER_SIZE)
         self.the_app = None
         self.game = None
         self.replay_file = replay_file
+        self.descent_mode = descent_mode
         self.replayer = None
         self._mock_mqtt_client = None
 
@@ -368,7 +369,7 @@ class BlockWordsPygame:
         rack_metrics = RackMetrics()
 
         # Get letter beeps from sound manager for injection into Game
-        self.game = Game(the_app, self.letter_font, game_logger, output_logger, sound_manager, rack_metrics, sound_manager.get_letter_beeps())
+        self.game = Game(the_app, self.letter_font, game_logger, output_logger, sound_manager, rack_metrics, sound_manager.get_letter_beeps(), descent_mode=self.descent_mode)
         
         self.game.output_logger.start_logging()
         the_app.set_game_logger(self.game.game_logger)

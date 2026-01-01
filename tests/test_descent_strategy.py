@@ -90,20 +90,20 @@ class TestTimeBasedDescentStrategy:
         # At 0ms
         new_y, should_trigger = strategy.update(current_y=0, now_ms=0, height=240)
         assert new_y == 0
-        assert should_trigger is False  # No movement yet
+        assert should_trigger is False  # Time-based never triggers
 
         # At 5000ms (halfway) -> 120 pixels
         new_y, should_trigger = strategy.update(current_y=0, now_ms=5000, height=240)
         assert new_y == 120
-        assert should_trigger is True
+        assert should_trigger is False  # Continuous position update, no trigger
 
         # At 10000ms (end) -> 240 pixels
         new_y, should_trigger = strategy.update(current_y=120, now_ms=10000, height=240)
         assert new_y == 240
-        assert should_trigger is True
+        assert should_trigger is False  # Continuous position update, no trigger
 
-    def test_triggers_on_position_change(self):
-        """Should trigger when position changes."""
+    def test_continuous_position_updates(self):
+        """Position should update continuously without triggering."""
         strategy = TimeBasedDescentStrategy(game_duration_ms=10000, total_height=240)
         strategy.reset(now_ms=0)
 
@@ -113,10 +113,12 @@ class TestTimeBasedDescentStrategy:
 
         # Second call at t=1000 (position changed)
         new_y, should_trigger = strategy.update(current_y=0, now_ms=1000, height=240)
-        assert should_trigger is True
+        assert new_y == 24  # 1000ms * (240/10000) = 24
+        assert should_trigger is False  # Never triggers - continuous update only
 
-        # Third call at same time (no change)
+        # Third call at same time (position update based on time, not current_y)
         new_y, should_trigger = strategy.update(current_y=24, now_ms=1000, height=240)
+        assert new_y == 24  # Same time = same position
         assert should_trigger is False
 
     def test_caps_at_total_height(self):
@@ -127,7 +129,7 @@ class TestTimeBasedDescentStrategy:
         # Way past game duration
         new_y, should_trigger = strategy.update(current_y=0, now_ms=20000, height=240)
         assert new_y == 240
-        assert should_trigger is True
+        assert should_trigger is False  # Never triggers - continuous update only
 
     def test_reset_restarts_timer(self):
         """Reset should restart the timer."""

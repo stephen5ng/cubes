@@ -87,11 +87,11 @@ class TimeBasedDescentStrategy(DescentStrategy):
         target_y = min(self.total_height,
                       int(elapsed_ms * self.descent_rate))
 
-        # Check if we've moved past a threshold to trigger fall
-        should_trigger = target_y > self.last_y
+        # Time-based strategy continuously updates position but doesn't trigger new falls
+        # The red line descends, but the letter continues falling independently
         self.last_y = target_y
 
-        return (target_y, should_trigger)
+        return (target_y, False)
 
     def reset(self, now_ms: int) -> None:
         """Reset timer for new game."""
