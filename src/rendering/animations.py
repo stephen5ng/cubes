@@ -49,6 +49,7 @@ class LetterSource:
         self.descent_mode = descent_mode
         self.easing = easing_functions.QuinticEaseInOut(start=1, end=LetterSource.MAX_HEIGHT, duration=1)
         self.last_update = 0
+        self.max_height_for_animation = LetterSource.MAX_HEIGHT
         self.draw()
 
     def draw(self) -> None:
@@ -61,9 +62,8 @@ class LetterSource:
         """Updates the letter source animation and position.
 
         The letter source is a visual indicator showing where letters fall from.
-        When using discrete descent mode, the source expands when a letter falls
-        and animates back down. For continuous descent (timed mode), the animation
-        is disabled to avoid constant flashing.
+        The source expands when the red line position changes and animates back down.
+        The expansion height matches the distance the red line moved.
 
         Args:
             window: Surface to draw on
@@ -74,16 +74,19 @@ class LetterSource:
         """
         incidents = []
         if self.last_y != self.letter.start_fall_y:
-            # Letter source position changed
+            # Letter source position changed - calculate distance moved (inclusive)
+            distance_moved = abs(self.letter.start_fall_y - self.last_y)
             self.last_y = self.letter.start_fall_y
 
-            # Only animate for discrete mode (avoid constant flashing in timed mode)
-            if self.descent_mode == "discrete":
-                self.last_update = now_ms
-                self.height = LetterSource.MAX_HEIGHT
-                self.draw()
-        elif self.height > LetterSource.MIN_HEIGHT and self.descent_mode == "discrete":
-            # Animate height back down (discrete mode only)
+            # Use inclusive range: distance + 1 gives minimum 2px for any movement
+            self.max_height_for_animation = min(distance_moved + 1, LetterSource.MAX_HEIGHT)
+            self.easing = easing_functions.QuinticEaseInOut(start=1, end=self.max_height_for_animation, duration=1)
+
+            self.last_update = now_ms
+            self.height = self.max_height_for_animation
+            self.draw()
+        elif self.height > LetterSource.MIN_HEIGHT:
+            # Animate height back down
             self.height = max(LetterSource.MIN_HEIGHT,
                               get_alpha(self.easing,
                                     self.last_update,

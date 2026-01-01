@@ -145,14 +145,18 @@ class TestLetterSourceIntegration:
         assert letter_source.last_y == 0
 
         # Trigger new fall
+        start_y_before = letter.start_fall_y
         letter.new_fall(now_ms=1000)
+        distance_moved = letter.start_fall_y - start_y_before
 
         # LetterSource should detect change on update
         window = pygame.Surface((100, 100))
         letter_source.update(window, now_ms=1000)
 
         assert letter_source.last_y == letter.start_fall_y
-        assert letter_source.height == letter_source.MAX_HEIGHT  # Should expand
+        # Height uses inclusive range: distance + 1 (clamped to MAX_HEIGHT)
+        expected_height = min(distance_moved + 1, letter_source.MAX_HEIGHT)
+        assert letter_source.height == expected_height
 
 
 class TestLetterDescentEdgeCases:
