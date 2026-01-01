@@ -1,7 +1,5 @@
 from enum import Enum
 import logging
-import os
-from pathlib import Path
 
 from core import config
 from core import dictionary
