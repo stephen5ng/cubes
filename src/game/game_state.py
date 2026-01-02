@@ -38,7 +38,8 @@ class Game:
                  sound_manager: SoundManager,
                  rack_metrics: RackMetrics,
                  letter_beeps: list,
-                 descent_mode: str = "discrete") -> None:
+                 descent_mode: str = "discrete",
+                 timed_duration_s: int = 240) -> None:
         self._app = the_app
         self.game_logger = game_logger
         self.output_logger = output_logger
@@ -56,7 +57,7 @@ class Game:
         game_height = SCREEN_HEIGHT - (self.rack_metrics.letter_height + letter_y)
 
         if descent_mode == "timed":
-            descent_strategy = TimeBasedDescentStrategy(game_duration_ms=180000, total_height=game_height)
+            descent_strategy = TimeBasedDescentStrategy(game_duration_ms=timed_duration_s * 1000, total_height=game_height)
         else:  # discrete (default)
             descent_strategy = DiscreteDescentStrategy(Letter.Y_INCREMENT)
 
