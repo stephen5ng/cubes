@@ -79,18 +79,17 @@ class Game:
         self.input_devices = []
         self.last_lock = False
 
-        # TODO(sng): remove f
-        events.on(f"game.stage_guess")(self.stage_guess)
-        events.on(f"game.old_guess")(self.old_guess)
-        events.on(f"game.bad_guess")(self.bad_guess)
-        events.on(f"game.next_tile")(self.next_tile)
-        events.on(f"game.abort")(self.abort)
-        events.on(f"game.start_player")(self.start_cubes_player)
-        events.on(f"input.remaining_previous_guesses")(self.update_remaining_guesses)
-        events.on(f"input.update_previous_guesses")(self.update_previous_guesses)
-        events.on(f"input.add_guess")(self.add_guess)
-        events.on(f"rack.update_rack")(self.update_rack)
-        events.on(f"rack.update_letter")(self.update_letter)
+        events.on("game.stage_guess")(self.stage_guess)
+        events.on("game.old_guess")(self.old_guess)
+        events.on("game.bad_guess")(self.bad_guess)
+        events.on("game.next_tile")(self.next_tile)
+        events.on("game.abort")(self.abort)
+        events.on("game.start_player")(self.start_cubes_player)
+        events.on("input.remaining_previous_guesses")(self.update_remaining_guesses)
+        events.on("input.update_previous_guesses")(self.update_previous_guesses)
+        events.on("input.add_guess")(self.add_guess)
+        events.on("rack.update_rack")(self.update_rack)
+        events.on("rack.update_letter")(self.update_letter)
 
     async def update_rack(self, tiles: list[tiles.Tile], highlight_length: int, guess_length: int, player: int, now_ms: int) -> None:
         """Update rack display for a player."""
