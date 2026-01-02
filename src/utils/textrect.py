@@ -105,7 +105,7 @@ if __name__ == '__main__':
     import pygame.font
     import pygame.freetype
     import sys
-    from pygame.locals import *
+    from pygame.locals import QUIT, KEYDOWN
 
     pygame.init()
 
