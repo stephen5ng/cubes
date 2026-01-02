@@ -65,9 +65,6 @@ class Rack:
     def draw(self) -> None:
         """Draw the rack surface."""
         self.surface = pygame.Surface(self.rack_metrics.get_size())
-        # if self.letters():
-        #     pygame.draw.rect(self.surface, Color("grey"),
-        #                      self.rack_metrics.get_largest_letter_rect(self.cursor_position))
         for ix, letter in enumerate(self.letters()):
             self._render_letter(self.surface, ix, letter, self.rack_color_by_player[self.player+1])
 
