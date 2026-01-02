@@ -104,19 +104,19 @@ my_open = open
 
 logger = logging.getLogger(__name__)
 
-async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.Queue, publish_logger: PublishLogger) -> None:
+async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.Queue, publish_logger: PublishLogger, last_messages: dict[str, str] | None = None) -> None:
+    if last_messages is None:
+        last_messages = {}
+
     while True:
         try:
             timestamp = None
             topic, message, retain, timestamp = await queue.get()
-            # Store last messages in dict if not already defined
-            if not hasattr(publish_tasks_in_queue, 'last_messages'):
-                publish_tasks_in_queue.last_messages = {}
-                
+
             # Publish retained messages if they changed.
-            if not retain or publish_tasks_in_queue.last_messages.get(topic, "INIT") != message:
+            if not retain or last_messages.get(topic, "INIT") != message:
                 await publish_client.publish(topic, message, retain=retain)
-                publish_tasks_in_queue.last_messages[topic] = message
+                last_messages[topic] = message
                 logger.info(f"publishing: {topic}, {message}")
                 publish_logger.log_mqtt_publish(topic, message, retain, timestamp)
         except asyncio.CancelledError:
@@ -163,7 +163,7 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
                     await subscribe_client.subscribe("game/guess")
 
                 # MQTT subscription is now handled in pygamegameasync main loop
-                publish_task = asyncio.create_task(publish_tasks_in_queue(publish_client, publish_queue, publish_logger),
+                publish_task = asyncio.create_task(publish_tasks_in_queue(publish_client, publish_queue, publish_logger, {}),
                     name="mqtt publish handler")
 
                 await block_words.main(the_app, subscribe_client, args.start, keyboard_player_number, publish_queue, game_logger, output_logger)
