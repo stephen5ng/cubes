@@ -1,6 +1,8 @@
-# BlockWords Cubes
+# LEXACUBES Game
 
 A physical word game that combines Scrabble-like gameplay with interactive ESP32-based cubes featuring LED matrix displays. Players form words from letters displayed on physical cubes, with real-time communication via MQTT.
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/stephen5ng/cubes)
 
 ## Overview
 
