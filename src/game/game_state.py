@@ -75,7 +75,6 @@ class Game:
         self.shields: list[Shield] = []
         self.running = False
         self.aborted = False
-        self.game_log_f = open("output/gamelog.csv", "w")
         self.duration_log_f = open("output/durationlog.csv", "w")
         self.input_devices = []
         self.last_lock = False
@@ -195,6 +194,7 @@ class Game:
         self.duration_log_f.write(
             f"{self.scores[0].score},{now_s-self.start_time_s}\n")
         self.duration_log_f.flush()
+        self.duration_log_f.close()
         await self._app.stop(now_ms)
         logger.info("GAME OVER OVER")
 
