@@ -91,6 +91,14 @@ class Game:
         events.on("rack.update_rack")(self.update_rack)
         events.on("rack.update_letter")(self.update_letter)
 
+    def __del__(self):
+        """Ensure duration log file is closed when object is destroyed."""
+        if hasattr(self, 'duration_log_f') and self.duration_log_f and not self.duration_log_f.closed:
+            try:
+                self.duration_log_f.close()
+            except Exception:
+                pass  # Ignore errors during cleanup
+
     async def update_rack(self, tiles: list[tiles.Tile], highlight_length: int, guess_length: int, player: int, now_ms: int) -> None:
         """Update rack display for a player."""
         await self.racks[player].update_rack(tiles, highlight_length, guess_length, now_ms)
@@ -191,10 +199,11 @@ class Game:
         self.running = False
         now_s = now_ms / 1000
         self.stop_time_s = now_s
-        self.duration_log_f.write(
-            f"{self.scores[0].score},{now_s-self.start_time_s}\n")
-        self.duration_log_f.flush()
-        self.duration_log_f.close()
+        if self.duration_log_f and not self.duration_log_f.closed:
+            self.duration_log_f.write(
+                f"{self.scores[0].score},{now_s-self.start_time_s}\n")
+            self.duration_log_f.flush()
+            self.duration_log_f.close()
         await self._app.stop(now_ms)
         logger.info("GAME OVER OVER")
 
