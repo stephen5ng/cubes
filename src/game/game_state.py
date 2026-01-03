@@ -75,7 +75,6 @@ class Game:
         self.shields: list[Shield] = []
         self.running = False
         self.aborted = False
-        self.duration_log_f = open("output/durationlog.csv", "w")
         self.input_devices = []
         self.last_lock = False
 
@@ -90,14 +89,6 @@ class Game:
         events.on("input.add_guess")(self.add_guess)
         events.on("rack.update_rack")(self.update_rack)
         events.on("rack.update_letter")(self.update_letter)
-
-    def __del__(self):
-        """Ensure duration log file is closed when object is destroyed."""
-        if hasattr(self, 'duration_log_f') and self.duration_log_f and not self.duration_log_f.closed:
-            try:
-                self.duration_log_f.close()
-            except Exception:
-                pass  # Ignore errors during cleanup
 
     async def update_rack(self, tiles: list[tiles.Tile], highlight_length: int, guess_length: int, player: int, now_ms: int) -> None:
         """Update rack display for a player."""
@@ -199,11 +190,14 @@ class Game:
         self.running = False
         now_s = now_ms / 1000
         self.stop_time_s = now_s
-        if self.duration_log_f and not self.duration_log_f.closed:
-            self.duration_log_f.write(
-                f"{self.scores[0].score},{now_s-self.start_time_s}\n")
-            self.duration_log_f.flush()
-            self.duration_log_f.close()
+
+        # Write duration log with context manager for safe file handling
+        try:
+            with open("output/durationlog.csv", "a") as duration_log:
+                duration_log.write(f"{self.scores[0].score},{now_s-self.start_time_s}\n")
+        except IOError as e:
+            logger.error(f"Failed to write duration log: {e}")
+
         await self._app.stop(now_ms)
         logger.info("GAME OVER OVER")
 
