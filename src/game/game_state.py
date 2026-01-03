@@ -7,22 +7,21 @@ from typing import cast
 
 from core import app
 from core import tiles
-from core.config import MAX_PLAYERS
+from config import game_config
 from hardware import cubes_to_game
 from utils.pygameasync import events
 from utils import textrect
-from src.config.display_constants import FONT_SIZE_DELTA
-from src.game.components import Score, Shield
-from src.game.letter import GuessType, Letter
-from src.game.descent_strategy import (
+from game.components import Score, Shield
+from game.letter import GuessType, Letter
+from game.descent_strategy import (
     DiscreteDescentStrategy, TimeBasedDescentStrategy
 )
-from src.input.input_devices import InputDevice, CubesInput
-from src.rendering.animations import LetterSource
-from src.rendering.metrics import RackMetrics
-from src.rendering.rack_display import Rack
-from src.systems.sound_manager import SoundManager
-from src.ui.guess_display import PreviousGuessesManager
+from input.input_devices import InputDevice, CubesInput
+from rendering.animations import LetterSource
+from rendering.metrics import RackMetrics
+from rendering.rack_display import Rack
+from systems.sound_manager import SoundManager
+from ui.guess_display import PreviousGuessesManager
 
 logger = logging.getLogger(__name__)
 
@@ -49,12 +48,11 @@ class Game:
         self.rack_metrics = rack_metrics
 
         # Now create components that depend on injected dependencies
-        self.scores = [Score(the_app, player, self.rack_metrics) for player in range(MAX_PLAYERS)]
+        self.scores = [Score(the_app, player, self.rack_metrics) for player in range(game_config.MAX_PLAYERS)]
         letter_y = self.scores[0].get_size()[1] + 4
 
         # Choose descent strategy based on mode
-        from src.config.display_constants import SCREEN_HEIGHT
-        game_height = SCREEN_HEIGHT - (self.rack_metrics.letter_height + letter_y)
+        game_height = game_config.SCREEN_HEIGHT - (self.rack_metrics.letter_height + letter_y)
 
         if descent_mode == "timed":
             descent_strategy = TimeBasedDescentStrategy(game_duration_ms=timed_duration_s * 1000, total_height=game_height)
@@ -62,7 +60,7 @@ class Game:
             descent_strategy = DiscreteDescentStrategy(Letter.Y_INCREMENT)
 
         self.letter = Letter(letter_font, letter_y, self.rack_metrics, self.output_logger, letter_beeps, descent_strategy)
-        self.racks = [Rack(the_app, self.rack_metrics, self.letter, player) for player in range(MAX_PLAYERS)]
+        self.racks = [Rack(the_app, self.rack_metrics, self.letter, player) for player in range(game_config.MAX_PLAYERS)]
         self.guess_to_player = {}
         self.guesses_manager = PreviousGuessesManager(30, self.guess_to_player)
         self.letter_source = LetterSource(

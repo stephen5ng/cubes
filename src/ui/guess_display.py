@@ -4,12 +4,13 @@ import pygame
 import pygame.freetype
 
 from utils import textrect
-from src.config.display_constants import (
+from config import game_config
+from config.game_config import (
     SCREEN_WIDTH, SCREEN_HEIGHT,
     OLD_GUESS_COLOR, SHIELD_COLOR_P0, SHIELD_COLOR_P1,
     FADER_COLOR_P0, FADER_COLOR_P1, REMAINING_PREVIOUS_GUESSES_COLOR
 )
-from src.ui.guess_faders import FaderManager, LastGuessFader
+from ui.guess_faders import FaderManager, LastGuessFader
 
 
 class PreviousGuessesDisplayBase:
@@ -176,8 +177,7 @@ class PreviousGuessesManager:
     """Manages previous guess displays and handles automatic resizing on overflow."""
 
     def __init__(self, font_size: int, guess_to_player: dict[str, int]) -> None:
-        from src.config.display_constants import FONT_SIZE_DELTA
-        self.font_size_delta = FONT_SIZE_DELTA
+        self.font_size_delta = game_config.FONT_SIZE_DELTA
         self.guess_to_player = guess_to_player
         self.previous_guesses_display = PreviousGuessesDisplay(font_size, guess_to_player)
         self.remaining_previous_guesses_display = RemainingPreviousGuessesDisplay(

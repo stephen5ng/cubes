@@ -24,21 +24,22 @@ class EventType(Enum):
     MQTT = "mqtt"
 
 from core import app
-from core.config import MAX_PLAYERS
+from config import game_config
 from hardware import cubes_to_game
 from testing.mock_mqtt_client import MockMqttClient
 from pygame.image import tobytes as image_to_string
 from utils.pygameasync import Clock, events
 from core import tiles
-from src.systems.sound_manager import SoundManager
-from src.input.input_devices import (
+from systems.sound_manager import SoundManager
+from input.input_devices import (
     InputDevice, CubesInput, KeyboardInput, GamepadInput, DDRInput, 
     JOYSTICK_NAMES_TO_INPUTS
 )
-from src.rendering.metrics import RackMetrics
-from src.rendering.animations import get_alpha, LetterSource
-from src.game.components import Score, Shield
-from src.config.display_constants import (
+from rendering.metrics import RackMetrics
+from rendering.animations import get_alpha, LetterSource
+from game.components import Score, Shield
+from config import game_config
+from config.game_config import (
     SCREEN_WIDTH, SCREEN_HEIGHT, SCALING_FACTOR,
     TICKS_PER_SECOND, FONT, ANTIALIAS, FONT_SIZE_DELTA, FREE_SCORE,
     BAD_GUESS_COLOR, GOOD_GUESS_COLOR, OLD_GUESS_COLOR, LETTER_SOURCE_COLOR,
@@ -47,17 +48,17 @@ from src.config.display_constants import (
     REMAINING_PREVIOUS_GUESSES_COLOR, PREVIOUS_GUESSES_COLOR,
     PLAYER_COLORS, FADER_PLAYER_COLORS
 )
-from src.testing.game_replayer import GameReplayer
-from src.ui.guess_faders import LastGuessFader, FaderManager
-from src.ui.guess_display import (
+from testing.game_replayer import GameReplayer
+from ui.guess_faders import LastGuessFader, FaderManager
+from ui.guess_display import (
     PreviousGuessesDisplayBase,
     PreviousGuessesDisplay,
     RemainingPreviousGuessesDisplay
 )
-from src.game.letter import GuessType, Letter
-from src.rendering.rack_display import Rack
-from src.game.game_state import Game
-from src.events.game_events import GameAbortEvent
+from game.letter import GuessType, Letter
+from rendering.rack_display import Rack
+from game.game_state import Game
+from events.game_events import GameAbortEvent
 
 logger = logging.getLogger(__name__)
 
@@ -232,7 +233,7 @@ class BlockWordsPygame:
             self.handle_return_action(keyboard_input)
         elif key == "TAB":
             self.the_app.player_count = 1 if self.the_app.player_count == 2 else 2
-            for player in range(MAX_PLAYERS):
+            for player in range(game_config.MAX_PLAYERS):
                 self.game.scores[player].draw()
                 self.game.racks[player].draw()
         elif len(key) == 1:
