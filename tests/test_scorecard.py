@@ -3,7 +3,7 @@
 import unittest
 from io import StringIO
 
-from core import config
+from config import game_config
 from core.dictionary import Dictionary
 import random
 from core.scorecard import ScoreCard
@@ -21,9 +21,9 @@ class TestScoreCard(unittest.TestCase):
             "service"
         ]))
         # Override config for this test
-        config.MAX_LETTERS = 7
+        game_config.MAX_LETTERS = 7
         random.seed(1)
-        dictionary = Dictionary(config.MIN_LETTERS, config.MAX_LETTERS, open=my_open)
+        dictionary = Dictionary(game_config.MIN_LETTERS, game_config.MAX_LETTERS, open=my_open)
         dictionary.read("sowpods.txt", "bingos.txt")
         player_rack = dictionary.get_rack()
         self.score_card = ScoreCard(player_rack, dictionary)

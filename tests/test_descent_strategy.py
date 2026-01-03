@@ -1,6 +1,6 @@
 """Tests for descent strategy implementations."""
 import pytest
-from src.game.descent_strategy import (
+from game.descent_strategy import (
     DiscreteDescentStrategy,
     TimeBasedDescentStrategy
 )

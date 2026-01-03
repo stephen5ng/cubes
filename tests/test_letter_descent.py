@@ -6,9 +6,9 @@ import pytest
 import pygame
 import pygame.freetype
 from unittest.mock import Mock
-from src.game.letter import Letter
-from src.rendering.metrics import RackMetrics
-from src.config.display_constants import SCREEN_HEIGHT
+from game.letter import Letter
+from rendering.metrics import RackMetrics
+from config.game_config import SCREEN_HEIGHT
 
 
 @pytest.fixture
@@ -128,7 +128,7 @@ class TestLetterSourceIntegration:
 
     def test_letter_source_tracks_start_fall_y(self, letter_setup):
         """LetterSource should detect when start_fall_y changes."""
-        from src.rendering.animations import LetterSource
+        from rendering.animations import LetterSource
 
         letter = letter_setup
         letter.start(now_ms=0)

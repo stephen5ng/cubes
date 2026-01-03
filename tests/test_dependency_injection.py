@@ -8,8 +8,8 @@ import pygame
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.testing.mock_sound_manager import MockSoundManager
-from src.rendering.metrics import RackMetrics
+from testing.mock_sound_manager import MockSoundManager
+from rendering.metrics import RackMetrics
 
 
 class TestDependencyInjection(unittest.TestCase):
