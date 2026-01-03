@@ -22,7 +22,7 @@ from src.rendering.animations import LetterSource
 from src.rendering.metrics import RackMetrics
 from src.rendering.rack_display import Rack
 from src.systems.sound_manager import SoundManager
-from src.ui.guess_display import PreviousGuessesDisplay, RemainingPreviousGuessesDisplay
+from src.ui.guess_display import PreviousGuessesManager
 
 logger = logging.getLogger(__name__)
 
@@ -64,9 +64,7 @@ class Game:
         self.letter = Letter(letter_font, letter_y, self.rack_metrics, self.output_logger, letter_beeps, descent_strategy)
         self.racks = [Rack(the_app, self.rack_metrics, self.letter, player) for player in range(MAX_PLAYERS)]
         self.guess_to_player = {}
-        self.previous_guesses_display = PreviousGuessesDisplay(PreviousGuessesDisplay.FONT_SIZE, self.guess_to_player)
-        self.remaining_previous_guesses_display = RemainingPreviousGuessesDisplay(
-            PreviousGuessesDisplay.FONT_SIZE - FONT_SIZE_DELTA, self.guess_to_player)
+        self.guesses_manager = PreviousGuessesManager(30, self.guess_to_player)
         self.letter_source = LetterSource(
             self.letter,
             self.rack_metrics.get_rect().x, self.rack_metrics.get_rect().width,
@@ -101,7 +99,7 @@ class Game:
     async def old_guess(self, old_guess: str, player: int, now_ms: int) -> None:
         """Handle an old (duplicate) guess."""
         self.racks[player].guess_type = GuessType.OLD
-        self.previous_guesses_display.old_guess(old_guess, now_ms)
+        self.guesses_manager.old_guess(old_guess, now_ms)
 
     async def bad_guess(self, player: int) -> None:
         """Handle a bad (invalid) guess."""
@@ -149,9 +147,7 @@ class Game:
         print(f"ADDED {str(input_device)} in self.input_devices: {str(input_device) in self.input_devices}")
 
         self.guess_to_player = {}
-        self.previous_guesses_display = PreviousGuessesDisplay(PreviousGuessesDisplay.FONT_SIZE, self.guess_to_player)
-        self.remaining_previous_guesses_display = RemainingPreviousGuessesDisplay(
-            PreviousGuessesDisplay.FONT_SIZE - FONT_SIZE_DELTA, self.guess_to_player)
+        self.guesses_manager = PreviousGuessesManager(30, self.guess_to_player)
         print(f"start_cubes: starting letter {now_ms}")
         self.letter.start(now_ms)
         for score in self.scores:
@@ -207,64 +203,24 @@ class Game:
             next_letter = "!"
         self.letter.change_letter(next_letter, now_ms)
 
-    def resize_previous_guesses(self, now_ms: int) -> None:
-        """Resize previous guesses display to fit more words."""
-        font_size = (cast(float, self.previous_guesses_display.font.size)*4.0)/5.0
-        self.previous_guesses_display = PreviousGuessesDisplay.from_instance(
-            self.previous_guesses_display, max(1, int(font_size)), now_ms)
-        self.remaining_previous_guesses_display = RemainingPreviousGuessesDisplay.from_instance(
-            self.remaining_previous_guesses_display, int(font_size - FONT_SIZE_DELTA))
-        self.previous_guesses_display.draw()
-        self.remaining_previous_guesses_display.draw()
-
-    def exec_with_resize(self, f, now_ms: int):
-        """Execute function with automatic display resizing on overflow."""
-        retry_count = 0
-        while True:
-            try:
-                retry_count += 1
-                if retry_count > 2:
-                    raise Exception("too many TextRectException")
-                return f()
-            except textrect.TextRectException as e:
-                # print(f"resize_previous_guesses: {e}")
-                self.resize_previous_guesses(now_ms)
-
     async def add_guess(self, previous_guesses: list[str], guess: str, player: int, now_ms: int) -> None:
         """Add a new guess to the display."""
         self.guess_to_player[guess] = player
-        self.exec_with_resize(lambda: self.previous_guesses_display.add_guess(
-            previous_guesses, guess, player, now_ms),
-                              now_ms)
+        self.guesses_manager.add_guess(previous_guesses, guess, player, now_ms)
 
     async def update_previous_guesses(self, previous_guesses: list[str], now_ms: int) -> None:
         """Update the previous guesses display."""
-        self.exec_with_resize(
-            lambda: self.previous_guesses_display.update_previous_guesses(
-                previous_guesses, now_ms),
-            now_ms)
+        self.guesses_manager.update_previous_guesses(previous_guesses, now_ms)
 
     async def update_remaining_guesses(self, previous_guesses: list[str], now_ms: int) -> None:
         """Update the remaining/unused guesses display."""
-        self.exec_with_resize(
-            lambda: self.remaining_previous_guesses_display.update_remaining_guesses(previous_guesses),
-            now_ms)
-
-    def update_previous_guesses_with_resizing(self, window: pygame.Surface, now_ms: int) -> None:
-        """Update all previous guess displays with automatic resizing."""
-        def update_all_previous_guesses(self, window: pygame.Surface) -> None:
-            self.previous_guesses_display.update(window, now_ms)
-            self.remaining_previous_guesses_display.update(
-                window, self.previous_guesses_display.surface.get_bounding_rect().height)
-
-        self.exec_with_resize(lambda: update_all_previous_guesses(self, window),
-                              now_ms)
+        self.guesses_manager.update_remaining_guesses(previous_guesses, now_ms)
 
     async def update(self, window: pygame.Surface, now_ms: int) -> None:
         """Update all game components and handle collisions."""
         incidents = []
         window.set_alpha(255)
-        self.update_previous_guesses_with_resizing(window, now_ms)
+        self.guesses_manager.update(window, now_ms)
         if incident := self.letter_source.update(window, now_ms):
             incidents.extend(incident)
 

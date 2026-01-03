@@ -170,3 +170,69 @@ class RemainingPreviousGuessesDisplay(PreviousGuessesDisplayBase):
         self.surface = self._text_rect_renderer.render(
             self.remaining_guesses,
             [self.PLAYER_COLORS[self.guess_to_player.get(guess, 0)] for guess in self.remaining_guesses])
+
+
+class PreviousGuessesManager:
+    """Manages previous guess displays and handles automatic resizing on overflow."""
+
+    def __init__(self, font_size: int, guess_to_player: dict[str, int]) -> None:
+        from src.config.display_constants import FONT_SIZE_DELTA
+        self.font_size_delta = FONT_SIZE_DELTA
+        self.guess_to_player = guess_to_player
+        self.previous_guesses_display = PreviousGuessesDisplay(font_size, guess_to_player)
+        self.remaining_previous_guesses_display = RemainingPreviousGuessesDisplay(
+            font_size - self.font_size_delta, guess_to_player)
+
+    def resize(self, now_ms: int) -> None:
+        """Resize both displays to fit more words."""
+        from typing import cast
+        font_size = (cast(float, self.previous_guesses_display.font.size) * 4.0) / 5.0
+        new_font_size = max(1, int(font_size))
+        
+        self.previous_guesses_display = PreviousGuessesDisplay.from_instance(
+            self.previous_guesses_display, new_font_size, now_ms)
+        self.remaining_previous_guesses_display = RemainingPreviousGuessesDisplay.from_instance(
+            self.remaining_previous_guesses_display, int(new_font_size - self.font_size_delta))
+        
+        self.previous_guesses_display.draw()
+        self.remaining_previous_guesses_display.draw()
+
+    def exec_with_resize(self, f, now_ms: int):
+        """Execute a function and resize displays if it triggers a TextRectException."""
+        retry_count = 0
+        while True:
+            try:
+                retry_count += 1
+                if retry_count > 2:
+                    raise Exception("too many TextRectException in PreviousGuessesManager")
+                return f()
+            except textrect.TextRectException:
+                self.resize(now_ms)
+
+    def add_guess(self, previous_guesses: list[str], guess: str, player: int, now_ms: int) -> None:
+        """Add a new guess with automatic resizing."""
+        self.exec_with_resize(lambda: self.previous_guesses_display.add_guess(
+            previous_guesses, guess, player, now_ms), now_ms)
+
+    def update_previous_guesses(self, previous_guesses: list[str], now_ms: int) -> None:
+        """Update previous guesses with automatic resizing."""
+        self.exec_with_resize(lambda: self.previous_guesses_display.update_previous_guesses(
+            previous_guesses, now_ms), now_ms)
+
+    def update_remaining_guesses(self, previous_guesses: list[str], now_ms: int) -> None:
+        """Update remaining guesses with automatic resizing."""
+        self.exec_with_resize(lambda: self.remaining_previous_guesses_display.update_remaining_guesses(
+            previous_guesses), now_ms)
+
+    def update(self, window: pygame.Surface, now_ms: int) -> None:
+        """Update all displays with automatic resizing."""
+        def update_all_displays():
+            self.previous_guesses_display.update(window, now_ms)
+            self.remaining_previous_guesses_display.update(
+                window, self.previous_guesses_display.surface.get_bounding_rect().height)
+
+        self.exec_with_resize(update_all_displays, now_ms)
+
+    def old_guess(self, old_guess: str, now_ms: int) -> None:
+        """Handle an old guess display."""
+        self.previous_guesses_display.old_guess(old_guess, now_ms)
