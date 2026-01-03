@@ -128,7 +128,7 @@ class App:
         self._update_previous_guesses()
         self._update_remaining_previous_guesses()
         for player in range(self._player_count):
-            cube_set_id = self._player_to_cube_set.get(player)
+            cube_set_id = self._player_to_cube_set[player]
             await cubes_to_game.guess_last_tiles(self._publish_queue, cube_set_id, player, now_ms)
         print(">>>>>>>> app.STARTED")
 
@@ -149,7 +149,7 @@ class App:
         # Only load letters for players who have actually started their games
         for player in range(config.MAX_PLAYERS):
             if cubes_to_game.has_player_started_game(player):
-                cube_set_id = self._player_to_cube_set.get(player)
+                cube_set_id = self._player_to_cube_set[player]
                 await cubes_to_game.load_rack(self._publish_queue, self._player_racks[player].get_tiles(), cube_set_id, player, now_ms)
             else:
                 logging.info(f"LOAD RACK: Skipping player {player} - game not started")
@@ -167,7 +167,7 @@ class App:
 
         self._score_card.update_previous_guesses()
         for player in range(self._player_count):
-            cube_set_id = self._player_to_cube_set.get(player)
+            cube_set_id = self._player_to_cube_set[player]
             await cubes_to_game.accept_new_letter(self._publish_queue, next_letter,
                                                   changed_tile.id, cube_set_id, now_ms)
 
@@ -190,7 +190,7 @@ class App:
 
         lock_changed = False
         for player in range(self._player_count):
-            cube_set_id = self._player_to_cube_set.get(player)            
+            cube_set_id = self._player_to_cube_set[player]
             lock_changed |= await cubes_to_game.letter_lock(self._publish_queue, cube_set_id,
                                             locked_tile_id if locked else None, now_ms)
         return lock_changed
@@ -217,7 +217,7 @@ class App:
                 self._player_racks[player].set_tiles(remaining_tiles + guess_tiles)
             tiles_dirty = True
 
-        cube_set_id = self._player_to_cube_set.get(player)
+        cube_set_id = self._player_to_cube_set[player]
         if self._score_card.is_old_guess(guess):
             events.trigger(GameOldGuessEvent(guess, player, pygame.time.get_ticks()))
             await cubes_to_game.old_guess(self._publish_queue, word_tile_ids, cube_set_id, player)
@@ -241,7 +241,7 @@ class App:
         # not sure why this is here.
         # if MAX_PLAYERS == 1 and player > 0:
         #     return
-        cube_set_id = self._player_to_cube_set.get(player)
+        cube_set_id = self._player_to_cube_set[player]
         await cubes_to_game.guess_tiles(self._publish_queue,
             [self._player_racks[player].letters_to_ids(guess)], cube_set_id, player, now_ms)
 
