@@ -67,7 +67,8 @@
       "Bash(git stash:*)",
       "Bash(git push:*)",
       "Bash(ls:*)",
-      "Bash(. cube_env/bin/activate)"
+      "Bash(. cube_env/bin/activate)",
+      "Bash(git restore:*)"
     ],
     "deny": []
   }
