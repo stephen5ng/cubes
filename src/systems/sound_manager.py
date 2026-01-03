@@ -20,11 +20,20 @@ class SoundManager:
         self.bloop_sound = pygame.mixer.Sound("./sounds/bloop.wav")
         self.bloop_sound.set_volume(0.2)
         
-        # Initialize letter beeps - these are used by the Letter class
         self.letter_beeps: list = []
         for n in range(11):
             self.letter_beeps.append(pygame.mixer.Sound(f"sounds/{n}.wav"))
             
+        # UI sounds
+        self.add_sound = pygame.mixer.Sound("sounds/add.wav")
+        self.erase_sound = pygame.mixer.Sound("sounds/erase.wav")
+        self.cleared_sound = pygame.mixer.Sound("sounds/cleared.wav")
+        self.left_sound = pygame.mixer.Sound("sounds/left.wav")
+        self.right_sound = pygame.mixer.Sound("sounds/right.wav")
+        
+        self.left_sound.set_volume(0.5)
+        self.right_sound.set_volume(0.5)
+
         self.sound_queue_task = asyncio.create_task(self.play_sounds_in_queue(), name="word sound player")
 
     def get_letter_beeps(self) -> list:
@@ -74,3 +83,23 @@ class SoundManager:
     def play_bloop(self) -> None:
         """Play bloop sound."""
         pygame.mixer.Sound.play(self.bloop_sound)
+
+    def play_add(self) -> None:
+        """Play letter add sound."""
+        pygame.mixer.Sound.play(self.add_sound)
+
+    def play_erase(self) -> None:
+        """Play letter erase sound."""
+        pygame.mixer.Sound.play(self.erase_sound)
+
+    def play_cleared(self) -> None:
+        """Play rack cleared sound."""
+        pygame.mixer.Sound.play(self.cleared_sound)
+
+    def play_left(self) -> None:
+        """Play cursor move left sound."""
+        pygame.mixer.Sound.play(self.left_sound)
+
+    def play_right(self) -> None:
+        """Play cursor move right sound."""
+        pygame.mixer.Sound.play(self.right_sound)
