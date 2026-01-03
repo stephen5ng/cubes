@@ -34,7 +34,7 @@ async def _start_letter_consumer(client: aiomqtt.Client, cube_to_letter: Dict[st
 
 async def align_abc(sleep_duration_s: float) -> None:
     """Monitor cube letters and align ABC by publishing A->B, B->C when groups show only A/B/C."""
-    all_cube_ids = get_lines("cube_ids.txt")
+    all_cube_ids = get_lines("assets/data/cube_ids.txt")
 
     p0_cubes = all_cube_ids[:6]
     p1_cubes = all_cube_ids[6:]

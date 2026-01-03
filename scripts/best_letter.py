@@ -6,7 +6,7 @@ import string
 from collections import defaultdict
 from itertools import combinations
 
-CACHE_FILE = "word_index.pkl"
+CACHE_FILE = "assets/data/word_index.pkl"
 
 def build_word_index(dict_path):
     """
@@ -28,10 +28,10 @@ def load_word_index():
         with open(CACHE_FILE, "rb") as f:
             return pickle.load(f)
     else:
-        if not os.path.exists("sowpods.txt"):
-            print("Error: words.txt not found.", file=sys.stderr)
+        if not os.path.exists("assets/data/sowpods.txt"):
+            print("Error: assets/data/sowpods.txt not found.", file=sys.stderr)
             sys.exit(1)
-        idx = build_word_index("sowpods.txt")
+        idx = build_word_index("assets/data/sowpods.txt")
         with open(CACHE_FILE, "wb") as f:
             pickle.dump(idx, f)
         return idx

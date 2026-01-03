@@ -4,7 +4,10 @@ import logging
 import random
 from typing import Sequence
 
-from core.config import MIN_LETTERS, MAX_LETTERS
+from config import game_config
+
+MAX_LETTERS = game_config.MAX_LETTERS
+MIN_LETTERS = game_config.MIN_LETTERS
 
 SCRABBLE_LETTER_FREQUENCIES = Counter({
     'A': 9, 'B': 2, 'C': 2, 'D': 4, 'E': 12, 'F': 2, 'G': 3, 'H': 2, 'I': 9, 'J': 1, 'K': 1, 'L': 4, 'M': 2,
@@ -100,7 +103,7 @@ class Rack:
     def gen_next_letter(self) -> str:
         c = Counter(''.join([l.letter for l in self._tiles]))
         for k in c.keys():
-            c[k] *= int(BAG_SIZE / MAX_LETTERS)
+            c[k] *= int(BAG_SIZE / game_config.MAX_LETTERS)
         frequencies = Counter(FREQUENCIES) # make a copy
         frequencies.subtract(c)
 
