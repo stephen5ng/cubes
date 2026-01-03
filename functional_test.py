@@ -10,6 +10,14 @@ import subprocess
 import sys
 from pathlib import Path
 
+# Import test analyzer for verbose output and semantic diff
+try:
+    from src.testing.test_analyzer import analyze_test, compare_tests_semantically
+except ImportError:
+    # Fallback if module not in path
+    sys.path.insert(0, os.path.dirname(__file__))
+    from src.testing.test_analyzer import analyze_test, compare_tests_semantically
+
 
 def get_test_env():
     """Get environment variables for functional tests."""
@@ -18,48 +26,61 @@ def get_test_env():
     return env
 
 
-def run_replay_test(test_name):
+def run_replay_test(test_name, verbose=False):
     """Run a test in replay mode and compare output with golden files."""
     replay_file = f"replay/{test_name}/game_replay.jsonl"
     golden_dir = f"goldens/{test_name}"
     output_dir = "output"
-    
+
     if not os.path.exists(replay_file):
         print(f"Error: Replay file {replay_file} not found")
         return False
-    
+
     if not os.path.exists(golden_dir):
         print(f"Error: Golden directory {golden_dir} not found")
         return False
-    
+
     # Clean output directory
     if os.path.exists(output_dir):
         shutil.rmtree(output_dir)
     os.makedirs(output_dir)
-    
+
     # Run the replay
     cmd = ["./runpygame.sh", "--replay", replay_file]
     print(f"Running: {' '.join(cmd)}")
-    
+
     try:
         result = subprocess.run(cmd, env=get_test_env())
         print(f"Replay completed with return code: {result.returncode}")
         if result.returncode != 0:
             print(f"Warning: Replay exited with non-zero return code: {result.returncode}")
-            
+
     except subprocess.TimeoutExpired:
         print("Error: Replay timed out after 30 seconds")
         return False
     except Exception as e:
         print(f"Error running replay: {e}")
         return False
-    
+
+    # Show verbose output if requested
+    output_jsonl = Path(output_dir) / "output.jsonl"
+    if verbose and output_jsonl.exists():
+        print("\n" + "="*70)
+        print("TEST SUMMARY")
+        print("="*70)
+        try:
+            summary = analyze_test(str(output_jsonl), test_name)
+            print(summary)
+            print("="*70 + "\n")
+        except Exception as e:
+            print(f"Error generating summary: {e}\n")
+
     # Compare output files with golden files
     golden_files = list(Path(golden_dir).glob("*.jsonl"))
     if not golden_files:
         print(f"Error: No golden files found in {golden_dir}")
         return False
-    
+
     all_match = True
     for golden_file in golden_files:
         output_file = Path(output_dir) / golden_file.name
@@ -67,10 +88,30 @@ def run_replay_test(test_name):
             print(f"Error: Output file {output_file} not found")
             all_match = False
             continue
-        
+
         if not filecmp.cmp(golden_file, output_file, shallow=False):
             print(f"Error: Files differ: {golden_file} vs {output_file}")
-            print("Diff:")
+
+            # For output.jsonl, show semantic diff first
+            if golden_file.name == "output.jsonl":
+                print("\n" + "="*70)
+                print("SEMANTIC DIFF")
+                print("="*70)
+                try:
+                    matches, semantic_report = compare_tests_semantically(
+                        str(golden_file), str(output_file), test_name
+                    )
+                    print(semantic_report)
+                    print("="*70 + "\n")
+
+                    # If semantically identical, note it's only a formatting difference
+                    if matches:
+                        print("Note: Files are semantically identical but differ in formatting/timing")
+                        print("This may be acceptable depending on the test requirements.\n")
+                except Exception as e:
+                    print(f"Error generating semantic diff: {e}\n")
+
+            print("Byte-level Diff:")
             try:
                 with open(golden_file, 'r') as f1, open(output_file, 'r') as f2:
                     golden_lines = f1.readlines()
@@ -80,14 +121,19 @@ def run_replay_test(test_name):
                         fromfile=str(golden_file), tofile=str(output_file),
                         lineterm=''
                     )
-                    for line in diff:
-                        print(line)
+                    # Show only first 50 lines of diff to avoid spam
+                    for i, line in enumerate(diff):
+                        if i < 50:
+                            print(line)
+                        elif i == 50:
+                            print("... (diff truncated, showing first 50 lines)")
+                            break
             except Exception as e:
                 print(f"Error reading files for diff: {e}")
             all_match = False
         else:
             print(f"✓ {golden_file.name} matches")
-    
+
     return all_match
 
 
@@ -212,13 +258,15 @@ def record_golden_files(test_name):
 
 def main():
     parser = argparse.ArgumentParser(description="Functional testing for cubes game")
-    parser.add_argument("mode", choices=["replay", "record", "rerecord"], 
+    parser.add_argument("mode", choices=["replay", "record", "rerecord"],
                        help="Test mode: replay (compare with goldens), record (create goldens), or rerecord (overwrite goldens)")
     parser.add_argument("test_name", help="Name of the test (e.g., 'smoke')")
-    
+    parser.add_argument("-v", "--verbose", action="store_true",
+                       help="Show human-readable test summary (always shown on failure)")
+
     args = parser.parse_args()
     if args.mode == "replay":
-        success = run_replay_test(args.test_name)
+        success = run_replay_test(args.test_name, verbose=args.verbose)
         if success:
             print(f"\n✓ Test '{args.test_name}' passed")
             sys.exit(0)
