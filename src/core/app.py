@@ -80,17 +80,20 @@ class App:
             # No cube sets started, keep default mapping
             return
 
-        if self._player_count == 1:
-            # Single player: map player 0 to the cube set that started
-            self._player_to_cube_set[0] = started_cube_sets[0]
-            # Fix _game_started_players to contain player ID (0) instead of cube set ID
-            cubes_to_game.reset_player_started_state()
-            cubes_to_game.add_player_started(0)
+        # Reset and populate player started state
+        cubes_to_game.reset_player_started_state()
+
+        if len(started_cube_sets) == 1:
+            # Single player: use cube set ID as player ID to preserve which physical set was used
+            cube_set_id = started_cube_sets[0]
+            player_id = cube_set_id  # cube set 0 → player 0, cube set 1 → player 1
+            self._player_to_cube_set[player_id] = cube_set_id
+            cubes_to_game.add_player_started(player_id)
         else:
-            # Multi-player: map players to their respective cube sets
+            # Multi-player: map players sequentially to their cube sets
             for i, cube_set_id in enumerate(sorted(started_cube_sets)):
-                if i < self._player_count:
-                    self._player_to_cube_set[i] = cube_set_id
+                self._player_to_cube_set[i] = cube_set_id
+                cubes_to_game.add_player_started(i)
 
     def set_word_logger(self, word_logger) -> None:
         """Set the word logger for new word formation logging."""
