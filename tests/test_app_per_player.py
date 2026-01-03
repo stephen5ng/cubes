@@ -7,6 +7,7 @@ from io import StringIO
 
 from core import app
 from hardware import cubes_to_game
+from hardware.cubes_to_game import state as ctg_state
 from core import dictionary
 from core import tiles
 
@@ -15,7 +16,8 @@ class TestAppPerPlayerIntegration(unittest.IsolatedAsyncioTestCase):
     
     async def asyncSetUp(self):
         # Clear global state
-        cubes_to_game._game_started_players.clear()
+        ctg_state._started_players.clear()
+        ctg_state._started_cube_sets.clear()
         
         # Create mock dictionary
         mock_open = lambda filename, mode: StringIO("\n".join([

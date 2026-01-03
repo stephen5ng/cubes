@@ -64,7 +64,7 @@ async def load_rack(publish_queue, tiles_with_letters: list[tiles.Tile], cube_se
     """Load rack and potentially submit a guess if tiles changed."""
     await state.guess_manager.load_rack(
         publish_queue, tiles_with_letters, cube_set_id, player, now_ms,
-        state.cube_set_managers[cube_set_id], state._game_started_players, guess_last_tiles
+        state.cube_set_managers[cube_set_id], state._started_players, guess_last_tiles
     )
 
 
@@ -80,7 +80,7 @@ async def guess_last_tiles(publish_queue, cube_set_id: int, player: int, now_ms:
         await state.guess_tiles_callback(guess, True, player, now_ms)
 
     await state.cube_set_managers[cube_set_id]._mark_tiles_for_guess(
-        publish_queue, state.guess_manager.last_guess_tiles, now_ms, state._game_started_players
+        publish_queue, state.guess_manager.last_guess_tiles, now_ms, state._started_players
     )
 
 
@@ -174,7 +174,7 @@ async def check_countdown_completion(publish_queue, now_ms: int, sound_manager) 
     """
     return await state.abc_manager.check_countdown_completion(
         publish_queue, now_ms, sound_manager, state.cube_set_managers,
-        state._game_started_players, state.start_game_callback
+        state.start_game_callback
     )
 
 
@@ -248,7 +248,7 @@ async def handle_mqtt_message(publish_queue, message, now_ms: int, sound_manager
             word_tiles_list = state.cube_set_managers[cube_set_id].process_neighbor_cube(sender_cube, neighbor_cube)
             logging.info(f"WORD_TILES (right): {word_tiles_list}")
             # In single player mode, player_id is always 0; in multi-player, cube_set_id maps to player_id
-            player_id = 0 if len(state._game_started_players) <= 1 else cube_set_id
+            player_id = 0 if len(state._started_players) <= 1 else cube_set_id
             await guess_tiles(publish_queue, word_tiles_list, cube_set_id, player_id, now_ms)
 
             # Check ABC completion after processing right-edge updates

@@ -13,7 +13,8 @@ class TestPerPlayerGameStates(unittest.TestCase):
 
     def setUp(self):
         # Clear global state before each test
-        cubes_to_game._game_started_players.clear()
+        ctg_state._started_players.clear()
+        ctg_state._started_cube_sets.clear()
         ctg_state.abc_manager.player_abc_cubes.clear()
         
     def test_has_player_started_game_empty(self):
@@ -24,28 +25,28 @@ class TestPerPlayerGameStates(unittest.TestCase):
     def test_has_player_started_game_after_start(self):
         """Test has_player_started_game returns True after player starts game."""
         # Manually add player to game states (simulating game start)
-        cubes_to_game._game_started_players.add(0)
-        
+        cubes_to_game.add_player_started(0)
+
         self.assertTrue(cubes_to_game.has_player_started_game(0))
         self.assertFalse(cubes_to_game.has_player_started_game(1))
         
     def test_multiple_players_independent_states(self):
         """Test that multiple players can have independent game states."""
         # Start player 0
-        cubes_to_game._game_started_players.add(0)
-        
+        cubes_to_game.add_player_started(0)
+
         self.assertTrue(cubes_to_game.has_player_started_game(0))
         self.assertFalse(cubes_to_game.has_player_started_game(1))
-        
+
         # Start player 1
-        cubes_to_game._game_started_players.add(1)
-        
+        cubes_to_game.add_player_started(1)
+
         self.assertTrue(cubes_to_game.has_player_started_game(0))
         self.assertTrue(cubes_to_game.has_player_started_game(1))
-        
+
         # Remove player 0
-        cubes_to_game._game_started_players.discard(0)
-        
+        ctg_state._started_players.discard(0)
+
         self.assertFalse(cubes_to_game.has_player_started_game(0))
         self.assertTrue(cubes_to_game.has_player_started_game(1))
 
@@ -56,7 +57,8 @@ class TestABCSequencePerPlayer(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
         # Clear global state
         ctg_state.abc_manager.player_abc_cubes.clear()
-        cubes_to_game._game_started_players.clear()
+        ctg_state._started_players.clear()
+        ctg_state._started_cube_sets.clear()
         
         # Set up cube managers for both players
         cubes_to_game.cube_managers = [
@@ -110,8 +112,9 @@ class TestLoadRackPerPlayer(unittest.IsolatedAsyncioTestCase):
     
     async def asyncSetUp(self):
         # Clear global state
-        cubes_to_game._game_started_players.clear()
-        
+        ctg_state._started_players.clear()
+        ctg_state._started_cube_sets.clear()
+
         # Create cube manager
         self.cube_manager = cubes_to_game.CubeSetManager(0)
         self.cube_manager.cube_list = ["1", "2", "3", "4", "5", "6"]

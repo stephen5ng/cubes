@@ -342,7 +342,8 @@ class TestMQTTMessageHandler(unittest.IsolatedAsyncioTestCase):
 
     def tearDown(self):
         """Clean up global state after tests."""
-        state._game_started_players.clear()
+        state._started_players.clear()
+        state._started_cube_sets.clear()
         state.cube_to_cube_set.clear()
 
     async def test_handle_mqtt_message_right_edge(self):
@@ -351,8 +352,8 @@ class TestMQTTMessageHandler(unittest.IsolatedAsyncioTestCase):
 
         # Set up cube mapping
         state.cube_to_cube_set["3"] = 0
-        state._game_started_players.clear()
-        state._game_started_players.add(0)
+        state._started_players.clear()
+        state._started_players.add(0)
         
         # Mock message
         message = MagicMock()
@@ -370,8 +371,8 @@ class TestMQTTMessageHandler(unittest.IsolatedAsyncioTestCase):
         sound_manager = MagicMock()
 
         state.cube_to_cube_set["3"] = 0
-        state._game_started_players.clear()
-        state._game_started_players.add(0)
+        state._started_players.clear()
+        state._started_players.add(0)
         state.abc_manager.abc_start_active = True
         
         message = MagicMock()

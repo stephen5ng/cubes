@@ -42,6 +42,7 @@ from .state import (
     has_player_started_game,
     add_player_started,
     reset_player_started_state,
+    add_started_cube_set,
     get_started_cube_sets,
     set_guess_tiles_callback,
     set_start_game_callback,
@@ -49,7 +50,6 @@ from .state import (
     ABC_COUNTDOWN_DELAY_MS,
     cube_to_cube_set,
     locked_cubes,
-    _game_started_players,
 )
 
 # Import state module for dynamic attribute access
@@ -110,11 +110,11 @@ __all__ = [
     'has_player_started_game',
     'add_player_started',
     'reset_player_started_state',
+    'add_started_cube_set',
     'get_started_cube_sets',
     'set_guess_tiles_callback',
     'set_start_game_callback',
     'ABC_COUNTDOWN_DELAY_MS',
     'cube_to_cube_set',
     'locked_cubes',
-    '_game_started_players',
 ]

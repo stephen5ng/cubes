@@ -6,6 +6,8 @@ This module manages the ABC countdown sequence that players use to start a game.
 import logging
 from typing import List
 
+from . import state
+
 
 def _find_non_touching_cubes_for_player(manager) -> List[str]:
     """Find 3 non-touching cubes for a specific player."""
@@ -279,7 +281,7 @@ class ABCManager:
             await self.start_abc_countdown(publish_queue, completed_player, now_ms, abc_countdown_delay_ms)
 
     async def check_countdown_completion(self, publish_queue, now_ms: int, sound_manager, cube_set_managers: list,
-                                          game_started_players: set, start_game_callback) -> list:
+                                          start_game_callback) -> list:
         """Check if countdown stages need to be executed and if countdown has completed.
 
         Args:
@@ -287,7 +289,6 @@ class ABCManager:
             now_ms: Current timestamp
             sound_manager: SoundManager instance
             cube_set_managers: List of CubeSetManager instances
-            game_started_players: Set of players who have started
             start_game_callback: Callback to start the game
 
         Returns:
@@ -317,7 +318,7 @@ class ABCManager:
                 logging.info(f"ABC countdown complete for player {player}! Starting game at {now_ms}")
                 print(f"ABC countdown complete for player {player}! Starting game")
 
-                game_started_players.add(player)
+                state.add_started_cube_set(player)
                 completed_players.append(player)
 
                 await start_game_callback(True, self.countdown_complete_time, player)
