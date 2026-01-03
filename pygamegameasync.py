@@ -126,7 +126,7 @@ class BlockWordsPygame:
             # Insert letter at cursor position into the guess
             letter_at_cursor = rack.letters()[rack.cursor_position]
             input_device.current_guess += letter_at_cursor
-            pygame.mixer.Sound.play(self.add_sound)
+            self.game.sound_manager.play_add()
         else:
             # Remove letter at cursor position from the guess
             if input_device.reversed:
@@ -136,10 +136,10 @@ class BlockWordsPygame:
                 letter_to_remove = rack_position
                 input_device.current_guess = input_device.current_guess[:letter_to_remove] + input_device.current_guess[letter_to_remove + 1:]
             if rack.select_count > 0:
-                pygame.mixer.Sound.play(self.erase_sound)
+                self.game.sound_manager.play_erase()
         rack.select_count = len(input_device.current_guess)
         if rack.select_count == 0:
-            pygame.mixer.Sound.play(self.cleared_sound)
+            self.game.sound_manager.play_cleared()
         await self.the_app.guess_word_keyboard(input_device.current_guess, input_device.player_number, now_ms)
 
     async def handle_insert_action(self, input_device: InputDevice, now_ms: int):
@@ -150,7 +150,7 @@ class BlockWordsPygame:
             # Insert letter at cursor position into the guess
             letter_at_cursor = rack.letters()[rack.cursor_position]
             input_device.current_guess += letter_at_cursor
-            pygame.mixer.Sound.play(self.add_sound)
+            self.game.sound_manager.play_add()
         await self.the_app.guess_word_keyboard(input_device.current_guess, input_device.player_number, now_ms)
     
     async def handle_delete_action(self, input_device: InputDevice, now_ms: int):
@@ -161,11 +161,11 @@ class BlockWordsPygame:
             # Remove letter at cursor position from the guess
             input_device.current_guess = input_device.current_guess[:rack.cursor_position] + input_device.current_guess[rack.cursor_position + 1:]
             if rack.select_count > 0:
-                pygame.mixer.Sound.play(self.erase_sound)
+                self.game.sound_manager.play_erase()
         rack.select_count = len(input_device.current_guess)
         if rack.select_count == 0:
-            pygame.mixer.Sound.play(self.cleared_sound)
-        await self.the_app.guess_word_keyboard(input_device.current_guess, input_device.player_number)
+            self.game.sound_manager.play_cleared()
+        await self.the_app.guess_word_keyboard(input_device.current_guess, input_device.player_number, now_ms)
     
     async def start_game(self, input_device: InputDevice, now_ms: int):
         print(f"=========start_game {input_device} {now_ms}")
@@ -186,7 +186,7 @@ class BlockWordsPygame:
         if rack.cursor_position > 0:
             rack.cursor_position -= 1
             rack.draw()
-            pygame.mixer.Sound.play(self.left_sound)
+            self.game.sound_manager.play_left()
     
     def handle_right_movement(self, input_device: InputDevice):
         if not self.game.running:
@@ -195,7 +195,7 @@ class BlockWordsPygame:
         if rack.cursor_position < tiles.MAX_LETTERS - 1:
             rack.cursor_position += 1
             rack.draw()
-            pygame.mixer.Sound.play(self.right_sound)
+            self.game.sound_manager.play_right()
     
     def handle_return_action(self, input_device: InputDevice):
         if not self.game.running:
@@ -204,7 +204,7 @@ class BlockWordsPygame:
         input_device.current_guess = ""
         rack.cursor_position = 0 if not input_device.reversed else 5
         rack.select_count = len(input_device.current_guess)
-        pygame.mixer.Sound.play(self.cleared_sound)
+        self.game.sound_manager.play_cleared()
         rack.draw()
 
     async def handle_keyboard_event(self, key: str, keyboard_input: KeyboardInput, now_ms: int) -> None:
@@ -356,14 +356,6 @@ class BlockWordsPygame:
                 input_device = JOYSTICK_NAMES_TO_INPUTS[name](handlers)
                 input_device.id = j
                 input_devices.append(input_device)
-        self.add_sound = pygame.mixer.Sound("sounds/add.wav")
-        self.erase_sound = pygame.mixer.Sound("sounds/erase.wav")
-        self.cleared_sound = pygame.mixer.Sound("sounds/cleared.wav")
-        self.left_sound = pygame.mixer.Sound("sounds/left.wav")
-        self.right_sound = pygame.mixer.Sound("sounds/right.wav")
-        
-        self.left_sound.set_volume(0.5)
-        self.right_sound.set_volume(0.5)
 
         # Create dependencies for injection
         sound_manager = SoundManager()
