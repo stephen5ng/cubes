@@ -7,14 +7,15 @@ import random
 
 from core import app
 from core import tiles
-from src.config.display_constants import (
+from config import game_config
+from config.game_config import (
     SCREEN_WIDTH,
     BAD_GUESS_COLOR, GOOD_GUESS_COLOR, OLD_GUESS_COLOR,
     LETTER_SOURCE_COLOR, RACK_COLOR, FADER_COLOR_P0, FADER_COLOR_P1
 )
-from src.game.letter import GuessType, Letter
-from src.rendering.animations import get_alpha
-from src.rendering.metrics import RackMetrics
+from game.letter import GuessType, Letter
+from rendering.animations import get_alpha
+from rendering.metrics import RackMetrics
 
 
 class Rack:

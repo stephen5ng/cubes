@@ -6,7 +6,7 @@ import pygame
 import pygame.freetype
 
 from utils import textrect
-from src.rendering.animations import get_alpha
+from rendering.animations import get_alpha
 
 
 class LastGuessFader:

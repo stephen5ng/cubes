@@ -12,94 +12,16 @@ import random
 import sys
 
 from core import app
-from core import config
+from config import game_config
 from hardware import cubes_to_game
 from core.dictionary import Dictionary
 from utils.pygameasync import events
 import pygamegameasync
 from core import tiles
 from utils import hub75
+from game_logging.game_loggers import OutputLogger, GameLogger, PublishLogger
 
-class BaseLogger:
-    def __init__(self, log_file: str):
-        self.log_file = log_file
-        self.log_f = None
-        
-    def start_logging(self):
-        print(f"STARTING LOGGING {self.log_file}")
-        if self.log_file:
-            if self.log_file == "game_replay.jsonl":
-                print("opening game_replay")
-            self.log_f = open(self.log_file, "w")
-    
-    def stop_logging(self):
-        if self.log_f:
-            self.log_f.close()
-            self.log_f = None
-    
-    def _write_event(self, event: dict):
-        if not self.log_f:
-            return
-        self.log_f.write(json.dumps(event) + "\n")
-        self.log_f.flush()
-
-class OutputLogger(BaseLogger):
-    def log_word_formed(self, word: str, player: int, score: int, now_ms: int):
-        event = {
-            "time": now_ms,
-            "event_type": "word_formed",
-            "word": word,
-            "player": player,
-            "score": score
-        }
-        self._write_event(event)
-    
-    def log_letter_position_change(self, x: int, y: int, now_ms: int):
-        event = {
-            "time": now_ms,
-            "event_type": "letter_position",
-            "x": x,
-            "y": y,
-        }
-        self._write_event(event)
-
-class GameLogger(BaseLogger):
-    def log_seed(self, seed: int):
-        event = {
-            "event_type": "seed",
-            "seed": seed
-        }
-        print(f">>>>>>>> logging seed {event}")
-        self._write_event(event)
-
-    def log_delay_ms(self, delay_ms: int):
-        event = {
-            "event_type": "delay_ms",
-            "delay_ms": delay_ms
-        }
-        print(f">>>>>>>> logging delay_ms {event}")
-        self._write_event(event)
-        
-    def log_events(self, now_ms: int, events: dict):
-        log_entry = {
-            "timestamp_ms": now_ms,
-            "events": events
-        }
-        
-        self._write_event(log_entry)
-
-class PublishLogger(BaseLogger):
-    def log_mqtt_publish(self, topic: str, message, retain: bool, timestamp_ms: int):
-        """Log MQTT publish event to JSONL file."""
-        event = {
-            "time": timestamp_ms,
-            "topic": topic,
-            "message": message,
-            "retain": retain
-        }
-        self._write_event(event)
-
-MQTT_SERVER = os.environ.get("MQTT_SERVER", "localhost")
+MQTT_SERVER = game_config.MQTT_SERVER
 my_open = open
 
 logger = logging.getLogger(__name__)
@@ -183,7 +105,7 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
     finally:
         publish_logger.stop_logging()
 
-BUNDLE_TEMP_DIR = "."
+DATA_DIR = "assets/data"
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -225,8 +147,8 @@ if __name__ == "__main__":
     # logger.setLevel(logging.DEBUG)
     pygame.mixer.init(frequency=24000, size=-16, channels=2)
     hub75.init()
-    dictionary = Dictionary(config.MIN_LETTERS, config.MAX_LETTERS, open=my_open)
-    dictionary.read(f"{BUNDLE_TEMP_DIR}/sowpods.txt", f"{BUNDLE_TEMP_DIR}/bingos.txt")
+    dictionary = Dictionary(game_config.MIN_LETTERS, game_config.MAX_LETTERS, open=my_open)
+    dictionary.read(f"{DATA_DIR}/sowpods.txt", f"{DATA_DIR}/bingos.txt")
     pygame.init()
     block_words = pygamegameasync.BlockWordsPygame(replay_file=args.replay or "", descent_mode=args.descent_mode, timed_duration_s=args.timed_duration)
     

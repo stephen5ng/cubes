@@ -7,7 +7,7 @@ and providing the public API for the cubes-to-game system.
 import logging
 from typing import List
 
-from core import config
+from config import game_config
 from core import tiles
 
 # Import our modules
@@ -17,7 +17,7 @@ from .cube_set_manager import CubeSetManager, GuessManager
 
 # Initialize global managers in state module for shared access
 # This allows tests to replace these and have all code see the replacement
-state.cube_set_managers = [CubeSetManager(cube_set_id) for cube_set_id in range(config.MAX_PLAYERS)]
+state.cube_set_managers = [CubeSetManager(cube_set_id) for cube_set_id in range(game_config.MAX_PLAYERS)]
 state.abc_manager = ABCManager()
 state.guess_manager = GuessManager()
 

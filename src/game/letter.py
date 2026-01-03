@@ -7,9 +7,10 @@ import pygame.freetype
 from typing import Optional
 
 from core import tiles
-from src.config.display_constants import SCREEN_HEIGHT, LETTER_SOURCE_COLOR
-from src.rendering.metrics import RackMetrics
-from src.game.descent_strategy import DescentStrategy, DiscreteDescentStrategy
+from config import game_config
+from config.game_config import SCREEN_HEIGHT, LETTER_SOURCE_COLOR
+from rendering.metrics import RackMetrics
+from game.descent_strategy import DescentStrategy, DiscreteDescentStrategy
 
 
 class GuessType(Enum):
@@ -104,7 +105,7 @@ class Letter:
             incidents.append("letter_column_move")
             if not self.locked_on:
                 self.letter_ix = self.letter_ix + self.column_move_direction
-                if self.letter_ix < 0 or self.letter_ix >= tiles.MAX_LETTERS:
+                if self.letter_ix < 0 or self.letter_ix >= game_config.MAX_LETTERS:
                     self.column_move_direction *= -1
                     self.letter_ix = self.letter_ix + self.column_move_direction*2
 

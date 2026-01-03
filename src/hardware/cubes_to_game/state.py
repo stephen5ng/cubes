@@ -8,10 +8,10 @@ modules to avoid circular imports.
 import logging
 from typing import Callable, Coroutine, Dict
 
-from core import config
+from config import game_config
 
 # ABC countdown delay - use config value by default, but allow override for replay
-ABC_COUNTDOWN_DELAY_MS = config.ABC_COUNTDOWN_DELAY_MS
+ABC_COUNTDOWN_DELAY_MS = game_config.ABC_COUNTDOWN_DELAY_MS
 
 
 def set_abc_countdown_delay(delay_ms: int):

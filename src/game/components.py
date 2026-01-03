@@ -5,7 +5,8 @@ import pygame
 import pygame.freetype
 
 from core import app
-from src.config.display_constants import (
+from config import game_config
+from config.game_config import (
     SCREEN_WIDTH,
     SCREEN_HEIGHT,
     FONT,

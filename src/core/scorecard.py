@@ -1,7 +1,7 @@
 from enum import Enum
 import logging
 
-from core import config
+from config import game_config
 from core import dictionary
 from core import tiles
 
@@ -17,7 +17,7 @@ class ScoreCard:
         self.dictionary = dictionary
 
     def calculate_score(self, word: str) -> int:
-        return len(word) + (10 if len(word) == config.MAX_LETTERS else 0)
+        return len(word) + (10 if len(word) == game_config.MAX_LETTERS else 0)
 
     def is_old_guess(self, guess: str) -> bool:
         return guess in self.staged_words
