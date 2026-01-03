@@ -73,8 +73,8 @@ class App:
 
     def _set_player_to_cube_set_mapping(self) -> None:
         """Set the player-to-cube-set mapping once when game starts."""
-        # _game_started_players currently contains cube set IDs from ABC completion
-        started_cube_sets = list(cubes_to_game._game_started_players)
+        # Get cube set IDs from ABC completion (see note in state.py about dual usage)
+        started_cube_sets = cubes_to_game.get_started_cube_sets()
 
         if not started_cube_sets:
             # No cube sets started, keep default mapping

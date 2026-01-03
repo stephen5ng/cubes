@@ -22,7 +22,24 @@ def set_abc_countdown_delay(delay_ms: int):
 
 # Game state tracking
 _game_running = False
-_game_started_players = set()  # Set of players who have started their games
+
+# NOTE: This set has dual usage with different semantics at different times:
+# 1. During ABC countdown: Contains cube_set_ids (0, 1) of players who completed ABC sequence
+# 2. After game start: Contains player_ids (0, 1) of players whose games have started
+#
+# The transition happens in app.py:map_players_to_cube_sets() which:
+# - Reads the cube_set_ids from this set
+# - Calls reset_player_started_state() which creates a NEW set object
+# - Adds player_ids to the new set
+#
+# This relies on reset creating a new set object (via = set()) so that code holding
+# references to the old set (passed by reference to ABC manager, cube managers) still
+# sees the cube_set_ids. If reset used .clear() instead, all references would see
+# the cleared set, breaking the logic.
+#
+# TODO: Separate into two sets (_started_cube_sets and _started_players) to eliminate
+# this confusing dual-use pattern and make the code more maintainable.
+_game_started_players = set()
 
 
 def set_game_running(running: bool) -> None:
@@ -55,9 +72,27 @@ def add_player_started(player: int) -> None:
 
 
 def reset_player_started_state() -> None:
-    """Reset the set of players who have started."""
+    """Reset the set of players who have started.
+
+    IMPORTANT: This creates a NEW set object (not .clear()) to preserve the old set
+    for code holding references to it (ABC manager, cube managers). See note above
+    _game_started_players for details on this dual-use pattern.
+    """
     global _game_started_players
     _game_started_players = set()
+
+
+def get_started_cube_sets() -> list:
+    """Get list of cube sets that completed ABC countdown.
+
+    NOTE: This should only be called during the ABC->game transition in app.py.
+    After reset_player_started_state() is called, this set contains player IDs
+    instead of cube_set_ids. See note above _game_started_players for details.
+
+    Returns:
+        List of cube_set_ids (0, 1) that completed ABC sequence
+    """
+    return list(_game_started_players)
 
 
 # Cube-to-cube-set mapping for O(1) lookup

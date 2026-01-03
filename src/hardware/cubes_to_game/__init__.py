@@ -42,6 +42,7 @@ from .state import (
     has_player_started_game,
     add_player_started,
     reset_player_started_state,
+    get_started_cube_sets,
     set_guess_tiles_callback,
     set_start_game_callback,
     # Global state variables (for direct access)
@@ -109,6 +110,7 @@ __all__ = [
     'has_player_started_game',
     'add_player_started',
     'reset_player_started_state',
+    'get_started_cube_sets',
     'set_guess_tiles_callback',
     'set_start_game_callback',
     'ABC_COUNTDOWN_DELAY_MS',
