@@ -2,6 +2,7 @@
 # Download and extract word sounds from GitHub release
 
 RELEASE_TAG="${1:-audio-assets}"
+REPO="stephen5ng/cubes"
 
 echo "Checking if audio files already exist..."
 if [ -d "word_sounds_0" ] && [ -d "word_sounds_1" ]; then
@@ -19,8 +20,8 @@ echo "Downloading audio assets from release ${RELEASE_TAG}..."
 mkdir -p /tmp/audio_download
 cd /tmp/audio_download
 
-# Download all parts
-gh release download ${RELEASE_TAG} --pattern "word_sounds.tar.gz.part.*"
+# Download all parts with explicit repo
+gh release download ${RELEASE_TAG} --repo ${REPO} --pattern "word_sounds.tar.gz.part.*"
 
 echo "Reassembling archive..."
 cat word_sounds.tar.gz.part.* > word_sounds.tar.gz
