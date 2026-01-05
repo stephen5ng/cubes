@@ -17,7 +17,7 @@ from game.descent_strategy import (
     DiscreteDescentStrategy, TimeBasedDescentStrategy
 )
 from input.input_devices import InputDevice, CubesInput
-from rendering.animations import LetterSource
+from rendering.animations import LetterSource, PositionTracker, LETTER_SOURCE_YELLOW
 from rendering.metrics import RackMetrics
 from rendering.rack_display import Rack
 from systems.sound_manager import SoundManager
@@ -68,6 +68,22 @@ class Game:
             self.rack_metrics.get_rect().x, self.rack_metrics.get_rect().width,
             letter_y,
             descent_mode)
+
+        # Add yellow line that takes twice as long to fall (only in timed mode)
+        if descent_mode == "timed":
+            yellow_duration_ms = timed_duration_s * 2 * 1000  # Twice as long
+            yellow_strategy = TimeBasedDescentStrategy(game_duration_ms=yellow_duration_ms, total_height=game_height)
+            self.yellow_tracker = PositionTracker(yellow_strategy)
+            self.yellow_source = LetterSource(
+                self.yellow_tracker,
+                self.rack_metrics.get_rect().x, self.rack_metrics.get_rect().width,
+                letter_y,
+                descent_mode,
+                color=LETTER_SOURCE_YELLOW)
+        else:
+            self.yellow_tracker = None
+            self.yellow_source = None
+
         self.shields: list[Shield] = []
         self.running = False
         self.aborted = False
@@ -148,6 +164,11 @@ class Game:
         self.guesses_manager = PreviousGuessesManager(30, self.guess_to_player)
         print(f"start_cubes: starting letter {now_ms}")
         self.letter.start(now_ms)
+
+        # Reset yellow tracker if it exists
+        if self.yellow_tracker is not None:
+            self.yellow_tracker.reset(now_ms)
+
         for score in self.scores:
             score.start()
         for rack in self.racks:
@@ -219,6 +240,13 @@ class Game:
         incidents = []
         window.set_alpha(255)
         self.guesses_manager.update(window, now_ms)
+
+        # Update yellow line (if it exists) BEFORE red line so red draws on top
+        if self.yellow_tracker is not None:
+            self.yellow_tracker.update(now_ms, self.letter.height)
+            if incident := self.yellow_source.update(window, now_ms):
+                incidents.extend(incident)
+
         if incident := self.letter_source.update(window, now_ms):
             incidents.extend(incident)
 

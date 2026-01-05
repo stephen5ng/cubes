@@ -4,12 +4,32 @@ import pygame
 import easing_functions
 import sys
 import os
+from typing import Optional
 
 # Add parent directories to path for imports
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
 # Constants from main game
-LETTER_SOURCE_COLOR = pygame.Color("Red")
+LETTER_SOURCE_RED = pygame.Color("Red")
+LETTER_SOURCE_YELLOW = pygame.Color("Yellow")
+
+
+class PositionTracker:
+    """Simple position tracker for visual indicators like yellow line."""
+
+    def __init__(self, descent_strategy):
+        self.start_fall_y = 0
+        self.descent_strategy = descent_strategy
+
+    def update(self, now_ms: int, height: int) -> None:
+        """Update position based on descent strategy."""
+        new_y, _ = self.descent_strategy.update(self.start_fall_y, now_ms, height)
+        self.start_fall_y = new_y
+
+    def reset(self, now_ms: int) -> None:
+        """Reset position and strategy."""
+        self.start_fall_y = 0
+        self.descent_strategy.reset(now_ms)
 
 
 def get_alpha(
@@ -39,7 +59,7 @@ class LetterSource:
     MIN_HEIGHT = 1
     MAX_HEIGHT = 20
 
-    def __init__(self, letter, x: int, width: int, initial_y: int, descent_mode: str = "discrete") -> None:
+    def __init__(self, letter, x: int, width: int, initial_y: int, descent_mode: str = "discrete", color: pygame.Color = None) -> None:
         self.x = x
         self.last_y = 0
         self.initial_y = initial_y
@@ -47,6 +67,7 @@ class LetterSource:
         self.width = width
         self.letter = letter
         self.descent_mode = descent_mode
+        self.color = color if color is not None else LETTER_SOURCE_RED
         self.easing = easing_functions.QuinticEaseInOut(start=1, end=LetterSource.MAX_HEIGHT, duration=1)
         self.last_update = 0
         self.max_height_for_animation = LetterSource.MAX_HEIGHT
@@ -56,7 +77,7 @@ class LetterSource:
         """Draw the letter source indicator."""
         self.surface = pygame.Surface([self.width, self.height], pygame.SRCALPHA)
         self.surface.set_alpha(LetterSource.ALPHA)
-        self.surface.fill(LETTER_SOURCE_COLOR)
+        self.surface.fill(self.color)
 
     def update(self, window: pygame.Surface, now_ms: int) -> list:
         """Updates the letter source animation and position.

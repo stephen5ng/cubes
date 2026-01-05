@@ -7,7 +7,9 @@ import pygame
 import pygame.freetype
 from unittest.mock import Mock
 from game.letter import Letter
+from game.descent_strategy import TimeBasedDescentStrategy
 from rendering.metrics import RackMetrics
+from rendering.animations import LetterSource, PositionTracker, LETTER_SOURCE_RED, LETTER_SOURCE_YELLOW
 from config.game_config import SCREEN_HEIGHT
 
 
@@ -215,3 +217,155 @@ class TestLetterDescentConstants:
     def test_drop_time_is_15_seconds(self):
         """DROP_TIME_MS should be 15000 (15 seconds)."""
         assert Letter.DROP_TIME_MS == 15000
+
+
+class TestPositionTracker:
+    """Test PositionTracker for visual indicators like yellow line."""
+
+    def test_position_tracker_initialization(self):
+        """PositionTracker should initialize with zero position."""
+        strategy = TimeBasedDescentStrategy(game_duration_ms=10000, total_height=240)
+        tracker = PositionTracker(strategy)
+        
+        assert tracker.start_fall_y == 0
+        assert tracker.descent_strategy == strategy
+
+    def test_position_tracker_update(self):
+        """PositionTracker should update position based on strategy."""
+        strategy = TimeBasedDescentStrategy(game_duration_ms=10000, total_height=240)
+        tracker = PositionTracker(strategy)
+        tracker.reset(now_ms=0)
+        
+        # After 5 seconds (half duration), should be at half height
+        tracker.update(now_ms=5000, height=240)
+        assert tracker.start_fall_y == 120  # Half of 240
+
+    def test_position_tracker_reset(self):
+        """PositionTracker should reset position on reset."""
+        strategy = TimeBasedDescentStrategy(game_duration_ms=10000, total_height=240)
+        tracker = PositionTracker(strategy)
+        tracker.reset(now_ms=0)
+        
+        # Advance position
+        tracker.update(now_ms=5000, height=240)
+        assert tracker.start_fall_y == 120
+        
+        # Reset should go back to 0
+        tracker.reset(now_ms=5000)
+        assert tracker.start_fall_y == 0
+
+
+class TestLetterSourceColor:
+    """Test LetterSource color parameter."""
+
+    def test_letter_source_default_color(self, letter_setup):
+        """LetterSource should default to red color."""
+        letter = letter_setup
+        letter.start(now_ms=0)
+        
+        letter_source = LetterSource(
+            letter=letter,
+            x=0,
+            width=32,
+            initial_y=0,
+            descent_mode="discrete"
+        )
+        
+        assert letter_source.color == LETTER_SOURCE_RED
+
+    def test_letter_source_custom_color(self, letter_setup):
+        """LetterSource should accept custom color."""
+        letter = letter_setup
+        letter.start(now_ms=0)
+        
+        letter_source = LetterSource(
+            letter=letter,
+            x=0,
+            width=32,
+            initial_y=0,
+            descent_mode="discrete",
+            color=LETTER_SOURCE_YELLOW
+        )
+        
+        assert letter_source.color == LETTER_SOURCE_YELLOW
+
+    def test_letter_source_draws_with_custom_color(self, letter_setup):
+        """LetterSource surface should use custom color."""
+        letter = letter_setup
+        letter.start(now_ms=0)
+        
+        yellow_source = LetterSource(
+            letter=letter,
+            x=0,
+            width=32,
+            initial_y=0,
+            descent_mode="discrete",
+            color=LETTER_SOURCE_YELLOW
+        )
+        
+        # The surface should be filled with yellow color
+        # We can't directly check the fill color, but we can verify it was created
+        assert yellow_source.surface is not None
+        assert yellow_source.color == LETTER_SOURCE_YELLOW
+
+
+class TestYellowLineIntegration:
+    """Test yellow line with PositionTracker."""
+
+    def test_yellow_line_descends_slower(self):
+        """Yellow line should descend at half the speed of red line."""
+        # Red line: 10 second duration, 240 height
+        red_strategy = TimeBasedDescentStrategy(game_duration_ms=10000, total_height=240)
+        
+        # Yellow line: 20 second duration (twice as long), same height
+        yellow_strategy = TimeBasedDescentStrategy(game_duration_ms=20000, total_height=240)
+        yellow_tracker = PositionTracker(yellow_strategy)
+        
+        red_strategy.reset(now_ms=0)
+        yellow_tracker.reset(now_ms=0)
+        
+        # After 5 seconds
+        red_y, _ = red_strategy.update(0, now_ms=5000, height=240)
+        yellow_tracker.update(now_ms=5000, height=240)
+        
+        # Red should be at 50% (120 pixels)
+        assert red_y == 120
+        # Yellow should be at 25% (60 pixels) - half the speed
+        assert yellow_tracker.start_fall_y == 60
+        
+        # After 10 seconds
+        red_y, _ = red_strategy.update(red_y, now_ms=10000, height=240)
+        yellow_tracker.update(now_ms=10000, height=240)
+        
+        # Red should be at 100% (240 pixels)
+        assert red_y == 240
+        # Yellow should be at 50% (120 pixels)
+        assert yellow_tracker.start_fall_y == 120
+
+    def test_yellow_line_with_letter_source(self):
+        """Yellow line should work with LetterSource."""
+        yellow_strategy = TimeBasedDescentStrategy(game_duration_ms=20000, total_height=240)
+        yellow_tracker = PositionTracker(yellow_strategy)
+        yellow_tracker.reset(now_ms=0)
+        
+        yellow_source = LetterSource(
+            letter=yellow_tracker,
+            x=0,
+            width=32,
+            initial_y=0,
+            descent_mode="timed",
+            color=LETTER_SOURCE_YELLOW
+        )
+        
+        # Initial state
+        assert yellow_source.color == LETTER_SOURCE_YELLOW
+        assert yellow_source.last_y == 0
+        
+        # Update tracker position
+        yellow_tracker.update(now_ms=5000, height=240)
+        assert yellow_tracker.start_fall_y == 60
+        
+        # LetterSource should track the position
+        window = pygame.Surface((100, 100))
+        yellow_source.update(window, now_ms=5000)
+        assert yellow_source.last_y == 60
