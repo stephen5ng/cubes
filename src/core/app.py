@@ -76,12 +76,14 @@ class App:
         # Get cube set IDs from ABC completion (see note in state.py about dual usage)
         started_cube_sets = cubes_to_game.get_started_cube_sets()
 
-        if not started_cube_sets:
-            # No cube sets started, keep default mapping
-            return
-
         # Reset and populate player started state
         cubes_to_game.reset_player_started_state()
+
+        if not started_cube_sets:
+            # No cube sets started via ABC (keyboard start), use default mapping
+            # Mark player 0 as started with cube set 0
+            cubes_to_game.add_player_started(0)
+            return
 
         if len(started_cube_sets) == 1:
             # Single player: use cube set ID as player ID to preserve which physical set was used
