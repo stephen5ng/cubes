@@ -191,6 +191,13 @@ class Letter:
         self.pos[1] = self.current_fall_start_y = self.start_fall_y
         self.start_fall_time_ms = now_ms
 
+        # Reset descent strategy timer for time-based descent
+        # This ensures the position "sticks" when using time-based calculations
+        if hasattr(self.descent_strategy, 'start_time_ms'):
+            descent_rate = self.descent_strategy.descent_rate
+            elapsed_for_position = new_y / descent_rate if descent_rate > 0 else 0
+            self.descent_strategy.start_time_ms = now_ms - int(elapsed_for_position)
+
     def new_fall(self, now_ms: int) -> None:
         """Start a new falling segment.
 

@@ -18,10 +18,10 @@ class GameReplayer:
         with open(self.log_file, 'r') as f:
             lines = f.readlines()
 
-        # Skip seed and delay_ms metadata lines at the beginning
+        # Skip seed, delay_ms, and game_config metadata lines at the beginning
         while lines and lines[0].startswith('{"event_type": "'):
             first_event = json.loads(lines[0])
-            if first_event.get("event_type") in ["seed", "delay_ms"]:
+            if first_event.get("event_type") in ["seed", "delay_ms", "game_config"]:
                 lines = lines[1:]
             else:
                 break

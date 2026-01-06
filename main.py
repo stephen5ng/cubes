@@ -115,7 +115,7 @@ if __name__ == "__main__":
     parser.add_argument("--replay", type=str, help="Replay a game from a log file")
     parser.add_argument("--descent-mode", type=str, default="discrete", choices=["discrete", "timed"],
                        help="Descent strategy: discrete (classic) or timed")
-    parser.add_argument("--timed-duration", type=int, default=240,
+    parser.add_argument("--timed-duration", type=int, default=120,
                        help="Duration in seconds for timed mode (default: 240 seconds / 4 minutes)")
     args = parser.parse_args()
     

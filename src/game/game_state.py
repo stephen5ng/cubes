@@ -38,7 +38,7 @@ class Game:
                  rack_metrics: RackMetrics,
                  letter_beeps: list,
                  descent_mode: str = "discrete",
-                 timed_duration_s: int = 240) -> None:
+                 timed_duration_s: int = game_config.TIMED_DURATION_S) -> None:
         self._app = the_app
         self.game_logger = game_logger
         self.output_logger = output_logger
@@ -69,20 +69,16 @@ class Game:
             letter_y,
             descent_mode)
 
-        # Add yellow line that takes twice as long to fall (only in timed mode)
-        if descent_mode == "timed":
-            yellow_duration_ms = timed_duration_s * 2 * 1000  # Twice as long
-            yellow_strategy = TimeBasedDescentStrategy(game_duration_ms=yellow_duration_ms, total_height=game_height)
-            self.yellow_tracker = PositionTracker(yellow_strategy)
-            self.yellow_source = LetterSource(
-                self.yellow_tracker,
-                self.rack_metrics.get_rect().x, self.rack_metrics.get_rect().width,
-                letter_y,
-                descent_mode,
-                color=LETTER_SOURCE_YELLOW)
-        else:
-            self.yellow_tracker = None
-            self.yellow_source = None
+        # Add yellow line that takes twice as long to fall (always present, ignored in discrete mode)
+        yellow_duration_ms = timed_duration_s * 3 * 1000  # Twice as long
+        yellow_strategy = TimeBasedDescentStrategy(game_duration_ms=yellow_duration_ms, total_height=game_height)
+        self.yellow_tracker = PositionTracker(yellow_strategy)
+        self.yellow_source = LetterSource(
+            self.yellow_tracker,
+            self.rack_metrics.get_rect().x, self.rack_metrics.get_rect().width,
+            letter_y,
+            descent_mode,
+            color=LETTER_SOURCE_YELLOW)
 
         self.shields: list[Shield] = []
         self.running = False
@@ -164,10 +160,7 @@ class Game:
         self.guesses_manager = PreviousGuessesManager(30, self.guess_to_player)
         print(f"start_cubes: starting letter {now_ms}")
         self.letter.start(now_ms)
-
-        # Reset yellow tracker if it exists
-        if self.yellow_tracker is not None:
-            self.yellow_tracker.reset(now_ms)
+        self.yellow_tracker.reset(now_ms)
 
         for score in self.scores:
             score.start()
@@ -241,16 +234,14 @@ class Game:
         window.set_alpha(255)
         self.guesses_manager.update(window, now_ms)
 
-        # Update yellow line (if it exists) BEFORE red line so red draws on top
-        if self.yellow_tracker is not None:
+        if self.running:
+            # Update yellow line BEFORE red line so red draws on top
             self.yellow_tracker.update(now_ms, self.letter.height)
             if incident := self.yellow_source.update(window, now_ms):
                 incidents.extend(incident)
 
-        if incident := self.letter_source.update(window, now_ms):
-            incidents.extend(incident)
-
-        if self.running:
+            if incident := self.letter_source.update(window, now_ms):
+                incidents.extend(incident)
             if incident := self.letter.update(window, now_ms):
                 incidents.extend(incident)
 
@@ -266,7 +257,17 @@ class Game:
             if shield.rect.y <= self.letter.get_screen_bottom_y():
                 incidents.append("shield_letter_collision")
                 shield.letter_collision()
-                self.letter.shield_collision(now_ms)
+
+                # Check if letter is at red line - if so, push both red line and letter up to yellow line
+                letter_at_red_line = abs(self.letter.pos[1] - self.letter.start_fall_y) < 1  # Within n pixels tolerance
+                if letter_at_red_line:
+                    yellow_pos = self.yellow_tracker.start_fall_y
+                    self.letter._apply_descent(yellow_pos, now_ms)
+                    incidents.append("red_line_pushed_to_yellow")
+                else:
+                    # Normal bounce behavior
+                    self.letter.shield_collision(now_ms)
+
                 self.scores[shield.player].update_score(shield.score)
                 self._app.add_guess(shield.letters, shield.player)
                 self.sound_manager.play_crash()
