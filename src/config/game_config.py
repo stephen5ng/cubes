@@ -66,3 +66,9 @@ SCRABBLE_LETTER_SCORES = {
 MQTT_SERVER = os.environ.get("MQTT_SERVER", "localhost")
 MQTT_CLIENT_ID = 'game-server'
 MQTT_CLIENT_PORT = 1883
+# ============================================================================
+# PATH SETTINGS
+# ============================================================================
+DATA_DIR = "assets/data"
+DICTIONARY_PATH = os.path.join(DATA_DIR, "sowpods.txt")
+BINGOS_PATH = os.path.join(DATA_DIR, "bingos.txt")

@@ -4,10 +4,14 @@ import logging
 import random
 from typing import Sequence
 
+from core.anagram_helper import AnagramHelper
 from config import game_config
 
 MAX_LETTERS = game_config.MAX_LETTERS
 MIN_LETTERS = game_config.MIN_LETTERS
+
+# Threshold ratio for selecting viable next letter candidates
+CANDIDATE_THRESHOLD_RATIO = 2.0 / 3.0
 
 SCRABBLE_LETTER_FREQUENCIES = Counter({
     'A': 9, 'B': 2, 'C': 2, 'D': 4, 'E': 12, 'F': 2, 'G': 3, 'H': 2, 'I': 9, 'J': 1, 'K': 1, 'L': 4, 'M': 2,
@@ -39,6 +43,7 @@ class Rack:
         for count, letter in enumerate(letters):
             self._tiles.append(Tile(letter, str(count)))
         self._last_guess: list[Tile]  = []
+        self._anagram_helper = AnagramHelper.get_instance()
         self._next_letter = self.gen_next_letter()
 
     def __repr__(self) -> str:
@@ -53,6 +58,9 @@ class Rack:
 
     def set_tiles(self, tiles: list[Tile]) -> None:
         self._tiles = tiles
+
+    def refresh_next_letter(self) -> None:
+        self._next_letter = self.gen_next_letter()
 
     def last_guess(self) -> None:
         return _tiles_to_letters(self._last_guess)
@@ -101,17 +109,25 @@ class Rack:
         return self._next_letter
 
     def gen_next_letter(self) -> str:
-        c = Counter(''.join([l.letter for l in self._tiles]))
-        for k in c.keys():
-            c[k] *= int(BAG_SIZE / game_config.MAX_LETTERS)
-        frequencies = Counter(FREQUENCIES) # make a copy
-        frequencies.subtract(c)
-
-        bag = [letter for letter, frequency in frequencies.items() for _ in range(frequency)]
+        # Score all candidates (A-Z) by anagram count
+        candidates = self._anagram_helper.score_candidates(self.letters())
+        logging.debug(f"gen_next_letter: Candidates: " + ", ".join([f"{l}:{s}" for l, s in candidates]))
+        max_score = candidates[0][1]
+        
+        # Filter to viable candidates (those meeting threshold)
+        threshold = CANDIDATE_THRESHOLD_RATIO * max_score
+        logging.debug(f"gen_next_letter: Max anagrams = {max_score}, Threshold = {threshold}")
+        
+        viable = [c for c in candidates if c[1] >= threshold]
+        logging.debug(f"gen_next_letter: Viable candidates: " + ", ".join([f"{l}:{s}" for l, s in viable]))
+        
+        # Select randomly from viable candidates
         random.setstate(self.random_state)
-        v =  random.choice(bag)
+        best_letter, score = random.choice(viable)
         self.random_state = random.getstate()
-        return v
+        
+        logging.debug(f"gen_next_letter: Selected {best_letter} (score {score})")
+        return best_letter
 
     def position_to_id(self, position: int) -> str:
         return self._tiles[position].id

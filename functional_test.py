@@ -45,12 +45,29 @@ def run_replay_test(test_name, verbose=False):
         shutil.rmtree(output_dir)
     os.makedirs(output_dir)
 
-    # Run the replay
+    # Check for game_config in replay file
+    game_config = {}
+    with open(replay_file, 'r') as f:
+        for line in f:
+            try:
+                event = json.loads(line)
+                if event.get("event_type") == "game_config":
+                    game_config = event
+                    break
+            except json.JSONDecodeError:
+                continue
+
+    # Run the replay with optional game config
     cmd = ["./runpygame.sh", "--replay", replay_file]
+    if game_config.get("descent_mode"):
+        cmd.extend(["--descent-mode", game_config["descent_mode"]])
+    if game_config.get("timed_duration_s"):
+        cmd.extend(["--timed-duration", str(game_config["timed_duration_s"])])
+
     print(f"Running: {' '.join(cmd)}")
 
     try:
-        result = subprocess.run(cmd, env=get_test_env())
+        result = subprocess.run(cmd, env=get_test_env(), timeout=120)
         print(f"Replay completed with return code: {result.returncode}")
         if result.returncode != 0:
             print(f"Warning: Replay exited with non-zero return code: {result.returncode}")
@@ -152,8 +169,25 @@ def rerecord_test(test_name):
         shutil.rmtree(output_dir)
     os.makedirs(output_dir)
     
-    # Run the replay
+    # Check for game_config in replay file
+    game_config = {}
+    with open(replay_file, 'r') as f:
+        for line in f:
+            try:
+                event = json.loads(line)
+                if event.get("event_type") == "game_config":
+                    game_config = event
+                    break
+            except json.JSONDecodeError:
+                continue
+
+    # Run the replay with optional game config
     cmd = ["./runpygame.sh", "--replay", replay_file]
+    if game_config.get("descent_mode"):
+        cmd.extend(["--descent-mode", game_config["descent_mode"]])
+    if game_config.get("timed_duration_s"):
+        cmd.extend(["--timed-duration", str(game_config["timed_duration_s"])])
+
     print(f"Running: {' '.join(cmd)}")
     
     try:

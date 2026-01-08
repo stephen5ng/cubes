@@ -109,6 +109,7 @@ class App:
         the_rack = self._dictionary.get_rack()
         for player in range(game_config.MAX_PLAYERS):
             self._player_racks[player].set_tiles(the_rack.get_tiles())
+            self._player_racks[player].refresh_next_letter()
         
         self._update_next_tile(self._player_racks[0].next_letter())
         self._score_card = ScoreCard(self._player_racks[0], self._dictionary)

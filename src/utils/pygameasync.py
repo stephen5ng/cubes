@@ -53,22 +53,30 @@ class EventEngine:
 
     async def stop(self) -> None:
         self.running = False
-        await self.queue.join() 
+        try:
+            await asyncio.wait_for(self.queue.join(), timeout=2.0)
+        except asyncio.TimeoutError:
+            logging.warning("Event queue join timed out, there may be unfinished tasks.")
 
     async def _worker(self) -> None:
         while self.running:
             try:
                 event, args, kwargs = await asyncio.wait_for(self.queue.get(), timeout=0.1)
-                for func in self.listeners[event]:
-                    try:
-                        await func(*args, **kwargs)
-                    except Exception as e:
-                        logging.error(f"Event handler error: {e}")
-                self.queue.task_done()
+                try:
+                    for func in self.listeners[event]:
+                        try:
+                            await func(*args, **kwargs)
+                        except Exception as e:
+                            logging.error(f"Event handler error: {e}")
+                finally:
+                    self.queue.task_done()
             except asyncio.TimeoutError:
                 continue
             except Exception as e:
                 logging.error(f"Event worker error: {e}")
+            except BaseException as e:
+                logging.error(f"Event worker critical error: {e}")
+                raise e
 
 
 events = EventEngine()

@@ -105,7 +105,7 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
     finally:
         publish_logger.stop_logging()
 
-DATA_DIR = "assets/data"
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -143,12 +143,19 @@ if __name__ == "__main__":
     else:
         seed = int(datetime.now().timestamp())
     random.seed(seed)
-
-    # logger.setLevel(logging.DEBUG)
+    if os.environ.get("DEBUG"):
+        root = logging.getLogger()
+        root.setLevel(logging.DEBUG)
+        if not root.handlers:
+            handler = logging.StreamHandler(sys.stdout)
+            handler.setFormatter(logging.Formatter('%(levelname)s:%(name)s:%(message)s'))
+            root.addHandler(handler)
+    else:
+        logging.basicConfig(level=logging.INFO)
     pygame.mixer.init(frequency=24000, size=-16, channels=2)
     hub75.init()
     dictionary = Dictionary(game_config.MIN_LETTERS, game_config.MAX_LETTERS, open=my_open)
-    dictionary.read(f"{DATA_DIR}/sowpods.txt", f"{DATA_DIR}/bingos.txt")
+    dictionary.read(game_config.DICTIONARY_PATH, game_config.BINGOS_PATH)
     pygame.init()
     block_words = pygamegameasync.BlockWordsPygame(replay_file=args.replay or "", descent_mode=args.descent_mode, timed_duration_s=args.timed_duration)
     
