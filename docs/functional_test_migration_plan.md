@@ -2,7 +2,7 @@
 
 **Goal**: Replace heavyweight replay-based functional tests with fast, MQTT-mocked integration tests similar to `test_shield_physics.py`
 
-**Status**: Planning Phase
+**Status**: Phase 1 Complete - Infrastructure Ready
 **Created**: 2026-01-09
 **Owner**: Team
 
@@ -250,25 +250,27 @@ async def test_shield_health_depletion():
 ### Phase 1: Test Infrastructure (Week 1)
 
 **Goal**: Establish patterns and shared utilities
+ 
+ **Status**: ✅ Complete
 
 #### Tasks:
 - [x] Create `FakeMqttClient` (✓ Done)
 - [x] Refactor `test_shield_physics.py` as reference (✓ Done)
-- [ ] Create `tests/integration/` directory structure
-- [ ] Create `tests/fixtures/game_factory.py`:
+- [x] Create `tests/integration/` directory structure
+- [x] Create `tests/fixtures/game_factory.py`:
   - Factory functions for common test setups
   - Mock MQTT + App + Game initialization
   - Scenario builders (single player, 2-player, etc.)
-- [ ] Create `tests/fixtures/mqtt_helpers.py`:
+- [x] Create `tests/fixtures/mqtt_helpers.py`:
   - Helper to inject ABC button presses
   - Helper to inject neighbor reports
   - Helper to simulate cube guesses
   - Helper to verify MQTT publishes
-- [ ] Create `tests/assertions/game_assertions.py`:
+- [x] Create `tests/assertions/game_assertions.py`:
   - Assert functions for game state
   - Assert functions for scoring
   - Assert functions for player state
-- [ ] Document test patterns in `docs/testing_patterns.md`
+- [x] Document test patterns in `docs/testing_patterns.md`
 
 **Deliverables**:
 ```python
@@ -286,6 +288,8 @@ async def test_single_player_start():
 ### Phase 2: ABC Countdown Tests (Week 2)
 
 **Goal**: Replace 4 ABC countdown tests
+ 
+ **Status**: 🔄 In Progress
 
 #### Tests to Create:
 1. `tests/integration/test_abc_countdown.py`:
@@ -628,11 +632,11 @@ async def test_rapid_guess_sequence():
 ## Migration Checklist
 
 ### Infrastructure
-- [ ] Create `tests/integration/` directory
-- [ ] Create `tests/fixtures/game_factory.py`
-- [ ] Create `tests/fixtures/mqtt_helpers.py`
-- [ ] Create `tests/assertions/game_assertions.py`
-- [ ] Document patterns in `docs/testing_patterns.md`
+- [x] Create `tests/integration/` directory
+- [x] Create `tests/fixtures/game_factory.py`
+- [x] Create `tests/fixtures/mqtt_helpers.py`
+- [x] Create `tests/assertions/game_assertions.py`
+- [x] Document patterns in `docs/testing_patterns.md`
 
 ### Test Migration
 - [ ] Shield Mechanics (expand existing `test_shield_physics.py`)
@@ -847,6 +851,6 @@ def assert_independent_racks(game: Game, player0: int, player1: int):
 
 ---
 
-**Document Version**: 1.1
+**Document Version**: 1.2
 **Last Updated**: 2026-01-09
-**Status**: Ready for Review - **Includes UI Behavior Testing Guidelines**
+**Status**: Phase 1 Infrastructure Complete
