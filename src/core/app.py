@@ -25,6 +25,7 @@ from events.game_events import (
     InputUpdatePreviousGuessesEvent,
     InputRemainingPreviousGuessesEvent,
 )
+from core.player_mapping import calculate_player_mapping
 
 logger = logging.getLogger("app:"+__name__)
 
@@ -80,29 +81,24 @@ class App:
 
     def _set_player_to_cube_set_mapping(self) -> None:
         """Set the player-to-cube-set mapping once when game starts."""
-        # Get cube set IDs from ABC completion (see note in state.py about dual usage)
+        # Get cube set IDs from ABC completion
         started_cube_sets = self._hardware.get_started_cube_sets()
 
         # Reset and populate player started state
         self._hardware.reset_player_started_state()
 
+        # Calculate mapping using pure logic
+        new_mapping = calculate_player_mapping(started_cube_sets)
+        self._player_to_cube_set.update(new_mapping)
+
         if not started_cube_sets:
-            # No cube sets started via ABC (keyboard start), use default mapping
-            # Mark player 0 as started with cube set 0
+            # Default/Keyboard mode: Mark player 0 as started
             self._hardware.add_player_started(0)
             return
 
-        if len(started_cube_sets) == 1:
-            # Single player: use cube set ID as player ID to preserve which physical set was used
-            cube_set_id = started_cube_sets[0]
-            player_id = cube_set_id  # cube set 0 → player 0, cube set 1 → player 1
-            self._player_to_cube_set[player_id] = cube_set_id
-            self._hardware.add_player_started(player_id)
-        else:
-            # Multi-player: map players sequentially to their cube sets
-            for i, cube_set_id in enumerate(sorted(started_cube_sets)):
-                self._player_to_cube_set[i] = cube_set_id
-                self._hardware.add_player_started(i)
+        # Mark all mapped players as started in hardware
+        for player_id in new_mapping:
+             self._hardware.add_player_started(player_id)
 
     def set_word_logger(self, word_logger) -> None:
         """Set the word logger for new word formation logging."""
