@@ -73,15 +73,20 @@ async def test_integration():
     # Setup for run_single_frame
     time_offset = 0
 
+    # Test configuration
+    FPS = 60
+    TEST_DURATION_SECONDS = 30
+    MAX_FRAMES = FPS * TEST_DURATION_SECONDS
+    LOG_INTERVAL_FRAMES = 300
+
     # Run for 30 seconds (1800 frames at 60 FPS)
     running = True
     frame_count = 0
-    max_frames = 1800
 
     # Inject ESC keypress on first frame to start the game
     esc_injected = False
 
-    while running and frame_count < max_frames:
+    while running and frame_count < MAX_FRAMES:
         # Inject ESC key on first frame
         if not esc_injected:
             pygame.event.post(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_ESCAPE))
@@ -99,8 +104,8 @@ async def test_integration():
             break
 
         # Print progress and state every 5 seconds
-        if frame_count % 300 == 0:
-            seconds_remaining = (max_frames - frame_count) // 60
+        if frame_count % LOG_INTERVAL_FRAMES == 0:
+            seconds_remaining = (MAX_FRAMES - frame_count) // FPS
             print(f"  {seconds_remaining}s remaining... ", end="")
             if block_words.game.running:
                 letter = block_words.game.letter.letter
@@ -110,7 +115,7 @@ async def test_integration():
                 print("Game NOT running (press ESC to start)")
 
         frame_count += 1
-        clock.tick(60)  # 60 FPS
+        clock.tick(FPS)  # 60 FPS
 
     print("\nStopping game...")
     if block_words.game and block_words.game.running:

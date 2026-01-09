@@ -68,7 +68,24 @@
       "Bash(git push:*)",
       "Bash(ls:*)",
       "Bash(. cube_env/bin/activate)",
-      "Bash(git restore:*)"
+      "Bash(git restore:*)",
+      "Bash(md5:*)",
+      "Bash(do cube_env/bin/python:*)",
+      "Bash(1)",
+      "Bash(do echo \"Rerecording $test...\")",
+      "Bash(do echo \"Testing $test:\")",
+      "Bash(./tools/download_audio_release.sh:*)",
+      "Bash(gh release:*)",
+      "Bash(wc:*)",
+      "Bash(head:*)",
+      "Bash(PYTHONPATH=src python3:*)",
+      "Bash(PYTHONPATH=src:. python3:*)",
+      "Bash(./scripts/run_functional_tests.sh:*)",
+      "Bash(PYTHONPATH=src:. timeout 15 python3:*)",
+      "Bash(PYTHONPATH=src:. timeout 5 python3 tests/test_refactored_game.py)",
+      "Bash(PYTHONPATH=src:. timeout 5 python3:*)",
+      "Bash(PYTHONPATH=src:. timeout 10 python3:*)",
+      "Bash(python tests/test_refactored_game.py:*)"
     ],
     "deny": []
   }
