@@ -119,6 +119,8 @@ async def test_integration():
     print("Closing window...")
     pygame.quit()
     print("=== TEST COMPLETE ===")
+    assert block_words.game is not None, "Game object should be initialized"
+    assert not block_words.game.running, "Game should be stopped after test"
     print("✓ Integration test passed!")
 
 
