@@ -50,6 +50,9 @@ BOUNCE_DETECTION_THRESHOLD = 50  # Min upward travel to detect bounce
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Global visual flag
+VISUAL_MODE = False
+
 def async_test(coro):
     """Decorator to run async tests with asyncio.run()."""
     @wraps(coro)
@@ -72,6 +75,12 @@ def async_test(coro):
 
 async def create_game(descent_mode="discrete", duration_s=120):
     """Factory for common test game setup."""
+    # If visual mode is on, we might need to re-init pygame if it was init with dummy driver
+    if VISUAL_MODE and os.environ.get("SDL_VIDEODRIVER") == "dummy":
+        os.environ.pop("SDL_VIDEODRIVER", None)
+        if pygame.get_init():
+            pygame.quit()
+            
     if not pygame.get_init():
         pygame.init()
     if not pygame.font.get_init():
@@ -106,8 +115,12 @@ async def create_game(descent_mode="discrete", duration_s=120):
     
     return game, fake_mqtt, publish_queue
 
-async def run_until_condition(game: Game, condition: Callable[[], bool], max_frames=MAX_SIMULATION_FRAMES, visual=False):
+async def run_until_condition(game: Game, condition: Callable[[], bool], max_frames=MAX_SIMULATION_FRAMES, visual=None):
     """Run the game loop until condition is met or timeout."""
+    # Default to global VISUAL_MODE if not specified
+    if visual is None:
+        visual = VISUAL_MODE
+
     if not pygame.get_init():
         pygame.init()
     
@@ -141,7 +154,7 @@ async def run_until_condition(game: Game, condition: Callable[[], bool], max_fra
     
     return False
 
-async def run_frames(game: Game, frames: int, visual=False):
+async def run_frames(game: Game, frames: int, visual=None):
     """Run for a specific number of frames."""
     await run_until_condition(game, lambda: False, max_frames=frames, visual=visual)
 
@@ -260,36 +273,33 @@ async def test_shield_blocks_letter_descent():
     assert deepest_y < SHIELD_Y + SHIELD_PENETRATION_TOLERANCE, \
         f"Letter penetrated too deep: {deepest_y} (shield at {SHIELD_Y})"
 
-# --- Visual Runner ---
-
-async def run_visual_demo():
-    """Run visual demonstration of shield physics."""
-    print("Running visual demo...")
-    os.environ.pop("SDL_VIDEODRIVER", None)  # Ensure we use real driver
-
-    # Manually start events for standalone run
-    await events.start()
-    try:
-        game, _mqtt, _queue = await create_game()
-        shield = Shield((SHIELD_X, SHIELD_Y), "DEMO", 100, 0, 0)
-        game.shields.append(shield)
-
-        setup_letter_above_shield(game, SHIELD_X, SHIELD_Y, distance=0)
-
-        await run_until_condition(game, lambda: not shield.active, visual=True)
-        await run_frames(game, 60, visual=True)
-        print("Demo complete")
-    finally:
-        await events.stop()
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--visual", action="store_true")
     args = parser.parse_args()
     
     if args.visual:
-        asyncio.run(run_visual_demo())
-    else:
-        # If run as script without visual, run the main test
-        asyncio.run(test_shield_collision_bounces_letter())
-        print("Test passed!")
+        VISUAL_MODE = True
+        # Remove dummy driver to allow real window
+        os.environ.pop("SDL_VIDEODRIVER", None)
+        print("Required: Run with proper python path to find modules.")
+        print(f"Running visual mode: {VISUAL_MODE}")
+
+    # Run all tests that aren't skipped
+    tests_to_run = [
+        test_shield_collision_bounces_letter,
+        test_shield_deactivation_on_hit,
+        test_multiple_shields_independent,
+        test_shield_blocks_letter_descent
+        # test_shield_word_in_previous_guesses (skipped)
+    ]
+
+    for test in tests_to_run:
+        print(f"Running {test.__name__}...")
+        test()
+        print(f"PASSED: {test.__name__}")
+        if VISUAL_MODE:
+            # Small pause between tests visually
+            pass
+            
+    print("All tests passed!")

@@ -5,10 +5,10 @@ import sys
 import os
 import pygame
 
-# Add project root to path
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Add project root/src to path for imports
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
 
-from testing.mock_sound_manager import MockSoundManager
+from testing.mock_sound_manager import MockSoundManager, MockSound
 from rendering.metrics import RackMetrics
 
 
@@ -50,8 +50,8 @@ class TestDependencyInjection(unittest.TestCase):
         # Should have 11 mock beeps
         self.assertEqual(len(letter_beeps), 11)
         # Should be mock objects, not real pygame.Sound objects
-        self.assertTrue(all(isinstance(beep, str) for beep in letter_beeps))
-        self.assertTrue(all(beep.startswith("mock_beep_") for beep in letter_beeps))
+        self.assertTrue(all(isinstance(beep, MockSound) for beep in letter_beeps))
+        self.assertTrue(all(beep.name.startswith("mock_beep_") for beep in letter_beeps))
 
     def test_rack_metrics_injection(self):
         """Test that RackMetrics can be created independently for testing."""

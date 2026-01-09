@@ -72,6 +72,8 @@ class EventEngine:
                     self.queue.task_done()
             except asyncio.TimeoutError:
                 continue
+            except asyncio.CancelledError:
+                break
             except Exception as e:
                 logging.error(f"Event worker error: {e}")
             except BaseException as e:
