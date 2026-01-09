@@ -32,13 +32,15 @@ async def test_integration():
     random.seed(1)
 
     # Setup dictionary
-    my_open = lambda filename, mode: StringIO("\n".join([
-        "arch", "fuzz", "line", "search", "online"
-    ])) if filename == "sowpods.txt" else StringIO("\n".join([
-        "search", "online"
-    ]))
+    SOWPODS_CONTENT = "arch\nfuzz\nline\nsearch\nonline"
+    BINGOS_CONTENT = "search\nonline"
 
-    a_dictionary = dictionary.Dictionary(3, 6, my_open)
+    def mock_opener(filename, mode='r'):
+        if filename == "sowpods.txt":
+            return StringIO(SOWPODS_CONTENT)
+        return StringIO(BINGOS_CONTENT)
+
+    a_dictionary = dictionary.Dictionary(3, 6, mock_opener)
     a_dictionary.read("sowpods.txt", "bingos.txt")
 
     # Create app and publish queue
