@@ -30,7 +30,7 @@ from core.player_mapping import calculate_player_mapping
 logger = logging.getLogger("app:"+__name__)
 
 class App:
-    def __init__(self, publish_queue: asyncio.Queue, dictionary: Dictionary, hardware_interface=None) -> None:
+    def __init__(self, publish_queue: asyncio.Queue, dictionary: Dictionary) -> None:
         def make_guess_tiles_callback(the_app: App) -> Callable[[list[str], bool, int],  Coroutine[Any, Any, None]]:
             async def guess_tiles_callback(guess: list[str], move_tiles: bool, player: int, now_ms: int) -> None:
                 await the_app.guess_tiles(guess, move_tiles, player, now_ms)
@@ -45,8 +45,6 @@ class App:
 
         self._dictionary = dictionary
         self._publish_queue = publish_queue
-        # Inject hardware interface or default to global module
-        self._hardware = hardware_interface or cubes_to_game
         self._last_guess: list[str] = []
         self._player_racks = [tiles.Rack('?' * game_config.MAX_LETTERS) for _ in range(game_config.MAX_PLAYERS)]
         self._score_card = ScoreCard(self._player_racks[0], self._dictionary)
@@ -54,13 +52,8 @@ class App:
         # Map logical players to physical cube sets
         self._player_to_cube_set = {0: 0, 1: 1}  # Default: player 0 → cube set 0, player 1 → cube set 1
         self._game_logger = None  # Will be set by the game
-        
-        # Callbacks still go to global module for now as main.py/coordination init sets them there
-        # but we could channel them through hardware interface if we fully wrapped it.
-        # For now, just setting them on the global module is fine as they are static slots.
-        if self._hardware == cubes_to_game:
-             cubes_to_game.set_guess_tiles_callback(make_guess_tiles_callback(self))
-             cubes_to_game.set_start_game_callback(make_start_game_callback(self))
+        cubes_to_game.set_guess_tiles_callback(make_guess_tiles_callback(self))
+        cubes_to_game.set_start_game_callback(make_start_game_callback(self))
         self._running = False
 
     @property
@@ -82,10 +75,10 @@ class App:
     def _set_player_to_cube_set_mapping(self) -> None:
         """Set the player-to-cube-set mapping once when game starts."""
         # Get cube set IDs from ABC completion
-        started_cube_sets = self._hardware.get_started_cube_sets()
+        started_cube_sets = cubes_to_game.get_started_cube_sets()
 
         # Reset and populate player started state
-        self._hardware.reset_player_started_state()
+        cubes_to_game.reset_player_started_state()
 
         # Calculate mapping using pure logic
         new_mapping = calculate_player_mapping(started_cube_sets)
@@ -93,12 +86,12 @@ class App:
 
         if not started_cube_sets:
             # Default/Keyboard mode: Mark player 0 as started
-            self._hardware.add_player_started(0)
+            cubes_to_game.add_player_started(0)
             return
 
         # Mark all mapped players as started in hardware
         for player_id in new_mapping:
-             self._hardware.add_player_started(player_id)
+             cubes_to_game.add_player_started(player_id)
 
     def set_word_logger(self, word_logger) -> None:
         """Set the word logger for new word formation logging."""
@@ -108,7 +101,7 @@ class App:
         print(">>>>>>>> app.STARTING")
         self._running = True
         # Set game running state for cube border logic
-        self._hardware.set_game_running(True)
+        cubes_to_game.set_game_running(True)
         the_rack = self._dictionary.get_rack()
         for player in range(game_config.MAX_PLAYERS):
             self._player_racks[player].set_tiles(the_rack.get_tiles())
@@ -119,11 +112,11 @@ class App:
         
         # Remove participating players from ABC tracking (their cubes will get game letters)
         for player in range(game_config.MAX_PLAYERS):
-            if self._hardware.has_player_started_game(player) and player in ctg_state.abc_manager.player_abc_cubes:
+            if cubes_to_game.has_player_started_game(player) and player in ctg_state.abc_manager.player_abc_cubes:
                 del ctg_state.abc_manager.player_abc_cubes[player]
         
         # Clear ABC cubes for any remaining players (non-participants)
-        await self._hardware.clear_remaining_abc_cubes(self._publish_queue, now_ms)
+        await cubes_to_game.clear_remaining_abc_cubes(self._publish_queue, now_ms)
 
         # Set player-to-cube-set mapping once for this game session
         self._set_player_to_cube_set_mapping()
@@ -135,7 +128,7 @@ class App:
         self._update_remaining_previous_guesses()
         for player in range(self._player_count):
             cube_set_id = self._player_to_cube_set[player]
-            await self._hardware.guess_last_tiles(self._publish_queue, cube_set_id, player, now_ms)
+            await cubes_to_game.guess_last_tiles(self._publish_queue, cube_set_id, player, now_ms)
         print(">>>>>>>> app.STARTED")
 
     async def stop(self, now_ms: int) -> None:
@@ -144,19 +137,19 @@ class App:
         await self.load_rack(now_ms)
         self._running = False
         # Set game ended state
-        self._hardware.set_game_end_time(now_ms)
+        cubes_to_game.set_game_end_time(now_ms)
         # Unlock all letters when game ends
-        await self._hardware.unlock_all_letters(self._publish_queue, now_ms)
+        await cubes_to_game.unlock_all_letters(self._publish_queue, now_ms)
         # Ensure all borders are cleared on every cube at game end
-        await self._hardware.clear_all_borders(self._publish_queue, now_ms)
+        await cubes_to_game.clear_all_borders(self._publish_queue, now_ms)
         # Note: ABC sequence will be activated automatically
 
     async def load_rack(self, now_ms: int) -> None:
         # Only load letters for players who have actually started their games
         for player in range(game_config.MAX_PLAYERS):
-            if self._hardware.has_player_started_game(player):
+            if cubes_to_game.has_player_started_game(player):
                 cube_set_id = self._player_to_cube_set[player]
-                await self._hardware.load_rack(self._publish_queue, self._player_racks[player].get_tiles(), cube_set_id, player, now_ms)
+                await cubes_to_game.load_rack(self._publish_queue, self._player_racks[player].get_tiles(), cube_set_id, player, now_ms)
             else:
                 logging.info(f"LOAD RACK: Skipping player {player} - game not started")
 
@@ -174,7 +167,7 @@ class App:
         self._score_card.update_previous_guesses()
         for player in range(self._player_count):
             cube_set_id = self._player_to_cube_set[player]
-            await self._hardware.accept_new_letter(self._publish_queue, next_letter,
+            await cubes_to_game.accept_new_letter(self._publish_queue, next_letter,
                                                   changed_tile.id, cube_set_id, now_ms)
 
         self._update_previous_guesses()
