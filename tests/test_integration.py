@@ -7,6 +7,7 @@ import asyncio
 from io import StringIO
 import pygame
 import random
+import logging
 
 from core import app, dictionary
 from game_logging.game_loggers import GameLogger, OutputLogger
@@ -14,11 +15,14 @@ from hardware import cubes_to_game
 import pygamegameasync
 from testing.mock_mqtt_client import MockMqttClient
 
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(message)s')
+logger = logging.getLogger(__name__)
 
 async def test_integration():
     """Integration test using production setup_game() and run_single_frame()."""
-    print("=== INTEGRATION TEST ===")
-    print("Testing complete game system with production code")
+    logger.info("=== INTEGRATION TEST ===")
+    logger.info("Testing complete game system with production code")
 
     # Initialize pygame
     pygame.init()
@@ -59,16 +63,16 @@ async def test_integration():
     output_logger = OutputLogger(None)
 
     # Use production setup
-    print("Setting up game with production code...")
+    logger.info("Setting up game with production code...")
     screen, keyboard_input, input_devices, mqtt_message_queue, _ = await block_words.setup_game(
         the_app, subscribe_client, publish_queue, game_logger, output_logger
     )
 
-    print("\n*** GAME WINDOW RUNNING ***")
-    print("Running game loop for 30 seconds...")
-    print("ESC starts game automatically, X closes window.")
-    print(f"Window size: {block_words._window.get_size()}")
-    print(f"Screen size: {screen.get_size()}")
+    logger.info("\n*** GAME WINDOW RUNNING ***")
+    logger.info("Running game loop for 30 seconds...")
+    logger.info("ESC starts game automatically, X closes window.")
+    logger.info(f"Window size: {block_words._window.get_size()}")
+    logger.info(f"Screen size: {screen.get_size()}")
 
     # Setup for run_single_frame
     time_offset = 0
@@ -99,34 +103,35 @@ async def test_integration():
         )
 
         if should_exit:
-            print("Game requested exit")
+            logger.info("Game requested exit")
             running = False
             break
 
         # Print progress and state every 5 seconds
         if frame_count % LOG_INTERVAL_FRAMES == 0:
             seconds_remaining = (MAX_FRAMES - frame_count) // FPS
-            print(f"  {seconds_remaining}s remaining... ", end="")
+            msg = f"  {seconds_remaining}s remaining... "
             if block_words.game.running:
                 letter = block_words.game.letter.letter
                 rack_running = block_words.game.racks[0].running
-                print(f"Game running! letter='{letter}' rack={rack_running}")
+                msg += f"Game running! letter='{letter}' rack={rack_running}"
             else:
-                print("Game NOT running (press ESC to start)")
+                msg += "Game NOT running (press ESC to start)"
+            logger.info(msg)
 
         frame_count += 1
         clock.tick(FPS)  # 60 FPS
 
-    print("\nStopping game...")
+    logger.info("\nStopping game...")
     if block_words.game and block_words.game.running:
         await block_words.game.stop(pygame.time.get_ticks())
 
-    print("Closing window...")
+    logger.info("Closing window...")
     pygame.quit()
-    print("=== TEST COMPLETE ===")
+    logger.info("=== TEST COMPLETE ===")
     assert block_words.game is not None, "Game object should be initialized"
     assert not block_words.game.running, "Game should be stopped after test"
-    print("✓ Integration test passed!")
+    logger.info("✓ Integration test passed!")
 
 
 if __name__ == "__main__":
