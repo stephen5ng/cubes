@@ -95,7 +95,7 @@ class Letter:
         distance_from_bottom = 1 - distance_from_top
         if now_ms > self.last_beep_time_ms + (distance_from_bottom*distance_from_bottom)*7000:
             letter_beeps_ix = min(len(self.letter_beeps)-1, int(10*distance_from_top))
-            pygame.mixer.Sound.play(self.letter_beeps[letter_beeps_ix])
+            self.letter_beeps[letter_beeps_ix].play()
             self.last_beep_time_ms = now_ms
 
     def _update_column_movement(self, now_ms: int) -> list[str]:

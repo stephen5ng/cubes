@@ -2,16 +2,20 @@ import asyncio
 
 class MockMqttClient:
     """Mock MQTT client for replay mode that feeds events to trigger_events_from_mqtt."""
-    
+
     def __init__(self, replay_events):
         # Reverse MQTT events to maintain chronological order since they come in reversed from GameReplayer
         self.replay_events = list(reversed(replay_events))
         self.event_index = 0
         self.game_ready = False
-    
+
     def set_game_ready(self):
         """Mark the game as ready to receive MQTT messages."""
         self.game_ready = True
+
+    async def subscribe(self, topic):
+        """No-op subscribe for compatibility with real MQTT client."""
+        pass
     
     @property
     def messages(self):

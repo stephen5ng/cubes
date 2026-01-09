@@ -4,12 +4,22 @@ import asyncio
 from typing import List
 
 
+class MockSound:
+    """Mock pygame.mixer.Sound for testing."""
+    def __init__(self, name):
+        self.name = name
+
+    def play(self):
+        """Mock play method - does nothing."""
+        pass
+
+
 class MockSoundManager:
     """Mock sound manager that doesn't actually play sounds - perfect for testing."""
     
     def __init__(self):
         self.sound_queue: asyncio.Queue = asyncio.Queue()
-        self.letter_beeps: List = [f"mock_beep_{i}" for i in range(11)]  # Mock letter beeps
+        self.letter_beeps: List = [MockSound(f"mock_beep_{i}") for i in range(11)]  # Mock letter beeps
         self.played_sounds = []  # Track what sounds were "played" for testing
         self.sound_queue_task = None  # Don't start real async task in tests
 
@@ -50,6 +60,26 @@ class MockSoundManager:
     def play_bloop(self) -> None:
         """Mock bloop sound."""
         self.played_sounds.append("bloop_sound")
+
+    def play_cleared(self) -> None:
+        """Mock cleared sound."""
+        self.played_sounds.append("cleared_sound")
+
+    def play_add(self) -> None:
+        """Mock add sound."""
+        self.played_sounds.append("add_sound")
+
+    def play_erase(self) -> None:
+        """Mock erase sound."""
+        self.played_sounds.append("erase_sound")
+
+    def play_left(self) -> None:
+        """Mock left sound."""
+        self.played_sounds.append("left_sound")
+
+    def play_right(self) -> None:
+        """Mock right sound."""
+        self.played_sounds.append("right_sound")
 
     def get_played_sounds(self) -> List[str]:
         """Get list of sounds that were 'played' for test verification."""

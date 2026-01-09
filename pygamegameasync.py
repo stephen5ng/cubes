@@ -316,11 +316,12 @@ class BlockWordsPygame:
                         await input_device.process_event(pygame_event, now_ms)
         return False
 
-    async def main(self, the_app: app.App, subscribe_client: aiomqtt.Client, start: bool, 
-                   keyboard_player_number: int, publish_queue: asyncio.Queue, 
-                   game_logger, output_logger) -> None:
+    async def setup_game(self, the_app: app.App, subscribe_client: aiomqtt.Client,
+                         publish_queue: asyncio.Queue, game_logger, output_logger):
+        """Set up all game components. Returns (screen, keyboard_input, input_devices, mqtt_message_queue, clock)."""
         self.the_app = the_app
         self._publish_queue = publish_queue
+
         # Define handlers dictionary before joystick initialization
         handlers = {
             'left': self.handle_left_movement,
@@ -333,7 +334,7 @@ class BlockWordsPygame:
         }
         screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         clock = Clock()
-        
+
         self.replayer = GameReplayer(self.replay_file)
         if self.replay_file:
             self.replayer.load_events()
@@ -343,7 +344,6 @@ class BlockWordsPygame:
             await subscribe_client.subscribe("app/#")
             mqtt_client = subscribe_client
 
-        joysticks = []
         keyboard_input = KeyboardInput(handlers)
         input_devices = [keyboard_input]
         print(f"joystick count: {pygame.joystick.get_count()}")
@@ -351,8 +351,8 @@ class BlockWordsPygame:
             input_devices.append(GamepadInput(handlers))
         elif pygame.joystick.get_count() > 0:
             for j in range(pygame.joystick.get_count()):
-                joysticks.append(pygame.joystick.Joystick(j))
-                name = joysticks[j].get_name()
+                joystick = pygame.joystick.Joystick(j)
+                name = joystick.get_name()
                 print(f"Game controller connected: {name}")
                 input_device = JOYSTICK_NAMES_TO_INPUTS[name](handlers)
                 input_device.id = j
@@ -363,74 +363,101 @@ class BlockWordsPygame:
         rack_metrics = RackMetrics()
 
         # Get letter beeps from sound manager for injection into Game
-        self.game = Game(the_app, self.letter_font, game_logger, output_logger, sound_manager, rack_metrics, sound_manager.get_letter_beeps(), descent_mode=self.descent_mode, timed_duration_s=self.timed_duration_s)
-        
+        self.game = Game(the_app, self.letter_font, game_logger, output_logger, sound_manager,
+                        rack_metrics, sound_manager.get_letter_beeps(),
+                        descent_mode=self.descent_mode, timed_duration_s=self.timed_duration_s)
+
         self.game.output_logger.start_logging()
         the_app.set_game_logger(self.game.game_logger)
         the_app.set_word_logger(self.game.output_logger)
-        
+
         # Start the event engine
         await events.start()
-        
+
         # Signal that the game is ready to receive MQTT messages
         if self.replay_file and self._mock_mqtt_client:
             self._mock_mqtt_client.set_game_ready()
 
         mqtt_message_queue = asyncio.Queue()
         if not self.replay_file:
-            mqtt_task = asyncio.create_task(self._process_mqtt_messages(
+            asyncio.create_task(self._process_mqtt_messages(
                 mqtt_client, mqtt_message_queue, publish_queue), name="mqtt processor")
+
+        return screen, keyboard_input, input_devices, mqtt_message_queue, clock
+
+    async def run_single_frame(self, screen, keyboard_input, input_devices,
+                               mqtt_message_queue, publish_queue, time_offset):
+        """Run a single frame of the game. Returns (should_exit, new_time_offset)."""
+        now_ms = pygame.time.get_ticks() + time_offset
+
+        if self.game.aborted:
+            await events.stop()
+            return True, time_offset
+
+        pygame_events = self._get_pygame_events()
+        mqtt_events = self._get_mqtt_events(mqtt_message_queue)
+        events_to_log = {}
+        if pygame_events:
+            events_to_log['pygame'] = pygame_events
+
+        if mqtt_events:
+            events_to_log['mqtt'] = mqtt_events
+
+        if self.replayer.events:
+            now_ms = time_offset = self._get_replay_events(pygame_events, mqtt_events)
+
+        if await self._handle_pygame_events(pygame_events, keyboard_input, input_devices, now_ms, events_to_log):
+            return True, time_offset
+
+        for mqtt_event in mqtt_events:
+            await self.handle_mqtt_message(mqtt_event['topic'], mqtt_event['payload'], now_ms)
+
+        # Check if ABC start sequence should be activated
+        await cubes_to_game.activate_abc_start_if_ready(publish_queue, now_ms)
+
+        # Check if any ABC countdown has completed
+        countdown_incidents = await cubes_to_game.check_countdown_completion(publish_queue, now_ms, self.game.sound_manager)
+
+        screen.fill((0, 0, 0))
+
+        # Collect incidents from game update
+        game_incidents = await self.game.update(screen, now_ms)
+
+        # Combine countdown incidents with game incidents
+        all_incidents = countdown_incidents + game_incidents
+
+        if len(all_incidents) > 0:
+            events_to_log['incidents'] = all_incidents
+
+        if mqtt_events or pygame_events or all_incidents:
+            self.game.game_logger.log_events(now_ms, events_to_log)
+
+        hub75.update(screen)
+        pygame.transform.scale(screen, self._window.get_rect().size, dest_surface=self._window)
+        pygame.display.flip()
+
+        # Yield control to event loop to allow background tasks (like event worker) to run
+        await asyncio.sleep(0)
+
+        return False, time_offset
+
+    async def main(self, the_app: app.App, subscribe_client: aiomqtt.Client, start: bool,
+                   keyboard_player_number: int, publish_queue: asyncio.Queue,
+                   game_logger, output_logger) -> None:
+        """Main game loop using production setup."""
+        screen, keyboard_input, input_devices, mqtt_message_queue, clock = await self.setup_game(
+            the_app, subscribe_client, publish_queue, game_logger, output_logger
+        )
 
         time_offset = 0  # so that time doesn't go backwards after playing a replay file
         while True:
-            now_ms = pygame.time.get_ticks() + time_offset
-
-            if self.game.aborted:
+            should_exit, time_offset = await self.run_single_frame(
+                screen, keyboard_input, input_devices, mqtt_message_queue,
+                publish_queue, time_offset
+            )
+            if should_exit:
                 await events.stop()
                 return
-            
-            pygame_events = self._get_pygame_events()
-            events_to_log = {}
-            if pygame_events:
-                events_to_log['pygame'] = pygame_events
-
-            if mqtt_events := self._get_mqtt_events(mqtt_message_queue):
-                events_to_log['mqtt'] = mqtt_events
-
-            if self.replayer.events:
-                now_ms = time_offset = self._get_replay_events(pygame_events, mqtt_events)
-
-            if await self._handle_pygame_events(pygame_events, keyboard_input, input_devices, now_ms, events_to_log):
-                return
-            
-            for mqtt_event in mqtt_events:
-                await self.handle_mqtt_message(mqtt_event['topic'], mqtt_event['payload'], now_ms)
-            
-            # Check if ABC start sequence should be activated
-            await cubes_to_game.activate_abc_start_if_ready(publish_queue, now_ms)
-            
-            # Check if any ABC countdown has completed
-            countdown_incidents = await cubes_to_game.check_countdown_completion(publish_queue, now_ms, self.game.sound_manager)
-            
-            screen.fill((0, 0, 0))
-            # print(f"UPDATING {now_ms}")
-            
-            # Collect incidents from game update
-            game_incidents = await self.game.update(screen, now_ms)
-            
-            # Combine countdown incidents with game incidents
-            all_incidents = countdown_incidents + game_incidents
-            
-            if len(all_incidents) > 0:
-                events_to_log['incidents'] = all_incidents
-                # print(f"{now_ms} incidents {all_incidents}")
-
-            if mqtt_events or pygame_events or all_incidents:
-                self.game.game_logger.log_events(now_ms, events_to_log)
-                
-            hub75.update(screen)
-            pygame.transform.scale(screen, self._window.get_rect().size, dest_surface=self._window)
-            pygame.display.flip()
 
             if self.replay_file:
                 await asyncio.sleep(0)

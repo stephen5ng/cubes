@@ -14,7 +14,7 @@ else:
 from typing import Union
 
 matrix: RGBMatrix = None
-offscreen_canvas: Union["RGBMatrixEmulator.emulation.canvas.Canvas","RGBMatrix.Canvas"]
+offscreen_canvas: Union["RGBMatrixEmulator.emulation.canvas.Canvas","RGBMatrix.Canvas"] = None
 
 
 def create_rgbmatrix() -> Union["RGBMatrixEmulator.RGBMatrix", "rgbmatrix.RGBMatrix"]:
@@ -66,7 +66,12 @@ last_image: bytes = b''
 update_count = 0
 total_time = 1
 def update(screen: pygame.Surface) -> None:
-    global last_image, total_time,update_count
+    global last_image, total_time, update_count
+
+    # Skip update if hub75 not initialized (e.g., in tests)
+    if matrix is None:
+        return
+
     pixels = tobytes(screen, "RGB")
     if pixels == last_image:
         return
