@@ -127,10 +127,10 @@ def suppress_letter(game: Game) -> None:
     game.letter.letter = ""
 
 async def run_until_condition(
-    game: Game, 
+    game: Game,
     publish_queue: asyncio.Queue,
-    condition: Callable[[], bool] | Callable[[int, int], bool], 
-    max_frames: int = MAX_SIMULATION_FRAMES, 
+    condition: Callable[[], bool] | Callable[[int, int], bool],
+    max_frames: int = MAX_SIMULATION_FRAMES,
     visual: Optional[bool] = None
 ) -> bool:
     """Run the game loop until condition is met or timeout.
@@ -188,6 +188,9 @@ async def run_until_condition(
         if visual:
             pygame.display.flip()
             clock.tick(60)
+            await asyncio.sleep(0)
+        else:
+            # Still yield to allow background tasks (event processor) to run
             await asyncio.sleep(0)
 
         frame_count += 1

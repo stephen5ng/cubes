@@ -12,7 +12,9 @@ from config.game_config import (
     FONT,
     SCORE_COLOR,
     TICKS_PER_SECOND,
-    FADER_PLAYER_COLORS
+    FADER_PLAYER_COLORS,
+    SHIELD_ACCELERATION_RATE,
+    SHIELD_INITIAL_SPEED_MULTIPLIER
 )
 
 
@@ -70,8 +72,8 @@ class Shield:
         self.active = True
         self.player = player
         self.start_time_ms = now_ms
-        self.initial_speed = -math.log(1+score)
-        self.acceleration_rate = 1.05
+        self.initial_speed = -math.log(1+score) * SHIELD_INITIAL_SPEED_MULTIPLIER
+        self.acceleration_rate = SHIELD_ACCELERATION_RATE
         self.surface = self.font.render(self.letters, FADER_PLAYER_COLORS[self.player])[0]
         self.pos[0] = int(SCREEN_WIDTH/2 - self.surface.get_width()/2)
 
