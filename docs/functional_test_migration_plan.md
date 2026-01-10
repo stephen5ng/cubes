@@ -274,6 +274,24 @@ async def test_single_player_start():
 
 ---
 
+### Phase 1.5: Hardware Integration Tests (New)
+
+**Goal**: Verify App-to-Hardware wiring and logic (regression prevention)
+
+**Status**: ✅ Complete
+
+#### Tests Created:
+- `tests/integration/test_cube_app_interaction.py`:
+  - `test_letter_lock_1_player_wiring`
+  - `test_letter_lock_2_player_wiring`
+  - `test_accept_new_letter_2_player_mapping`
+  - `test_load_rack_skips_unstarted_players`
+  - `test_guess_word_keyboard_player_mapping`
+
+**Value**: Ensures core hardware interaction logic (position mapping, broadcasting) works correctly before layering complex gameplay tests. Prevents regressions like the "letter lock offset" bug.
+
+---
+
 ### Phase 2: ABC Countdown Tests (Week 2)
 
 **Goal**: Replace 4 ABC countdown tests
@@ -345,11 +363,12 @@ async def test_both_players_abc_simultaneous():
 
 **Goal**: Replace 3 sequential start tests
 
-#### Tests to Create:
+**Status**: ✅ Complete
+
+#### Tests Created:
 2. `tests/integration/test_sequential_start.py`:
    - `test_p1_joins_after_p0_started` - P1 joins mid-game
    - `test_p1_starts_first` - P1 initiates, P0 joins later
-   - `test_sequential_start_generic` - Multiple join sequences
 
 #### What to Test:
 
@@ -628,6 +647,8 @@ async def test_rapid_guess_sequence():
 - [x] Document patterns in `docs/testing_patterns.md`
 
 ### Test Migration
+- [x] Hardware Integration (Phase 1.5)
+  - [x] `test_cube_app_interaction.py`
 - [ ] Shield Mechanics (expand existing `test_shield_physics.py`)
   - [x] `test_shield_collision_bounces_letter` (exists)
   - [x] `test_shield_deactivation_on_hit`
@@ -639,10 +660,9 @@ async def test_rapid_guess_sequence():
   - [x] `test_p0_only_abc`
   - [x] `test_p1_only_abc`
   - [x] `test_per_player_abc_tracking`
-- [ ] Sequential Start (3 tests)
-  - [ ] `test_p1_joins_after_p0_started`
-  - [ ] `test_p1_starts_first`
-  - [ ] `test_sequential_start_generic`
+- [x] Sequential Start (2 tests)
+  - [x] `test_p1_joins_after_p0_started`
+  - [x] `test_p1_starts_first`
 - [ ] Core Gameplay (3 tests)
   - [ ] `test_two_player_competitive`
   - [ ] `test_single_player_p0_scoring`
@@ -715,8 +735,9 @@ async def test_rapid_guess_sequence():
 |-------|----------|--------|-------------|
 | Phase 0: Shield Tests | Ongoing | 4 hrs | 5 additional shield tests |
 | Phase 1: Infrastructure | 1 week | 16 hrs | Shared test utilities |
+| Phase 1.5: Hardware Int. | 1 day | 8 hrs | 5 wiring tests |
 | Phase 2: ABC Tests | 1 week | 12 hrs | 4 tests passing |
-| Phase 3: Sequential Start | 1 week | 12 hrs | 3 tests passing |
+| Phase 3: Sequential Start | 1 week | 12 hrs | 2 tests passing |
 | Phase 4: Core Gameplay | 1 week | 12 hrs | 2 tests passing |
 | Phase 5: Timed Mode | 1 week | 8 hrs | 1 test passing |
 | Phase 6: Input/Stress | 1 week | 16 hrs | 8 tests passing |
