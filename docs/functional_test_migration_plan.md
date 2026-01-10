@@ -2,7 +2,7 @@
 
 **Goal**: Replace heavyweight replay-based functional tests with fast, MQTT-mocked integration tests similar to `test_shield_physics.py`
 
-**Status**: Phase 2 In Progress - ABC Tests Started
+**Status**: Phase 2 Complete - ABC Tests Migrated
 **Created**: 2026-01-09
 **Owner**: Team
 
@@ -636,9 +636,9 @@ async def test_rapid_guess_sequence():
   - [x] `test_shield_blocks_letter_descent`
 - [ ] ABC Countdown (4 tests)
   - [x] `test_both_players_abc_simultaneous`
-  - [ ] `test_p1_only_abc`
-  - [ ] `test_p2_only_abc`
-  - [ ] `test_per_player_abc_tracking`
+  - [x] `test_p1_only_abc`
+  - [x] `test_p2_only_abc`
+  - [x] `test_per_player_abc_tracking`
 - [ ] Sequential Start (3 tests)
   - [ ] `test_p1_joins_after_p0_started`
   - [ ] `test_p2_starts_first`
