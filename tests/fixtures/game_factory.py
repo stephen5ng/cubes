@@ -95,7 +95,7 @@ def ensure_pygame_initialized(visual: bool) -> None:
         if not pygame.font.get_init():
             pygame.font.init()
 
-async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool] = None, player_count: int = 1) -> Tuple[Game, FakeMqttClient, asyncio.Queue]:
+async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool] = None, player_count: int = 1, timed_duration_s: int = game_config.TIMED_DURATION_S) -> Tuple[Game, FakeMqttClient, asyncio.Queue]:
     """Factory for common test game setup."""
     if visual is None:
         visual = is_visual_mode()
@@ -137,7 +137,8 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
         sound_manager=sound_manager,
         rack_metrics=rack_metrics,
         letter_beeps=sound_manager.get_letter_beeps(),
-        descent_mode=descent_mode
+        descent_mode=descent_mode,
+        timed_duration_s=timed_duration_s
     )
     
     # Initialize game state
@@ -194,6 +195,13 @@ async def run_until_condition(
     frame_count = 0
     window = pygame.display.get_surface()
 
+    start_ms = 0
+    try:
+        mock_time = mock_time_var.get()
+        start_ms = mock_time.now_ms
+    except LookupError:
+        pass
+
     while frame_count < max_frames:
         if visual:
             for event in pygame.event.get():
@@ -202,7 +210,7 @@ async def run_until_condition(
             window.fill((0, 0, 0))
 
         # Update game
-        now_ms = frame_count * FRAME_DURATION_MS
+        now_ms = start_ms + frame_count * FRAME_DURATION_MS
         # Update patched time
         try:
             mock_time = mock_time_var.get()
