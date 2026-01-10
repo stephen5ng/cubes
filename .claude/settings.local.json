@@ -85,7 +85,9 @@
       "Bash(PYTHONPATH=src:. timeout 5 python3 tests/test_refactored_game.py)",
       "Bash(PYTHONPATH=src:. timeout 5 python3:*)",
       "Bash(PYTHONPATH=src:. timeout 10 python3:*)",
-      "Bash(python tests/test_refactored_game.py:*)"
+      "Bash(python tests/test_refactored_game.py:*)",
+      "Bash(do echo \"Run $i:\")",
+      "Bash(do python3 -m pytest tests/integration/test_abc_countdown.py --tb=no -q)"
     ],
     "deny": []
   }

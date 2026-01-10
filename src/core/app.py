@@ -13,6 +13,7 @@ from utils.pygameasync import events
 import pygame
 from core import tiles
 from core.scorecard import ScoreCard
+from game_logging.game_loggers import OutputLogger
 from events.game_events import (
     GameStartPlayerEvent,
     GameStageGuessEvent,
@@ -52,6 +53,7 @@ class App:
         # Map logical players to physical cube sets
         self._player_to_cube_set = {0: 0, 1: 1}  # Default: player 0 → cube set 0, player 1 → cube set 1
         self._game_logger = None  # Will be set by the game
+        self._word_logger = OutputLogger(None)  # No-op logger until set by the game
         cubes_to_game.set_guess_tiles_callback(make_guess_tiles_callback(self))
         cubes_to_game.set_start_game_callback(make_start_game_callback(self))
         self._running = False
