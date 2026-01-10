@@ -95,7 +95,7 @@ def ensure_pygame_initialized(visual: bool) -> None:
         if not pygame.font.get_init():
             pygame.font.init()
 
-async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool] = None) -> Tuple[Game, FakeMqttClient, asyncio.Queue]:
+async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool] = None, player_count: int = 1) -> Tuple[Game, FakeMqttClient, asyncio.Queue]:
     """Factory for common test game setup."""
     if visual is None:
         visual = is_visual_mode()
@@ -142,6 +142,7 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
     
     # Initialize game state
     game.running = True
+    game._app.player_count = player_count
     
     return game, fake_mqtt, publish_queue
 
@@ -233,3 +234,19 @@ async def advance_frames(game: Game, publish_queue: asyncio.Queue, frames: int, 
     if visual is None:
         visual = is_visual_mode()
     await run_until_condition(game, publish_queue, lambda: False, max_frames=frames, visual=visual)
+
+
+async def wait_for_guess_processing(
+    game: Game,
+    queue: asyncio.Queue,
+    player: int,
+    expected_score: int,
+    expected_word: str
+) -> None:
+    """Wait for a guess to be processed: score updated and word registered."""
+    await run_until_condition(
+        game, 
+        queue, 
+        lambda: game.scores[player].score == expected_score and 
+                expected_word in game.guesses_manager.guess_to_player
+    )
