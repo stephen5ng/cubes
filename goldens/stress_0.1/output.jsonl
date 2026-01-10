@@ -76,7 +76,7 @@
 {"time": 83945, "event_type": "letter_position", "x": 96, "y": 36}
 {"time": 84550, "event_type": "word_formed", "word": "TSKS", "player": 0, "score": 4}
 {"time": 84984, "event_type": "letter_position", "x": 112, "y": 36}
-{"time": 85474, "event_type": "word_formed", "word": "BES", "player": 0, "score": 3}
+{"time": 85474, "event_type": "word_formed", "word": "LES", "player": 0, "score": 3}
 {"time": 86084, "event_type": "letter_position", "x": 128, "y": 36}
 {"time": 87117, "event_type": "letter_position", "x": 112, "y": 30}
 {"time": 88176, "event_type": "letter_position", "x": 96, "y": 30}

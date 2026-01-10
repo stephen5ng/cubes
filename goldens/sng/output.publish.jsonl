@@ -121,7 +121,7 @@
 {"time": 31997, "topic": "cube/3/border", "message": "ENS:0xFFFF", "retain": true}
 {"time": 31997, "topic": "cube/2/lock", "message": null, "retain": true}
 {"time": 31997, "topic": "cube/3/lock", "message": "1", "retain": true}
-{"time": 31997, "topic": "cube/3/letter", "message": "L", "retain": true}
+{"time": 31997, "topic": "cube/3/letter", "message": "F", "retain": true}
 {"time": 32004, "topic": "cube/3/lock", "message": null, "retain": true}
 {"time": 34666, "topic": "cube/2/border", "message": "ENSW:0xFFFF", "retain": true}
 {"time": 34666, "topic": "cube/3/border", "message": ":", "retain": true}
@@ -161,7 +161,7 @@
 {"time": 44135, "topic": "cube/4/border", "message": "ENS:0xFFFF", "retain": true}
 {"time": 44135, "topic": "cube/1/lock", "message": null, "retain": true}
 {"time": 44135, "topic": "cube/4/lock", "message": "1", "retain": true}
-{"time": 45455, "topic": "cube/4/letter", "message": "T", "retain": true}
+{"time": 45455, "topic": "cube/4/letter", "message": "O", "retain": true}
 {"time": 45641, "topic": "cube/6/border", "message": "ENSW:0xFFFF", "retain": true}
 {"time": 45641, "topic": "cube/4/border", "message": ":", "retain": true}
 {"time": 45641, "topic": "cube/4/lock", "message": null, "retain": true}
@@ -177,7 +177,10 @@
 {"time": 51984, "topic": "cube/1/border", "message": "NS:0xFFFF", "retain": true}
 {"time": 51984, "topic": "cube/5/border", "message": "ENS:0xFFFF", "retain": true}
 {"time": 56251, "topic": "cube/1/lock", "message": "1", "retain": true}
-{"time": 57185, "topic": "cube/1/letter", "message": "R", "retain": true}
+{"time": 57185, "topic": "cube/1/letter", "message": "N", "retain": true}
+{"time": 57185, "topic": "cube/6/flash", "message": "1", "retain": false}
+{"time": 57185, "topic": "cube/1/flash", "message": "1", "retain": false}
+{"time": 57185, "topic": "cube/5/flash", "message": "1", "retain": false}
 {"time": 57260, "topic": "cube/1/lock", "message": null, "retain": true}
 {"time": 57375, "topic": "cube/6/border", "message": "ENSW:0xFFFF", "retain": true}
 {"time": 57375, "topic": "cube/1/border", "message": ":", "retain": true}
@@ -188,55 +191,62 @@
 {"time": 62446, "topic": "cube/5/border", "message": ":", "retain": true}
 {"time": 63232, "topic": "cube/2/border", "message": "NSW:0xFFFF", "retain": true}
 {"time": 63232, "topic": "cube/5/border", "message": "ENS:0xFFFF", "retain": true}
-{"time": 66362, "topic": "cube/2/lock", "message": "1", "retain": true}
-{"time": 67795, "topic": "cube/1/border", "message": "ENSW:0xFFFF", "retain": true}
-{"time": 67795, "topic": "cube/2/border", "message": ":", "retain": true}
-{"time": 67795, "topic": "cube/5/border", "message": ":", "retain": true}
-{"time": 67795, "topic": "cube/2/lock", "message": null, "retain": true}
-{"time": 67795, "topic": "cube/1/lock", "message": "1", "retain": true}
-{"time": 67795, "topic": "cube/1/letter", "message": "E", "retain": true}
 {"time": 67926, "topic": "cube/6/border", "message": "ENSW:0xFFFF", "retain": true}
-{"time": 67926, "topic": "cube/1/border", "message": ":", "retain": true}
-{"time": 67926, "topic": "cube/1/lock", "message": null, "retain": true}
-{"time": 68032, "topic": "cube/6/border", "message": "NSW:0xFFFF", "retain": true}
-{"time": 68032, "topic": "cube/1/border", "message": "ENS:0xFFFF", "retain": true}
-{"time": 68403, "topic": "cube/1/border", "message": "NS:0xFFFF", "retain": true}
-{"time": 68403, "topic": "cube/5/border", "message": "ENS:0xFFFF", "retain": true}
-{"time": 74632, "topic": "cube/5/border", "message": "ENSW:0xFFFF", "retain": true}
-{"time": 74632, "topic": "cube/1/border", "message": ":", "retain": true}
-{"time": 74632, "topic": "cube/6/border", "message": ":", "retain": true}
+{"time": 67926, "topic": "cube/2/border", "message": ":", "retain": true}
+{"time": 67926, "topic": "cube/5/border", "message": ":", "retain": true}
+{"time": 68403, "topic": "cube/5/border", "message": "ENSW:0xFFFF", "retain": true}
+{"time": 68403, "topic": "cube/6/border", "message": ":", "retain": true}
+{"time": 69390, "topic": "cube/1/lock", "message": "1", "retain": true}
+{"time": 69977, "topic": "cube/1/letter", "message": "K", "retain": true}
+{"time": 70194, "topic": "cube/1/lock", "message": null, "retain": true}
 {"time": 74765, "topic": "cube/5/border", "message": "NSW:0xFFFF", "retain": true}
 {"time": 74765, "topic": "cube/6/border", "message": "ENS:0xFFFF", "retain": true}
-{"time": 75443, "topic": "cube/2/lock", "message": "1", "retain": true}
-{"time": 76949, "topic": "cube/2/letter", "message": "G", "retain": true}
-{"time": 77169, "topic": "cube/2/lock", "message": null, "retain": true}
-{"time": 83236, "topic": "cube/1/lock", "message": "1", "retain": true}
-{"time": 84929, "topic": "cube/1/letter", "message": "O", "retain": true}
-{"time": 85382, "topic": "cube/1/lock", "message": null, "retain": true}
+{"time": 79458, "topic": "cube/2/lock", "message": "1", "retain": true}
+{"time": 80463, "topic": "cube/2/letter", "message": "E", "retain": true}
+{"time": 81466, "topic": "cube/2/lock", "message": null, "retain": true}
 {"time": 85661, "topic": "cube/5/border", "message": "ENSW:0xFFFF", "retain": true}
 {"time": 85661, "topic": "cube/6/border", "message": ":", "retain": true}
-{"time": 90435, "topic": "cube/2/lock", "message": "1", "retain": true}
-{"time": 91447, "topic": "cube/2/letter", "message": "B", "retain": true}
-{"time": 91538, "topic": "cube/2/lock", "message": null, "retain": true}
-{"time": 95509, "topic": "cube/5/lock", "message": "1", "retain": true}
-{"time": 96528, "topic": "cube/5/letter", "message": "P", "retain": true}
-{"time": 97529, "topic": "cube/5/lock", "message": null, "retain": true}
-{"time": 99527, "topic": "cube/6/border", "message": "ENSW:0xFFFF", "retain": true}
-{"time": 99527, "topic": "cube/5/border", "message": ":", "retain": true}
-{"time": 99555, "topic": "cube/1/lock", "message": "1", "retain": true}
-{"time": 100867, "topic": "cube/1/letter", "message": "S", "retain": true}
-{"time": 103471, "topic": "cube/1/border", "message": "ENSW:0xFFFF", "retain": true}
-{"time": 103471, "topic": "cube/6/border", "message": ":", "retain": true}
-{"time": 103471, "topic": "cube/1/lock", "message": null, "retain": true}
-{"time": 103471, "topic": "cube/5/lock", "message": "1", "retain": true}
-{"time": 103911, "topic": "cube/5/letter", "message": "A", "retain": true}
-{"time": 105930, "topic": "cube/1/letter", "message": " ", "retain": true}
-{"time": 105930, "topic": "cube/1/border", "message": ":", "retain": true}
-{"time": 105930, "topic": "cube/2/letter", "message": " ", "retain": true}
-{"time": 105930, "topic": "cube/3/letter", "message": " ", "retain": true}
-{"time": 105930, "topic": "cube/4/letter", "message": " ", "retain": true}
-{"time": 105930, "topic": "cube/5/letter", "message": " ", "retain": true}
-{"time": 105930, "topic": "cube/6/letter", "message": " ", "retain": true}
-{"time": 105930, "topic": "cube/1/border", "message": "ENSW:0xFFFF", "retain": true}
-{"time": 105930, "topic": "cube/5/lock", "message": null, "retain": true}
-{"time": 105930, "topic": "cube/1/border", "message": ":", "retain": true}
+{"time": 87883, "topic": "cube/2/border", "message": "ENSW:0xFFFF", "retain": true}
+{"time": 87883, "topic": "cube/5/border", "message": ":", "retain": true}
+{"time": 88407, "topic": "cube/6/lock", "message": "1", "retain": true}
+{"time": 89362, "topic": "cube/6/letter", "message": "Y", "retain": true}
+{"time": 89415, "topic": "cube/6/lock", "message": null, "retain": true}
+{"time": 91538, "topic": "cube/5/border", "message": "ENSW:0xFFFF", "retain": true}
+{"time": 91538, "topic": "cube/2/border", "message": ":", "retain": true}
+{"time": 96528, "topic": "cube/3/lock", "message": "1", "retain": true}
+{"time": 97529, "topic": "cube/3/letter", "message": "A", "retain": true}
+{"time": 98549, "topic": "cube/3/lock", "message": null, "retain": true}
+{"time": 102896, "topic": "cube/2/lock", "message": "1", "retain": true}
+{"time": 103280, "topic": "cube/2/border", "message": "ENSW:0xFFFF", "retain": true}
+{"time": 103280, "topic": "cube/5/border", "message": ":", "retain": true}
+{"time": 103280, "topic": "cube/2/lock", "message": null, "retain": true}
+{"time": 103280, "topic": "cube/5/lock", "message": "1", "retain": true}
+{"time": 103471, "topic": "cube/2/border", "message": "NSW:0xFFFF", "retain": true}
+{"time": 103471, "topic": "cube/5/border", "message": "ENS:0xFFFF", "retain": true}
+{"time": 103911, "topic": "cube/5/letter", "message": "P", "retain": true}
+{"time": 103995, "topic": "cube/5/lock", "message": null, "retain": true}
+{"time": 107958, "topic": "cube/6/lock", "message": "1", "retain": true}
+{"time": 107975, "topic": "cube/2/border", "message": "ENSW:0xFFFF", "retain": true}
+{"time": 107975, "topic": "cube/5/border", "message": ":", "retain": true}
+{"time": 109963, "topic": "cube/6/letter", "message": "R", "retain": true}
+{"time": 110977, "topic": "cube/6/lock", "message": null, "retain": true}
+{"time": 112989, "topic": "cube/4/lock", "message": "1", "retain": true}
+{"time": 114002, "topic": "cube/4/letter", "message": "S", "retain": true}
+{"time": 117022, "topic": "cube/4/letter", "message": "B", "retain": true}
+{"time": 117338, "topic": "cube/6/border", "message": "ENSW:0xFFFF", "retain": true}
+{"time": 117338, "topic": "cube/2/border", "message": ":", "retain": true}
+{"time": 117585, "topic": "cube/6/border", "message": "NSW:0xFFFF", "retain": true}
+{"time": 117585, "topic": "cube/2/border", "message": "ENS:0xFFFF", "retain": true}
+{"time": 118925, "topic": "cube/1/letter", "message": " ", "retain": true}
+{"time": 118925, "topic": "cube/2/letter", "message": " ", "retain": true}
+{"time": 118925, "topic": "cube/2/border", "message": ":", "retain": true}
+{"time": 118925, "topic": "cube/3/letter", "message": " ", "retain": true}
+{"time": 118925, "topic": "cube/4/letter", "message": " ", "retain": true}
+{"time": 118925, "topic": "cube/5/letter", "message": " ", "retain": true}
+{"time": 118925, "topic": "cube/6/letter", "message": " ", "retain": true}
+{"time": 118925, "topic": "cube/6/border", "message": ":", "retain": true}
+{"time": 118925, "topic": "cube/6/border", "message": "NSW:0xFFFF", "retain": true}
+{"time": 118925, "topic": "cube/2/border", "message": "ENS:0xFFFF", "retain": true}
+{"time": 118925, "topic": "cube/4/lock", "message": null, "retain": true}
+{"time": 118925, "topic": "cube/2/border", "message": ":", "retain": true}
+{"time": 118925, "topic": "cube/6/border", "message": ":", "retain": true}

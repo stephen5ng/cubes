@@ -57,7 +57,7 @@ def setup_rack_with_word(game: Game, player: int, word: str) -> None:
         word: Word to populate rack with
     """
     from core import tiles
-    game._app._player_racks[player].set_tiles(
+    game._app._rack_manager.get_rack(player).set_tiles(
         [tiles.Tile(c, str(i)) for i, c in enumerate(word)]
     )
 

@@ -33,9 +33,12 @@ class TestAppPerPlayerIntegration(unittest.IsolatedAsyncioTestCase):
         # Create app instance
         self.app = app.App(self.publish_queue, self.dictionary)
         
-        # Mock player racks
-        self.app._player_racks = [Mock(), Mock()]
-        for i, rack in enumerate(self.app._player_racks):
+        # Mock RackManager
+        self.app._rack_manager = Mock()
+        self.mock_racks = [Mock(), Mock()]
+        self.app._rack_manager.get_rack.side_effect = lambda i: self.mock_racks[i]
+        
+        for i, rack in enumerate(self.mock_racks):
             rack.get_tiles.return_value = [Mock() for _ in range(6)]
             for j, tile in enumerate(rack.get_tiles.return_value):
                 tile.tile_id = str(j)
@@ -111,11 +114,11 @@ class TestAppPerPlayerIntegration(unittest.IsolatedAsyncioTestCase):
                 
                 # Check player 0 call
                 player_0_call = next(call for call in mock_load_rack.call_args_list if call[0][2] == 0)
-                self.assertEqual(player_0_call[0][1], self.app._player_racks[0].get_tiles())
+                self.assertEqual(player_0_call[0][1], self.mock_racks[0].get_tiles())
                 
                 # Check player 1 call  
                 player_1_call = next(call for call in mock_load_rack.call_args_list if call[0][2] == 1)
-                self.assertEqual(player_1_call[0][1], self.app._player_racks[1].get_tiles())
+                self.assertEqual(player_1_call[0][1], self.mock_racks[1].get_tiles())
 
 
 class TestAppInstanceCreation(unittest.TestCase):
@@ -379,8 +382,16 @@ class TestAppEdgeCases(unittest.IsolatedAsyncioTestCase):
         self.app._set_player_to_cube_set_mapping()
 
         # Create real racks with tiles for both players
-        self.app._player_racks[0] = tiles.Rack('ABCDEF')
-        self.app._player_racks[1] = tiles.Rack('GHIJKL')
+        # Configure mock_racks for both players
+        # We need to make sure _rack_manager.get_rack() returns these
+        self.app._rack_manager = Mock()
+        rack0 = tiles.Rack('ABCDEF')
+        rack1 = tiles.Rack('GHIJKL')
+        self.app._rack_manager.get_rack.side_effect = lambda i: rack0 if i == 0 else rack1
+        # Also mock accept_new_letter to return a dummy tile with an ID, as app uses it
+        mock_tile = Mock()
+        mock_tile.id = "mock_id"
+        self.app._rack_manager.accept_new_letter.return_value = mock_tile
 
         # Mock cubes_to_game.accept_new_letter
         with patch.object(cubes_to_game, 'accept_new_letter', new_callable=AsyncMock) as mock_accept:
@@ -404,8 +415,10 @@ class TestAppEdgeCases(unittest.IsolatedAsyncioTestCase):
         cubes_to_game.add_started_cube_set(0)
         self.app._set_player_to_cube_set_mapping()
 
-        # Create real rack
-        self.app._player_racks[0] = tiles.Rack('ABCDEF')
+        # Configure mock_racks for player 0
+        self.app._rack_manager = Mock()
+        rack0 = tiles.Rack('ABCDEF')
+        self.app._rack_manager.get_rack.return_value = rack0
 
         # Mock cubes_to_game functions
         with patch.object(cubes_to_game, 'old_guess', new_callable=AsyncMock):

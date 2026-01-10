@@ -30,6 +30,9 @@ from core.player_mapping import calculate_player_mapping
 
 logger = logging.getLogger("app:"+__name__)
 
+from core.rack_manager import RackManager
+from core.tile_generator import TileGenerator
+
 class App:
     def __init__(self, publish_queue: asyncio.Queue, dictionary: Dictionary) -> None:
         def make_guess_tiles_callback(the_app: App) -> Callable[[list[str], bool, int],  Coroutine[Any, Any, None]]:
@@ -47,8 +50,11 @@ class App:
         self._dictionary = dictionary
         self._publish_queue = publish_queue
         self._last_guess: list[str] = []
-        self._player_racks = [tiles.Rack('?' * game_config.MAX_LETTERS) for _ in range(game_config.MAX_PLAYERS)]
-        self._score_card = ScoreCard(self._player_racks[0], self._dictionary)
+        
+        tile_generator = TileGenerator()
+        self._rack_manager = RackManager(dictionary, tile_generator)
+        
+        self._score_card = ScoreCard(self._rack_manager.get_rack(0), self._dictionary)
         self._player_count = 1
         # Map logical players to physical cube sets
         self._player_to_cube_set = {0: 0, 1: 1}  # Default: player 0 → cube set 0, player 1 → cube set 1
@@ -100,17 +106,8 @@ class App:
         self._word_logger = word_logger
 
     def _initialize_racks_for_fair_play(self) -> None:
-        """Initialize racks with identical tiles for competitive fairness.
-
-        All players start with the same letter sequence (Shared Start), behaving like
-        duplicate Scrabble. As players find words, their racks diverge independently
-        (Copy-on-Write behavior), ensuring one player's moves do not affect the others.
-        """
-        initial_rack = self._dictionary.get_rack()
-        for player in range(game_config.MAX_PLAYERS):
-            # Players start with identical tile sets
-            self._player_racks[player].set_tiles(initial_rack.get_tiles())
-            self._player_racks[player].refresh_next_letter()
+        """Initialize racks using the RackManager."""
+        self._rack_manager.initialize_racks_for_fair_play()
 
     async def start(self, now_ms: int) -> None:
         print(">>>>>>>> app.STARTING")
@@ -118,11 +115,9 @@ class App:
         # Set game running state for cube border logic
         cubes_to_game.set_game_running(True)
         self._initialize_racks_for_fair_play()
-        
 
-        
-        self._update_next_tile(self._player_racks[0].next_letter())
-        self._score_card = ScoreCard(self._player_racks[0], self._dictionary)
+        self._update_next_tile(self._rack_manager.get_rack(0).next_letter())
+        self._score_card = ScoreCard(self._rack_manager.get_rack(0), self._dictionary)
         
         # Remove participating players from ABC tracking (their cubes will get game letters)
         for player in range(game_config.MAX_PLAYERS):
@@ -147,7 +142,11 @@ class App:
 
     async def stop(self, now_ms: int) -> None:
         for player in range(game_config.MAX_PLAYERS):
-            self._player_racks[player] = tiles.Rack(' ' * game_config.MAX_LETTERS)
+
+            # Reset racks to empty
+            empty_tiles = tiles.Rack(' ' * game_config.MAX_LETTERS).get_tiles()
+            self._rack_manager.get_rack(player).set_tiles(empty_tiles)
+            
         await self.load_rack(now_ms)
         self._running = False
         # Set game ended state
@@ -163,20 +162,21 @@ class App:
         for player in range(game_config.MAX_PLAYERS):
             if cubes_to_game.has_player_started_game(player):
                 cube_set_id = self._player_to_cube_set[player]
-                await cubes_to_game.load_rack(self._publish_queue, self._player_racks[player].get_tiles(), cube_set_id, player, now_ms)
+                await cubes_to_game.load_rack(self._publish_queue, self._rack_manager.get_rack(player).get_tiles(), cube_set_id, player, now_ms)
             else:
                 logging.info(f"LOAD RACK: Skipping player {player} - game not started")
 
     async def accept_new_letter(self, next_letter: str, position: int, now_ms: int) -> None:
+        # 1. Determine parameters for the manager
+        hit_rack_idx = 0
+        position_offset = 0
         if self._player_count > 1:
-            # Replace the tile in the rack that was hit, then replace that same tile in the other rack.
-            hit_rack, other_rack, position_offset = (0, 1, 3) if position < 3 else (1, 0, -3)
-            
-            changed_tile = self._player_racks[hit_rack].replace_letter(next_letter, position + position_offset)
-            other_position = self._player_racks[other_rack].id_to_position(changed_tile.id)
-            self._player_racks[other_rack].replace_letter(next_letter, other_position)
-        else:
-            changed_tile = self._player_racks[0].replace_letter(next_letter, position)
+            hit_rack_idx, position_offset = (0, 0) if position < 3 else (1, -3)
+        
+        # 2. Delegate to RackManager
+        changed_tile = self._rack_manager.accept_new_letter(
+            next_letter, position, hit_rack_idx, position_offset
+        )
 
         self._score_card.update_previous_guesses()
         for player in range(self._player_count):
@@ -188,7 +188,9 @@ class App:
         self._update_remaining_previous_guesses()
         for player in range(self._player_count):
             events.trigger(RackUpdateLetterEvent(changed_tile, player, now_ms))
-        self._update_next_tile(self._player_racks[0].next_letter())
+        
+        self._update_next_tile(self._rack_manager.get_rack(0).next_letter())
+        
         if changed_tile.id in self._last_guess:
             for player in range(self._player_count):
                 await self.guess_tiles(self._last_guess, False, player, now_ms)
@@ -199,7 +201,7 @@ class App:
         if self._player_count > 1:
             hit_rack, position_offset = (0, 3) if position < 3 else (1, -3)
 
-        locked_tile_id = self._player_racks[hit_rack].position_to_id(position + position_offset)
+        locked_tile_id = self._rack_manager.get_rack(hit_rack).position_to_id(position + position_offset)
 
         lock_changed = False
         for player in range(self._player_count):
@@ -215,19 +217,23 @@ class App:
     async def guess_tiles(self, word_tile_ids: list[str], move_tiles: bool, player: int, now_ms: int) -> None:
         self._last_guess = word_tile_ids
         logger.info(f"guess_tiles: word_tile_ids {word_tile_ids}")
-        guess = self._player_racks[player].ids_to_letters(word_tile_ids)
-        guess_tiles = self._player_racks[player].ids_to_tiles(word_tile_ids)
+        rack = self._rack_manager.get_rack(player)
+        guess = rack.ids_to_letters(word_tile_ids)
+        guess_tiles = rack.ids_to_tiles(word_tile_ids)
 
         tiles_dirty = False
         good_guess_highlight = 0
         if move_tiles:
-            remaining_tiles = self._player_racks[player].get_tiles().copy()
+            remaining_tiles = rack.get_tiles().copy()
             for guess_tile in guess_tiles:
                 remaining_tiles.remove(guess_tile)
+            
+            # Update rack content
             if player == 0:
-                self._player_racks[player].set_tiles(guess_tiles + remaining_tiles)
+                rack.set_tiles(guess_tiles + remaining_tiles)
             else:
-                self._player_racks[player].set_tiles(remaining_tiles + guess_tiles)
+                rack.set_tiles(remaining_tiles + guess_tiles)
+            
             tiles_dirty = True
 
         cube_set_id = self._player_to_cube_set[player]
@@ -251,12 +257,9 @@ class App:
             self._update_rack_display(good_guess_highlight, len(guess), player)
 
     async def guess_word_keyboard(self, guess: str, player: int, now_ms: int) -> None:
-        # not sure why this is here.
-        # if MAX_PLAYERS == 1 and player > 0:
-        #     return
         cube_set_id = self._player_to_cube_set[player]
         await cubes_to_game.guess_tiles(self._publish_queue,
-            [self._player_racks[player].letters_to_ids(guess)], cube_set_id, player, now_ms)
+            [self._rack_manager.get_rack(player).letters_to_ids(guess)], cube_set_id, player, now_ms)
 
     def _update_next_tile(self, next_tile: str) -> None:
         events.trigger(GameNextTileEvent(next_tile, pygame.time.get_ticks()))
@@ -272,7 +275,7 @@ class App:
 
     def _update_rack_display(self, highlight_length: int, guess_length: int, player: int):
         events.trigger(RackUpdateRackEvent(
-                       self._player_racks[player].get_tiles(),
+                       self._rack_manager.get_rack(player).get_tiles(),
                        highlight_length,
                        guess_length,
                        player,
