@@ -11,6 +11,7 @@ import pygame
 import random
 import sys
 
+from hardware.cubes_interface import CubesHardwareInterface
 from core import app
 from config import game_config
 from hardware import cubes_to_game
@@ -71,7 +72,8 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
         async with aiomqtt.Client(MQTT_SERVER) as subscribe_client:
             async with aiomqtt.Client(MQTT_SERVER) as publish_client:
                 publish_queue: asyncio.Queue = asyncio.Queue()
-                the_app = app.App(publish_queue, dictionary)
+                hardware = CubesHardwareInterface()
+                the_app = app.App(publish_queue, dictionary, hardware)
                 
                 await cubes_to_game.init(subscribe_client)
                 # Clear any retained letters and borders from a previous run

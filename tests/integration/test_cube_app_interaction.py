@@ -15,7 +15,7 @@ async def test_letter_lock_1_player_wiring(mock_hardware):
     """Verify 1-player mode wiring (sample check)."""
     game, _, _ = await create_test_game(descent_mode="discrete")
     game._app.player_count = 1
-    p0_tiles = game._app._rack_manager.get_rack(0).get_tiles()
+    p0_tiles = game._app.rack_manager.get_rack(0).get_tiles()
     
     # Check just one position to verify wiring works
     pos = 0
@@ -31,8 +31,8 @@ async def test_letter_lock_2_player_wiring(mock_hardware):
     game, _, _ = await create_test_game(descent_mode="discrete")
     game._app.player_count = 2
     
-    p0_tiles = game._app._rack_manager.get_rack(0).get_tiles()
-    p1_tiles = game._app._rack_manager.get_rack(1).get_tiles()
+    p0_tiles = game._app.rack_manager.get_rack(0).get_tiles()
+    p1_tiles = game._app.rack_manager.get_rack(1).get_tiles()
     
     # Check P0 Wiring (Pos 0)
     await game._app.letter_lock(position=0, locked=True, now_ms=1000)
@@ -59,7 +59,7 @@ async def test_accept_new_letter_2_player_mapping(mock_hardware):
     new_letter = "Z"
     
     # Test P1 Zone (Pos 3) -> Should affect P1 Rack Index 0
-    p1_rack = game._app._rack_manager.get_rack(1)
+    p1_rack = game._app.rack_manager.get_rack(1)
     original_p1_tile_id = p1_rack.get_tiles()[0].id
     
     await game._app.accept_new_letter(new_letter, position=3, now_ms=2000)
@@ -126,7 +126,7 @@ async def test_guess_word_keyboard_player_mapping(mock_hardware):
     game, _, _ = await create_test_game(descent_mode="discrete")
     game._app.player_count = 2
     
-    p1_rack = game._app._rack_manager.get_rack(1)
+    p1_rack = game._app.rack_manager.get_rack(1)
     target_ids = ["101", "102", "103"]
     
     with patch.object(p1_rack, 'letters_to_ids', return_value=target_ids) as mock_l2i:

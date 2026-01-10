@@ -57,8 +57,8 @@ async def test_two_player_rack_isolation():
     """Verify racks start shared but diverge after moves."""
     game, _mqtt, queue = await create_test_game(player_count=2)
     
-    rack0 = game._app._rack_manager.get_rack(0).get_tiles()
-    rack1 = game._app._rack_manager.get_rack(1).get_tiles()
+    rack0 = game._app.rack_manager.get_rack(0).get_tiles()
+    rack1 = game._app.rack_manager.get_rack(1).get_tiles()
     
     # 1. Start synchronized (Shared Start)
     ids0 = [t.id for t in rack0]
@@ -71,8 +71,8 @@ async def test_two_player_rack_isolation():
     guess_ids = ids0[3:6]
     await game._app.guess_tiles(guess_ids, True, 0, 1000)
     
-    new_rack0 = game._app._rack_manager.get_rack(0).get_tiles()
-    new_rack1 = game._app._rack_manager.get_rack(1).get_tiles()
+    new_rack0 = game._app.rack_manager.get_rack(0).get_tiles()
+    new_rack1 = game._app.rack_manager.get_rack(1).get_tiles()
     
     # Racks should now be different objects (App creates new list for P0)
     # And contents should likely differ (order or new tiles)

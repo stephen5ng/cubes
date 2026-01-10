@@ -38,7 +38,8 @@ class TestCubeGame(IsolatedAsyncioTestCase):
         events.on("input.update_previous_guesses")(nop)
         a_dictionary = dictionary.Dictionary(3, 6, my_open)
         a_dictionary.read("sowpods.txt", "bingos.txt")
-        self.app = app.App(self.publish_queue, a_dictionary)
+        from unittest.mock import MagicMock
+        self.app = app.App(self.publish_queue, a_dictionary, MagicMock())
         # Don't start the app in tests to avoid initialization issues
 
     def test_sort(self) -> None:

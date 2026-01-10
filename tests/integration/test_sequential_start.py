@@ -91,8 +91,8 @@ async def test_p1_joins_after_p0_started():
     assert game.racks[0].running, "P0 should still be running"
 
     # Verify independent racks
-    p0_tiles = game._app._rack_manager.get_rack(0).get_tiles()
-    p1_tiles = game._app._rack_manager.get_rack(1).get_tiles()
+    p0_tiles = game._app.rack_manager.get_rack(0).get_tiles()
+    p1_tiles = game._app.rack_manager.get_rack(1).get_tiles()
     
     # Since P0 has NOT played a word yet (only advanced time), racks should be IDENTICAL
     # (User requirement: players start with same letters)
@@ -101,16 +101,16 @@ async def test_p1_joins_after_p0_started():
     # --- Verify Independence (Copy-on-Write) ---
     # Manually modify P0's rack to simulate a move without relying on random dictionary words
     # This proves that if P0 changes their rack, P1 is unaffected (independent history)
-    current_p0_tiles = game._app._rack_manager.get_rack(0).get_tiles()
+    current_p0_tiles = game._app.rack_manager.get_rack(0).get_tiles()
     # Force a new list for P0 (simulating copy-on-write logic in App.guess_tiles)
     new_p0_tiles = list(current_p0_tiles)
     if new_p0_tiles:
         new_p0_tiles.pop() # Remove one tile
-        game._app._rack_manager.get_rack(0).set_tiles(new_p0_tiles)
+        game._app.rack_manager.get_rack(0).set_tiles(new_p0_tiles)
     
     # Verify divergence
-    p0_tiles_after = game._app._rack_manager.get_rack(0).get_tiles()
-    p1_tiles_after = game._app._rack_manager.get_rack(1).get_tiles()
+    p0_tiles_after = game._app.rack_manager.get_rack(0).get_tiles()
+    p1_tiles_after = game._app.rack_manager.get_rack(1).get_tiles()
     
     assert p0_tiles_after != p1_tiles_after, "Racks should diverge after P0 modifies their rack"
     assert len(p0_tiles_after) != len(p1_tiles_after), "Lengths should differ"
@@ -167,4 +167,4 @@ async def test_p1_starts_first():
     
     # Independence check
     # P1 hasn't played, P0 joined. Racks should match start state (Shared Start).
-    assert game._app._rack_manager.get_rack(0).get_tiles() == game._app._rack_manager.get_rack(1).get_tiles()
+    assert game._app.rack_manager.get_rack(0).get_tiles() == game._app.rack_manager.get_rack(1).get_tiles()

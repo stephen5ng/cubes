@@ -8,6 +8,7 @@ from io import StringIO
 from core import app
 from hardware import cubes_to_game
 from hardware.cubes_to_game import state as ctg_state
+from hardware.cubes_interface import CubesHardwareInterface
 from core import dictionary
 from core import tiles
 
@@ -31,12 +32,12 @@ class TestAppPerPlayerIntegration(unittest.IsolatedAsyncioTestCase):
         self.publish_queue = asyncio.Queue()
         
         # Create app instance
-        self.app = app.App(self.publish_queue, self.dictionary)
+        self.app = app.App(self.publish_queue, self.dictionary, CubesHardwareInterface())
         
         # Mock RackManager
-        self.app._rack_manager = Mock()
+        self.app.rack_manager = Mock()
         self.mock_racks = [Mock(), Mock()]
-        self.app._rack_manager.get_rack.side_effect = lambda i: self.mock_racks[i]
+        self.app.rack_manager.get_rack.side_effect = lambda i: self.mock_racks[i]
         
         for i, rack in enumerate(self.mock_racks):
             rack.get_tiles.return_value = [Mock() for _ in range(6)]
@@ -130,7 +131,7 @@ class TestAppInstanceCreation(unittest.TestCase):
         mock_dictionary = Mock()
 
         # Create app instance
-        test_app = app.App(mock_publish_queue, mock_dictionary)
+        test_app = app.App(mock_publish_queue, mock_dictionary, CubesHardwareInterface())
 
         # Test that the app was created successfully with expected attributes
         self.assertIsNotNone(test_app)
@@ -159,7 +160,7 @@ class TestPlayerToCubeSetMapping(unittest.IsolatedAsyncioTestCase):
         self.publish_queue = asyncio.Queue()
 
         # Create app instance
-        self.app = app.App(self.publish_queue, self.dictionary)
+        self.app = app.App(self.publish_queue, self.dictionary, CubesHardwareInterface())
 
     async def test_keyboard_start_no_abc(self):
         """Test keyboard start preserves default mapping."""
@@ -245,7 +246,7 @@ class TestAppStartIntegration(unittest.IsolatedAsyncioTestCase):
         self.publish_queue = asyncio.Queue()
 
         # Create app instance
-        self.app = app.App(self.publish_queue, self.dictionary)
+        self.app = app.App(self.publish_queue, self.dictionary, CubesHardwareInterface())
 
         # Mock word logger to avoid missing attribute errors
         self.app._word_logger = Mock()
@@ -359,7 +360,7 @@ class TestAppEdgeCases(unittest.IsolatedAsyncioTestCase):
         self.publish_queue = asyncio.Queue()
 
         # Create app instance
-        self.app = app.App(self.publish_queue, self.dictionary)
+        self.app = app.App(self.publish_queue, self.dictionary, CubesHardwareInterface())
 
         # Mock word logger
         self.app._word_logger = Mock()
@@ -384,14 +385,14 @@ class TestAppEdgeCases(unittest.IsolatedAsyncioTestCase):
         # Create real racks with tiles for both players
         # Configure mock_racks for both players
         # We need to make sure _rack_manager.get_rack() returns these
-        self.app._rack_manager = Mock()
+        self.app.rack_manager = Mock()
         rack0 = tiles.Rack('ABCDEF')
         rack1 = tiles.Rack('GHIJKL')
-        self.app._rack_manager.get_rack.side_effect = lambda i: rack0 if i == 0 else rack1
+        self.app.rack_manager.get_rack.side_effect = lambda i: rack0 if i == 0 else rack1
         # Also mock accept_new_letter to return a dummy tile with an ID, as app uses it
         mock_tile = Mock()
         mock_tile.id = "mock_id"
-        self.app._rack_manager.accept_new_letter.return_value = mock_tile
+        self.app.rack_manager.accept_new_letter.return_value = mock_tile
 
         # Mock cubes_to_game.accept_new_letter
         with patch.object(cubes_to_game, 'accept_new_letter', new_callable=AsyncMock) as mock_accept:
@@ -416,9 +417,9 @@ class TestAppEdgeCases(unittest.IsolatedAsyncioTestCase):
         self.app._set_player_to_cube_set_mapping()
 
         # Configure mock_racks for player 0
-        self.app._rack_manager = Mock()
+        self.app.rack_manager = Mock()
         rack0 = tiles.Rack('ABCDEF')
-        self.app._rack_manager.get_rack.return_value = rack0
+        self.app.rack_manager.get_rack.return_value = rack0
 
         # Mock cubes_to_game functions
         with patch.object(cubes_to_game, 'old_guess', new_callable=AsyncMock):

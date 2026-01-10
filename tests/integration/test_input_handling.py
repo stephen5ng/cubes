@@ -86,7 +86,7 @@ async def test_keyboard_fallback():
     await run_until_condition(game, _, lambda: len(game.racks[0].letters()) > 0)
     
     # Inject 'A' into rack
-    core_rack = game._app._rack_manager.get_rack(0)
+    core_rack = game._app.rack_manager.get_rack(0)
     current_tiles = core_rack.get_tiles()
     
     # Modify the first tile to be 'A'

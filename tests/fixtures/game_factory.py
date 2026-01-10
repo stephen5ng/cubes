@@ -16,6 +16,7 @@ from systems.sound_manager import SoundManager
 from game_logging.game_loggers import GameLogger, OutputLogger
 from testing.fake_mqtt_client import FakeMqttClient
 from utils.pygameasync import events
+from hardware.cubes_interface import CubesHardwareInterface
 
 logger = logging.getLogger(__name__)
 
@@ -120,7 +121,7 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
     fake_mqtt = FakeMqttClient()
     publish_queue = asyncio.Queue()
 
-    app = App(publish_queue, real_dictionary)
+    app = App(publish_queue, real_dictionary, CubesHardwareInterface())
     await cubes_to_game.init(fake_mqtt)
     
     # Clear initial state

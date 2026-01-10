@@ -677,10 +677,10 @@ async def test_rapid_guess_sequence():
   - [x] `test_keyboard_fallback`
   - [x] `test_rapid_input_handling`
 - [ ] Game Scenarios (4 tests)
-  - [ ] `test_long_word_formation`
-  - [ ] `test_rapid_guess_sequence`
-  - [ ] `test_rack_exhaustion`
-  - [ ] `test_bingo_scoring`
+  - [x] `test_long_word_formation`
+  - [x] `test_rapid_guess_sequence`
+  - [x] `test_rack_exhaustion`
+  - [x] `test_bingo_scoring`
 
 ### CI Integration
 - [ ] Add new tests to CI pipeline

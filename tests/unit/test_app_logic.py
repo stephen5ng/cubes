@@ -11,7 +11,7 @@ def test_map_position_to_rack_1_player():
     # We mock dependencies to avoid full initialization
     mock_queue = MagicMock()
     mock_dict = MagicMock()
-    app = App(mock_queue, mock_dict)
+    app = App(mock_queue, mock_dict, MagicMock())
     app.player_count = 1
     
     # Test typical positions 0-6
@@ -24,7 +24,7 @@ def test_map_position_to_rack_2_player():
     """Verify mapping for 2-player mode."""
     mock_queue = MagicMock()
     mock_dict = MagicMock()
-    app = App(mock_queue, mock_dict)
+    app = App(mock_queue, mock_dict, MagicMock())
     app.player_count = 2
     
     # Player 0 Zone (0, 1, 2)
