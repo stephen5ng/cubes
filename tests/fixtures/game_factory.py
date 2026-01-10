@@ -115,8 +115,8 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
         # NOTE: Accessing private members (_bingos, _all_words) is acceptable in test setup
         # since Dictionary class doesn't provide a public API for test data injection.
         # This ensures get_rack() and word validation don't fail when dictionary files are missing.
-        real_dictionary._bingos = ["TESTING"]
-        real_dictionary._all_words.add("TESTING")
+        real_dictionary._bingos = ["TESTING", "EXAMPLE", "ANOTHER", "PLAYER", "WINNING"]
+        real_dictionary._all_words.update(["TESTING", "EXAMPLE", "ANOTHER", "PLAYER", "WINNING"])
     fake_mqtt = FakeMqttClient()
     publish_queue = asyncio.Queue()
 

@@ -99,15 +99,27 @@ class App:
         """Set the word logger for new word formation logging."""
         self._word_logger = word_logger
 
+    def _initialize_racks_for_fair_play(self) -> None:
+        """Initialize racks with identical tiles for competitive fairness.
+
+        All players start with the same letter sequence (Shared Start), behaving like
+        duplicate Scrabble. As players find words, their racks diverge independently
+        (Copy-on-Write behavior), ensuring one player's moves do not affect the others.
+        """
+        initial_rack = self._dictionary.get_rack()
+        for player in range(game_config.MAX_PLAYERS):
+            # Players start with identical tile sets
+            self._player_racks[player].set_tiles(initial_rack.get_tiles())
+            self._player_racks[player].refresh_next_letter()
+
     async def start(self, now_ms: int) -> None:
         print(">>>>>>>> app.STARTING")
         self._running = True
         # Set game running state for cube border logic
         cubes_to_game.set_game_running(True)
-        the_rack = self._dictionary.get_rack()
-        for player in range(game_config.MAX_PLAYERS):
-            self._player_racks[player].set_tiles(the_rack.get_tiles())
-            self._player_racks[player].refresh_next_letter()
+        self._initialize_racks_for_fair_play()
+        
+
         
         self._update_next_tile(self._player_racks[0].next_letter())
         self._score_card = ScoreCard(self._player_racks[0], self._dictionary)

@@ -37,6 +37,11 @@ async def simulate_word_formation(mqtt: FakeMqttClient, word_cubes: List[str], p
     # Last cube has no neighbor to the right
     await inject_neighbor_report(mqtt, word_cubes[-1], "-")
 
+async def disconnect_player_cubes(mqtt: FakeMqttClient, cubes: List[str]):
+    """Inject disconnection reports for a list of cubes."""
+    for cube in cubes:
+        await inject_neighbor_report(mqtt, cube, "-")
+
 async def inject_app_start(mqtt: FakeMqttClient):
     """Inject app/start message."""
     await mqtt.inject_message("app/start", "start")
@@ -53,3 +58,48 @@ async def process_mqtt_queue(game: Game, publish_queue: asyncio.Queue, mqtt: Fak
         elif topic_str == "app/start":
             await game.start_cubes(now_ms)
         # Add more mappings as needed
+
+def reset_abc_test_state(game: Game) -> int:
+    """Reset game and cubes_to_game state for ABC countdown testing.
+
+    Clears all running state to allow testing ABC sequences from scratch.
+
+    Args:
+        game: Game instance to reset
+
+    Returns:
+        Initial timestamp (always 0)
+    """
+    game.running = False
+    cubes_to_game.set_game_running(False)
+    # Clear started cube sets to allow re-testing ABC sequences
+    cubes_to_game.state._started_cube_sets.clear()
+    cubes_to_game.set_abc_countdown_delay(0)
+    return 0  # now_ms
+
+
+async def setup_abc_test(
+    game: Game,
+    mqtt: FakeMqttClient,
+    queue: asyncio.Queue,
+    player_cubes: List[List[str]],
+    now_ms: int = 0
+) -> None:
+    """Initialize cubes for ABC countdown test.
+
+    Isolates all cubes and activates ABC start mode.
+
+    Args:
+        game: Game instance
+        mqtt: Fake MQTT client
+        queue: Publish queue
+        player_cubes: List of cube lists per player (e.g., [["1","2","3"], ["11","12","13"]])
+        now_ms: Current timestamp
+    """
+    # Flatten all cubes and initialize as isolated
+    all_cubes = [cube for player in player_cubes for cube in player]
+    for cube in all_cubes:
+        await inject_neighbor_report(mqtt, cube, "-")
+
+    await process_mqtt_queue(game, queue, mqtt, now_ms)
+    await cubes_to_game.activate_abc_start_if_ready(queue, now_ms)
