@@ -97,7 +97,7 @@ async def test_both_players_abc_simultaneous():
 
 
 @async_test
-async def test_p1_only_abc():
+async def test_p0_only_abc():
     """Test only Player 0 pressing ABC buttons starts their game."""
     game, mqtt, queue = await create_test_game(descent_mode="discrete")
     now_ms = reset_abc_test_state(game)
@@ -123,7 +123,7 @@ async def test_p1_only_abc():
 
 
 @async_test
-async def test_p2_only_abc():
+async def test_p1_only_abc():
     """Test only Player 1 pressing ABC buttons starts their game."""
     game, mqtt, queue = await create_test_game(descent_mode="discrete")
     now_ms = reset_abc_test_state(game)

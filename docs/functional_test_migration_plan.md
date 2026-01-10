@@ -283,8 +283,8 @@ async def test_single_player_start():
 #### Tests to Create:
 1. `tests/integration/test_abc_countdown.py`:
    - `test_both_players_abc_simultaneous` - Both press ABC together
+   - `test_p0_only_abc` - Only P0 activates
    - `test_p1_only_abc` - Only P1 activates
-   - `test_p2_only_abc` - Only P2 activates
    - `test_per_player_abc_tracking` - Per-player ABC state management
 
 #### What to Test:
@@ -348,7 +348,7 @@ async def test_both_players_abc_simultaneous():
 #### Tests to Create:
 2. `tests/integration/test_sequential_start.py`:
    - `test_p1_joins_after_p0_started` - P1 joins mid-game
-   - `test_p2_starts_first` - P2 initiates, P0 joins later
+   - `test_p1_starts_first` - P1 initiates, P0 joins later
    - `test_sequential_start_generic` - Multiple join sequences
 
 #### What to Test:
@@ -420,8 +420,8 @@ async def test_p1_joins_after_p0_started():
    - `test_two_player_rack_isolation` - Racks don't interfere
 
 4. `tests/integration/test_single_player.py`:
-   - `test_single_player_p1_scoring` - P1 solo gameplay
-   - `test_single_player_p0_scoring` - P0 solo gameplay (coverage)
+   - `test_single_player_p0_scoring` - P0 solo gameplay
+   - `test_single_player_p1_scoring` - P1 solo gameplay (coverage)
 
 #### What to Test:
 
@@ -636,15 +636,16 @@ async def test_rapid_guess_sequence():
   - [x] `test_shield_blocks_letter_descent`
 - [ ] ABC Countdown (4 tests)
   - [x] `test_both_players_abc_simultaneous`
+  - [x] `test_p0_only_abc`
   - [x] `test_p1_only_abc`
-  - [x] `test_p2_only_abc`
   - [x] `test_per_player_abc_tracking`
 - [ ] Sequential Start (3 tests)
   - [ ] `test_p1_joins_after_p0_started`
-  - [ ] `test_p2_starts_first`
+  - [ ] `test_p1_starts_first`
   - [ ] `test_sequential_start_generic`
-- [ ] Core Gameplay (2 tests)
+- [ ] Core Gameplay (3 tests)
   - [ ] `test_two_player_competitive`
+  - [ ] `test_single_player_p0_scoring`
   - [ ] `test_single_player_p1_scoring`
 - [ ] Timed Mode (1 test)
   - [ ] `test_yellow_line_descent`
