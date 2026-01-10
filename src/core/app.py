@@ -166,12 +166,29 @@ class App:
             else:
                 logging.info(f"LOAD RACK: Skipping player {player} - game not started")
 
-    async def accept_new_letter(self, next_letter: str, position: int, now_ms: int) -> None:
-        # 1. Determine parameters for the manager
+    def _map_position_to_rack(self, position: int) -> tuple[int, int]:
+        """
+        Map a physical position to a (hit_rack_idx, position_offset) tuple.
+        
+        Returns:
+            hit_rack_idx: The index of the rack (player) that controls this position.
+            position_offset: The offset to add to the physical position to get the rack index.
+        """
         hit_rack_idx = 0
         position_offset = 0
+        
         if self._player_count > 1:
-            hit_rack_idx, position_offset = (0, 0) if position < 3 else (1, -3)
+            # 2-Player Logic:
+            # Pos 0-2 -> P0 (Rack 0), Offset 0
+            # Pos 3-5 -> P1 (Rack 1), Offset -3
+            split_idx = game_config.MAX_LETTERS // 2
+            hit_rack_idx, position_offset = (0, 0) if position < split_idx else (1, -split_idx)
+            
+        return hit_rack_idx, position_offset
+
+    async def accept_new_letter(self, next_letter: str, position: int, now_ms: int) -> None:
+        # 1. Determine parameters for the manager
+        hit_rack_idx, position_offset = self._map_position_to_rack(position)
         
         # 2. Delegate to RackManager
         changed_tile = self._rack_manager.accept_new_letter(
@@ -196,10 +213,7 @@ class App:
                 await self.guess_tiles(self._last_guess, False, player, now_ms)
 
     async def letter_lock(self, position: int, locked: bool, now_ms: int) -> bool:
-        position_offset = 0
-        hit_rack = 0
-        if self._player_count > 1:
-            hit_rack, position_offset = (0, 0) if position < 3 else (1, -3)
+        hit_rack, position_offset = self._map_position_to_rack(position)
 
         locked_tile_id = self._rack_manager.get_rack(hit_rack).position_to_id(position + position_offset)
 
