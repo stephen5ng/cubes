@@ -52,11 +52,13 @@ class GamepadInput(InputDevice):
     """Input device for standard USB gamepad."""
     
     def __str__(self):
-        return "GamepadInput"
+        return f"GamepadInput:{self.id}" if self.id is not None else "GamepadInput"
 
     async def process_event(self, event, now_ms: int):
         if event["type"] == "JOYBUTTONDOWN" and event["button"] == 9:
-            self.player_number = await self.handlers['start'](self, now_ms)
+            new_player_number = await self.handlers['start'](self, now_ms)
+            if new_player_number is not None:
+                self.player_number = new_player_number
             print(f"JOYSTICK player_number: {self.player_number}")
             return
 

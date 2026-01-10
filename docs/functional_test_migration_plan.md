@@ -671,11 +671,11 @@ async def test_rapid_guess_sequence():
   - [x] `test_yellow_line_descent` (implemented as `test_yellow_descends_slower_than_red`)
   - [x] `test_letter_pushback_on_yellow_line` (implemented as `test_red_line_pushback_on_yellow_line`)
   - [x] `test_timed_game_duration` (implemented as `test_timed_game_ends_at_duration`)
-- [ ] Input Handling (4 tests)
-  - [ ] `test_gamepad_axis_movement`
-  - [ ] `test_gamepad_button_guess`
-  - [ ] `test_keyboard_fallback`
-  - [ ] `test_rapid_input_handling`
+- [x] Input Handling (4 tests)
+  - [x] `test_gamepad_axis_movement`
+  - [x] `test_gamepad_button_guess`
+  - [x] `test_keyboard_fallback`
+  - [x] `test_rapid_input_handling`
 - [ ] Game Scenarios (4 tests)
   - [ ] `test_long_word_formation`
   - [ ] `test_rapid_guess_sequence`
