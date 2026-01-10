@@ -15,9 +15,21 @@ from game.game_state import Game
 from testing.fake_mqtt_client import FakeMqttClient
 import asyncio
 
+@pytest.mark.abc
+@pytest.mark.fast
 @async_test
 async def test_both_players_abc_simultaneous():
-    """Test both players pressing ABC buttons simultaneously."""
+    """Test both players pressing ABC buttons simultaneously.
+
+    Validates:
+    - Both players can trigger ABC countdown at same time
+    - Game starts with both players active
+    - Both players' racks are populated with tiles
+    - Player count is correctly set to 2
+    - Each player gets independent rack state
+
+    Regression guard for: Simultaneous ABC detection and multi-player initialization
+    """
     game, mqtt, queue = await create_test_game(descent_mode="discrete")
     now_ms = reset_abc_test_state(game)
 
@@ -54,6 +66,8 @@ async def test_both_players_abc_simultaneous():
     assert len(game.racks[1].tiles) > 0
 
 
+@pytest.mark.abc
+@pytest.mark.fast
 @async_test
 async def test_p0_only_abc():
     """Test only Player 0 pressing ABC buttons starts their game."""
@@ -80,6 +94,8 @@ async def test_p0_only_abc():
     assert not cubes_to_game.has_player_started_game(1), "Player 1 should NOT have started"
 
 
+@pytest.mark.abc
+@pytest.mark.fast
 @async_test
 async def test_p1_only_abc():
     """Test only Player 1 pressing ABC buttons starts their game."""
@@ -106,9 +122,20 @@ async def test_p1_only_abc():
     assert not cubes_to_game.has_player_started_game(0), "Player 0 should NOT have started"
 
 
+@pytest.mark.abc
+@pytest.mark.fast
 @async_test
 async def test_per_player_abc_tracking():
-    """Test that ABC sequences are tracked independently per player (0 vs 1)."""
+    """Test that ABC sequences are tracked independently per player (0 vs 1).
+
+    Validates:
+    - P0 incomplete sequence (A-B only) does not trigger start
+    - P1 complete sequence (A-B-C) triggers P1 start
+    - Players are tracked independently without interference
+    - Game only starts for players with complete ABC chains
+
+    Regression guard for: Per-player ABC state isolation and incomplete sequence handling
+    """
     game, mqtt, queue = await create_test_game(descent_mode="discrete")
     now_ms = reset_abc_test_state(game)
 

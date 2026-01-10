@@ -27,6 +27,18 @@ def pytest_configure(config):
     # Broaden filter for declare_namespace to catch messages with special chars
     config.addinivalue_line("filterwarnings", r"ignore:.*declare_namespace.*:DeprecationWarning")
 
+    # Register custom markers for test organization
+    config.addinivalue_line("markers", "abc: ABC countdown and game start tests")
+    config.addinivalue_line("markers", "multiplayer: Multi-player gameplay tests")
+    config.addinivalue_line("markers", "sequential: Sequential player join tests")
+    config.addinivalue_line("markers", "timed: Timed mode gameplay tests")
+    config.addinivalue_line("markers", "shield: Shield physics and lifecycle tests")
+    config.addinivalue_line("markers", "input: Input handling and controller tests")
+    config.addinivalue_line("markers", "hardware: Hardware interface wiring tests")
+    config.addinivalue_line("markers", "scenarios: Complex game scenario tests")
+    config.addinivalue_line("markers", "fast: Fast tests (< 1s)")
+    config.addinivalue_line("markers", "slow: Slow tests (> 5s)")
+
 @pytest.fixture
 def mock_hardware():
     """

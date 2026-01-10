@@ -18,9 +18,24 @@ from testing.fake_mqtt_client import FakeMqttClient
 import asyncio
 from unittest.mock import patch, MagicMock, AsyncMock
 
+@pytest.mark.sequential
+@pytest.mark.multiplayer
+@pytest.mark.fast
 @async_test
 async def test_p1_joins_after_p0_started():
-    """Test P1 joining after P0 has already started playing."""
+    """Test P1 joining after P0 has already started playing.
+
+    Validates:
+    - P0 can start and play alone via ABC sequence
+    - Game continues running after P0 starts
+    - P1 can join mid-game via independent ABC sequence
+    - P1 gets independent rack initialized with shared start state
+    - Copy-on-write behavior: racks start identical but diverge after moves
+    - P0's score and state preserved when P1 joins
+    - Both players' racks remain independent after join
+
+    Regression guard for: Late-join rack synchronization and copy-on-write semantics
+    """
     game, mqtt, queue = await create_test_game(descent_mode="discrete")
     now_ms = reset_abc_test_state(game)
 
@@ -114,6 +129,9 @@ async def test_p1_joins_after_p0_started():
     assert p1_tiles_after == p1_tiles, "P1 rack should remain unchanged (independent)"
 
 
+@pytest.mark.sequential
+@pytest.mark.multiplayer
+@pytest.mark.fast
 @async_test
 async def test_p1_starts_first():
     """Test P1 starting first, then P0 joins."""

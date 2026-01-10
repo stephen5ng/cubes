@@ -1,4 +1,3 @@
-
 import pytest
 import asyncio
 from typing import Tuple
@@ -16,6 +15,8 @@ from tests.fixtures.game_factory import (
     advance_milliseconds
 )
 
+@pytest.mark.timed
+@pytest.mark.fast
 @async_test
 async def test_yellow_descends_slower_than_red():
     """Verify yellow line descends slower than the red line (letter start_fall_y)."""
@@ -53,6 +54,9 @@ async def test_yellow_descends_slower_than_red():
     assert yellow_y_2 < red_y_2, "Yellow line still above Red line"
 
 
+@pytest.mark.timed
+@pytest.mark.shield
+@pytest.mark.fast
 @async_test
 async def test_red_line_pushback_on_yellow_line():
     """Verify red line gets pushed back to yellow line on collision at the red line."""
@@ -101,6 +105,8 @@ async def test_red_line_pushback_on_yellow_line():
         f"Red line ({game.letter.start_fall_y}) should be reset to Yellow line ({expected_red})"
 
 
+@pytest.mark.timed
+@pytest.mark.fast
 @async_test
 async def test_timed_game_ends_at_duration():
     """Verify timed game ends automatically when duration is reached."""
