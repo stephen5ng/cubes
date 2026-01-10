@@ -72,3 +72,11 @@ MQTT_CLIENT_PORT = 1883
 DATA_DIR = "assets/data"
 DICTIONARY_PATH = os.path.join(DATA_DIR, "sowpods.txt")
 BINGOS_PATH = os.path.join(DATA_DIR, "bingos.txt")
+
+# Shield Animation Physics
+# Shields accelerate upward using exponential growth:
+#   velocity = initial_speed * (acceleration_rate ^ time)
+#   initial_speed = -log(1+score) * SHIELD_INITIAL_SPEED_MULTIPLIER
+#   Negative initial_speed moves upward (negative Y direction)
+SHIELD_ACCELERATION_RATE = 1.05  # Exponential growth rate for upward velocity
+SHIELD_INITIAL_SPEED_MULTIPLIER = 1.0  # Multiplied by -log(1+score) for initial velocity

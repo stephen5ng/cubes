@@ -1,5 +1,6 @@
 import os
 import asyncio
+import inspect
 import pygame
 import logging
 from functools import wraps
@@ -113,18 +114,49 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
     
     return game, fake_mqtt, publish_queue
 
+def suppress_letter(game: Game) -> None:
+    """Effectively disables the falling letter by moving it far off screen.
+
+    Useful for tests that focus on shield animation without collision interference.
+
+    Args:
+        game: Game instance to modify
+    """
+    game.letter.pos = [0, 0]
+    game.letter.game_area_offset_y = -2000
+    game.letter.letter = ""
+
 async def run_until_condition(
     game: Game, 
     publish_queue: asyncio.Queue,
-    condition: Callable[[], bool], 
+    condition: Callable[[], bool] | Callable[[int, int], bool], 
     max_frames: int = MAX_SIMULATION_FRAMES, 
     visual: Optional[bool] = None
 ) -> bool:
-    """Run the game loop until condition is met or timeout."""
+    """Run the game loop until condition is met or timeout.
+
+    Args:
+        game: Game instance
+        publish_queue: MQTT publish queue
+        condition: Either `lambda: bool` or `lambda frame_count, now_ms: bool`
+        max_frames: Maximum frames to run before timeout
+        visual: Enable visual display mode
+
+    Returns:
+        True if condition met, False if timeout
+    """
     if visual is None:
         visual = is_visual_mode()
     if not pygame.display.get_surface():
         pygame.display.set_mode((game_config.SCREEN_WIDTH, game_config.SCREEN_HEIGHT))
+
+    # Normalize callback to always accept (frame_count, now_ms)
+    # Check arity once at start, not every iteration
+    sig = inspect.signature(condition)
+    if len(sig.parameters) == 0:
+        normalized_condition = lambda fc, ms: condition()
+    else:
+        normalized_condition = condition
 
     clock = pygame.time.Clock()
     frame_count = 0
@@ -149,7 +181,8 @@ async def run_until_condition(
         countdown_incidents = await cubes_to_game.check_countdown_completion(publish_queue, now_ms, game.sound_manager)
         game_incidents = await game.update(window, now_ms)
 
-        if condition():
+        # Check condition with normalized callback
+        if normalized_condition(frame_count, now_ms):
             return True
 
         if visual:
