@@ -199,7 +199,7 @@ class App:
         position_offset = 0
         hit_rack = 0
         if self._player_count > 1:
-            hit_rack, position_offset = (0, 3) if position < 3 else (1, -3)
+            hit_rack, position_offset = (0, 0) if position < 3 else (1, -3)
 
         locked_tile_id = self._rack_manager.get_rack(hit_rack).position_to_id(position + position_offset)
 
