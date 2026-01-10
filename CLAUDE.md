@@ -1,5 +1,7 @@
+- **CRITICAL**: Run ALL integration tests before EVERY commit: `pytest tests/integration/ -v`. Never commit with failing tests.
+- When adding new integration tests, verify they pass in isolation AND with all other tests before committing.
 - Run unit tests before committing. Functional replays are heavy; prefer targeted unit tests unless explicitly updating goldens.
-- Run the functional tests (run_functional_tests.sh) before committing and feature changes.
+- Run the functional tests (run_functional_tests.sh) before committing feature changes.
 - MQTT neighbor protocol now uses numeric cube IDs with `cube/right/{sender}` and payload `"{neighbor_cube_id}"` or empty string to clear.
 - P0 cube IDs: 1-6; P1 cube IDs: 11-16.
 - ABC start countdown is frame-polled (not tied to incoming MQTT). Incidents are logged once per frame.
