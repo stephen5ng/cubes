@@ -2,7 +2,7 @@
 
 **Goal**: Replace heavyweight replay-based functional tests with fast, MQTT-mocked integration tests similar to `test_shield_physics.py`
 
-**Status**: Phase 1 Complete - Infrastructure Ready
+**Status**: Phase 2 In Progress - ABC Tests Started
 **Created**: 2026-01-09
 **Owner**: Team
 
@@ -165,7 +165,6 @@ async def test_shield_word_font_size():
 #### Shield Mechanics
 - Shield deactivation on collision
 - Letter bounce physics after shield hit
-- Shield health depletion on multiple hits
 - Multiple shields operate independently
 - Shield word appears in previous guesses
 - Shield blocks letter descent
@@ -209,37 +208,28 @@ async def test_shield_word_font_size():
 
 `test_shield_physics.py` already demonstrates the MQTT-mocking pattern and validates UI behavior (shield deactivation, letter bounce). Expand it with additional shield scenarios:
 
-#### Additional Tests to Add:
+#### Additional Tests Added:
 - [x] `test_shield_deactivation_on_hit` - Shield.active becomes False
 - [x] `test_multiple_shields_independent` - Multiple shields don't interfere
 - [x] `test_shield_word_in_previous_guesses` - Shield word appears in UI
 - [x] `test_shield_blocks_letter_descent` - Letter can't pass active shield
 
-**Example Addition**:
+**Note**: `tests/integration/test_shield_lifecycle.py` was also added (16 tests), covering creation, sizing, animation, scoring, and cleanup.
+
+**Example Addition** (from `test_shield_physics.py`):
 ```python
-async def test_shield_health_depletion():
-    """Shield health decreases on multiple hits until deactivation."""
-    game, mqtt, queue = await create_game()
-    shield = Shield((SHIELD_X, SHIELD_Y), "BLOCK", health=200, player=0, time_ms=0)
+async def test_shield_deactivation_on_hit():
+    """Verify shield active state deactivates on collision and moves off screen."""
+    game, _mqtt, _queue = await create_test_game()
+    shield = Shield((SHIELD_X, SHIELD_Y), "TEST", 100, 0, 0)
     game.shields.append(shield)
 
-    # First hit
-    await run_until_collision(game)
-    assert shield.health == 100, "Health should decrease by 100"
-    assert shield.active == True, "Shield should remain active"
+    setup_letter_above_shield(game, SHIELD_X, SHIELD_Y)
 
-    # Reset letter for second hit
-    game.letter.pos = [SHIELD_X, 0]
-    game.letter.start(0)
+    await run_until_condition(game, _queue, lambda fc, ms: not shield.active)
 
-    # Second hit
-    await run_until_collision(game)
-    assert shield.health == 0, "Health should be depleted"
-    assert shield.active == False, "Shield should deactivate"
-
-    # Verify both hits in previous guesses
-    guesses = [g.word for g in game.guesses_manager.guesses]
-    assert guesses.count("BLOCK") == 2, "Both hits should appear in guesses"
+    assert not shield.active, "Shield should be deactivated after collision"
+    assert shield.pos[1] >= game_config.SCREEN_HEIGHT, "Shield should move off screen"
 ```
 
 **Effort**: 4 hours to add 5 additional test cases
@@ -288,7 +278,7 @@ async def test_single_player_start():
 
 **Goal**: Replace 4 ABC countdown tests
  
- **Status**: 🔄 In Progress
+ **Status**: 🔄 In Progress (1/4 tests complete)
 
 #### Tests to Create:
 1. `tests/integration/test_abc_countdown.py`:
@@ -645,7 +635,7 @@ async def test_rapid_guess_sequence():
   - [x] `test_shield_word_in_previous_guesses`
   - [x] `test_shield_blocks_letter_descent`
 - [ ] ABC Countdown (4 tests)
-  - [ ] `test_both_players_abc_simultaneous`
+  - [x] `test_both_players_abc_simultaneous`
   - [ ] `test_p1_only_abc`
   - [ ] `test_p2_only_abc`
   - [ ] `test_per_player_abc_tracking`

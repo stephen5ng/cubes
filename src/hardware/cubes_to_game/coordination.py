@@ -214,6 +214,7 @@ async def init(subscribe_client):
 
     # Initialize player game states
     state.reset_player_started_state()
+    state.reset_started_cube_sets()
 
     # Reset ABC manager state
     state.abc_manager.reset()

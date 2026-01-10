@@ -65,6 +65,12 @@ def reset_player_started_state() -> None:
     _started_players = set()
 
 
+def reset_started_cube_sets() -> None:
+    """Reset the set of cube sets that completed ABC countdown."""
+    global _started_cube_sets
+    _started_cube_sets = set()
+
+
 def add_started_cube_set(cube_set_id: int) -> None:
     """Mark a cube set as having completed the ABC sequence.
 
