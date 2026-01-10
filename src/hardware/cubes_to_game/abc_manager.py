@@ -307,7 +307,7 @@ class ABCManager:
 
         # Check for completed countdowns
         completed_players = []
-        if self.countdown_complete_time and now_ms >= self.countdown_complete_time:
+        if self.countdown_complete_time is not None and now_ms >= self.countdown_complete_time:
             sound_manager.play_crash()
             # All players in countdown complete at the same time
             for player in list(self.player_countdown_active.keys()):

@@ -59,7 +59,7 @@ def async_test(coro):
             # Ensure events engine is running
             if not events.running:
                 await events.start()
-            
+
             with patch('pygame.time.get_ticks', side_effect=mock_time.get_ticks):
                 try:
                     await coro(*args, **kwargs)
@@ -69,6 +69,31 @@ def async_test(coro):
 
         return asyncio.run(run_with_events())
     return wrapper
+
+def ensure_pygame_initialized(visual: bool) -> None:
+    """Ensure pygame is initialized with the correct video driver.
+
+    If pygame is already initialized with the wrong driver (e.g., dummy when visual mode
+    is requested), it will be reinitialized.
+
+    Args:
+        visual: Whether visual mode is enabled (True = real display, False = dummy)
+    """
+    needs_reinit = False
+
+    if pygame.get_init():
+        current_driver = pygame.display.get_driver()
+        if visual and current_driver == 'dummy':
+            # Need to switch from dummy to real display
+            pygame.quit()
+            needs_reinit = True
+    else:
+        needs_reinit = True
+
+    if needs_reinit:
+        pygame.init()
+        if not pygame.font.get_init():
+            pygame.font.init()
 
 async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool] = None) -> Tuple[Game, FakeMqttClient, asyncio.Queue]:
     """Factory for common test game setup."""
@@ -80,12 +105,18 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
     elif "SDL_VIDEODRIVER" not in os.environ:
         os.environ["SDL_VIDEODRIVER"] = "dummy"
 
-    if not pygame.get_init():
-        pygame.init()
-    if not pygame.font.get_init():
-        pygame.font.init()
+    ensure_pygame_initialized(visual)
 
     real_dictionary = dictionary.Dictionary(game_config.MIN_LETTERS, game_config.MAX_LETTERS)
+    try:
+        real_dictionary.read(game_config.DICTIONARY_PATH, game_config.BINGOS_PATH)
+    except FileNotFoundError:
+        # Fallback for when running tests where assets might not be found or not needed
+        # NOTE: Accessing private members (_bingos, _all_words) is acceptable in test setup
+        # since Dictionary class doesn't provide a public API for test data injection.
+        # This ensures get_rack() and word validation don't fail when dictionary files are missing.
+        real_dictionary._bingos = ["TESTING"]
+        real_dictionary._all_words.add("TESTING")
     fake_mqtt = FakeMqttClient()
     publish_queue = asyncio.Queue()
 

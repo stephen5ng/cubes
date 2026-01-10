@@ -3,6 +3,7 @@ import logging
 from typing import List, Optional
 from testing.fake_mqtt_client import FakeMqttClient
 from hardware import cubes_to_game
+from game.game_state import Game
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +41,7 @@ async def inject_app_start(mqtt: FakeMqttClient):
     """Inject app/start message."""
     await mqtt.inject_message("app/start", "start")
 
-async def process_mqtt_queue(game, publish_queue: asyncio.Queue, mqtt: FakeMqttClient, now_ms: int):
+async def process_mqtt_queue(game: Game, publish_queue: asyncio.Queue, mqtt: FakeMqttClient, now_ms: int) -> None:
     """Process all pending MQTT messages in the fake client."""
     # This matches the logic in pygamegameasync._process_mqtt_messages and run_single_frame
     while not mqtt._message_queue.empty():
