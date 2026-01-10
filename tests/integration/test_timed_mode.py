@@ -6,7 +6,15 @@ from typing import Tuple
 from game.game_state import Game
 from game.components import Shield
 from config import game_config
-from tests.fixtures.game_factory import create_test_game, async_test, run_until_condition, advance_frames
+from tests.fixtures.game_factory import (
+    create_test_game,
+    create_shield,
+    async_test,
+    run_until_condition,
+    advance_frames,
+    advance_seconds,
+    advance_milliseconds
+)
 
 @async_test
 async def test_yellow_descends_slower_than_red():
@@ -18,12 +26,9 @@ async def test_yellow_descends_slower_than_red():
     # Reset running to False to force a full start() which initializes start_time_s
     game.running = False
     await game.start_cubes(now_ms=0)
-    
-    # Advance time by 10 seconds (10000ms)
-    target_ms = 10000
-    frames = target_ms // 16  # Approx 16ms per frame
-    
-    await advance_frames(game, queue, frames)
+
+    # Advance time by 10 seconds
+    await advance_seconds(game, queue, 10)
     
     red_y = game.letter.start_fall_y
     # PositionTracker tracks start_fall_y which is the visual Y
@@ -37,8 +42,8 @@ async def test_yellow_descends_slower_than_red():
     ratio = yellow_y / red_y if red_y > 0 else 0
     assert 0.2 < ratio < 0.45, f"Yellow/Red ratio {ratio:.2f} should be approx 0.33"
 
-    # Advance more
-    await advance_frames(game, queue, frames) # Another 10s
+    # Advance another 10 seconds
+    await advance_seconds(game, queue, 10)
     
     red_y_2 = game.letter.start_fall_y
     yellow_y_2 = game.yellow_tracker.start_fall_y
@@ -55,30 +60,29 @@ async def test_red_line_pushback_on_yellow_line():
     game, fake_mqtt, queue = await create_test_game(descent_mode="timed", timed_duration_s=60)
     game.running = False
     await game.start_cubes(now_ms=0)
-    
+
     # Advance until lines have moved down significantly (30s)
-    frames_30s = 30000 // 16
-    await advance_frames(game, queue, frames_30s)
+    await advance_seconds(game, queue, 30)
     
     current_red_y = game.letter.start_fall_y
     current_yellow_y = game.yellow_tracker.start_fall_y
     
     assert current_red_y > current_yellow_y + 20, "Red line needs to be significantly below yellow line for this test"
-    
+
     # 1. Force letter to be exactly at start_fall_y using _apply_descent
     # This prepares the internal state (current_fall_start_y) so it sticks to the red line.
-    setup_ms = frames_30s * 16
+    setup_ms = 30000  # 30 seconds in milliseconds
     game.letter._apply_descent(current_red_y, setup_ms)
-    
+
     # 2. Place a shield there so it collides.
     shield_x = game.letter.pos[0]
     letter_bottom = game.letter.get_screen_bottom_y()
-    
-    shield = Shield((shield_x, letter_bottom - 5), "PUSH", 100, 0, 0)
+
+    shield = create_shield("PUSH", x=shield_x, y=letter_bottom - 5)
     game.shields.append(shield)
-    
-    # 3. a Run update at next frame
-    now_ms = (frames_30s + 1) * 16
+
+    # 3. Run update at next frame
+    now_ms = setup_ms + 16
     
     import pygame
     window = pygame.display.get_surface()
@@ -107,16 +111,13 @@ async def test_timed_game_ends_at_duration():
     game.running = False
     await game.start_cubes(now_ms=0)
     assert game.running
-    
+
     # Fast forward to just before end (5s before)
-    duration_ms = duration_s * 1000
-    frames_before = (duration_ms - 5000) // 16 
-    await advance_frames(game, queue, frames_before)
-    
+    await advance_seconds(game, queue, duration_s - 5)
+
     assert game.running, f"Game should still be running 5s before duration. Score: {game.scores[0].score}"
-    
-    # Fast forward past end
-    frames_past = 10000 // 16 
-    await advance_frames(game, queue, frames_past)
+
+    # Fast forward past end (advance another 10 seconds to be sure)
+    await advance_seconds(game, queue, 10)
     
     assert not game.running, "Game should have ended after duration expired (via letter hitting rack continuously or explicit timeout)"

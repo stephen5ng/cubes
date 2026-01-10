@@ -1,25 +1,22 @@
 import pytest
 from typing import List
-from tests.fixtures.game_factory import create_test_game, async_test, advance_frames
+from tests.fixtures.game_factory import create_test_game, async_test, advance_frames, advance_seconds
 from tests.fixtures.mqtt_helpers import (
-    simulate_abc_sequence, 
-    process_mqtt_queue, 
+    simulate_abc_sequence,
+    process_mqtt_queue,
     inject_neighbor_report,
     reset_abc_test_state,
-    setup_abc_test,
     setup_abc_test,
     simulate_word_formation,
     disconnect_player_cubes
 )
 from tests.assertions.game_assertions import assert_player_started
+from tests.constants import ABC_COUNTDOWN_FRAMES
 from hardware import cubes_to_game
 from game.game_state import Game
 from testing.fake_mqtt_client import FakeMqttClient
 import asyncio
 from unittest.mock import patch, MagicMock, AsyncMock
-
-# Reuse constant
-ABC_COUNTDOWN_FRAMES = 50
 
 @async_test
 async def test_p1_joins_after_p0_started():
@@ -57,10 +54,10 @@ async def test_p1_joins_after_p0_started():
     await process_mqtt_queue(game, queue, mqtt, now_ms)
 
     # --- P0 plays for a bit ---
-    # Advance time to simulate gameplay (e.g., 5 seconds)
+    # Advance time to simulate gameplay (5 seconds)
     # This ensures P0 state progresses
     initial_score = game.scores[0].score
-    await advance_frames(game, queue, frames=300) # ~5 seconds at 60fps
+    await advance_seconds(game, queue, 5)
     
     # Verify P0 is still running ok
     assert game.racks[0].running

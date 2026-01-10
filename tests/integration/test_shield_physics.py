@@ -13,16 +13,22 @@ from typing import List
 from game.components import Shield
 from game.game_state import Game
 from config import game_config
-from tests.fixtures.game_factory import create_test_game, run_until_condition, advance_frames, async_test
+from tests.fixtures.game_factory import (
+    create_test_game,
+    create_shield,
+    run_until_condition,
+    advance_frames,
+    async_test
+)
 from tests.assertions.game_assertions import assert_word_in_guesses
-
-# Test Constants
-SHIELD_X = 100
-SHIELD_Y = 400
-SHIELD_HEALTH = 100
-BOUNCE_DETECTION_THRESHOLD = 50
-SHIELD_APPROACH_DISTANCE = 20
-SHIELD_PENETRATION_TOLERANCE = 50
+from tests.constants import (
+    SHIELD_X,
+    SHIELD_Y,
+    SHIELD_HEALTH,
+    BOUNCE_DETECTION_THRESHOLD,
+    SHIELD_APPROACH_DISTANCE,
+    SHIELD_PENETRATION_TOLERANCE
+)
 
 logger = logging.getLogger(__name__)
 
@@ -66,7 +72,7 @@ async def test_shield_collision_bounces_letter():
     """Shield collision causes bounce and deactivation."""
     game, _mqtt, _queue = await create_test_game()
 
-    shield = Shield((SHIELD_X, SHIELD_Y), "SHIELD", SHIELD_HEALTH, 0, 0)
+    shield = create_shield("SHIELD", x=SHIELD_X, y=SHIELD_Y, health=SHIELD_HEALTH)
     game.shields.append(shield)
 
     # Setup falling letter
@@ -91,7 +97,7 @@ async def test_shield_collision_bounces_letter():
 async def test_shield_deactivation_on_hit():
     """Verify shield active state deactivates on collision and moves off screen."""
     game, _mqtt, _queue = await create_test_game()
-    shield = Shield((SHIELD_X, SHIELD_Y), "TEST", 100, 0, 0)
+    shield = create_shield("TEST", x=SHIELD_X, y=SHIELD_Y)
     game.shields.append(shield)
 
     setup_letter_above_shield(game, SHIELD_X, SHIELD_Y)
@@ -105,8 +111,8 @@ async def test_shield_deactivation_on_hit():
 async def test_multiple_shields_independent():
     """Verify hitting one shield doesn't affect another."""
     game, _mqtt, _queue = await create_test_game()
-    s1 = Shield((SHIELD_X, 400), "S1", 100, 0, 0)
-    s2 = Shield((SHIELD_X, 500), "S2", 100, 0, 0)
+    s1 = create_shield("S1", x=SHIELD_X, y=400)
+    s2 = create_shield("S2", x=SHIELD_X, y=500)
     game.shields.extend([s1, s2])
 
     setup_letter_above_shield(game, SHIELD_X, 400)
@@ -120,7 +126,7 @@ async def test_multiple_shields_independent():
 async def test_shield_blocks_letter_descent():
     """Verify letter cannot pass through active shield."""
     game, _mqtt, _queue = await create_test_game()
-    shield = Shield((SHIELD_X, SHIELD_Y), "WALL", 100, 0, 0)
+    shield = create_shield("WALL", x=SHIELD_X, y=SHIELD_Y)
     game.shields.append(shield)
 
     setup_letter_above_shield(game, SHIELD_X, SHIELD_Y, distance=100)
@@ -146,7 +152,7 @@ async def test_shield_word_in_previous_guesses():
     # Ensure rack has letters so it's a 'possible' guess
     setup_rack_with_word(game, player=0, word=word)
 
-    shield = Shield((SHIELD_X, SHIELD_Y), word, 50, 0, 0)
+    shield = create_shield(word, x=SHIELD_X, y=SHIELD_Y, health=50)
     game.shields.append(shield)
 
     setup_letter_above_shield(game, SHIELD_X, SHIELD_Y)

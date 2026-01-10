@@ -17,11 +17,9 @@ from game_logging.game_loggers import GameLogger, OutputLogger
 from testing.fake_mqtt_client import FakeMqttClient
 from utils.pygameasync import events
 from hardware.cubes_interface import CubesHardwareInterface
+from tests.constants import FRAME_DURATION_MS, MAX_SIMULATION_FRAMES
 
 logger = logging.getLogger(__name__)
-
-FRAME_DURATION_MS = 16
-MAX_SIMULATION_FRAMES = 600
 
 from contextvars import ContextVar
 
@@ -148,6 +146,72 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
     
     return game, fake_mqtt, publish_queue
 
+
+def create_shield(
+    word: str,
+    x: int = 100,
+    y: int = 400,
+    health: int = 100,
+    player: int = 0,
+    created_time_ms: int = 0
+):
+    """Create a shield with test defaults.
+
+    Args:
+        word: The word displayed on the shield
+        x: Horizontal position (default: 100)
+        y: Vertical position (default: 400)
+        health: Shield health points (default: 100)
+        player: Player who owns the shield (default: 0)
+        created_time_ms: Creation timestamp (default: 0)
+
+    Returns:
+        Shield instance configured for testing
+
+    Example:
+        shield = create_shield("TEST", x=200, y=300)
+        game.shields.append(shield)
+    """
+    from game.components import Shield
+    return Shield((x, y), word, health, player, created_time_ms)
+
+
+async def create_game_with_started_players(
+    players: list[int],
+    descent_mode: str = "discrete",
+    timed_duration_s: int = game_config.TIMED_DURATION_S
+) -> Tuple[Game, FakeMqttClient, asyncio.Queue]:
+    """Create game with specified players already started.
+
+    This helper simplifies tests that need players pre-initialized without
+    going through the full ABC countdown sequence.
+
+    Args:
+        players: List of player IDs to mark as started (e.g., [0, 1])
+        descent_mode: Game descent mode ("discrete" or "timed")
+        timed_duration_s: Duration for timed mode games
+
+    Returns:
+        Tuple of (game, mqtt_client, publish_queue)
+
+    Example:
+        # Create game with both players started
+        game, mqtt, queue = await create_game_with_started_players([0, 1])
+        # Both players' racks are running and ready
+    """
+    game, mqtt, queue = await create_test_game(
+        descent_mode=descent_mode,
+        player_count=len(players),
+        timed_duration_s=timed_duration_s
+    )
+
+    for player in players:
+        game.racks[player].running = True
+        game._app.hardware.add_player_started(player)
+
+    return game, mqtt, queue
+
+
 def suppress_letter(game: Game) -> None:
     """Effectively disables the falling letter by moving it far off screen.
 
@@ -245,6 +309,48 @@ async def advance_frames(game: Game, publish_queue: asyncio.Queue, frames: int, 
     await run_until_condition(game, publish_queue, lambda: False, max_frames=frames, visual=visual)
 
 
+async def advance_seconds(
+    game: Game,
+    publish_queue: asyncio.Queue,
+    seconds: float,
+    visual: Optional[bool] = None
+) -> None:
+    """Advance game time by specified seconds.
+
+    Args:
+        game: Game instance
+        publish_queue: MQTT publish queue
+        seconds: Number of seconds to advance
+        visual: Enable visual display mode
+
+    Example:
+        await advance_seconds(game, queue, 5)  # Advance by 5 seconds
+    """
+    frames = int((seconds * 1000) // FRAME_DURATION_MS)
+    await advance_frames(game, publish_queue, frames, visual)
+
+
+async def advance_milliseconds(
+    game: Game,
+    publish_queue: asyncio.Queue,
+    milliseconds: int,
+    visual: Optional[bool] = None
+) -> None:
+    """Advance game time by specified milliseconds.
+
+    Args:
+        game: Game instance
+        publish_queue: MQTT publish queue
+        milliseconds: Number of milliseconds to advance
+        visual: Enable visual display mode
+
+    Example:
+        await advance_milliseconds(game, queue, 500)  # Advance by 500ms
+    """
+    frames = milliseconds // FRAME_DURATION_MS
+    await advance_frames(game, publish_queue, frames, visual)
+
+
 async def wait_for_guess_processing(
     game: Game,
     queue: asyncio.Queue,
@@ -254,8 +360,8 @@ async def wait_for_guess_processing(
 ) -> None:
     """Wait for a guess to be processed: score updated and word registered."""
     await run_until_condition(
-        game, 
-        queue, 
-        lambda: game.scores[player].score == expected_score and 
+        game,
+        queue,
+        lambda: game.scores[player].score == expected_score and
                 expected_word in game.guesses_manager.guess_to_player
     )
