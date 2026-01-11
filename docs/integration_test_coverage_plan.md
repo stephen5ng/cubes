@@ -76,13 +76,13 @@
 
 #### Word Validation & Guess Types (0 tests)
 **Missing**:
-- [ ] Good guess: valid word, not previously guessed → points + shield
-- [ ] Old guess: valid word, already guessed → no points, yellow feedback
-- [ ] Bad guess: invalid word → no points, red feedback
-- [ ] Bad guess: valid word but missing letters from rack → rejected
-- [ ] Minimum word length enforcement (3 letters)
-- [ ] Maximum word length enforcement (6 letters)
-- [ ] Dictionary lookup integration
+- [x] Good guess: valid word, not previously guessed → points + shield
+- [x] Old guess: valid word, already guessed → no points, yellow feedback
+- [x] Bad guess: invalid word → no points, red feedback
+- [x] Bad guess: valid word but missing letters from rack → rejected
+- [x] Minimum word length enforcement (3 letters)
+- [x] Maximum word length enforcement (6 letters)
+- [x] Dictionary lookup integration
 
 **Why Critical**: Primary user interaction - word submission and validation
 
