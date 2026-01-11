@@ -90,15 +90,15 @@
 
 #### Scoring Rules (Partial coverage)
 **Missing**:
-- [ ] Verify word score = letter count (3-6 range)
-- [ ] Bingo bonus only awarded when word uses ALL 6 tiles
-- [ ] Bingo bonus = exactly +10 points
-- [ ] Score cumulative across multiple words
-- [ ] Old/bad guesses don't affect score
+- [x] Verify word score = letter count (3-6 range)
+- [x] Bingo bonus only awarded when word uses ALL 6 tiles
+- [x] Bingo bonus = exactly +10 points
+- [x] Score cumulative across multiple words
+- [x] Old/bad guesses don't affect score
 
 **Why Critical**: Core game rules - players need reliable scoring
 
-**Test File**: `test_scoring_rules.py` (NEW)
+**Test File**: `test_scoring_rules.py` (Implemented)
 
 ---
 
