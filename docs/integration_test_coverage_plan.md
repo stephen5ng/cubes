@@ -64,11 +64,11 @@
 **Missing**:
 - [x] Letter falls at correct speed (15 seconds DROP_TIME_MS)
 - [x] Letter horizontal oscillation (1 second NEXT_COLUMN_MS)
-- [ ] Letter column movement bounces at rack boundaries
+- [x] Letter column movement bounces at rack boundaries
 - [x] Letter lock-on detection (2 columns away)
 - [x] Letter collision with rack bottom triggers game end
-- [ ] Letter position resets after word accepted
-- [ ] Letter beeping audio scales with distance
+- [x] Letter position resets after word accepted
+- [x] Letter beeping audio scales with distance
 
 **Why Critical**: Core game loop - letter descent is the primary mechanic
 
