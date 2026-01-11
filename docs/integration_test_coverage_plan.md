@@ -118,6 +118,129 @@
 
 **Test File**: `test_rack_fairplay.py` (NEW)
 
+#### Rack & Tile Synchronization (0 tests)
+**Missing**:
+- [ ] Rack initialization: both players get same letters
+- [ ] Tile ID consistency: IDs 0-5 persist across letter changes
+- [ ] Letter sync: new letter updates both racks at same tile ID
+- [ ] Position independence: players can reorder tiles independently
+- [ ] Duplicate letter handling: letters_to_ids selects correct tiles
+- [ ] Cache correctness: ID→position lookup stays O(1) after updates
+- [ ] Encapsulation: get_tiles() returns defensive copy (mutation-safe)
+- [ ] set_tiles() rebuilds ID cache correctly
+
+**Why Important**: Multi-player synchronization is core to fair gameplay; recent refactoring (2026-01-10) added O(1) cache that needs validation
+
+**Implementation Details**:
+- **Tile**: Immutable piece with `letter` (mutable via replacement) and `id` (0-5, never changes)
+- **Rack**: Manages 6 tiles, O(1) ID→position cache (`_id_to_pos`), conversion methods
+- **Sync mechanism**: Both racks share same tile IDs; new letter finds matching ID in other rack
+- **Recent changes**: Added cache, defensive copy in get_tiles(), simplified conversions
+
+**Test File**: `test_rack_synchronization.py` (NEW)
+
+**Example Tests**:
+```python
+async def test_rack_initialization_identical_letters():
+    """Both players start with identical letters for fair play."""
+    game, mqtt, queue = await create_test_game(player_count=2)
+    await start_both_players(game, mqtt)
+
+    rack0 = game._app._player_racks[0]
+    rack1 = game._app._player_racks[1]
+
+    assert rack0.letters() == rack1.letters()
+    assert [t.id for t in rack0.get_tiles()] == ['0','1','2','3','4','5']
+    assert [t.id for t in rack1.get_tiles()] == ['0','1','2','3','4','5']
+
+async def test_new_letter_syncs_both_racks():
+    """New letter updates both players' racks at same tile ID."""
+    game, mqtt, queue = await create_test_game(player_count=2)
+    await start_both_players(game, mqtt)
+
+    initial_letters = game._app._player_racks[0].letters()
+
+    # Simulate letter landing (updates tile ID '0')
+    await simulate_letter_landing(game, mqtt, position=0, letter='Z')
+
+    # Both racks should have same letters
+    assert game._app._player_racks[0].letters() == game._app._player_racks[1].letters()
+    # But both should differ from initial
+    assert game._app._player_racks[0].letters() != initial_letters
+
+async def test_rack_positions_independent():
+    """Players can reorder tiles without affecting other player."""
+    game, mqtt, queue = await create_test_game(player_count=2)
+    await start_both_players(game, mqtt)
+
+    # P0 makes guess (reorders tiles)
+    await simulate_word_formation(game, mqtt, player=0, word="CAT")
+
+    positions0 = [t.id for t in game._app._player_racks[0].get_tiles()]
+    positions1 = [t.id for t in game._app._player_racks[1].get_tiles()]
+
+    # Positions differ
+    assert positions0 != positions1
+    # But letters match
+    assert game._app._player_racks[0].letters() == game._app._player_racks[1].letters()
+
+async def test_get_tiles_defensive_copy():
+    """get_tiles() returns defensive copy to prevent external mutation."""
+    game, mqtt, queue = await create_test_game()
+    await start_player(game, mqtt, player=0)
+
+    rack = game._app._player_racks[0]
+    tiles1 = rack.get_tiles()
+    tiles2 = rack.get_tiles()
+
+    # Should be different list objects
+    assert tiles1 is not tiles2
+    # But same content
+    assert tiles1 == tiles2
+
+    # Mutating returned list shouldn't affect rack
+    tiles1.clear()
+    assert len(rack.get_tiles()) == 6  # Rack unchanged
+
+async def test_id_to_position_cache_performance():
+    """id_to_position should be O(1) via cache."""
+    game, mqtt, queue = await create_test_game()
+    await start_player(game, mqtt, player=0)
+
+    rack = game._app._player_racks[0]
+
+    # Test multiple lookups (should hit cache)
+    import time
+    start = time.time()
+    for _ in range(1000):
+        for id in ['0','1','2','3','4','5']:
+            pos = rack.id_to_position(id)
+            assert 0 <= pos < 6
+    elapsed = time.time() - start
+
+    # Should be very fast (< 10ms for 6000 lookups)
+    assert elapsed < 0.01, f"ID lookup too slow: {elapsed}s"
+
+async def test_letters_to_ids_duplicate_handling():
+    """letters_to_ids handles duplicate letters correctly."""
+    game, mqtt, queue = await create_test_game()
+    await start_player(game, mqtt, player=0)
+
+    rack = game._app._player_racks[0]
+
+    # Set rack to have duplicates (e.g., "EEHSST")
+    # Request word with duplicate
+    ids = rack.letters_to_ids("SHEET")
+
+    # Should get 5 IDs
+    assert len(ids) == 5
+    # IDs should be valid
+    assert all(id in ['0','1','2','3','4','5'] for id in ids)
+    # Should round-trip correctly
+    assert rack.ids_to_letters(ids) == "SHEET"
+```
+
+
 #### Player-to-Cube-Set Mapping (1 test - incomplete)
 **Missing**:
 - [ ] P0 uses cube set 0 (cubes 1-6)
@@ -271,12 +394,12 @@
 | Category | Current Tests | Missing Tests | Priority |
 |----------|---------------|---------------|----------|
 | **Core Mechanics** | 11 | 20 | **P1 - High** |
-| **Multi-Player** | 5 | 15 | **P2 - Medium** |
+| **Multi-Player** | 5 | 23 (+8 rack/tile) | **P2 - Medium** |
 | **Game Modes** | 3 | 8 | **P3 - Medium** |
 | **Hardware/MQTT** | 5 | 12 | **P4 - Med-Low** |
 | **Audio/UX** | 0 | 8 | **P5 - Low** |
 | **Error Handling** | 0 | 6 | **P6 - Low** |
-| **TOTAL** | **50** | **~69** | |
+| **TOTAL** | **50** | **~77** | |
 
 ---
 
@@ -327,7 +450,17 @@
    - Rack display highlighting
    - Tile ID preservation
 
-5. **`test_player_cube_mapping.py`** (NEW - 6 tests)
+5. **`test_rack_synchronization.py`** (NEW - 8 tests)
+   - Rack initialization identical letters
+   - Tile ID consistency (0-5 persist)
+   - Letter sync across racks
+   - Position independence (reordering)
+   - Duplicate letter handling
+   - Cache correctness (O(1) lookups)
+   - Encapsulation (defensive copy)
+   - set_tiles() cache rebuild
+
+6. **`test_player_cube_mapping.py`** (NEW - 6 tests)
    - P0 → cube set 0 mapping
    - P1 → cube set 1 mapping
    - Mapping established at start
@@ -335,14 +468,14 @@
    - Keyboard mode defaults
    - Sorted assignment consistency
 
-6. **`test_previous_guesses_display.py`** (NEW - 5 tests)
+7. **`test_previous_guesses_display.py`** (NEW - 5 tests)
    - Possible guesses list
    - Remaining guesses list
    - Player color attribution
    - Toggle between views
    - Guess count tracking
 
-**Deliverable**: 18 new tests covering multi-player fairness
+**Deliverable**: 26 new tests covering multi-player fairness and rack synchronization
 
 ---
 
@@ -423,13 +556,13 @@
 
 - **Current**: 50 tests
 - **Phase 1**: +20 tests (70 total)
-- **Phase 2**: +18 tests (88 total)
-- **Phase 3**: +12 tests (100 total)
-- **Phase 4**: +14 tests (114 total, optional)
-- **Phase 5**: +14 tests (128 total, if time permits)
+- **Phase 2**: +26 tests (96 total) [includes 8 rack/tile tests]
+- **Phase 3**: +12 tests (108 total)
+- **Phase 4**: +14 tests (122 total, optional)
+- **Phase 5**: +14 tests (136 total, if time permits)
 
-**Recommended Minimum**: 100 tests (Phases 1-3)
-**Comprehensive Coverage**: 128 tests (All phases)
+**Recommended Minimum**: 108 tests (Phases 1-3)
+**Comprehensive Coverage**: 136 tests (All phases)
 
 ---
 
@@ -445,14 +578,22 @@
 
 ## 📝 Notes
 
-- **Test execution time**: Target <60s for 100 tests (current: 50 tests in 27s)
+- **Test execution time**: Target <70s for 108 tests (current: 50 tests in 27s)
 - **CI integration**: Run full suite on every commit
 - **Test markers**: Use existing markers (fast, slow, hardware, etc.)
 - **Documentation**: Each test should have comprehensive docstring
 - **Regression guards**: Mark tests with specific bugs they prevent
 
+### Recent Changes Requiring Test Coverage
+
+**Rack/Tile Refactoring (2026-01-10)**:
+- Added O(1) ID→position cache (`_id_to_pos`) - needs performance validation
+- Changed `get_tiles()` to return defensive copy - needs encapsulation tests
+- Simplified conversion methods - needs correctness tests
+- Removed RackManager dead code - needs regression tests for synchronization
+
 ---
 
-**Document Version**: 1.0
+**Document Version**: 1.1
 **Last Updated**: 2026-01-10
 **Owner**: Team
