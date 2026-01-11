@@ -106,17 +106,17 @@
 
 #### Rack Management & Fair Play (1 test - incomplete)
 **Missing**:
-- [ ] Both players start with identical rack (fair play guarantee)
-- [ ] Racks are shuffled bingo words (6 letters from SOWPODS bingos)
-- [ ] Racks diverge after first different guess (copy-on-write)
-- [ ] Rack tiles refresh correctly after word accepted
-- [ ] New falling letter replaces correct rack position
-- [ ] Rack display highlights correct tiles during guess
-- [ ] Tile IDs preserved across rack operations
+- [x] Both players start with identical rack (fair play guarantee)
+- [x] Racks are shuffled bingo words (6 letters from SOWPODS bingos)
+- [x] Racks diverge after first different guess (copy-on-write)
+- [x] Rack tiles refresh correctly after word accepted
+- [x] New falling letter replaces correct rack position
+- [x] Rack display highlights correct tiles during guess
+- [x] Tile IDs preserved across rack operations
 
 **Why Important**: Fair play is a core game promise
 
-**Test File**: `test_rack_fairplay.py` (NEW)
+**Test File**: `test_rack_fairplay.py` (Implemented)
 
 #### Rack & Tile Synchronization (0 tests)
 **Missing**:

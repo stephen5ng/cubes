@@ -98,6 +98,9 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
     """Factory for common test game setup."""
     if visual is None:
         visual = is_visual_mode()
+        
+    import random
+    random.seed(42)
 
     if visual:
         os.environ.pop("SDL_VIDEODRIVER", None)
