@@ -60,19 +60,19 @@
 
 ### Priority 1: Core Game Mechanics (High Priority)
 
-#### Letter Descent & Collision (0 tests)
+#### Letter Descent & Collision (4 tests)
 **Missing**:
-- [ ] Letter falls at correct speed (15 seconds DROP_TIME_MS)
-- [ ] Letter horizontal oscillation (1 second NEXT_COLUMN_MS)
+- [x] Letter falls at correct speed (15 seconds DROP_TIME_MS)
+- [x] Letter horizontal oscillation (1 second NEXT_COLUMN_MS)
 - [ ] Letter column movement bounces at rack boundaries
-- [ ] Letter lock-on detection (2 columns away)
-- [ ] Letter collision with rack bottom triggers game end
+- [x] Letter lock-on detection (2 columns away)
+- [x] Letter collision with rack bottom triggers game end
 - [ ] Letter position resets after word accepted
 - [ ] Letter beeping audio scales with distance
 
 **Why Critical**: Core game loop - letter descent is the primary mechanic
 
-**Test File**: `test_letter_descent.py` (NEW)
+**Test File**: `test_letter_descent.py` (Implemented)
 
 #### Word Validation & Guess Types (0 tests)
 **Missing**:
