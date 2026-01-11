@@ -11,6 +11,7 @@ from core import dictionary
 from utils.pygameasync import events
 from hardware import cubes_to_game
 from core import tiles
+from hardware.cubes_interface import CubesHardwareInterface
 
 class TestCubeGame(IsolatedAsyncioTestCase):
     async def asyncSetUp(self) -> None:

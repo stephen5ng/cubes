@@ -11,6 +11,7 @@ from hardware.cubes_to_game import state as ctg_state
 from hardware.cubes_interface import CubesHardwareInterface
 from core import dictionary
 from core import tiles
+from hardware.cubes_interface import CubesHardwareInterface
 
 class TestAppPerPlayerIntegration(unittest.IsolatedAsyncioTestCase):
     """Test cases for app-level per-player integration."""

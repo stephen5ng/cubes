@@ -25,7 +25,6 @@ class TestRack(unittest.TestCase):
     def test_ids_to_letters(self) -> None:
         rack = tiles.Rack("FRIENDS")
         self.assertEqual('END', rack.ids_to_letters(list("345")))
-    
     def test_gen_next_letter_deterministic(self) -> None:
         """Test that get_next_letter is deterministic with same random state."""
         from core.tile_generator import TileGenerator
