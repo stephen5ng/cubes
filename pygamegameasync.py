@@ -35,6 +35,7 @@ from input.input_devices import (
     InputDevice, CubesInput, KeyboardInput, GamepadInput, DDRInput, 
     JOYSTICK_NAMES_TO_INPUTS
 )
+from input.input_controller import GameInputController
 from rendering.metrics import RackMetrics
 from rendering.animations import get_alpha, LetterSource
 from game.components import Score, Shield
@@ -234,19 +235,6 @@ class BlockWordsPygame:
         self.the_app = the_app
         self._publish_queue = publish_queue
 
-        # Create dependencies for injection
-        sound_manager = SoundManager()
-        rack_metrics = RackMetrics()
-
-        # Get letter beeps from sound manager for injection into Game
-        self.game = Game(the_app, self.letter_font, game_logger, output_logger, sound_manager,
-                        rack_metrics, sound_manager.get_letter_beeps(),
-                        descent_mode=self.descent_mode, timed_duration_s=self.timed_duration_s)
-
-        from input.input_controller import GameInputController
-        self.input_controller = GameInputController(self.game)
-        handlers = self.input_controller.get_handlers()
-
         screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         clock = Clock()
 
@@ -258,6 +246,27 @@ class BlockWordsPygame:
         else:
             await subscribe_client.subscribe("app/#")
             mqtt_client = subscribe_client
+
+        # Create dependencies for injection
+        sound_manager = SoundManager()
+        rack_metrics = RackMetrics()
+
+        # Get letter beeps from sound manager for injection into Game
+        self.game = Game(the_app, self.letter_font, game_logger, output_logger, sound_manager,
+                        rack_metrics, sound_manager.get_letter_beeps(),
+                        descent_mode=self.descent_mode, timed_duration_s=self.timed_duration_s)
+        self.input_controller = GameInputController(self.game)
+
+        # Define handlers dictionary after dependencies are initialized
+        handlers = {
+            'left': self.input_controller.handle_left_movement,
+            'right': self.input_controller.handle_right_movement,
+            'insert': self.input_controller.handle_insert_action,
+            'delete': self.input_controller.handle_delete_action,
+            'action': self.input_controller.handle_space_action,
+            'return': self.input_controller.handle_return_action,
+            'start': self.input_controller.start_game,
+        }
 
         keyboard_input = KeyboardInput(handlers)
         input_devices = [keyboard_input]
