@@ -164,13 +164,8 @@ async def test_rack_positions_independent():
     assert sorted(game._app.rack_manager.get_rack(0).letters()) == sorted(game._app.rack_manager.get_rack(1).letters())
 
 @async_test
-async def test_rack_tiles_refresh_after_word_accepted():
-    """Rack letters are NOT automatically refreshed after word accepted, but stay same.
-    Wait, the requirement says 'Rack tiles refresh correctly after word accepted'.
-    In cubes, tiles are only replaced when a falling letter lands.
-    A good guess reorders tiles but doesn't change the letters themselves.
-    Let's verify what happens after a good guess.
-    """
+async def test_rack_tiles_no_auto_refresh_after_good_guess():
+    """Verify rack letters are not automatically refreshed after a good guess."""
     game, mqtt, queue = await create_test_game(player_count=1)
     game.running = False  # Force game.start to run the full start sequence
     await game.start(CubesInput(None), 1000)

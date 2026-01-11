@@ -120,14 +120,14 @@
 
 #### Rack & Tile Synchronization (0 tests)
 **Missing**:
-- [ ] Rack initialization: both players get same letters
-- [ ] Tile ID consistency: IDs 0-5 persist across letter changes
-- [ ] Letter sync: new letter updates both racks at same tile ID
-- [ ] Position independence: players can reorder tiles independently
-- [ ] Duplicate letter handling: letters_to_ids selects correct tiles
-- [ ] Cache correctness: ID→position lookup stays O(1) after updates
-- [ ] Encapsulation: get_tiles() returns defensive copy (mutation-safe)
-- [ ] set_tiles() rebuilds ID cache correctly
+- [x] Rack initialization: both players get same letters
+- [x] Tile ID consistency: IDs 0-5 persist across letter changes
+- [x] Letter sync: new letter updates both racks at same tile ID
+- [x] Position independence: players can reorder tiles independently
+- [x] Duplicate letter handling: letters_to_ids selects correct tiles
+- [x] Cache correctness: ID→position lookup stays O(1) after updates
+- [x] Encapsulation: get_tiles() returns defensive copy (mutation-safe)
+- [x] set_tiles() rebuilds ID cache correctly
 
 **Why Important**: Multi-player synchronization is core to fair gameplay; recent refactoring (2026-01-10) added O(1) cache that needs validation
 
@@ -137,7 +137,7 @@
 - **Sync mechanism**: Both racks share same tile IDs; new letter finds matching ID in other rack
 - **Recent changes**: Added cache, defensive copy in get_tiles(), simplified conversions
 
-**Test File**: `test_rack_synchronization.py` (NEW)
+**Test File**: `test_rack_synchronization.py` (Implemented)
 
 **Example Tests**:
 ```python
