@@ -272,15 +272,15 @@ async def test_letters_to_ids_duplicate_handling():
 
 #### Discrete Mode vs Timed Mode (1 test)
 **Missing**:
-- [ ] Discrete mode: red line only moves on events (word/landing)
-- [ ] Discrete mode: Y_INCREMENT steps (not continuous)
-- [ ] Timed mode: continuous descent regardless of events
-- [ ] Timed mode: yellow line exists, discrete mode has no yellow line
-- [ ] Mode switch doesn't break game state
+- [x] Discrete mode: red line only moves on events (word/landing)
+- [x] Discrete mode: Y_INCREMENT steps (not continuous)
+- [x] Timed mode: continuous descent regardless of events
+- [x] Timed mode: yellow line exists, discrete mode has no yellow line
+- [x] Mode switch doesn't break game state
 
 **Why Important**: Different gameplay experiences need validation
 
-**Test File**: `test_game_modes.py` (NEW)
+**Test File**: `tests/integration/test_game_modes.py` (Implemented)
 
 #### Game Lifecycle (0 tests)
 **Missing**:
