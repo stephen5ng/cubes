@@ -3,6 +3,47 @@
 This module contains all mutable global state and provides setter/getter
 functions for clean encapsulation. It has no dependencies on other cubes_to_game
 modules to avoid circular imports.
+
+WHEN TO USE GLOBAL STATE (this module):
+- State that spans multiple cube sets (e.g., game_running affects both players)
+- State needed by coordination layer across async boundaries
+- State that tests need to inject/replace (e.g., manager instances)
+- Configuration that can be overridden at runtime (e.g., ABC_COUNTDOWN_DELAY_MS)
+
+WHEN NOT TO USE GLOBAL STATE:
+- Per-player cube state → use CubeSetManager
+- Per-player ABC countdown state → use ABCManager
+- Transient function-local state → use local variables
+- Configuration that never changes → use config.game_config
+
+STATE CATEGORIES:
+
+1. Game Lifecycle State:
+   - _game_running: Whether any game is currently active
+   - _started_players: Set of players (0, 1) who have started their games
+   - _started_cube_sets: Set of cube sets (0, 1) that completed ABC countdown
+
+2. Manager Instances (for test injection):
+   - cube_set_managers: List of CubeSetManager instances (one per player)
+   - abc_manager: ABCManager instance for countdown sequences
+
+3. Callback Functions (injected by game logic layer):
+   - guess_tiles_callback: Called when player makes a guess
+   - start_game_callback: Called when player completes ABC countdown
+
+4. Hardware Mappings:
+   - cube_to_cube_set: Maps cube ID (e.g., "1") to cube_set_id (0 or 1)
+   - locked_cubes: Tracks which cube is currently locked per player
+
+5. Guess Tracking State:
+   - last_guess_tiles: List of tile IDs in the most recent guess
+   - last_tiles_with_letters: List of tiles last loaded to rack
+
+ARCHITECTURE NOTES:
+- This module has NO imports from other cubes_to_game modules (prevents circular deps)
+- Manager instances are created in coordination.py but stored here for shared access
+- Tests can replace manager instances and have all code see the replacement
+- All state mutations go through setter functions for debuggability
 """
 
 import logging
