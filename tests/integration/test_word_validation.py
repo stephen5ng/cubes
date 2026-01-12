@@ -4,6 +4,7 @@ import os
 import asyncio
 from unittest.mock import MagicMock
 from tests.fixtures.game_factory import create_test_game, async_test, advance_seconds
+from tests.fixtures.test_context import IntegrationTestContext
 from core.dictionary import Dictionary
 from game.letter import GuessType
 from hardware.cubes_to_game import state as cubes_state
@@ -27,24 +28,17 @@ async def verify_message_published(mqtt, queue, expected_topic_suffix):
 @async_test
 async def test_good_guess_unique():
     """Test a valid, new word guess awards points and triggers a shield."""
-    custom_dict_path = "/tmp/test_good_guess.txt"
-    with open(custom_dict_path, "w") as f:
-        f.write("HELLO\nWORLD\n")
+    ctx = await IntegrationTestContext.create(players=[0])
     
-    game, mqtt, queue = await create_test_game()
-    new_dict = Dictionary(min_letters=3, max_letters=6)
-    new_dict.read(custom_dict_path, custom_dict_path)
-    update_app_dictionary(game._app, new_dict)
-
-    game.start_time_s = 0
-    # Force mapping for test environment
-    game._app._player_to_cube_set = {0: 0}
-
+    # Setup Dictionary
+    from core.dictionary import Dictionary
+    test_dict = Dictionary.from_words(["HELLO", "WORLD"], min_letters=3, max_letters=6)
+    update_app_dictionary(ctx.game._app, test_dict)
     
     # 1. Setup Rack
     target_word = "HELLO"
     player = 0
-    rack = game._app.rack_manager.get_rack(player)
+    rack = ctx.game._app.rack_manager.get_rack(player)
     
     new_tiles = rack.get_tiles()
     for i, char in enumerate(target_word):
@@ -53,25 +47,22 @@ async def test_good_guess_unique():
     
     # 2. Make Guess
     tile_ids = [t.id for t in new_tiles[:len(target_word)]]
-    await game._app.guess_tiles(tile_ids, move_tiles=False, player=player, now_ms=1000)
-    await asyncio.sleep(0) # Let the async task scheduled by guess_tiles complete
+    
+    result = await ctx.make_guess(tile_ids, player=player)
 
-    
-    
     # 3. Validation
-    # Visual score only updates after shield collision animation.
-    # Check Shield existence implies success.
-    assert len(game.shields) == 1
-    assert game.shields[0].letters == "HELLO"
-    assert game.shields[0].active
-    # Score remains 0 until animation completes
-    assert game.scores[player].score == 0
-    
-    await verify_message_published(mqtt, queue, "/flash")
-    # Verify green border (0x07E0) - good guess
-    assert cubes_state.cube_set_managers[0].border_color == "0x07E0"
-    
-    os.remove(custom_dict_path)
+    ctx.assert_shield_created("HELLO")
+    ctx.assert_score_change(player, expected_delta=0) # Score 0 until animation? Wait, original test said score 0.
+    # Actually, make_guess logic: `score_change = self.game.scores[player].score - initial_score`.
+    # Original test said: `# Score remains 0 until animation completes`.
+    # `Game.update_score` is called by `ScoreCard` which receives update from `Shield` collision?
+    # No, App.guess_tiles -> _score_card.process_word -> returns score.
+    # Does it update game.score immediately or create a shield with a score?
+    # It creates a shield with score. Score component is updated when shield hits/flown away.
+    # So assertions are consistent.
+
+    ctx.assert_border_color("0x07E0")
+    ctx.assert_flash_sent()
 
 
 @async_test
@@ -127,23 +118,18 @@ async def test_old_guess():
 @async_test
 async def test_bad_guess_invalid_word():
     """Test that an invalid word (not in dictionary) is rejected."""
-    custom_dict_path = "/tmp/test_bad_guess.txt"
-    with open(custom_dict_path, "w") as f:
-        f.write("HELLO\n") 
-        
-    game, mqtt, queue = await create_test_game()
-    new_dict = Dictionary(3, 6)
-    new_dict.read(custom_dict_path, custom_dict_path)
-    update_app_dictionary(game._app, new_dict)
+    ctx = await IntegrationTestContext.create(players=[0])
+    
+    # Setup Dictionary
+    from core.dictionary import Dictionary
+    # Dictionary only has "HELLO", but we guess "WORLD"
+    test_dict = Dictionary.from_words(["HELLO"], min_letters=3, max_letters=6)
+    update_app_dictionary(ctx.game._app, test_dict)
     
     player = 0
-    # Force mapping
-    game._app._player_to_cube_set = {0: 0}
-    cubes_state.cube_set_managers[0].border_color = None
-
-
-    rack = game._app.rack_manager.get_rack(player)
     
+    # Setup Rack
+    rack = ctx.game._app.rack_manager.get_rack(player)
     new_tiles = rack.get_tiles()
     target_word = "WORLD"
     for i, char in enumerate(target_word):
@@ -152,16 +138,11 @@ async def test_bad_guess_invalid_word():
     tile_ids = [t.id for t in new_tiles[:len(target_word)]]
 
     # Make Bad Guess
-    await game._app.guess_tiles(tile_ids, move_tiles=False, player=player, now_ms=1000)
-    await asyncio.sleep(0.1) # Need more time for async processing?
-
-    await asyncio.sleep(0)
+    result = await ctx.make_guess(tile_ids, player=player)
     
-    assert game.scores[player].score == 0
-    # Verify white border for bad guess (0xFFFF)
-    assert cubes_state.cube_set_managers[0].border_color == "0xFFFF"
-    
-    os.remove(custom_dict_path)
+    # Assertions
+    ctx.assert_score(player, 0)
+    ctx.assert_border_color("0xFFFF") # White for bad guess
 
 
 @async_test

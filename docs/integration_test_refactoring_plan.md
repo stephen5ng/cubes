@@ -302,10 +302,10 @@ async def test_good_guess_feedback():
 ```
 
 **Acceptance Criteria:**
-- [ ] `IntegrationTestContext` class created with core methods
-- [ ] At least 3 tests refactored to use new context (as proof of concept)
-- [ ] Refactored tests are shorter and more readable
-- [ ] All tests pass
+- [x] `IntegrationTestContext` class created with core methods
+- [x] At least 3 tests refactored to use new context (as proof of concept)
+- [x] Refactored tests are shorter and more readable
+- [x] All tests pass
 
 **Files Changed:** 4-5 files
 **Lines Removed:** ~60 lines
@@ -433,7 +433,7 @@ async def test_good_guess_unique():
 ```
 
 **Acceptance Criteria:**
-- [ ] `Dictionary.from_words()` method implemented and tested
+- [x] `Dictionary.from_words()` method implemented and tested
 - [ ] All temp file dictionary creation replaced with in-memory approach
 - [ ] No `os.remove()` calls in test files
 - [ ] Tests run faster (no file I/O)

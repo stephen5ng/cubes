@@ -9,6 +9,27 @@ def _sort_word(word):
     return "".join(sorted(word))
 
 class Dictionary:
+    @classmethod
+    def from_words(
+        cls,
+        words: list[str],
+        bingos: list[str] = None,
+        min_letters: int = 3,
+        max_letters: int = 6
+    ) -> 'Dictionary':
+        """Create a dictionary from word lists without file I/O."""
+        d = cls(min_letters, max_letters)
+        for word in words:
+            word_upper = word.upper()
+            if min_letters <= len(word_upper) <= max_letters:
+                d._all_words.add(word_upper)
+                
+        if bingos is None:
+            d._bingos = [w for w in d._all_words if len(w) == max_letters]
+        else:
+            d._bingos = [b.upper() for b in bingos if len(b) >= min_letters]
+        return d
+
     def __init__(self, min_letters: int, max_letters: int, open: Callable=open) -> None:
         self._open = open
         self._bingos: list[str] = []
