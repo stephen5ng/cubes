@@ -214,13 +214,14 @@ class TestWordFormation(unittest.TestCase):
         self.cube_manager.cube_list = [
             "cube0", "cube1", "cube2", "cube3", "cube4", "cube5"
         ]
-        self.cube_manager.cubes_to_tileid = {
-            "cube0": "0",
-            "cube1": "1",
-            "cube2": "2",
-            "cube3": "3",
-            "cube4": "4",
-            "cube5": "5"
+        # Set tiles_to_cubes (source of truth) - cube_to_tile_id() provides inverse lookup
+        self.cube_manager.tiles_to_cubes = {
+            "0": "cube0",
+            "1": "cube1",
+            "2": "cube2",
+            "3": "cube3",
+            "4": "cube4",
+            "5": "cube5"
         }
         self.cube_manager.cube_chain.clear()
 
@@ -297,13 +298,14 @@ class TestLoopDetection(unittest.TestCase):
     def setUp(self):
         # Setup test data
         self.cube_manager = cubes_to_game.CubeSetManager(0)
-        self.cube_manager.cubes_to_tileid = {
-            "cube0": "0",
-            "cube1": "1",
-            "cube2": "2",
-            "cube3": "3",
-            "cube4": "4",
-            "cube5": "5"
+        # Set tiles_to_cubes (source of truth) - cube_to_tile_id() provides inverse lookup
+        self.cube_manager.tiles_to_cubes = {
+            "0": "cube0",
+            "1": "cube1",
+            "2": "cube2",
+            "3": "cube3",
+            "4": "cube4",
+            "5": "cube5"
         }
         self.cube_manager.cube_chain.clear()
 

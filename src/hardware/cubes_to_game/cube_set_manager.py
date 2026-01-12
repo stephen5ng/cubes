@@ -19,7 +19,6 @@ TERMINOLOGY:
 
 MAPPINGS:
 - tiles_to_cubes: tile_id ('0'-'5') → cube_id ('1', '2', etc.)
-- cubes_to_tileid: cube_id → tile_id (INVERSE - to be removed in Phase 3)
 - cubes_to_letters: cube_id → current letter displayed on cube
 - cube_chain: cube_id → neighbor cube_id (for word formation)
 """
@@ -39,10 +38,16 @@ class CubeSetManager:
         self.cube_chain: Dict[str, str] = {}
         self.cubes_to_letters: Dict[str, str] = {}
         self.tiles_to_cubes: Dict[str, str] = {}
-        self.cubes_to_tileid: Dict[str, str] = {}
         self.cubes_to_neighbors: Dict[str, str] = {}
         self.border_color: str = "0xFFFF"
         self.cube_list: List[str] = []  # Store ordered list of cubes
+
+    def cube_to_tile_id(self, cube_id: str) -> str | None:
+        """Get tile ID for a cube (inverse lookup of tiles_to_cubes)."""
+        for tile_id, cid in self.tiles_to_cubes.items():
+            if cid == cube_id:
+                return tile_id
+        return None
 
     def _find_unmatched_cubes(self):
         sources = set(self.cube_chain.keys())
@@ -83,9 +88,10 @@ class CubeSetManager:
             word_tiles = []
             sc = source_cube
             while sc:
-                if sc not in self.cubes_to_tileid:
+                tile_id = self.cube_to_tile_id(sc)
+                if tile_id is None:
                     return []
-                word_tiles.append(self.cubes_to_tileid[sc])
+                word_tiles.append(tile_id)
                 if len(word_tiles) > tiles.MAX_LETTERS:
                     logging.info("infinite loop")
                     return []
@@ -143,7 +149,6 @@ class CubeSetManager:
     def _initialize_arrays(self):
         cubes = self.cube_list
         self.tiles_to_cubes = {str(i): cubes[i] for i in range(len(cubes))}
-        self.cubes_to_tileid = {cube: tile_id for tile_id, cube in self.tiles_to_cubes.items()}
 
     async def init(self, all_cubes: List[str]):
         """Initialize cube manager for a specific player."""
