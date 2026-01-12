@@ -7,7 +7,7 @@ from tests.fixtures.game_factory import create_test_game, async_test, advance_se
 from tests.fixtures.test_context import IntegrationTestContext
 from core.dictionary import Dictionary
 from game.letter import GuessType
-from hardware.cubes_to_game import state as cubes_state
+# from hardware.cubes_to_game import state as cubes_state # Removed
 from tests.fixtures.test_helpers import update_app_dictionary, drain_mqtt_queue
 from tests.fixtures.dictionary_helpers import create_test_dictionary
 
@@ -74,7 +74,10 @@ async def test_old_guess():
     update_app_dictionary(game._app, new_dict)
     # Force mapping
     game._app._player_to_cube_set = {0: 0}
-    cubes_state.cube_set_managers[0].border_color = None
+    # Force mapping
+    game._app._player_to_cube_set = {0: 0}
+    # Check initial state implicitly by App getter
+    # assert game._app.get_player_border_color(0) is None
 
 
 
@@ -106,7 +109,8 @@ async def test_old_guess():
     assert len(game.shields) == 1
     
     # Verify yellow border for old guess (0xFFE0)
-    assert cubes_state.cube_set_managers[0].border_color == "0xFFE0"
+    # Verify yellow border for old guess (0xFFE0)
+    assert game._app.get_player_border_color(0) == "0xFFE0"
     
 
 
@@ -149,7 +153,9 @@ async def test_bad_guess_missing_letters():
     update_app_dictionary(game._app, new_dict)
     # Force mapping
     game._app._player_to_cube_set = {0: 0}
-    cubes_state.cube_set_managers[0].border_color = None
+    # Force mapping
+    game._app._player_to_cube_set = {0: 0}
+    # cubes_state.cube_set_managers[0].border_color = None
 
 
     
@@ -174,7 +180,8 @@ async def test_bad_guess_missing_letters():
     await asyncio.sleep(0)
     
     # Verify white border for bad guess (0xFFFF)
-    assert cubes_state.cube_set_managers[0].border_color == "0xFFFF"
+    # Verify white border for bad guess (0xFFFF)
+    assert game._app.get_player_border_color(0) == "0xFFFF"
     assert game.scores[player].score == 0
 
 

@@ -3,7 +3,7 @@ from collections import Counter
 from datetime import datetime
 from functools import wraps
 import logging
-from typing import Any, Callable, Coroutine
+from typing import Any, Callable, Coroutine, Optional
 
 from hardware.interface import HardwareInterface
 from config import game_config
@@ -105,6 +105,22 @@ class App:
     def set_word_logger(self, word_logger) -> None:
         """Set the word logger for new word formation logging."""
         self._word_logger = word_logger
+
+    def get_player_border_color(self, player: int) -> Optional[str]:
+        """Get border color for a player's cube set.
+
+        Args:
+            player: Player ID (0 or 1)
+
+        Returns:
+            Hex color string or None
+
+        Example:
+            color = app.get_player_border_color(0)
+            assert color == "0x07E0"  # green for good guess
+        """
+        cube_set = self._player_to_cube_set.get(player, player)
+        return self.hardware.get_cube_set_border_color(cube_set)
 
     def _initialize_racks_for_fair_play(self) -> None:
         """Initialize racks using the RackManager."""

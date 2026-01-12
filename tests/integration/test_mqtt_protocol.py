@@ -179,7 +179,7 @@ async def test_bad_old_guess_feedback():
     """Verify bad (white) and old (yellow) guess feedback."""
     game, mqtt, queue = await create_game_with_started_players(players=[0])
     app = game._app
-    from hardware.cubes_to_game import state # Import state for debugging
+    # No direct state import needed
     
     await drain_mqtt_queue(mqtt, queue)
     mqtt.clear_published()
@@ -198,7 +198,10 @@ async def test_bad_old_guess_feedback():
     # 0xFFFF is White
     assert "0xFFFF" in c1_msgs[-1][1]
     
-    print(f"DEBUG: Manager border color after bad: {state.cube_set_managers[0].border_color}")
+    # Verify internal state via App seam
+    assert app.get_player_border_color(0) == "0xFFFF"
+    
+    print(f"DEBUG: Manager border color after bad: {app.get_player_border_color(0)}")
     
     # 2. Old Guess (Yellow)
     mqtt.clear_published()
@@ -210,12 +213,14 @@ async def test_bad_old_guess_feedback():
     
     await app.hardware.old_guess(queue, tiles_in_guess, 0, 0)
     
-    print(f"DEBUG: Manager border color after old: {state.cube_set_managers[0].border_color}")
+    print(f"DEBUG: Manager border color after old: {app.get_player_border_color(0)}")
+    assert app.get_player_border_color(0) == "0xFFE0"
     
     # We also need to set last_guess_tiles because calling guess_last_tiles uses it
     # And currently it might be whatever was last used.
     # But checking state.cube_set_managers[0].border_color is enough to verify old_guess worked.
     # To verify MESSAGE, we call guess_last_tiles.
+    # We must ensure last_guess_tiles has our tiles.
     # We must ensure last_guess_tiles has our tiles.
     from hardware.cubes_to_game import state
     state.last_guess_tiles = [tiles_in_guess] # wait, it is list of lists? No, list of str?

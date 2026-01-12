@@ -96,9 +96,8 @@ class IntegrationTestContext:
         score_change = self.game.scores[player].score - initial_score
 
         # Get border color
-        from hardware.cubes_to_game import state
-        cube_set = self.game._app._player_to_cube_set.get(player, 0)
-        border_color = state.cube_set_managers[cube_set].border_color
+        # Note: We need player-based lookup, which app handles
+        border_color = self.game._app.get_player_border_color(player)
 
         # Check for flash
         flash_messages = [m for m in self.mqtt.published_messages if "flash" in m[0]]
@@ -130,12 +129,11 @@ class IntegrationTestContext:
             f"(initial={initial}, current={actual})"
         )
 
-    def assert_border_color(self, expected_color: str, cube_set: int = 0):
-        """Assert cube set has expected border color."""
-        from hardware.cubes_to_game import state
-        actual = state.cube_set_managers[cube_set].border_color
+    def assert_border_color(self, expected_color: str, player: int = 0):
+        """Assert player's cube set has expected border color."""
+        actual = self.game._app.get_player_border_color(player)
         assert actual == expected_color, (
-            f"Border color mismatch: expected {expected_color}, got {actual}"
+            f"Border color mismatch for player {player}: expected {expected_color}, got {actual}"
         )
 
     def assert_flash_sent(self, cube_id: Optional[int] = None):

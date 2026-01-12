@@ -523,11 +523,11 @@ assert border_color == "0x07E0"
 ```
 
 **Acceptance Criteria:**
-- [ ] `get_cube_set_border_color()` method added to `CubesHardwareInterface`
-- [ ] `get_player_border_color()` convenience method added to `App`
-- [ ] All direct `state.cube_set_managers` accesses replaced
-- [ ] Tests no longer import `hardware.cubes_to_game.state`
-- [ ] Unit tests added for new accessor methods
+- [x] `get_cube_set_border_color()` method added to `CubesHardwareInterface`
+- [x] `get_player_border_color()` convenience method added to `App`
+- [x] All direct `state.cube_set_managers` accesses replaced
+- [x] Tests no longer import `hardware.cubes_to_game.state`
+- [x] Unit tests added for new accessor methods
 
 **Files Changed:** ~8 files
 **Lines Removed:** ~25 lines

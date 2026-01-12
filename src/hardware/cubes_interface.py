@@ -68,3 +68,23 @@ class CubesHardwareInterface(HardwareInterface):
     def remove_player_from_abc_tracking(self, player_id: int) -> None:
         if player_id in ctg_state.abc_manager.player_abc_cubes:
              del ctg_state.abc_manager.player_abc_cubes[player_id]
+
+    def get_cube_set_border_color(self, cube_set_id: int) -> Optional[str]:
+        """Get the current border color for a cube set.
+
+        Args:
+            cube_set_id: Cube set identifier (0 for P0/cubes 1-6, 1 for P1/cubes 11-16)
+
+        Returns:
+            Hex color string (e.g., "0x07E0" for green) or None if not set
+
+        Raises:
+            IndexError: If cube_set_id is invalid
+
+        Note:
+            Primarily for testing - allows verification of visual feedback
+            without accessing internal state.
+        """
+        if cube_set_id < 0 or cube_set_id >= len(ctg_state.cube_set_managers):
+            raise IndexError(f"Invalid cube set ID: {cube_set_id}")
+        return ctg_state.cube_set_managers[cube_set_id].border_color
