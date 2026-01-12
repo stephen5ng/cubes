@@ -77,6 +77,7 @@ class RackDisplay:
     def start(self) -> None:
         """Start the rack display."""
         self.running = True
+        self.guess_type = GuessType.BAD
         self.draw()
 
     def stop(self) -> None:

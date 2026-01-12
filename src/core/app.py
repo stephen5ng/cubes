@@ -120,6 +120,9 @@ class App:
         self._update_next_tile(self.rack_manager.get_rack(0).next_letter())
         self._score_card = ScoreCard(self.rack_manager.get_rack(0), self._dictionary)
         
+        # Set player-to-cube-set mapping once for this game session
+        self._set_player_to_cube_set_mapping()
+
         # Remove participating players from ABC tracking (their cubes will get game letters)
         for player in range(game_config.MAX_PLAYERS):
             if self.hardware.has_player_started_game(player):
@@ -127,9 +130,6 @@ class App:
         
         # Clear ABC cubes for any remaining players (non-participants)
         await self.hardware.clear_remaining_abc_cubes(self._publish_queue, now_ms)
-
-        # Set player-to-cube-set mapping once for this game session
-        self._set_player_to_cube_set_mapping()
 
         await self.load_rack(now_ms)
         for player in range(game_config.MAX_PLAYERS):

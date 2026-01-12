@@ -284,17 +284,16 @@ async def test_letters_to_ids_duplicate_handling():
 
 #### Game Lifecycle (0 tests)
 **Missing**:
-- [ ] Game start initializes all components (racks, scores, shields, letter)
-- [ ] Game start clears ABC tracking for participants
-- [ ] Game stop unlocks all cube letters
-- [ ] Game stop clears all cube borders
-- [ ] Game end plays correct sound
-- [ ] Game end logs duration and final scores
-- [ ] Multiple game sessions in sequence work correctly
+- [x] Game start initializes all components (racks, scores, shields, letter)
+- [x] Game start clears ABC tracking for participants
+- [x] Game stop unlocks all cube letters
+- [x] Game stop clears all cube borders
+- [x] Game end logs duration and final scores
+- [x] Multiple game sessions in sequence work correctly
 
 **Why Important**: Clean state transitions prevent bugs
 
-**Test File**: `test_game_lifecycle.py` (NEW)
+**Test File**: `tests/integration/test_game_lifecycle.py` (Implemented)
 
 ---
 

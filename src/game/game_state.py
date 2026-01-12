@@ -85,6 +85,9 @@ class Game:
         self.aborted = False
         self.input_devices = []
         self.last_lock = False
+        # Initialize time tracking
+        self.start_time_s = 0
+        self.stop_time_s = 0
 
         events.on("game.stage_guess")(self.stage_guess)
         events.on("game.old_guess")(self.old_guess)
