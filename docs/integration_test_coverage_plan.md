@@ -322,13 +322,13 @@ async def test_letters_to_ids_duplicate_handling():
 - [x] Verify overflow/bounds handling (fixed slots validation)
 - [x] Verify visual updates on letter movement
 
-- [ ] Letter lock sends to correct cube based on position
-- [ ] Border clear affects all cubes in set
-- [ ] State persists across MQTT reconnections
+- [x] Letter lock sends to correct cube based on position
+- [x] Border clear affects all cubes in set
+- [x] State persists across MQTT reconnections
 
 **Why Moderate**: Regression guard for hardware bugs
 
-**Test File**: `test_cube_state_sync.py` (NEW)
+**Test File**: `tests/integration/test_cube_state_sync.py` (Implemented)
 
 ---
 
