@@ -22,27 +22,20 @@ from unittest.mock import patch, MagicMock, AsyncMock
 @pytest.mark.multiplayer
 @pytest.mark.fast
 @async_test
-async def test_p1_joins_after_p0_started():
-    """Test P1 joining after P0 has already started playing.
+async def test_p1_cannot_join_after_p0_started():
+    """Test that P1 cannot join after P0's game has started.
 
     Validates:
     - P0 can start and play alone via ABC sequence
     - Game continues running after P0 starts
-    - P1 can join mid-game via independent ABC sequence
-    - P1 gets independent rack initialized with shared letter pool
-    - Shared letter pool: racks have same letters but can arrange independently
-    - P0's score and state preserved when P1 joins
-    - Both players' racks remain independent after join
+    - P1 attempting ABC after game started is ignored (no ABC letters assigned)
+    - P1 does not join the running game
+    - P0's game continues uninterrupted
 
-    Regression guard for: Late-join rack synchronization and shared letter pool
+    Regression guard for: No late-join allowed once game is running
     """
     game, mqtt, queue = await create_test_game(descent_mode="discrete")
     now_ms = reset_abc_test_state(game)
-
-    # Patch guess_tiles to prevent accidental words from forking racks
-    # asking for forgiveness: modifying instance method
-    original_guess_tiles = game._app.guess_tiles
-    game._app.guess_tiles = AsyncMock()
 
     # Initialize cubes for both players
     # P0: 1, 2, 3
@@ -53,93 +46,60 @@ async def test_p1_joins_after_p0_started():
     # P0 forms A-B-C: 1->2->3
     await inject_neighbor_report(mqtt, "1", "2")
     await inject_neighbor_report(mqtt, "2", "3")
-    
+
     await process_mqtt_queue(game, queue, mqtt, now_ms)
-    
+
     # Wait for start
     await advance_frames(game, queue, frames=ABC_COUNTDOWN_FRAMES)
-    
+
     # Verify P0 started
     assert game.running, "Game should be running"
     assert_player_started(game, player=0)
     assert not cubes_to_game.has_player_started_game(1), "P1 should not be started yet"
-    
-    # Disconnect P0 cubes to prevent accidental words (e.g. "GAL")
+    assert game._app.player_count == 1, "Should be single player"
+
+    # Disconnect P0 cubes to prevent accidental words
     await disconnect_player_cubes(mqtt, ["1", "2", "3"])
     await process_mqtt_queue(game, queue, mqtt, now_ms)
 
     # --- P0 plays for a bit ---
-    # Advance time to simulate gameplay (5 seconds)
-    # This ensures P0 state progresses
     initial_score = game.scores[0].score
     await advance_seconds(game, queue, 5)
-    
+
     # Verify P0 is still running ok
     assert game.racks[0].running
-    
-    # --- Start P1 ---
+    assert game.running
+
+    # --- P1 attempts to join (should fail) ---
     # P1 forms A-B-C: 11->12->13
+    # This should be ignored since game is running
     await inject_neighbor_report(mqtt, "11", "12")
     await inject_neighbor_report(mqtt, "12", "13")
-    
+
     await process_mqtt_queue(game, queue, mqtt, now_ms)
-    
-    # Wait for P1 start (countdown?)
-    # Note: If game is already running, does P1 need countdown?
-    # Based on logic, ABC sequence triggers check_countdown_completion.
-    # We suspect it might be faster or immediate if game is running, but let's assume consistent behavior.
+
+    # Advance frames (P1 won't get countdown since ABC is inactive)
     await advance_frames(game, queue, frames=ABC_COUNTDOWN_FRAMES)
-    
-    # Verify P1 started
-    assert_player_started(game, player=1)
-    
-    # Verify P1 has correct rack state (fresh)
-    assert len(game.racks[1].tiles) > 0, "P1 rack not populated"
-    assert game.scores[1].score == 0, "P1 score should start at 0"
-    
-    # Verify P0 state preserved
-    # Score might not change if no words formed, but should be at least initial
+
+    # Verify P1 did NOT join
+    assert not cubes_to_game.has_player_started_game(1), "P1 should not be started"
+    assert game._app.player_count == 1, "Should still be single player"
+    assert game.running, "P0's game should continue running"
+    assert game.racks[0].running, "P0's rack should still be running"
+
+    # P0's state should be unaffected
     assert game.scores[0].score >= initial_score
-    assert game.racks[0].running, "P0 should still be running"
-
-    # Verify independent racks
-    p0_tiles = game._app.rack_manager.get_rack(0).get_tiles()
-    p1_tiles = game._app.rack_manager.get_rack(1).get_tiles()
-    
-    # Since P0 has NOT played a word yet (only advanced time), racks should be IDENTICAL
-    # (User requirement: players start with same letters)
-    assert p0_tiles == p1_tiles, "Racks should be identical (shared start)"
-
-    # --- Verify Independence (Arrangement) ---
-    # Manually modify P0's rack to simulate a move without relying on random dictionary words
-    # This proves that if P0 changes their rack arrangement, P1 is unaffected
-    current_p0_tiles = game._app.rack_manager.get_rack(0).get_tiles()
-    # Force a new list for P0 (simulating tile rearrangement in App.guess_tiles)
-    new_p0_tiles = list(current_p0_tiles)
-    if new_p0_tiles:
-        new_p0_tiles.pop() # Remove one tile
-        game._app.rack_manager.get_rack(0).set_tiles(new_p0_tiles)
-    
-    # Verify divergence
-    p0_tiles_after = game._app.rack_manager.get_rack(0).get_tiles()
-    p1_tiles_after = game._app.rack_manager.get_rack(1).get_tiles()
-    
-    assert p0_tiles_after != p1_tiles_after, "Racks should diverge after P0 modifies their rack"
-    assert len(p0_tiles_after) != len(p1_tiles_after), "Lengths should differ"
-    assert p1_tiles_after == p1_tiles, "P1 rack should remain unchanged (independent)"
+    assert len(game.racks[0].tiles) > 0, "P0 rack should still have tiles"
 
 
 @pytest.mark.sequential
 @pytest.mark.multiplayer
 @pytest.mark.fast
 @async_test
-async def test_p1_starts_first():
-    """Test P1 starting first, then P0 joins."""
+async def test_p0_cannot_join_after_p1_started():
+    """Test that P0 cannot join after P1's game has started."""
     game, mqtt, queue = await create_test_game(descent_mode="discrete")
     now_ms = reset_abc_test_state(game)
-
-    # Patch guess_tiles to prevent accidental words
-    game._app.guess_tiles = AsyncMock()
 
     # Initialize cubes
     await setup_abc_test(game, mqtt, queue, [["1", "2", "3"], ["11", "12", "13"]], now_ms)
@@ -148,38 +108,31 @@ async def test_p1_starts_first():
     # P1 forms A-B-C: 11->12->13
     await inject_neighbor_report(mqtt, "11", "12")
     await inject_neighbor_report(mqtt, "12", "13")
-    
+
     await process_mqtt_queue(game, queue, mqtt, now_ms)
     await advance_frames(game, queue, frames=ABC_COUNTDOWN_FRAMES)
-    
+
     # Verify P1 started
     assert game.running
     assert_player_started(game, player=1)
-    
+    assert not cubes_to_game.has_player_started_game(0)
+    assert game._app.player_count == 1
+
     # Disconnect P1 cubes to prevent accidental words
     await disconnect_player_cubes(mqtt, ["11", "12", "13"])
     await process_mqtt_queue(game, queue, mqtt, now_ms)
-    
-    # Verify P0 NOT started
-    assert not cubes_to_game.has_player_started_game(0)
-    
-    # --- Start P0 ---
+
+    # --- P0 attempts to join (should fail) ---
     # P0 forms A-B-C: 1->2->3
     await inject_neighbor_report(mqtt, "1", "2")
     await inject_neighbor_report(mqtt, "2", "3")
-    
+
     await process_mqtt_queue(game, queue, mqtt, now_ms)
     await advance_frames(game, queue, frames=ABC_COUNTDOWN_FRAMES)
-    
-    # Verify P0 started
-    assert_player_started(game, player=0)
-    
-    # Disconnect P0 cubes
-    await disconnect_player_cubes(mqtt, ["1", "2", "3"])
-    await process_mqtt_queue(game, queue, mqtt, now_ms)
-    
-    assert len(game.racks[0].tiles) > 0 # Display racks (checking visibility)
-    
-    # Independence check
-    # P1 hasn't played, P0 joined. Racks should match start state (Shared Start).
-    assert game._app.rack_manager.get_rack(0).get_tiles() == game._app.rack_manager.get_rack(1).get_tiles()
+
+    # Verify P0 did NOT join
+    assert not cubes_to_game.has_player_started_game(0), "P0 should not be started"
+    assert game._app.player_count == 1, "Should still be single player"
+    assert game.running, "P1's game should continue running"
+    assert game.racks[1].running, "P1's rack should still be running"
+    assert len(game.racks[1].tiles) > 0, "P1 rack should still have tiles"

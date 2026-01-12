@@ -120,61 +120,31 @@ async def test_mapping_two_players_simultaneous():
     assert game._app.hardware.has_player_started_game(1) is True
 
 @async_test
-async def test_late_join_preserves_mapping():
-    """Verify late join preserves mapping logic."""
+async def test_late_join_rejected():
+    """Verify late join is rejected once game is running."""
     game, mqtt, queue = await create_test_game(player_count=1)
-    
+
     # 1. Start P0 on Set 0
     cubes_to_game.reset_started_cube_sets()
     cubes_to_game.add_started_cube_set(0)
     current_time = 1000
     await game._app.start(current_time)
-    
+
     assert game._app.hardware.has_player_started_game(0) is True
     assert game._app.hardware.has_player_started_game(1) is False
-    
-    # 2. Simulate P1 joining late
-    # The game.start with input device handles joining logic in Game state,
-    # but strictly checking mapping preservation here.
-    # If P1 joins, they typically would have done ABC? 
-    # Or is late join usually keyboard/button driven?
-    # In `Game.start`, if self.running -> Add P2.
-    # It calls `self._app.load_rack` but does NOT call `self._app.start` again.
-    # It does NOT re-calculate mapping.
-    
-    # So mapping relies on the default {0:0, 1:1} being correct for the second player 
-    # OR that the second player somehow registered?
-    
-    # If I started with {0:0}, P1 is implicitly 1->1 in the default map.
-    # The issue is `has_player_started_game(1)` needs to be true for hardware to work.
-    
-    # Simulate Game adding P2
+    assert game.running is True
+
+    # 2. Attempt late join (should be rejected)
     from input.input_devices import CubesInput
     input_dev = CubesInput(None)
-    await game.start(input_dev, current_time + 1000)
-    
-    # Game.start sets self._app.player_count = 2
-    # It does NOT explicitly mark P2 as started in hardware unless `load_rack` does it?
-    # checking `load_rack`:
-    #     if self.hardware.has_player_started_game(player): ...
-    
-    # WAIT. If `Game.start` adds a player, but `App` doesn't mark them started in hardware,
-    # then `load_rack` will SKIP them.
-    
-    # This might be a bug or I'm missing where P2 gets marked started.
-    # If P2 joins via ABC, `activate_abc_start_if_ready` triggers `start_game_callback`
-    # `start_game_callback` -> `events.trigger(GameStartPlayerEvent(now_ms, player))`
-    # `Game.start_cubes_player` handles that event -> calls `Game.start`.
-    
-    # Ah, if they do ABC, they get added to `started_cube_sets`?
-    # Let's check `cubes_to_game.check_countdown_completion`:
-    # It triggers `start_game_callback`. It DOES NOT explicitly add to `started_cube_sets` 
-    # unless `activate_abc_start_if_ready` does?
-    
-    # Actually `started_cube_sets` is populated by `check_countdown_completion`?
-    # No, let's verify.
-    
-    # Assuming for now that implicit mapping holds.
-    # Assuming for now that implicit mapping holds.
-    assert game._app.get_player_cube_set_mapping(1) == 1
+    result = await game.start(input_dev, current_time + 1000)
+
+    # Verify join was rejected
+    assert result == -1, "Late join should be rejected"
+    assert game._app.player_count == 1, "Player count should remain 1"
+    assert not game._app.hardware.has_player_started_game(1), "P1 should not be started"
+
+    # Original player should continue playing normally
+    assert game.running is True
+    assert game._app.hardware.has_player_started_game(0) is True
 

@@ -135,24 +135,16 @@ class Game:
         await self.start(cubes_input, now_ms)
 
     async def start(self, input_device: InputDevice, now_ms: int) -> None:
-        """Start a new game or add a second player."""
-        if self.running:
-            if str(input_device) not in self.input_devices:
-                # Add P2
-                print(f"self.running: {self.running}, {str(input_device) in self.input_devices}, {self.input_devices}")
-                print(f"starting second player with input_device: {input_device}, {self.input_devices}")
-                # Maxed out player count
-                if self._app.player_count >= 2:
-                    return -1
+        """Start a new game.
 
-                self._app.player_count = 2
-                self.input_devices.append(str(input_device))
-                for player in range(2):
-                    self.scores[player].draw()
-                    self.racks[player].draw()
-                # Load letters for both players when entering 2-player mode
-                await self._app.load_rack(now_ms)
-                return 1
+        No late-join allowed - players must join during the 6-second ABC countdown window.
+        If game is already running, join attempts are rejected.
+        """
+        if self.running:
+            # Reject any attempts to join while game is running
+            logging.info(f"Join rejected - game already running with {self.input_devices}. "
+                        f"Players must join during ABC countdown window.")
+            return -1
 
         self._app.player_count = 1
         print(f"{now_ms} starting new game with input_device: {input_device}")
