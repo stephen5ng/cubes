@@ -31,10 +31,12 @@ class RackManager:
         next_letter = self._tile_generator.get_next_letter(initial_letters)
         
         for player in range(game_config.MAX_PLAYERS):
-            # Players start with identical tile sets
-            self._racks[player].set_tiles(initial_tiles)
+            # Create new Tile objects for each rack (same letters/IDs, distinct objects)
+            # This ensures copy-on-write behavior works correctly
+            player_tiles = [tiles.Tile(t.letter, t.id) for t in initial_tiles]
+            self._racks[player].set_tiles(player_tiles)
             self._racks[player].set_next_letter(next_letter)
-            
+
     def update_next_letter(self, current_letters: str) -> None:
         """Update the pending next letter based on current board state."""
         next_val = self._tile_generator.get_next_letter(current_letters)
@@ -44,26 +46,22 @@ class RackManager:
     def accept_new_letter(self, new_letter: str, position: int, hit_rack_idx: int, position_offset: int) -> tiles.Tile:
         """Process a new letter landing on a specific rack."""
         hit_rack = self._racks[hit_rack_idx]
-        
         target_pos = position + position_offset
-        
-        # Get the old tile needed for validation/sync *before* replacement
-        old_tile = hit_rack.get_tiles()[target_pos]
         
         changed_tile = hit_rack.replace_letter(new_letter, target_pos)
         
         # 3. Synchronize other racks that might share this tile (Shared Start invariant)
+        # We match by Tile ID to find corresponding tiles in other racks
         for i, other_rack in enumerate(self._racks):
             if i == hit_rack_idx:
                 continue
                 
-            # Check if this rack holds the OLD tile object
             try:
-                other_pos = other_rack.get_tiles().index(old_tile)
-                # Found it! It's a shared rack. Update it too.
+                # Find position of the tile with the same ID
+                other_pos = other_rack.id_to_position(changed_tile.id)
                 other_rack.replace_letter(new_letter, other_pos)
             except ValueError:
-                # Diverged rack, doesn't have the old tile. Ignore.
+                # Tile ID not found (rack has likely diverged at this position)
                 pass
                 
         # 4. Advance RNG for everyone (Single Source of Truth)
