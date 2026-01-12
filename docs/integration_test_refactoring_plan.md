@@ -589,9 +589,9 @@ assert game._app.get_player_cube_set_mapping(0) == 0
 ```
 
 **Acceptance Criteria:**
-- [ ] Public accessor methods added
-- [ ] All `_player_to_cube_set` direct accesses replaced
-- [ ] Tests use public API only
+- [x] Public accessor methods added
+- [x] All `_player_to_cube_set` direct accesses replaced
+- [x] Tests use public API only
 
 **Files Changed:** 2-3 files
 **Lines Removed:** ~10 lines

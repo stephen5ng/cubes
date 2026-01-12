@@ -122,6 +122,33 @@ class App:
         cube_set = self._player_to_cube_set.get(player, player)
         return self.hardware.get_cube_set_border_color(cube_set)
 
+    def get_player_cube_set_mapping(self, player: int) -> int:
+        """Get the cube set assigned to a player.
+
+        Args:
+            player: Player ID (0 or 1)
+
+        Returns:
+            Cube set ID (0 for cubes 1-6, 1 for cubes 11-16)
+
+        Example:
+            cube_set = app.get_player_cube_set_mapping(0)
+            assert cube_set == 0
+        """
+        return self._player_to_cube_set.get(player, player)
+
+    def get_all_player_mappings(self) -> dict[int, int]:
+        """Get all player-to-cube-set mappings.
+
+        Returns:
+            Dictionary mapping player IDs to cube set IDs
+
+        Example:
+            mappings = app.get_all_player_mappings()
+            assert mappings == {0: 0, 1: 1}
+        """
+        return self._player_to_cube_set.copy()
+
     def _initialize_racks_for_fair_play(self) -> None:
         """Initialize racks using the RackManager."""
         self.rack_manager.initialize_racks_for_fair_play()

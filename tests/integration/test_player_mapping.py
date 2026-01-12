@@ -27,7 +27,8 @@ async def test_default_mapping_keyboard_mode():
     # Logic: If no hardware started, P0 -> Set 0, P1 -> Set 1, but only P0 is "started" in hardware to receive updates
     
     # Check internal mapping
-    assert game._app._player_to_cube_set == {0: 0, 1: 1}
+    # Check internal mapping
+    assert game._app.get_all_player_mappings() == {0: 0, 1: 1}
     
     # Check hardware "started players" status
     # In default mode, only Player 0 should be marked as started
@@ -54,7 +55,7 @@ async def test_mapping_p0_cube_set_0():
     # if len(started) == 1: returns {sid: sid} -> {0: 0}
     # update({0:0}) -> No change effectively to P0, P1 remains 1.
     
-    assert game._app._player_to_cube_set[0] == 0
+    assert game._app.get_player_cube_set_mapping(0) == 0
     
     # Verify Hardware State
     assert game._app.hardware.has_player_started_game(0) is True
@@ -89,7 +90,7 @@ async def test_mapping_p1_cube_set_1():
     # If new_mapping is {1: 1}, then Player 1 is marked started. Player 0 is NOT.
     # So the game is effectively running for Player 1?
     
-    assert game._app._player_to_cube_set[1] == 1
+    assert game._app.get_player_cube_set_mapping(1) == 1
     
     # Verify Hardware State
     assert game._app.hardware.has_player_started_game(1) is True
@@ -111,8 +112,8 @@ async def test_mapping_two_players_simultaneous():
     # Verify Mapping
     # calculate_player_mapping([0, 1]) -> sorted -> {0: 0, 1: 1}
     
-    assert game._app._player_to_cube_set[0] == 0
-    assert game._app._player_to_cube_set[1] == 1
+    assert game._app.get_player_cube_set_mapping(0) == 0
+    assert game._app.get_player_cube_set_mapping(1) == 1
     
     # Verify Hardware State
     assert game._app.hardware.has_player_started_game(0) is True
@@ -174,5 +175,6 @@ async def test_late_join_preserves_mapping():
     # No, let's verify.
     
     # Assuming for now that implicit mapping holds.
-    assert game._app._player_to_cube_set[1] == 1
+    # Assuming for now that implicit mapping holds.
+    assert game._app.get_player_cube_set_mapping(1) == 1
 
