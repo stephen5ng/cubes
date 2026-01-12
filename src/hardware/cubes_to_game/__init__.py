@@ -57,14 +57,14 @@ from .state import (
 from . import state as _state
 
 # Re-export classes for testing and advanced usage
-from .cube_set_manager import CubeSetManager, GuessManager
+from .cube_set_manager import CubeSetManager
 from .abc_manager import ABCManager
 
 
 # Dynamic attribute access for managers - allows tests to get them properly
 def __getattr__(name):
     """Dynamically look up manager instances from state module."""
-    if name in ('cube_set_managers', 'abc_manager', 'guess_manager'):
+    if name in ('cube_set_managers', 'abc_manager'):
         return getattr(_state, name)
     raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
 
@@ -98,10 +98,8 @@ __all__ = [
     # Manager instances
     'cube_set_managers',
     'abc_manager',
-    'guess_manager',
     # Manager classes (for testing and advanced usage)
     'CubeSetManager',
-    'GuessManager',
     'ABCManager',
     # State management
     'set_abc_countdown_delay',

@@ -1,5 +1,5 @@
 """
-Cube set and guess management for BlockWords hardware.
+Cube set management for BlockWords hardware.
 
 This module manages the physical cube hardware layer, maintaining mappings
 between logical tiles (game state) and physical cubes (hardware devices).
@@ -257,51 +257,3 @@ class CubeSetManager:
         """Flash the tiles for a guess."""
         for t in tiles:
             await publish_queue.put((f"cube/{self.tiles_to_cubes[t]}/flash", "1", False, now_ms))
-
-
-class GuessManager:
-    """Manages guess debouncing and coordination."""
-
-    def __init__(self):
-        self.last_tiles_with_letters: list[tiles.Tile] = []
-        self.last_guess_tiles: List[str] = []
-        self.last_guess_time_s = time.time()
-        self.DEBOUNCE_TIME_S = 10
-
-    async def guess_tiles(self, publish_queue, word_tiles_list, cube_set_id: int, player: int, now_ms: int,
-                          guess_last_tiles_func) -> None:
-        """Submit a guess for tiles.
-
-        Args:
-            publish_queue: Queue for MQTT messages
-            word_tiles_list: List of tile IDs to guess
-            cube_set_id: Which player's cube set
-            player: Player number
-            now_ms: Current timestamp
-            guess_last_tiles_func: Function to call to process the guess
-        """
-        self.last_guess_tiles = word_tiles_list
-        await guess_last_tiles_func(publish_queue, cube_set_id, player, now_ms)
-
-    async def load_rack(self, publish_queue, tiles_with_letters: list[tiles.Tile], cube_set_id: int, player: int,
-                        now_ms: int, cube_set_manager, game_started_players: set, guess_last_tiles_func) -> None:
-        """Load rack and potentially submit a guess if tiles changed.
-
-        Args:
-            publish_queue: Queue for MQTT messages
-            tiles_with_letters: Tiles to load
-            cube_set_id: Which player's cube set
-            player: Player number
-            now_ms: Current timestamp
-            cube_set_manager: The CubeSetManager instance to use
-            game_started_players: Set of players who have started
-            guess_last_tiles_func: Function to call to process guesses
-        """
-        await cube_set_manager.load_rack(publish_queue, tiles_with_letters, now_ms, game_started_players)
-
-        if self.last_tiles_with_letters != tiles_with_letters:
-            # Some of the tiles changed. Make a guess, just in case one of them
-            # was in our last guess (which is overkill).
-            logging.info(f"LOAD RACK guessing")
-            await guess_last_tiles_func(publish_queue, cube_set_id, player, now_ms)
-            self.last_tiles_with_letters = tiles_with_letters

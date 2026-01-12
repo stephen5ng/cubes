@@ -13,18 +13,16 @@ from core import tiles
 # Import our modules
 from . import state
 from .abc_manager import ABCManager
-from .cube_set_manager import CubeSetManager, GuessManager
+from .cube_set_manager import CubeSetManager
 
 # Initialize global managers in state module for shared access
 # This allows tests to replace these and have all code see the replacement
 state.cube_set_managers = [CubeSetManager(cube_set_id) for cube_set_id in range(game_config.MAX_PLAYERS)]
 state.abc_manager = ABCManager()
-state.guess_manager = GuessManager()
 
 # Create module-level references for convenience (these will be exported)
 cube_set_managers = state.cube_set_managers
 abc_manager = state.abc_manager
-guess_manager = state.guess_manager
 
 
 # =============================================================================
@@ -62,25 +60,32 @@ async def accept_new_letter(publish_queue, letter, tile_id, cube_set_id: int, no
 
 async def load_rack(publish_queue, tiles_with_letters: list[tiles.Tile], cube_set_id: int, player: int, now_ms: int):
     """Load rack and potentially submit a guess if tiles changed."""
-    await state.guess_manager.load_rack(
-        publish_queue, tiles_with_letters, cube_set_id, player, now_ms,
-        state.cube_set_managers[cube_set_id], state._started_players, guess_last_tiles
+    # Load the rack
+    await state.cube_set_managers[cube_set_id].load_rack(
+        publish_queue, tiles_with_letters, now_ms, state._started_players
     )
+
+    # If tiles changed, re-guess in case any guessed tiles were updated
+    if state.last_tiles_with_letters != tiles_with_letters:
+        logging.info(f"LOAD RACK guessing")
+        await guess_last_tiles(publish_queue, cube_set_id, player, now_ms)
+        state.last_tiles_with_letters = tiles_with_letters
 
 
 async def guess_tiles(publish_queue, word_tiles_list, cube_set_id: int, player: int, now_ms: int):
     """Submit a guess for tiles."""
-    await state.guess_manager.guess_tiles(publish_queue, word_tiles_list, cube_set_id, player, now_ms, guess_last_tiles)
+    state.last_guess_tiles = word_tiles_list
+    await guess_last_tiles(publish_queue, cube_set_id, player, now_ms)
 
 
 async def guess_last_tiles(publish_queue, cube_set_id: int, player: int, now_ms: int) -> None:
     """Process the last guess for a player."""
-    logging.info(f"guess_last_tiles last_guess_tiles {state.guess_manager.last_guess_tiles}")
-    for guess in state.guess_manager.last_guess_tiles:
+    logging.info(f"guess_last_tiles last_guess_tiles {state.last_guess_tiles}")
+    for guess in state.last_guess_tiles:
         await state.guess_tiles_callback(guess, True, player, now_ms)
 
     await state.cube_set_managers[cube_set_id]._mark_tiles_for_guess(
-        publish_queue, state.guess_manager.last_guess_tiles, now_ms, state._started_players
+        publish_queue, state.last_guess_tiles, now_ms, state._started_players
     )
 
 

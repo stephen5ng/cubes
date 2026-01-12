@@ -101,7 +101,10 @@ locked_cubes = {}
 # This allows tests to replace these instances and have all code see the replacement
 cube_set_managers = None  # Will be set by coordination.init()
 abc_manager = None  # Will be set by coordination module
-guess_manager = None  # Will be set by coordination module
+
+# Guess tracking state (formerly in GuessManager)
+last_guess_tiles = []  # List of tile IDs in the last guess
+last_tiles_with_letters = []  # List of tiles last loaded to rack
 
 
 # Callback functions (injected by game logic)
