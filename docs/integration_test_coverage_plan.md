@@ -256,15 +256,15 @@ async def test_letters_to_ids_duplicate_handling():
 
 #### Previous Guesses Display (0 tests)
 **Missing**:
-- [ ] Valid guesses appear in "possible" list
-- [ ] Invalid guesses appear in "remaining" list
-- [ ] Guess attribution shows correct player color
-- [ ] Display toggles between possible/remaining
-- [ ] Guess count tracked separately per category
+- [x] Valid guesses appear in "possible" list
+- [x] Invalid guesses appear in "remaining" list
+- [x] Guess attribution shows correct player color
+- [x] Display toggles between possible/remaining
+- [x] Guess count tracked separately per category
 
 **Why Important**: User feedback - players need to see history
 
-**Test File**: `test_previous_guesses_display.py` (NEW)
+**Test File**: `tests/integration/test_previous_guesses_display.py` (Implemented)
 
 ---
 
