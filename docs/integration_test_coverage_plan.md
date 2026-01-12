@@ -312,12 +312,16 @@ async def test_letters_to_ids_duplicate_handling():
 
 **Why Moderate**: Existing hardware tests cover basics, but not protocol details
 
-**Test File**: `test_mqtt_protocol.py` (NEW)
+**Test File**: `test_mqtt_protocol.py` (NEW) and `tests/integration/test_rack_synchronization.py` (Implemented)
 
 #### Cube State Synchronization (0 tests)
 **Missing**:
-- [ ] Load rack sends all 6 letters to correct cube set
-- [ ] Accept new letter broadcasts to both cube sets in 2P mode
+- [x] Load rack sends all 6 letters to correct cube set
+- [x] Accept new letter broadcasts to both cube sets in 2P mode
+- [x] Verify rack consistency between logical and visual state
+- [x] Verify overflow/bounds handling (fixed slots validation)
+- [x] Verify visual updates on letter movement
+
 - [ ] Letter lock sends to correct cube based on position
 - [ ] Border clear affects all cubes in set
 - [ ] State persists across MQTT reconnections

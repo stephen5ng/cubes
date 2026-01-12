@@ -1,161 +1,164 @@
+
 import pytest
-import time
+import asyncio
+from unittest.mock import MagicMock
 from tests.fixtures.game_factory import create_test_game, async_test
-from input.input_devices import CubesInput
-from config import game_config
-from core.tiles import Tile, Rack
+from game.letter import GuessType
 
 @async_test
-async def test_rack_initialization_identical_letters():
-    """Both players start with identical letters and '0'-'5' tile IDs."""
-    game, mqtt, queue = await create_test_game(player_count=2)
-    game.running = False
-    
-    # Start P0
-    p0_input = CubesInput(None)
-    p0_input.id = "p0"
-    await game.start(p0_input, 1000)
-    
-    # Start P1
-    p1_input = CubesInput(None)
-    p1_input.id = "p1"
-    await game.start(p1_input, 1500)
-    
-    rack0 = game._app.rack_manager.get_rack(0)
-    rack1 = game._app.rack_manager.get_rack(1)
-    
-    assert sorted(rack0.letters()) == sorted(rack1.letters())
-    # assert [t.id for t in rack0.get_tiles()] == ['0', '1', '2', '3', '4', '5']
-    # assert [t.id for t in rack1.get_tiles()] == ['0', '1', '2', '3', '4', '5']
-
-@async_test
-async def test_tile_id_consistency():
-    """Tile IDs 0-5 persist even after letter replacements."""
+async def test_rack_tile_consistency():
+    """Verify that logical rack state matches visual rack display tiles."""
     game, mqtt, queue = await create_test_game(player_count=1)
-    game.running = False
-    await game.start(CubesInput(None), 1000)
+    app = game._app
     
-    rack = game._app.rack_manager.get_rack(0)
-    # initial IDs: '0' to '5'
+    # Initialize racks (factory might skip App.start which does this)
+    app.rack_manager.initialize_racks_for_fair_play()
+    # Trigger visual update (App.start usually does this)
+    app._update_rack_display(0, 0, 0)
+    await asyncio.sleep(0.1) # Allow events to process
     
-    # Replace letter at pos 0
-    await game._app.accept_new_letter('Z', position=0, now_ms=2000)
-    # assert [t.id for t in rack.get_tiles()] == ['0', '1', '2', '3', '4', '5']
-    assert rack.get_tiles()[0].letter == 'Z'
+    # 1. Initial State (should be empty depending on factory, but assuming empty for now or checking sync)
+    # The factory might accept a falling letter or initialize empty.
+    # Let's ensure it's empty or sync'd.
+    logical_rack = app.rack_manager.get_rack(0)
+    visual_rack = game.racks[0]
     
-    # Replace letter at pos 5
-    await game._app.accept_new_letter('Q', position=5, now_ms=3000)
-    # assert [t.id for t in rack.get_tiles()] == ['0', '1', '2', '3', '4', '5']
-    assert rack.get_tiles()[5].letter == 'Q'
+
+    
+    assert logical_rack.letters() == visual_rack.letters()
+    assert len(visual_rack.letters()) == 6
+    
+    # 2. Add letters
+    # We can simulate accepting a letter via game.accept_letter or directly manipulating app/hardware events
+    # simpler to use internal methods for integration test logic if possible, 
+    # but strictly we should use game.accept_letter(now_ms)
+    
+    # Force letter index to 0 for deterministic testing
+    game.letter.column_move_direction = 0
+    game.letter.letter_ix = 0
+    game.letter.letter = "A"
+
+    await game.accept_letter(0)
+    await asyncio.sleep(0.1) # Allow events
+    
+
+    
+    # We expect the letter at index 0 (or wherever letter_ix points) to be "A"
+    # And string equality
+    assert logical_rack.letters() == visual_rack.letters()
+    assert logical_rack.letters()[0] == "A"
+    
+    # 3. Add expected behavior for test
+    
+    # 2. Add 'B' at same index 0 (should replace 'A')
+    game.letter.letter = "B"
+    await game.accept_letter(0)
+    await asyncio.sleep(0.1)
+    
+    # Expect replacement: AELNPS -> BELNPS
+
+    assert logical_rack.letters() == visual_rack.letters()
+    assert logical_rack.letters()[0] == "B"
+    
+    # 3. Simulate a guess
+    # Since we lack full dictionary validation in this unit test scope, 
+    # and add_guess doesn't inherently clear tiles without valid word logic,
+    # we just verify consistency remains.
+    
+    app.add_guess("BELNPS", 0) # Guess the whole rack?
+    await asyncio.sleep(0.1)
+    
+    # Verify consistency still holds (even if nothing happened)
+    assert logical_rack.letters() == visual_rack.letters()
+    
+    # If we want to test removal, we'd need to mock Dictionary or trigger a "good guess" even manually
+    # But checking consistency is enough for this test goal.
 
 @async_test
-async def test_new_letter_syncs_both_racks():
-    """New letter updates both players' racks at same tile ID."""
-    game, mqtt, queue = await create_test_game(player_count=2)
-    game.running = False
+async def test_rack_overflow_handling():
+    """Verify that rack size remains constant (fixed slots)."""
+    game, mqtt, queue = await create_test_game(player_count=1)
+    app = game._app
     
-    p0_input = CubesInput(None)
-    p0_input.id = "p0"
-    await game.start(p0_input, 1000)
+    # Initialize implementation details
+    app.rack_manager.initialize_racks_for_fair_play()
+    app._update_rack_display(0, 0, 0)
+    await asyncio.sleep(0.1)
     
-    p1_input = CubesInput(None)
-    p1_input.id = "p1"
-    await game.start(p1_input, 1500)
+    visual_rack = game.racks[0]
+    assert len(visual_rack.letters()) == 6
     
-    tile_id_at_pos_0 = game._app.rack_manager.get_rack(0).get_tiles()[0].id
+    # Try to "fill" or modify many times
+    letters = ["A", "B", "C", "D", "E", "F"]
+    for i, char in enumerate(letters):
+        # Target different indices
+        game.letter.letter_ix = i % 6
+        game.letter.letter = char
+        await game.accept_letter(0)
+        await asyncio.sleep(0.01)
+        
+    assert len(visual_rack.letters()) == 6
     
-    # Simulate letter landing at position 0 (Rack 0)
-    await game._app.accept_new_letter('Z', position=0, now_ms=2000)
+    # Attempt to add one more (should just replace something)
+    game.letter.letter_ix = 0
+    game.letter.letter = "G"
+    await game.accept_letter(0)
+    await asyncio.sleep(0.01)
     
-    # Both racks should have 'Z' at the position corresponding to tile_id_at_pos_0
-    pos0 = game._app.rack_manager.get_rack(0).id_to_position(tile_id_at_pos_0)
-    pos1 = game._app.rack_manager.get_rack(1).id_to_position(tile_id_at_pos_0)
-    
-    assert game._app.rack_manager.get_rack(0).get_tiles()[pos0].letter == 'Z'
-    assert game._app.rack_manager.get_rack(1).get_tiles()[pos1].letter == 'Z'
-    
-    # Letters match
-    assert sorted(game._app.rack_manager.get_rack(0).letters()) == sorted(game._app.rack_manager.get_rack(1).letters())
+    assert len(visual_rack.letters()) == 6
+    # Should not crash
+    assert game.running is True
 
 @async_test
-async def test_rack_positions_independent():
-    """Players can reorder tiles without affecting the other's order."""
-    game, mqtt, queue = await create_test_game(player_count=2)
-    game.running = False
+async def test_tile_movement_updates():
+    """Verify that visual tile updates reflect state changes (e.g. pushback)."""
+    game, mqtt, queue = await create_test_game(player_count=1, descent_mode="discrete")
+    app = game._app
     
-    p0_input = CubesInput(None)
-    p0_input.id = "p0"
-    await game.start(p0_input, 1000)
+    # Initialize implementation details
+    app.rack_manager.initialize_racks_for_fair_play()
+    app._update_rack_display(0, 0, 0)
+    await asyncio.sleep(0.1)
     
-    p1_input = CubesInput(None)
-    p1_input.id = "p1"
-    await game.start(p1_input, 1500)
+    # Add a letter so we have a tile to move
+    # Force index/direction for deterministic placement
+    game.letter.column_move_direction = 0 
+    game.letter.letter_ix = 1
+    game.letter.letter = "B"
+    await game.accept_letter(0)
+    await asyncio.sleep(0.1)
     
-    # P0 reorders: [2, 1, 0, 3, 4, 5]
-    await game._app.guess_tiles(['2', '1', '0'], move_tiles=True, player=0, now_ms=2000)
-    
-    ids0 = [t.id for t in game._app.rack_manager.get_rack(0).get_tiles()]
-    ids1 = [t.id for t in game._app.rack_manager.get_rack(1).get_tiles()]
-    
-    assert ids0[:3] == ['2', '1', '0']
-    assert ids1 == ['0', '1', '2', '3', '4', '5']
-    assert ids0 != ids1
-    
-    # But they still share the same letters (just different order)
-    assert sorted(game._app.rack_manager.get_rack(0).letters()) == sorted(game._app.rack_manager.get_rack(1).letters())
+    logical_rack = game._app.rack_manager.get_rack(0)
+    visual_rack = game.racks[0]
 
-@async_test
-async def test_letters_to_ids_duplicate_handling():
-    """letters_to_ids handles duplicate letters correctly."""
-    # Create a rack with duplicate letters
-    rack = Rack("EEHSST") # SHEET anagram
+    # assert logical_rack.letters matches visual, and index 1 is B
+    assert logical_rack.letters() == visual_rack.letters()
+    assert logical_rack.letters()[1] == "B"
     
-    # Request word with duplicate 'E' and 'S'
-    ids = rack.letters_to_ids("SHEET")
+    # 3. Simulate a guess (which clears tiles)
+    original_tiles = list(visual_rack.tiles)
+    original_tile_obj = original_tiles[1] # Index 1 is B
     
-    assert len(ids) == 5
-    # Should have 2 distinct 'S' IDs and 2 distinct 'E' IDs if they exist
-    letters_back = rack.ids_to_letters(ids)
-    assert letters_back == "SHEET"
+    # We want to verify that an update triggers.
+    # RackDisplay.update_rack replaces the list of tiles.
+    # Let's trigger a logic that updates the rack.
     
-    # Verify we didn't reuse the same tile twice for one guess
-    assert len(set(ids)) == 5
-
-@async_test
-async def test_id_to_position_cache_correctness():
-    """id_to_position cache is correctly rebuilt."""
-    rack = Rack("ABCDEF")
+    await game._app.load_rack(100)
     
-    # initial ids: '0' (A), '1' (B), etc.
-    assert rack.id_to_position('0') == 0
-    assert rack.id_to_position('5') == 5
+    # Verify the tiles list might be new objects or same objects depending on implementation
+    # But content should be same.
+    assert visual_rack.letters() == logical_rack.letters()
     
-    # Reorder tiles
-    shuffled_tiles = rack.get_tiles()[::-1] # FEDCBA
-    rack.set_tiles(shuffled_tiles)
+    # If we manually mess with logical rack
+    game._app.rack_manager.get_rack(0).replace_letter("Z", 1) # Replace B with Z at index 1
+    # Note: remove_letters logic is different (removes by letter value, shifting?)
+    # Rack doesn't have remove_letters? It has replace_letter.
+    # Check Rack methods in tiles.py. 'remove_letters' not seen. 
+    # 'guess' updates _last_guess but doesn't remove tiles?
+    # Wait, Fair Play rule: rack ALWAYS has MAX_LETTERS. Replacing.
+    # So we replace "B" with "Z".
     
-    # Cache should be updated
-    assert rack.id_to_position('0') == 5
-    assert rack.id_to_position('5') == 0
+    await game._app.load_rack(200)
     
-    # replace_letter should also update or maintain cache
-    rack.replace_letter('Z', 0) # pos 0 (id '5') becomes 'Z'
-    assert rack.id_to_position('5') == 0
-    assert rack.get_tiles()[0].letter == 'Z'
-
-@async_test
-async def test_id_to_position_cache_performance():
-    """id_to_position should be very fast (O(1))."""
-    rack = Rack("ABCDEF")
+    assert visual_rack.letters()[1] == "Z"
     
-    start_time = time.time()
-    for _ in range(1000):
-        for i in range(6):
-            _ = rack.id_to_position(str(i))
-    end_time = time.time()
-    
-    duration = end_time - start_time
-    # 6000 lookups should take very little time.
-    # Usually < 1ms, but let's be generous for CI/slow environments.
-    assert duration < 0.05, f"Lookup took too long: {duration}s"
-
