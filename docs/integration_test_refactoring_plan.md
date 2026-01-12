@@ -434,10 +434,10 @@ async def test_good_guess_unique():
 
 **Acceptance Criteria:**
 - [x] `Dictionary.from_words()` method implemented and tested
-- [ ] All temp file dictionary creation replaced with in-memory approach
-- [ ] No `os.remove()` calls in test files
-- [ ] Tests run faster (no file I/O)
-- [ ] Tests can run in parallel without file conflicts
+- [x] All temp file dictionary creation replaced with in-memory approach
+- [x] No `os.remove()` calls in test files
+- [x] Tests run faster (no file I/O)
+- [x] Tests can run in parallel without file conflicts
 
 **Files Changed:** ~8 files
 **Lines Removed:** ~50 lines

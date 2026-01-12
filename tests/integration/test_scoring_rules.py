@@ -7,17 +7,17 @@ from core.dictionary import Dictionary
 from hardware.cubes_to_game import state as cubes_state
 from config import game_config
 from tests.fixtures.test_helpers import update_app_dictionary
+from tests.fixtures.dictionary_helpers import create_test_dictionary
 
 @async_test
 async def test_word_score_matches_length():
     """Verify that words of length 3-5 award points equal to their length."""
-    custom_dict_path = "/tmp/test_scoring_length.txt"
-    with open(custom_dict_path, "w") as f:
-        f.write("CAT\nFOUR\nFIVES\n")
-        
     game, mqtt, queue = await create_test_game()
-    new_dict = Dictionary(min_letters=3, max_letters=6)
-    new_dict.read(custom_dict_path, custom_dict_path)
+    new_dict = create_test_dictionary(
+        ["CAT", "FOUR", "FIVES"], 
+        min_letters=3, 
+        max_letters=6
+    )
     update_app_dictionary(game._app, new_dict)
     
     # Force mapping
@@ -47,20 +47,17 @@ async def test_word_score_matches_length():
     await guess_word("FIVES")
     assert getattr(game.shields[-1], 'score') == 5
 
-    # Cleanup
-    import os
-    os.remove(custom_dict_path)
+
 
 @async_test
 async def test_bingo_bonus():
     """Verify that a word using MAX_LETTERS awards an additional 10 points."""
-    custom_dict_path = "/tmp/test_scoring_bingo.txt"
-    with open(custom_dict_path, "w") as f:
-        f.write("SIXLET\n")
-        
     game, mqtt, queue = await create_test_game()
-    new_dict = Dictionary(min_letters=3, max_letters=6)
-    new_dict.read(custom_dict_path, custom_dict_path)
+    new_dict = create_test_dictionary(
+        ["SIXLET"], 
+        min_letters=3, 
+        max_letters=6
+    )
     update_app_dictionary(game._app, new_dict)
     game._app._player_to_cube_set = {0: 0}
     player = 0
@@ -84,8 +81,7 @@ async def test_bingo_bonus():
     # Expect 6 (length) + 10 (bonus) = 16
     assert game.shields[-1].score == 16
     
-    import os
-    os.remove(custom_dict_path)
+
 
 @async_test
 async def test_bingo_only_for_full_rack():
@@ -98,13 +94,12 @@ async def test_bingo_only_for_full_rack():
 @async_test
 async def test_cumulative_scoring():
     """Verify that scores accumulate correctly across multiple words."""
-    custom_dict_path = "/tmp/test_scoring_cumulative.txt"
-    with open(custom_dict_path, "w") as f:
-        f.write("ONE\nTWO\n")
-        
     game, mqtt, queue = await create_test_game()
-    new_dict = Dictionary(3, 6)
-    new_dict.read(custom_dict_path, custom_dict_path)
+    new_dict = create_test_dictionary(
+        ["ONE", "TWO"], 
+        min_letters=3, 
+        max_letters=6
+    )
     update_app_dictionary(game._app, new_dict)
     game._app._player_to_cube_set = {0: 0}
     player = 0
@@ -144,19 +139,17 @@ async def test_cumulative_scoring():
     score_component.update_score(shield2.score)
     assert score_component.score == 6
     
-    import os
-    os.remove(custom_dict_path)
+
 
 @async_test
 async def test_failed_guesses_no_score():
     """Verify that old/bad guesses do not affect the score."""
-    custom_dict_path = "/tmp/test_scoring_failed.txt"
-    with open(custom_dict_path, "w") as f:
-        f.write("GOOD\n")
-        
     game, mqtt, queue = await create_test_game()
-    new_dict = Dictionary(3, 6)
-    new_dict.read(custom_dict_path, custom_dict_path)
+    new_dict = create_test_dictionary(
+        ["GOOD"], 
+        min_letters=3, 
+        max_letters=6
+    )
     update_app_dictionary(game._app, new_dict)
     game._app._player_to_cube_set = {0: 0}
     player = 0
@@ -191,8 +184,7 @@ async def test_failed_guesses_no_score():
     await make_guess("BADX", 3000)
     assert len(game.shields) == original_shield_count
     
-    import os
-    os.remove(custom_dict_path)
+
 
 
 @async_test

@@ -9,6 +9,7 @@ from core.dictionary import Dictionary
 from game.letter import GuessType
 from hardware.cubes_to_game import state as cubes_state
 from tests.fixtures.test_helpers import update_app_dictionary, drain_mqtt_queue
+from tests.fixtures.dictionary_helpers import create_test_dictionary
 
 
 # Helper to verify standard message publishing (points/shield)
@@ -68,13 +69,8 @@ async def test_good_guess_unique():
 @async_test
 async def test_old_guess():
     """Test that repeating a previously guessed word does not award points/shield."""
-    custom_dict_path = "/tmp/test_old_guess.txt"
-    with open(custom_dict_path, "w") as f:
-        f.write("HELLO\n")
-    
     game, mqtt, queue = await create_test_game()
-    new_dict = Dictionary(3, 6)
-    new_dict.read(custom_dict_path, custom_dict_path)
+    new_dict = create_test_dictionary(["HELLO"], min_letters=3, max_letters=6)
     update_app_dictionary(game._app, new_dict)
     # Force mapping
     game._app._player_to_cube_set = {0: 0}
@@ -112,7 +108,7 @@ async def test_old_guess():
     # Verify yellow border for old guess (0xFFE0)
     assert cubes_state.cube_set_managers[0].border_color == "0xFFE0"
     
-    os.remove(custom_dict_path)
+
 
 
 @async_test
@@ -148,13 +144,9 @@ async def test_bad_guess_invalid_word():
 @async_test
 async def test_bad_guess_missing_letters():
     """Test that guessing more letters than present in rack is rejected/filtered."""
-    custom_dict_path = "/tmp/test_missing.txt"
-    with open(custom_dict_path, "w") as f:
-        f.write("APPLE\n")
-        
     game, mqtt, queue = await create_test_game()
-    game._app._dictionary = Dictionary(3, 6)
-    game._app._dictionary.read(custom_dict_path, custom_dict_path)
+    new_dict = create_test_dictionary(["APPLE"], min_letters=3, max_letters=6)
+    update_app_dictionary(game._app, new_dict)
     # Force mapping
     game._app._player_to_cube_set = {0: 0}
     cubes_state.cube_set_managers[0].border_color = None
@@ -185,38 +177,24 @@ async def test_bad_guess_missing_letters():
     assert cubes_state.cube_set_managers[0].border_color == "0xFFFF"
     assert game.scores[player].score == 0
 
-    os.remove(custom_dict_path)
+
 
 
 @async_test
 async def test_dictionary_length_constraints():
     """Test that words outside min/max length settings are ignored/invalid."""
-    custom_dict_path = "/tmp/test_constraints.txt"
-    with open(custom_dict_path, "w") as f:
-        f.write("HI\nMEDIUM\nTOOLONGWORD\n")
-        
     # Min 3, Max 6
-    d = Dictionary(min_letters=3, max_letters=6)
-    d.read(custom_dict_path, custom_dict_path)
+    d = create_test_dictionary(["HI", "MEDIUM", "TOOLONGWORD"], min_letters=3, max_letters=6)
     
     assert not d.is_word("HI")
     assert d.is_word("MEDIUM")
     assert not d.is_word("TOOLONGWORD")
-    
-    os.remove(custom_dict_path)
 
 @async_test
 async def test_dictionary_integration():
     """Test basic dictionary loading and lookup."""
-    custom_dict_path = "/tmp/test_dict.txt"
-    with open(custom_dict_path, "w") as f:
-        f.write("TEST\nWORD\n")
-        
-    d = Dictionary(3, 6)
-    d.read(custom_dict_path, custom_dict_path)
+    d = create_test_dictionary(["TEST", "WORD"], min_letters=3, max_letters=6)
     
     assert d.is_word("TEST")
     assert d.is_word("WORD")
     assert not d.is_word("FAKE")
-    
-    os.remove(custom_dict_path)
