@@ -25,7 +25,7 @@
 #### Multiplayer & Sequential Join (5 tests)
 - ✅ Two-player competitive gameplay
 - ✅ Independent score tracking
-- ✅ Rack isolation (copy-on-write)
+- ✅ Rack isolation (shared letter pool, independent arrangement)
 - ✅ Sequential player joining (P1 after P0, P0 after P1)
 - ✅ Late-join rack synchronization
 
@@ -108,7 +108,7 @@
 **Missing**:
 - [x] Both players start with identical rack (fair play guarantee)
 - [x] Racks are shuffled bingo words (6 letters from SOWPODS bingos)
-- [x] Racks diverge after first different guess (copy-on-write)
+- [x] Racks can arrange tiles independently (shared letter pool)
 - [x] Rack tiles refresh correctly after word accepted
 - [x] New falling letter replaces correct rack position
 - [x] Rack display highlights correct tiles during guess
@@ -444,7 +444,7 @@ async def test_letters_to_ids_duplicate_handling():
 4. **`test_rack_fairplay.py`** (NEW - 7 tests)
    - Identical initial racks (fair play)
    - Racks are shuffled bingos
-   - Copy-on-write divergence
+   - Independent tile arrangement (shared letter pool)
    - Tile refresh after word
    - Letter replacement logic
    - Rack display highlighting

@@ -19,7 +19,7 @@ from game.descent_strategy import (
 from input.input_devices import InputDevice, CubesInput
 from rendering.animations import LetterSource, PositionTracker, LETTER_SOURCE_YELLOW
 from rendering.metrics import RackMetrics
-from rendering.rack_display import Rack
+from rendering.rack_display import RackDisplay
 from systems.sound_manager import SoundManager
 from ui.guess_display import PreviousGuessesManager
 
@@ -60,7 +60,7 @@ class Game:
             descent_strategy = DiscreteDescentStrategy(Letter.Y_INCREMENT)
 
         self.letter = Letter(letter_font, letter_y, self.rack_metrics, self.output_logger, letter_beeps, descent_strategy)
-        self.racks = [Rack(the_app, self.rack_metrics, self.letter, player) for player in range(game_config.MAX_PLAYERS)]
+        self.racks = [RackDisplay(the_app, self.rack_metrics, self.letter, player) for player in range(game_config.MAX_PLAYERS)]
         self.guess_to_player = {}
         self.guesses_manager = PreviousGuessesManager(30, self.guess_to_player)
         self.letter_source = LetterSource(

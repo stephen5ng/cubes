@@ -57,7 +57,7 @@ from ui.guess_display import (
     RemainingPreviousGuessesDisplay
 )
 from game.letter import GuessType, Letter
-from rendering.rack_display import Rack
+from rendering.rack_display import RackDisplay
 from game.game_state import Game
 from events.game_events import GameAbortEvent
 
@@ -69,7 +69,7 @@ logger = logging.getLogger(__name__)
 # Input device classes moved to src/input/input_devices.py
 # RackMetrics class moved to src/rendering/metrics.py
 # Letter class moved to src/game/letter.py
-# Rack class moved to src/rendering/rack_display.py
+# RackDisplay class moved to src/rendering/rack_display.py
 # Game class moved to src/game/game_state.py
 
 

@@ -55,7 +55,7 @@ async def test_racks_are_shuffled_bingos():
 
 @async_test
 async def test_rack_divergence_after_guess():
-    """Racks diverge after first different guess (copy-on-write)."""
+    """Racks can arrange tiles independently (shared letter pool)."""
     game, mqtt, queue = await create_test_game(player_count=2)
     game.running = False  # Force game.start to run the full start sequence
     

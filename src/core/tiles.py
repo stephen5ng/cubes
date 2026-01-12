@@ -1,3 +1,26 @@
+"""
+Core game logic for tiles and racks.
+
+TERMINOLOGY:
+- Tile: A logical game entity with a letter and ID (domain model)
+  - Immutable dataclass representing game state
+  - IDs are stable ('0'-'5') even when letters change
+  - Lives in core.tiles module
+
+- Cube: A physical hardware device (ESP32-based)
+  - Has numeric ID (1-6 for P0, 11-16 for P1)
+  - Communicates via MQTT
+  - Lives in hardware.cubes_to_game module
+
+MAPPING (in hardware layer):
+- tiles_to_cubes: Maps tile ID ('0'-'5') → cube ID ('1', '2', etc.)
+- Cubes display the letters of their mapped tiles
+
+SHARED LETTER POOL:
+- Both players always have the same set of letters (fairness)
+- Players can arrange tiles in different orders (strategy)
+- When a new letter is caught, it updates both players' pools
+"""
 from collections import Counter
 from dataclasses import dataclass
 import logging
@@ -10,10 +33,17 @@ MIN_LETTERS = game_config.MIN_LETTERS
 
 @dataclass(unsafe_hash=True)
 class Tile:
-    # Class to track the cubes. Unlike Scrabble, a "tile"'s letter is mutable.
+    """
+    Logical game tile with a letter and stable ID.
 
-    letter: str
-    id: str
+    Unlike Scrabble, a tile's letter can change (when catching falling letters),
+    but its ID remains stable. Tiles use copy-on-write semantics - when a letter
+    changes, a new Tile object is created with the same ID but different letter.
+    This tile may be displayed on a physical cube (see hardware.cubes_to_game
+    for cube↔tile mapping).
+    """
+    letter: str  # Current letter on this tile
+    id: str      # Stable identifier ('0'-'5'), persists across letter changes
 
 def _tiles_to_letters(tiles: Sequence[Tile]) -> str:
     return ''.join(t.letter for t in tiles)
@@ -24,7 +54,9 @@ class Rack:
         for count, letter in enumerate(letters):
             self._tiles.append(Tile(letter, str(count)))
         self._last_guess: list[Tile]  = []
-        self._next_letter = "?" 
+        self._next_letter = "?"
+        self._id_to_pos_cache: dict[str, int] = {}
+        self._rebuild_cache() 
 
     def __repr__(self) -> str:
         return (f"TILES: {self._tiles}\n" +
@@ -33,16 +65,22 @@ class Rack:
     def get_tiles(self) -> list[Tile]:
         return self._tiles
 
+    def _rebuild_cache(self) -> None:
+        """Rebuild the ID→position lookup cache."""
+        self._id_to_pos_cache = {tile.id: i for i, tile in enumerate(self._tiles)}
+
     def id_to_position(self, id: str) -> int:
-        return self._tiles.index(next(t for t in self._tiles if t.id == id))
+        """Get position of tile with given ID. O(1) cached lookup."""
+        return self._id_to_pos_cache[id]
 
     def set_tiles(self, tiles: list[Tile]) -> None:
         self._tiles = tiles
+        self._rebuild_cache()  # Maintain cache invariant when tiles are reordered
 
     def set_next_letter(self, letter: str) -> None:
         self._next_letter = letter
 
-    def last_guess(self) -> None:
+    def last_guess(self) -> str:
         return _tiles_to_letters(self._last_guess)
 
     def letters_to_ids(self, letters: str) -> list[str]:

@@ -1,7 +1,27 @@
-"""Cube set and guess management for BlockWords hardware.
+"""
+Cube set and guess management for BlockWords hardware.
 
-This module contains CubeSetManager for managing a single player's cube state,
-and GuessManager for debouncing and coordinating guess submissions.
+This module manages the physical cube hardware layer, maintaining mappings
+between logical tiles (game state) and physical cubes (hardware devices).
+
+TERMINOLOGY:
+- Tile: Logical game entity (see core.tiles)
+  - Has letter and stable ID ('0'-'5')
+  - Part of the shared letter pool
+  - Managed by RackManager in core layer
+
+- Cube: Physical hardware device with MQTT communication
+  - Has numeric ID (1-6 for P0, 11-16 for P1)
+  - Displays letters and neighbor connections
+  - Managed by CubeSetManager in hardware layer
+
+- Cube Set: A group of 6 cubes belonging to one player
+
+MAPPINGS:
+- tiles_to_cubes: tile_id ('0'-'5') → cube_id ('1', '2', etc.)
+- cubes_to_tileid: cube_id → tile_id (INVERSE - to be removed in Phase 3)
+- cubes_to_letters: cube_id → current letter displayed on cube
+- cube_chain: cube_id → neighbor cube_id (for word formation)
 """
 
 import logging

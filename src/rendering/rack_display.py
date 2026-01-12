@@ -18,7 +18,7 @@ from rendering.animations import get_alpha
 from rendering.metrics import RackMetrics
 
 
-class Rack:
+class RackDisplay:
     """Handles player's letter rack rendering and display."""
 
     LETTER_TRANSITION_DURATION_MS = 4000
@@ -33,9 +33,9 @@ class Rack:
         self.tiles: list[tiles.Tile] = []
         self.running = False
         self.border = " "
-        self.last_update_letter_ms = -Rack.LETTER_TRANSITION_DURATION_MS
+        self.last_update_letter_ms = -RackDisplay.LETTER_TRANSITION_DURATION_MS
         self.easing = easing_functions.QuinticEaseInOut(start=0, end=255, duration=1)
-        self.last_guess_ms = -Rack.GUESS_TRANSITION_DURATION_MS
+        self.last_guess_ms = -RackDisplay.GUESS_TRANSITION_DURATION_MS
         self.highlight_length = 0
         self.select_count = 0
         self.cursor_position = 0
@@ -110,7 +110,7 @@ class Rack:
             return new_color
 
         new_letter_alpha = get_alpha(self.easing,
-            self.last_update_letter_ms, Rack.LETTER_TRANSITION_DURATION_MS, now)
+            self.last_update_letter_ms, RackDisplay.LETTER_TRANSITION_DURATION_MS, now)
         if new_letter_alpha and self.transition_tile in self.tiles:
             self._render_letter(
                 surface_with_faders,
@@ -118,7 +118,7 @@ class Rack:
                 self.transition_tile.letter,
                 make_color(LETTER_SOURCE_COLOR, new_letter_alpha))
 
-        good_word_alpha = get_alpha(self.easing, self.last_guess_ms, Rack.GUESS_TRANSITION_DURATION_MS, now)
+        good_word_alpha = get_alpha(self.easing, self.last_guess_ms, RackDisplay.GUESS_TRANSITION_DURATION_MS, now)
         if good_word_alpha:
             color = make_color(GOOD_GUESS_COLOR, good_word_alpha)
             letters = self.letters()

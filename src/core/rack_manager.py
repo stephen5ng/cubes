@@ -7,8 +7,14 @@ from core.tile_generator import TileGenerator
 
 class RackManager:
     """
-    Manages the lifecycle and synchronization of player Racks.
-    Handles 'Shared Start' initialization and 'Copy-on-Write' divergence updates.
+    Manages player racks with a shared letter pool.
+
+    GAME RULE: Both players always have the same set of letters (fair competition),
+    but can arrange tiles in different orders (independent strategy).
+
+    - When a letter is caught, it's added to BOTH players' pools simultaneously
+    - Players reorder tiles independently via guess_tiles()
+    - Tile IDs (0-5) are stable identifiers that track letters across racks
     """
     def __init__(self, dictionary: Dictionary, tile_generator: TileGenerator):
         self._dictionary = dictionary
@@ -32,7 +38,7 @@ class RackManager:
         
         for player in range(game_config.MAX_PLAYERS):
             # Create new Tile objects for each rack (same letters/IDs, distinct objects)
-            # This ensures copy-on-write behavior works correctly
+            # Each player gets the same letter pool but independent tile objects
             player_tiles = [tiles.Tile(t.letter, t.id) for t in initial_tiles]
             self._racks[player].set_tiles(player_tiles)
             self._racks[player].set_next_letter(next_letter)
@@ -44,30 +50,29 @@ class RackManager:
             rack.set_next_letter(next_val)
 
     def accept_new_letter(self, new_letter: str, position: int, hit_rack_idx: int, position_offset: int) -> tiles.Tile:
-        """Process a new letter landing on a specific rack."""
+        """
+        Add a new letter to the shared pool at a specific tile ID.
+
+        Since both players share the same letter pool, this updates ALL racks
+        at the tile ID that was hit, ensuring both players get the same letter.
+        """
         hit_rack = self._racks[hit_rack_idx]
         target_pos = position + position_offset
-        
+
+        # Replace letter at the hit position
         changed_tile = hit_rack.replace_letter(new_letter, target_pos)
-        
-        # 3. Synchronize other racks that might share this tile (Shared Start invariant)
-        # We match by Tile ID to find corresponding tiles in other racks
-        for i, other_rack in enumerate(self._racks):
-            if i == hit_rack_idx:
-                continue
-                
-            try:
-                # Find position of the tile with the same ID
-                other_pos = other_rack.id_to_position(changed_tile.id)
-                other_rack.replace_letter(new_letter, other_pos)
-            except ValueError:
-                # Tile ID not found (rack has likely diverged at this position)
-                pass
-                
-        # 4. Advance RNG for everyone (Single Source of Truth)
-        next_gen_letter = self._tile_generator.get_next_letter(hit_rack.letters())
-        
+
+        # Sync the same letter to all other racks (shared pool invariant)
         for rack in self._racks:
-            rack.set_next_letter(next_gen_letter)
-            
+            if rack is hit_rack:
+                continue
+            # Find where this tile ID lives in the other rack (may be different position)
+            other_pos = rack.id_to_position(changed_tile.id)
+            rack.replace_letter(new_letter, other_pos)
+
+        # Update next letter for all players
+        next_letter = self._tile_generator.get_next_letter(hit_rack.letters())
+        for rack in self._racks:
+            rack.set_next_letter(next_letter)
+
         return changed_tile

@@ -29,12 +29,12 @@ async def test_p1_joins_after_p0_started():
     - P0 can start and play alone via ABC sequence
     - Game continues running after P0 starts
     - P1 can join mid-game via independent ABC sequence
-    - P1 gets independent rack initialized with shared start state
-    - Copy-on-write behavior: racks start identical but diverge after moves
+    - P1 gets independent rack initialized with shared letter pool
+    - Shared letter pool: racks have same letters but can arrange independently
     - P0's score and state preserved when P1 joins
     - Both players' racks remain independent after join
 
-    Regression guard for: Late-join rack synchronization and copy-on-write semantics
+    Regression guard for: Late-join rack synchronization and shared letter pool
     """
     game, mqtt, queue = await create_test_game(descent_mode="discrete")
     now_ms = reset_abc_test_state(game)
@@ -110,11 +110,11 @@ async def test_p1_joins_after_p0_started():
     # (User requirement: players start with same letters)
     assert p0_tiles == p1_tiles, "Racks should be identical (shared start)"
 
-    # --- Verify Independence (Copy-on-Write) ---
+    # --- Verify Independence (Arrangement) ---
     # Manually modify P0's rack to simulate a move without relying on random dictionary words
-    # This proves that if P0 changes their rack, P1 is unaffected (independent history)
+    # This proves that if P0 changes their rack arrangement, P1 is unaffected
     current_p0_tiles = game._app.rack_manager.get_rack(0).get_tiles()
-    # Force a new list for P0 (simulating copy-on-write logic in App.guess_tiles)
+    # Force a new list for P0 (simulating tile rearrangement in App.guess_tiles)
     new_p0_tiles = list(current_p0_tiles)
     if new_p0_tiles:
         new_p0_tiles.pop() # Remove one tile
