@@ -7,6 +7,7 @@ import asyncio
 from typing import List, Tuple
 from tests.fixtures.game_factory import create_test_game, create_game_with_started_players, async_test
 from config import game_config
+from tests.fixtures.test_helpers import drain_mqtt_queue
 
 @async_test
 async def test_letter_lock_routing():
@@ -25,16 +26,10 @@ async def test_letter_lock_routing():
     mqtt.clear_published()
     
     # Helper to drain queue
-    async def drain_queue():
-        while not queue.empty():
-            item = queue.get_nowait()
-            # item is (topic, payload, retain, now_ms)
-            await mqtt.publish(item[0], item[1], item[2])
-    
     # Lock the first letter
     await app.letter_lock(position=0, locked=True, now_ms=1000)
     await asyncio.sleep(0.1)
-    await drain_queue()
+    await drain_mqtt_queue(mqtt, queue)
     
     # Expected messages:
     # Expected messages:
@@ -52,7 +47,7 @@ async def test_letter_lock_routing():
     mqtt.clear_published()
     await app.letter_lock(position=0, locked=False, now_ms=2000)
     await asyncio.sleep(0.1)
-    await drain_queue()
+    await drain_mqtt_queue(mqtt, queue)
     
     lock_messages = mqtt.get_published("cube/1/") + mqtt.get_published("cube/11/")
     lock_msgs = [m for m in lock_messages if "lock" in m[0]]
@@ -70,14 +65,9 @@ async def test_border_clear_broadcast():
     mqtt.clear_published()
     
     # Helper to drain queue
-    async def drain_queue():
-        while not queue.empty():
-            item = queue.get_nowait()
-            await mqtt.publish(item[0], item[1], item[2])
-            
     await app.hardware.clear_all_borders(queue, 1000)
     await asyncio.sleep(0.1)
-    await drain_queue()
+    await drain_mqtt_queue(mqtt, queue)
     
     # P0 (Set 1): Cubes 1-6
     # P1 (Set 2): Cubes 11-16
@@ -104,19 +94,14 @@ async def test_state_persistence_reconnect():
     app.rack_manager.initialize_racks_for_fair_play()
     
     # Helper to drain queue
-    async def drain_queue():
-        while not queue.empty():
-            item = queue.get_nowait()
-            await mqtt.publish(item[0], item[1], item[2])
-
     # Drain initialization messages
-    await drain_queue()
+    await drain_mqtt_queue(mqtt, queue)
 
     # Initial load
     mqtt.clear_published()
     await app.load_rack(1000)
     await asyncio.sleep(0.1)
-    await drain_queue()
+    await drain_mqtt_queue(mqtt, queue)
     
     initial_msgs = mqtt.get_published("cube/")
     # Should contain letters for cubes 1-6 (P0 only)
@@ -127,7 +112,7 @@ async def test_state_persistence_reconnect():
     mqtt.clear_published()
     await app.load_rack(2000)
     await asyncio.sleep(0.1)
-    await drain_queue()
+    await drain_mqtt_queue(mqtt, queue)
     
     reload_msgs = mqtt.get_published("cube/")
     reload_letters_count = len([m for m in reload_msgs if "/letter" in m[0]])

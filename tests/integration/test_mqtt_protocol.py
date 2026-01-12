@@ -5,6 +5,7 @@ from typing import List, Tuple
 from tests.fixtures.game_factory import create_game_with_started_players, async_test
 from config import game_config
 from core import tiles
+from tests.fixtures.test_helpers import drain_mqtt_queue
 
 @async_test
 async def test_neighbor_report_processing():
@@ -14,13 +15,7 @@ async def test_neighbor_report_processing():
     app = game._app
     app.rack_manager.initialize_racks_for_fair_play()
     
-    # Helper to drain queue
-    async def drain_queue():
-        while not queue.empty():
-            item = queue.get_nowait()
-            await mqtt.publish(item[0], item[1], item[2])
-    
-    await drain_queue()
+    await drain_mqtt_queue(mqtt, queue)
     mqtt.clear_published()
 
     # 2. Assign known letters to cubes so we can predict the word
@@ -80,7 +75,7 @@ async def test_neighbor_report_processing():
     # If the word is valid/invalid, we get different feedback.
     # But primarily, we want to see a request to lock/flash/border related to these tiles.
     
-    await drain_queue()
+    await drain_mqtt_queue(mqtt, queue)
     msgs = mqtt.get_published("cube/")
     # Look for border update on Cube 1 or Cube 2
     # "cube/1/border"
@@ -93,11 +88,7 @@ async def test_good_guess_feedback():
     game, mqtt, queue = await create_game_with_started_players(players=[0])
     app = game._app
     
-    async def drain_queue():
-        while not queue.empty():
-            item = queue.get_nowait()
-            await mqtt.publish(item[0], item[1], item[2])
-    await drain_queue()
+    await drain_mqtt_queue(mqtt, queue)
     mqtt.clear_published()
     
     # Tiles 0 and 1
@@ -106,7 +97,7 @@ async def test_good_guess_feedback():
     # Manually invoke hardware.good_guess
     await app.hardware.good_guess(queue, tiles_in_guess, 0, 0, 1000)
     await asyncio.sleep(0.1)
-    await drain_queue()
+    await drain_mqtt_queue(mqtt, queue)
     
     # Check for flash (primary feedback for good guess)
     c1_flash = mqtt.get_published("cube/1/flash")
@@ -125,11 +116,7 @@ async def test_bad_old_guess_feedback():
     app = game._app
     from hardware.cubes_to_game import state # Import state for debugging
     
-    async def drain_queue():
-        while not queue.empty():
-            item = queue.get_nowait()
-            await mqtt.publish(item[0], item[1], item[2])
-    await drain_queue()
+    await drain_mqtt_queue(mqtt, queue)
     mqtt.clear_published()
     
     tiles_in_guess = ["0", "1"]
@@ -139,7 +126,7 @@ async def test_bad_old_guess_feedback():
     await app.hardware.guess_last_tiles(queue, 0, 0, 2000)
     
     await asyncio.sleep(0.1)
-    await drain_queue()
+    await drain_mqtt_queue(mqtt, queue)
     
     c1_msgs = mqtt.get_published("cube/1/border")
     assert len(c1_msgs) > 0
@@ -207,7 +194,7 @@ async def test_bad_old_guess_feedback():
     await app.hardware.guess_last_tiles(queue, 0, 0, 3000)
     
     await asyncio.sleep(0.1)
-    await drain_queue()
+    await drain_mqtt_queue(mqtt, queue)
     
     c1_msgs = mqtt.get_published("cube/1/border")
     # 0xFFE0 is Yellow

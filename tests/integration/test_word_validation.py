@@ -7,20 +7,14 @@ from tests.fixtures.game_factory import create_test_game, async_test, advance_se
 from core.dictionary import Dictionary
 from game.letter import GuessType
 from hardware.cubes_to_game import state as cubes_state
+from tests.fixtures.test_helpers import update_app_dictionary, drain_mqtt_queue
 
 
 # Helper to verify standard message publishing (points/shield)
 async def verify_message_published(mqtt, queue, expected_topic_suffix):
     """Check if any published message topic ends with the given suffix."""
     # Process all queued messages
-    while not queue.empty():
-        item = await queue.get()
-        if isinstance(item, tuple):
-             # (topic, payload, retain, qos/timestamp)
-            topic, payload, retain, *_ = item
-            await mqtt.publish(topic, payload, retain)
-        else:
-            await mqtt.publish(item.topic, item.payload)
+    await drain_mqtt_queue(mqtt, queue)
         
     found = False
     # Use real published messages list from FakeMqttClient
@@ -29,12 +23,6 @@ async def verify_message_published(mqtt, queue, expected_topic_suffix):
             found = True
             break
     assert found, f"Expected MQTT message with topic suffix '{expected_topic_suffix}' not found in {[m[0] for m in mqtt.published_messages]}"
-    
-def update_app_dictionary(app, new_dictionary):
-    """Helper to update dictionary references across App components."""
-    app._dictionary = new_dictionary
-    app._score_card.dictionary = new_dictionary
-    app.rack_manager.dictionary = new_dictionary
 
 @async_test
 async def test_good_guess_unique():

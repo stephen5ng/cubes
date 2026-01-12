@@ -6,12 +6,7 @@ from tests.fixtures.game_factory import create_test_game, async_test
 from core.dictionary import Dictionary
 from hardware.cubes_to_game import state as cubes_state
 from config import game_config
-
-def update_app_dictionary(app, new_dictionary):
-    """Helper to update dictionary references across App components."""
-    app._dictionary = new_dictionary
-    app._score_card.dictionary = new_dictionary
-    app.rack_manager.dictionary = new_dictionary
+from tests.fixtures.test_helpers import update_app_dictionary
 
 @async_test
 async def test_word_score_matches_length():

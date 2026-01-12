@@ -82,10 +82,10 @@ from tests.fixtures.test_helpers import update_app_dictionary
 3. Remove duplicate definitions (6 files contain `drain_queue` variants)
 
 **Acceptance Criteria:**
-- [ ] All duplicate helper functions removed from individual test files
-- [ ] New `test_helpers.py` module created with consolidated helpers
-- [ ] All tests pass with updated imports
-- [ ] Run `pytest tests/integration/ -v` - all green
+- [x] All duplicate helper functions removed from individual test files
+- [x] New `test_helpers.py` module created with consolidated helpers
+- [x] All tests pass with updated imports
+- [x] Run `pytest tests/integration/ -v` - all green
 
 **Files Changed:** ~10 files
 **Lines Removed:** ~100 lines
