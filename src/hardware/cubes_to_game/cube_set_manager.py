@@ -77,30 +77,63 @@ class CubeSetManager:
             logging.info(log_str)
         logging.info("")
 
+    def _traverse_chain_from_cube(self, start_cube: str) -> str | None:
+        """
+        Follow chain from start_cube, building word. Returns None if invalid.
+
+        Traverses the cube chain starting from start_cube, collecting tile IDs
+        to form a word. Returns None if an invalid cube is encountered or if
+        an infinite loop is detected.
+        """
+        word_tiles = []
+        current_cube = start_cube
+
+        while current_cube:
+            tile_id = self.cube_to_tile_id(current_cube)
+            if tile_id is None:
+                return None  # Cube has no tile mapping
+
+            word_tiles.append(tile_id)
+
+            if len(word_tiles) > tiles.MAX_LETTERS:
+                logging.info("infinite loop detected")
+                return None
+
+            current_cube = self.cube_chain.get(current_cube)
+
+        return "".join(word_tiles)
+
+    def _build_words_from_sources(self, source_cubes: List[str]) -> List[str]:
+        """
+        Build words by traversing chains from each source cube.
+
+        Returns empty list if any chain is invalid.
+        """
+        all_words = []
+        for source_cube in sorted(source_cubes):
+            word = self._traverse_chain_from_cube(source_cube)
+            if word is None:
+                return []  # Invalid chain detected
+            all_words.append(word)
+        return all_words
+
+    def _has_duplicate_tiles(self, words: List[str]) -> bool:
+        """Check if any tile ID appears in multiple words."""
+        all_tile_ids = [tile_id for word in words for tile_id in word]
+        return len(all_tile_ids) != len(set(all_tile_ids))
+
     def _form_words_from_chain(self) -> List[str]:
         """Forms words from the current cube chain. Returns empty list if invalid."""
         if not self.cube_chain:
             return []
 
         source_cubes = self._find_unmatched_cubes()
-        all_words = []
-        for source_cube in sorted(source_cubes):
-            word_tiles = []
-            sc = source_cube
-            while sc:
-                tile_id = self.cube_to_tile_id(sc)
-                if tile_id is None:
-                    return []
-                word_tiles.append(tile_id)
-                if len(word_tiles) > tiles.MAX_LETTERS:
-                    logging.info("infinite loop")
-                    return []
-                sc = self.cube_chain.get(sc)
-            all_words.append("".join(word_tiles))
+        all_words = self._build_words_from_sources(source_cubes)
 
-        # Check for duplicates
-        all_elements = [item for lst in all_words for item in lst]
-        if len(all_elements) != len(set(all_elements)):
+        if not all_words:
+            return []
+
+        if self._has_duplicate_tiles(all_words):
             logging.info(f"DUPES: {all_words}")
             return []
 
