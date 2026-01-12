@@ -243,16 +243,16 @@ async def test_letters_to_ids_duplicate_handling():
 
 #### Player-to-Cube-Set Mapping (1 test - incomplete)
 **Missing**:
-- [ ] P0 uses cube set 0 (cubes 1-6)
-- [ ] P1 uses cube set 1 (cubes 11-16)
-- [ ] Mapping established once at game start
-- [ ] Late-join preserves existing mapping
-- [ ] Single player defaults to cube set 0 for P0
-- [ ] Keyboard mode defaults P0 to cube set 0
+- [x] P0 uses cube set 0 (cubes 1-6)
+- [x] P1 uses cube set 1 (cubes 11-16)
+- [x] Mapping established once at game start
+- [x] Late-join preserves existing mapping
+- [x] Single player defaults to cube set 0 for P0
+- [x] Keyboard mode defaults P0 to cube set 0
 
 **Why Important**: Hardware wiring must be deterministic
 
-**Test File**: `test_player_cube_mapping.py` (NEW)
+**Test File**: `tests/integration/test_player_mapping.py` (Implemented)
 
 #### Previous Guesses Display (0 tests)
 **Missing**:
