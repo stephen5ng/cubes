@@ -30,12 +30,11 @@ async def test_rack_tile_consistency():
     
     # 2. Add letters
     # We can simulate accepting a letter via game.accept_letter or directly manipulating app/hardware events
-    # simpler to use internal methods for integration test logic if possible, 
+    # simpler to use internal methods for integration test logic if possible,
     # but strictly we should use game.accept_letter(now_ms)
-    
-    # Force letter index to 0 for deterministic testing
-    game.letter.column_move_direction = 0
-    game.letter.letter_ix = 0
+
+    # Freeze letter at position 0 for deterministic testing
+    game.letter.freeze_at_position(0)
     game.letter.letter = "A"
 
     await game.accept_letter(0)
@@ -49,8 +48,9 @@ async def test_rack_tile_consistency():
     assert logical_rack.letters()[0] == "A"
     
     # 3. Add expected behavior for test
-    
+
     # 2. Add 'B' at same index 0 (should replace 'A')
+    game.letter.freeze_at_position(0)  # Re-freeze for next letter placement
     game.letter.letter = "B"
     await game.accept_letter(0)
     await asyncio.sleep(0.1)
@@ -121,9 +121,8 @@ async def test_tile_movement_updates():
     await asyncio.sleep(0.1)
     
     # Add a letter so we have a tile to move
-    # Force index/direction for deterministic placement
-    game.letter.column_move_direction = 0 
-    game.letter.letter_ix = 1
+    # Freeze at position 1 for deterministic placement
+    game.letter.freeze_at_position(1)
     game.letter.letter = "B"
     await game.accept_letter(0)
     await asyncio.sleep(0.1)

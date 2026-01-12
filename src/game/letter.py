@@ -79,6 +79,38 @@ class Letter:
         """Stop the letter animation."""
         self.letter = ""
 
+    def freeze_at_position(self, position: int) -> None:
+        """Freeze letter at specific rack position for deterministic testing.
+
+        Sets the letter to be locked at a specific column index, preventing
+        horizontal movement. This is primarily used in integration tests to
+        ensure deterministic letter placement.
+
+        Args:
+            position: Rack index (0 to MAX_LETTERS-1, typically 0-5)
+
+        Raises:
+            ValueError: If position is outside valid range
+
+        Example:
+            # In tests - freeze letter at column 0 for predictable placement
+            game.letter.freeze_at_position(0)
+            game.letter.letter = "A"
+            await game.accept_letter(0)
+        """
+        if not (0 <= position < game_config.MAX_LETTERS):
+            raise ValueError(
+                f"Invalid position {position}: must be in range [0, {game_config.MAX_LETTERS})"
+            )
+
+        self.letter_ix = position
+        self.locked_on = True
+        # Set fraction_complete to 1.0 so letter_index() returns letter_ix directly
+        self.fraction_complete = 1.0
+        self.fraction_complete_eased = 1.0
+        # Set to far future so column movement never triggers
+        self.next_column_move_time_ms = float('inf')
+
     def letter_index(self) -> int:
         """Get the current letter index in the rack."""
         if self.fraction_complete_eased >= 0.5:
