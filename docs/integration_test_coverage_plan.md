@@ -300,19 +300,18 @@ async def test_letters_to_ids_duplicate_handling():
 ### Priority 4: Hardware/MQTT Integration (Medium-Low Priority)
 
 #### MQTT Message Handling (0 tests)
-**Missing**:
-- [ ] Neighbor report format: `cube/right/{sender}` with neighbor ID
-- [ ] Neighbor persistence across frames
-- [ ] Cube letter display: `cube/{id}/letter` topic
-- [ ] Cube border/lock: `cube/{id}/lock` topic
-- [ ] Good guess flash: tile IDs flashed with success color
-- [ ] Bad guess flash: tile IDs flashed with failure color
-- [ ] Old guess flash: tile IDs flashed with yellow
-- [ ] Message ordering guarantees (or lack thereof)
+- [x] Neighbor report format: `cube/right/{sender}` with neighbor ID
+- [x] Neighbor persistence across frames
+- [x] Cube letter display: `cube/{id}/letter` topic
+- [x] Cube border/lock: `cube/{id}/lock` topic
+- [x] Good guess flash: tile IDs flashed with success color
+- [x] Bad guess flash: tile IDs flashed with failure color
+- [x] Old guess flash: tile IDs flashed with yellow
+- [x] Message ordering guarantees (or lack thereof)
 
 **Why Moderate**: Existing hardware tests cover basics, but not protocol details
 
-**Test File**: `test_mqtt_protocol.py` (NEW) and `tests/integration/test_rack_synchronization.py` (Implemented)
+**Test File**: `tests/integration/test_mqtt_protocol.py` (Implemented) and `tests/integration/test_rack_synchronization.py` (Implemented)
 
 #### Cube State Synchronization (0 tests)
 **Missing**:
