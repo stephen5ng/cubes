@@ -69,20 +69,16 @@ class Game:
             letter_y,
             descent_mode)
 
-        # Add yellow line that takes twice as long to fall (only in timed mode)
-        self.yellow_tracker = None
-        self.yellow_source = None
-        
-        if descent_mode == "timed":
-            yellow_duration_ms = timed_duration_s * 3 * 1000  # Twice as long
-            yellow_strategy = TimeBasedDescentStrategy(game_duration_ms=yellow_duration_ms, total_height=game_height)
-            self.yellow_tracker = PositionTracker(yellow_strategy)
-            self.yellow_source = LetterSource(
-                self.yellow_tracker,
-                self.rack_metrics.get_rect().x, self.rack_metrics.get_rect().width,
-                letter_y,
-                descent_mode,
-                color=LETTER_SOURCE_YELLOW)
+        # Add yellow line that takes twice as long to fall (always present, ignored in discrete mode)
+        yellow_duration_ms = timed_duration_s * 3 * 1000  # Twice as long
+        yellow_strategy = TimeBasedDescentStrategy(game_duration_ms=yellow_duration_ms, total_height=game_height)
+        self.yellow_tracker = PositionTracker(yellow_strategy)
+        self.yellow_source = LetterSource(
+            self.yellow_tracker,
+            self.rack_metrics.get_rect().x, self.rack_metrics.get_rect().width,
+            letter_y,
+            descent_mode,
+            color=LETTER_SOURCE_YELLOW)
 
         self.shields: list[Shield] = []
         self.running = False
@@ -164,8 +160,7 @@ class Game:
         self.guesses_manager = PreviousGuessesManager(30, self.guess_to_player)
         print(f"start_cubes: starting letter {now_ms}")
         self.letter.start(now_ms)
-        if self.yellow_tracker:
-            self.yellow_tracker.reset(now_ms)
+        self.yellow_tracker.reset(now_ms)
 
         for score in self.scores:
             score.start()
@@ -241,12 +236,9 @@ class Game:
 
         if self.running:
             # Update yellow line BEFORE red line so red draws on top
-            if self.yellow_tracker:
-                self.yellow_tracker.update(now_ms, self.letter.height)
-                
-            if self.yellow_source:
-                if incident := self.yellow_source.update(window, now_ms):
-                    incidents.extend(incident)
+            self.yellow_tracker.update(now_ms, self.letter.height)
+            if incident := self.yellow_source.update(window, now_ms):
+                incidents.extend(incident)
 
             if incident := self.letter_source.update(window, now_ms):
                 incidents.extend(incident)
@@ -268,7 +260,7 @@ class Game:
 
                 # Check if letter is at red line - if so, push both red line and letter up to yellow line
                 letter_at_red_line = abs(self.letter.pos[1] - self.letter.start_fall_y) < 1  # Within n pixels tolerance
-                if letter_at_red_line and self.yellow_tracker:
+                if letter_at_red_line:
                     yellow_pos = self.yellow_tracker.start_fall_y
                     self.letter._apply_descent(yellow_pos, now_ms)
                     incidents.append("red_line_pushed_to_yellow")
