@@ -173,25 +173,21 @@ class Letter:
         new_y, should_trigger_fall = self.descent_strategy.update(self.start_fall_y, now_ms, self.height)
         self.start_fall_y = new_y  # Update red line position without resetting fall
 
-        if self.start_fall_y >= self.height:
-            # Red line at bottom - clamp to game over position
-            self.pos[1] = self.height
+        # Red line is above bottom - continue falling
+        if should_trigger_fall:
+            # Recalculate fall duration based on new starting position
+            remaining_height = self.height - self.start_fall_y  # Guaranteed > 0 in this branch
+            self.fall_duration_ms = self.DROP_TIME_MS * remaining_height / self.height
+
+        # Safeguard against edge cases where fall_duration_ms could be very small
+        if self.fall_duration_ms > 0:
+            fall_percent = (now_ms - self.start_fall_time_ms) / self.fall_duration_ms
         else:
-            # Red line is above bottom - continue falling
-            if should_trigger_fall:
-                # Recalculate fall duration based on new starting position
-                remaining_height = self.height - self.start_fall_y  # Guaranteed > 0 in this branch
-                self.fall_duration_ms = self.DROP_TIME_MS * remaining_height / self.height
+            fall_percent = 1.0
 
-            # Safeguard against edge cases where fall_duration_ms could be very small
-            if self.fall_duration_ms > 0:
-                fall_percent = (now_ms - self.start_fall_time_ms) / self.fall_duration_ms
-            else:
-                fall_percent = 1.0
-
-            fall_easing = self.top_bottom_easing(fall_percent)
-            # Ensure letter never appears above the red line
-            self.pos[1] = max(self.start_fall_y, int(self.current_fall_start_y + fall_easing * self.height))
+        fall_easing = self.top_bottom_easing(fall_percent)
+        # Ensure letter never appears above the red line
+        self.pos[1] = max(self.start_fall_y, int(self.current_fall_start_y + fall_easing * self.height))
 
         self._update_beeping(now_ms)
         self.draw(now_ms)
