@@ -45,4 +45,4 @@ def test_logging():
         os.unlink(log_file)
 
 if __name__ == "__main__":
-    test_logging() 
+    test_logging()
