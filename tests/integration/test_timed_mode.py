@@ -11,8 +11,11 @@ from tests.fixtures.game_factory import (
     async_test,
     run_until_condition,
     advance_frames,
+    run_until_condition,
+    advance_frames,
     advance_seconds,
-    advance_milliseconds
+    advance_milliseconds,
+    get_mock_time
 )
 
 @pytest.mark.timed
@@ -118,12 +121,28 @@ async def test_timed_game_ends_at_duration():
     await game.start_cubes(now_ms=0)
     assert game.running
 
-    # Fast forward to just before end (5s before)
-    await advance_seconds(game, queue, duration_s - 5)
+    # Fast forward to just before end (5s before) using direct time manipulation
+    # This avoids simulating thousands of frames
+    game._test_time_provider.advance((duration_s - 5) * 1000)
+    
+    # Process one frame to update state
+    import pygame
+    window = pygame.display.get_surface()
+    if window is None:
+        window = pygame.Surface((game_config.SCREEN_WIDTH, game_config.SCREEN_HEIGHT))
+        
+    await game.update(window, game._test_time_provider.get_ticks())
 
     assert game.running, f"Game should still be running 5s before duration. Score: {game.scores[0].score}"
 
     # Fast forward past end (advance another 10 seconds to be sure)
-    await advance_seconds(game, queue, 10)
+    game._test_time_provider.advance(10000)
     
-    assert not game.running, "Game should have ended after duration expired (via letter hitting rack continuously or explicit timeout)"
+    # Process frames to allow state transitions (Collision -> new_fall -> ! -> Collision -> Stop)
+    # We need at least 2 frames: one to register the hit and queue '!', and one to process '!' hit
+    for _ in range(5):
+        await game.update(window, game._test_time_provider.get_ticks())
+        await asyncio.sleep(0)
+
+    
+    assert not game.running, "Game should have ended after duration expired"

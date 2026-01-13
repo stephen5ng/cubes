@@ -9,6 +9,7 @@ from typing import Callable, Optional, Tuple
 from core.app import App
 from core import dictionary
 from game.game_state import Game
+from game.time_provider import TimeProvider
 from config import game_config
 from hardware import cubes_to_game
 from rendering.metrics import RackMetrics
@@ -34,6 +35,20 @@ mock_time_var: ContextVar[MockTime] = ContextVar("mock_time")
 def get_mock_time() -> MockTime:
     """Get the current mock time instance."""
     return mock_time_var.get()
+
+class ContextAwareTimeProvider(TimeProvider):
+    """TimeProvider that syncs with the test harness's mock_time_var."""
+    def get_ticks(self) -> int:
+        return mock_time_var.get().now_ms
+
+    def get_seconds(self) -> float:
+        return self.get_ticks() / 1000.0
+
+    def advance(self, ms: int) -> None:
+        mock_time_var.get().now_ms += ms
+
+    def set_time(self, ms: int) -> None:
+        mock_time_var.get().now_ms = ms
 
 def is_visual_mode() -> bool:
     """Check if visual mode is enabled via pytest's --visual flag."""
@@ -122,7 +137,11 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
     fake_mqtt = FakeMqttClient()
     publish_queue = asyncio.Queue()
 
-    app = App(publish_queue, real_dictionary, CubesHardwareInterface())
+    publish_queue = asyncio.Queue()
+
+    # Create time provider that syncs with our test harness
+    time_provider = ContextAwareTimeProvider()
+    app = App(publish_queue, real_dictionary, CubesHardwareInterface(), time_provider=time_provider)
     await cubes_to_game.init(fake_mqtt)
     
     # Clear initial state
@@ -142,6 +161,9 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
         descent_mode=descent_mode,
         timed_duration_s=timed_duration_s
     )
+    
+    # Attach provider to game for tests that might want to access it (though updating mock_time_var via loop is preferred)
+    game._test_time_provider = time_provider
     
     # Initialize game state
     game.running = True

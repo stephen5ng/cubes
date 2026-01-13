@@ -5,6 +5,7 @@ from functools import wraps
 import logging
 from typing import Any, Callable, Coroutine, Optional
 
+from game.time_provider import TimeProvider, SystemTimeProvider
 from hardware.interface import HardwareInterface
 from config import game_config
 from core.dictionary import Dictionary
@@ -33,7 +34,7 @@ from core.rack_manager import RackManager
 from core.tile_generator import TileGenerator
 
 class App:
-    def __init__(self, publish_queue: asyncio.Queue, dictionary: Dictionary, hardware_interface: HardwareInterface) -> None:
+    def __init__(self, publish_queue: asyncio.Queue, dictionary: Dictionary, hardware_interface: HardwareInterface, time_provider: Optional[TimeProvider] = None) -> None:
         def make_guess_tiles_callback(the_app: App) -> Callable[[list[str], bool, int],  Coroutine[Any, Any, None]]:
             async def guess_tiles_callback(guess: list[str], move_tiles: bool, player: int, now_ms: int) -> None:
                 await the_app.guess_tiles(guess, move_tiles, player, now_ms)
@@ -49,6 +50,7 @@ class App:
         self._dictionary = dictionary
         self._publish_queue = publish_queue
         self.hardware = hardware_interface
+        self._time = time_provider or SystemTimeProvider()
         self._last_guess: list[str] = []
         
         tile_generator = TileGenerator()
@@ -270,7 +272,7 @@ class App:
 
     def add_guess(self, guess: str, player: int) -> None:
         self._score_card.add_guess(guess, player)
-        events.trigger(InputAddGuessEvent(self._score_card.get_previous_guesses(), guess, player, pygame.time.get_ticks()))
+        events.trigger(InputAddGuessEvent(self._score_card.get_previous_guesses(), guess, player, self._time.get_ticks()))
 
     async def guess_tiles(self, word_tile_ids: list[str], move_tiles: bool, player: int, now_ms: int) -> None:
         self._last_guess = word_tile_ids
@@ -296,7 +298,7 @@ class App:
 
         cube_set_id = self._player_to_cube_set[player]
         if self._score_card.is_old_guess(guess):
-            events.trigger(GameOldGuessEvent(guess, player, pygame.time.get_ticks()))
+            events.trigger(GameOldGuessEvent(guess, player, self._time.get_ticks()))
             await self.hardware.old_guess(self._publish_queue, word_tile_ids, cube_set_id, player)
             tiles_dirty = True
         elif self._score_card.is_good_guess(guess):
@@ -320,16 +322,16 @@ class App:
             [self.rack_manager.get_rack(player).letters_to_ids(guess)], cube_set_id, player, now_ms)
 
     def _update_next_tile(self, next_tile: str) -> None:
-        events.trigger(GameNextTileEvent(next_tile, pygame.time.get_ticks()))
+        events.trigger(GameNextTileEvent(next_tile, self._time.get_ticks()))
 
     def _update_previous_guesses(self) -> None:
         events.trigger(InputUpdatePreviousGuessesEvent(
-            self._score_card.get_previous_guesses(), pygame.time.get_ticks()))
+            self._score_card.get_previous_guesses(), self._time.get_ticks()))
 
     def _update_remaining_previous_guesses(self) -> None:
         events.trigger(InputRemainingPreviousGuessesEvent(
             self._score_card.get_remaining_previous_guesses(),
-            pygame.time.get_ticks()))
+            self._time.get_ticks()))
 
     def _update_rack_display(self, highlight_length: int, guess_length: int, player: int):
         events.trigger(RackUpdateRackEvent(
@@ -337,4 +339,4 @@ class App:
                        highlight_length,
                        guess_length,
                        player,
-                       pygame.time.get_ticks()))
+                       self._time.get_ticks()))

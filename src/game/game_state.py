@@ -265,6 +265,18 @@ class Game:
         self.guesses_manager.update(window, now_ms)
 
         if self.running:
+            # Check for timed game expiration
+            if self.rack_metrics.letter_height > 0:
+                 # Check descent strategy for duration
+                 duration_ms = self.letter.descent_strategy.game_duration_ms
+                 if duration_ms:
+                     elapsed_ms = now_ms - (self.start_time_s * 1000)
+                     # Allow a small buffer (e.g. 1s) for animation to complete
+                     if elapsed_ms > duration_ms + 1000:
+                         logger.info(f"Game duration {duration_ms}ms exceeded ({elapsed_ms}ms). Stopping.")
+                         await self.stop(now_ms)
+                         return incidents
+
             # Update yellow line BEFORE red line so red draws on top
             if self.yellow_tracker:
                 self.yellow_tracker.update(now_ms, self.letter.height)

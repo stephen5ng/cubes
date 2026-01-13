@@ -47,16 +47,31 @@ class EventEngine:
             event_args = tuple(getattr(event, f.name) for f in fields(event) if f.name != 'event_type')
             self.queue.put_nowait((event_name, event_args, {}))
 
-    async def start(self) -> None:
-        self.running = True
-        asyncio.create_task(self._worker(), name="event_worker")
-
     async def stop(self) -> None:
         self.running = False
         try:
             await asyncio.wait_for(self.queue.join(), timeout=2.0)
         except asyncio.TimeoutError:
             logging.warning("Event queue join timed out, there may be unfinished tasks.")
+
+    def clear(self) -> None:
+        """Clear all listeners and pending events."""
+        self.listeners.clear()
+        # Empty the queue
+        try:
+            while True:
+                self.queue.get_nowait()
+                self.queue.task_done()
+        except asyncio.QueueEmpty:
+            pass
+            
+    def is_alive(self) -> bool:
+        """Check if the event worker task is running."""
+        return self.running and hasattr(self, '_worker_task') and not self._worker_task.done()
+
+    async def start(self) -> None:
+        self.running = True
+        self._worker_task = asyncio.create_task(self._worker(), name="event_worker")
 
     async def _worker(self) -> None:
         while self.running:
