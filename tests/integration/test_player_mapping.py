@@ -137,7 +137,11 @@ async def test_late_join_rejected():
     # 2. Attempt late join (should be rejected)
     from input.input_devices import CubesInput
     input_dev = CubesInput(None)
-    result = await game.start(input_dev, current_time + 1000)
+    # 2. Attempt late join (should be rejected)
+    from input.input_devices import CubesInput
+    input_dev = CubesInput(None)
+    # Grace period is 6s, so we need to be > 6s late
+    result = await game.start(input_dev, current_time + 7000)
 
     # Verify join was rejected
     assert result == -1, "Late join should be rejected"
