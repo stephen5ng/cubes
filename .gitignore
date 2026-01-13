@@ -113,3 +113,4 @@ assets/speech/
 # Temporary upload files
 word_sounds.tar.gz
 word_sounds.tar.gz.part.*
+.aider*

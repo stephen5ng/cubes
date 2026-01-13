@@ -8,12 +8,15 @@ from io import StringIO
 import pygame
 import random
 import logging
+import pytest
 
 from core import app, dictionary
 from game_logging.game_loggers import GameLogger, OutputLogger
 from hardware import cubes_to_game
+from hardware.cubes_interface import CubesHardwareInterface
 import pygamegameasync
 from testing.mock_mqtt_client import MockMqttClient
+from tests.fixtures.game_factory import async_test
 
 from unittest.mock import patch
 
@@ -33,6 +36,7 @@ class MockClock:
     def get_ticks(self):
         return self.time_ms
 
+@async_test
 async def test_integration():
     """Integration test using production setup_game() and run_single_frame()."""
     logger.info("=== INTEGRATION TEST ===")
@@ -66,7 +70,10 @@ async def test_integration():
 
         # Create app and publish queue
         publish_queue = asyncio.Queue()
-        the_app = app.App(publish_queue, a_dictionary)
+        
+        # FIX: Inject HardwareInterface
+        hardware = CubesHardwareInterface()
+        the_app = app.App(publish_queue, a_dictionary, hardware)
 
         # Create BlockWordsPygame instance (creates window)
         block_words = pygamegameasync.BlockWordsPygame(
