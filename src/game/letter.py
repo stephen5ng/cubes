@@ -10,7 +10,7 @@ from core import tiles
 from config import game_config
 from config.game_config import SCREEN_HEIGHT, LETTER_SOURCE_COLOR
 from rendering.metrics import RackMetrics
-from game.descent_strategy import DescentStrategy, DiscreteDescentStrategy
+from game.descent_strategy import UnifiedDescentStrategy
 
 
 class GuessType(Enum):
@@ -32,7 +32,7 @@ class Letter:
 
     def __init__(
         self, font: pygame.freetype.Font, initial_y: int, rack_metrics: RackMetrics, output_logger, letter_beeps: list,
-        descent_strategy: Optional[DescentStrategy] = None) -> None:
+        descent_strategy: Optional[UnifiedDescentStrategy] = None) -> None:
         self.rack_metrics = rack_metrics
         self.game_area_offset_y = initial_y  # Offset from screen top to game area
         self.font = font
@@ -52,7 +52,7 @@ class Letter:
 
         # Use strategy pattern for descent control
         if descent_strategy is None:
-            descent_strategy = DiscreteDescentStrategy(Letter.Y_INCREMENT)
+            descent_strategy = UnifiedDescentStrategy(game_duration_ms=None, event_descent_amount=Letter.Y_INCREMENT)
         self.descent_strategy = descent_strategy
 
         self.start(0)
@@ -223,25 +223,21 @@ class Letter:
         self.pos[1] = self.current_fall_start_y = self.start_fall_y
         self.start_fall_time_ms = now_ms
 
-        # Reset descent strategy timer for time-based descent
-        # This ensures the position "sticks" when using time-based calculations
-        if hasattr(self.descent_strategy, 'start_time_ms'):
+        # Synchronize strategy state if needed
+        if hasattr(self.descent_strategy, 'force_position'):
+            self.descent_strategy.force_position(new_y, now_ms, self.height)
+        elif hasattr(self.descent_strategy, 'start_time_ms'):
+            # Legacy TimeBasedDescentStrategy support
             descent_rate = self.descent_strategy.descent_rate
             elapsed_for_position = new_y / descent_rate if descent_rate > 0 else 0
             self.descent_strategy.start_time_ms = now_ms - int(elapsed_for_position)
 
     def new_fall(self, now_ms: int) -> None:
-        """Start a new falling segment.
-
-        For DiscreteDescentStrategy: triggers descent increment
-        For TimeBasedDescentStrategy: starts from current red line position
-        """
-        # Trigger descent in the strategy (if it supports it)
+        """Start a new falling segment."""
+        # Trigger descent in the strategy
         if hasattr(self.descent_strategy, 'trigger_descent'):
             self.descent_strategy.trigger_descent()
 
         # Get current red line position and start new fall from there
-        # For DiscreteDescentStrategy: this gets the incremented position
-        # For TimeBasedDescentStrategy: this gets the time-based position
         new_y, should_trigger = self.descent_strategy.update(self.start_fall_y, now_ms, self.height)
         self._apply_descent(new_y, now_ms)

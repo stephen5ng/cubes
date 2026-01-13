@@ -7,7 +7,7 @@ import pygame
 import pygame.freetype
 from unittest.mock import Mock
 from game.letter import Letter
-from game.descent_strategy import TimeBasedDescentStrategy
+from game.descent_strategy import UnifiedDescentStrategy
 from rendering.metrics import RackMetrics
 from rendering.animations import LetterSource, PositionTracker, LETTER_SOURCE_RED, LETTER_SOURCE_YELLOW
 from config.game_config import SCREEN_HEIGHT
@@ -140,8 +140,7 @@ class TestLetterSourceIntegration:
             letter=letter,
             x=0,
             width=32,
-            initial_y=0,
-            descent_mode="discrete"
+            initial_y=0
         )
 
         assert letter_source.last_y == 0
@@ -224,7 +223,7 @@ class TestPositionTracker:
 
     def test_position_tracker_initialization(self):
         """PositionTracker should initialize with zero position."""
-        strategy = TimeBasedDescentStrategy(game_duration_ms=10000, total_height=240)
+        strategy = UnifiedDescentStrategy(game_duration_ms=10000, event_descent_amount=0)
         tracker = PositionTracker(strategy)
         
         assert tracker.start_fall_y == 0
@@ -232,7 +231,7 @@ class TestPositionTracker:
 
     def test_position_tracker_update(self):
         """PositionTracker should update position based on strategy."""
-        strategy = TimeBasedDescentStrategy(game_duration_ms=10000, total_height=240)
+        strategy = UnifiedDescentStrategy(game_duration_ms=10000, event_descent_amount=0)
         tracker = PositionTracker(strategy)
         tracker.reset(now_ms=0)
         
@@ -242,7 +241,7 @@ class TestPositionTracker:
 
     def test_position_tracker_reset(self):
         """PositionTracker should reset position on reset."""
-        strategy = TimeBasedDescentStrategy(game_duration_ms=10000, total_height=240)
+        strategy = UnifiedDescentStrategy(game_duration_ms=10000, event_descent_amount=0)
         tracker = PositionTracker(strategy)
         tracker.reset(now_ms=0)
         
@@ -267,8 +266,7 @@ class TestLetterSourceColor:
             letter=letter,
             x=0,
             width=32,
-            initial_y=0,
-            descent_mode="discrete"
+            initial_y=0
         )
         
         assert letter_source.color == LETTER_SOURCE_RED
@@ -283,7 +281,6 @@ class TestLetterSourceColor:
             x=0,
             width=32,
             initial_y=0,
-            descent_mode="discrete",
             color=LETTER_SOURCE_YELLOW
         )
         
@@ -299,7 +296,6 @@ class TestLetterSourceColor:
             x=0,
             width=32,
             initial_y=0,
-            descent_mode="discrete",
             color=LETTER_SOURCE_YELLOW
         )
         
@@ -315,10 +311,10 @@ class TestYellowLineIntegration:
     def test_yellow_line_descends_slower(self):
         """Yellow line should descend at half the speed of red line."""
         # Red line: 10 second duration, 240 height
-        red_strategy = TimeBasedDescentStrategy(game_duration_ms=10000, total_height=240)
+        red_strategy = UnifiedDescentStrategy(game_duration_ms=10000, event_descent_amount=0)
         
         # Yellow line: 20 second duration (twice as long), same height
-        yellow_strategy = TimeBasedDescentStrategy(game_duration_ms=20000, total_height=240)
+        yellow_strategy = UnifiedDescentStrategy(game_duration_ms=20000, event_descent_amount=0)
         yellow_tracker = PositionTracker(yellow_strategy)
         
         red_strategy.reset(now_ms=0)
@@ -344,7 +340,7 @@ class TestYellowLineIntegration:
 
     def test_yellow_line_with_letter_source(self):
         """Yellow line should work with LetterSource."""
-        yellow_strategy = TimeBasedDescentStrategy(game_duration_ms=20000, total_height=240)
+        yellow_strategy = UnifiedDescentStrategy(game_duration_ms=20000, event_descent_amount=0)
         yellow_tracker = PositionTracker(yellow_strategy)
         yellow_tracker.reset(now_ms=0)
         
@@ -353,7 +349,6 @@ class TestYellowLineIntegration:
             x=0,
             width=32,
             initial_y=0,
-            descent_mode="timed",
             color=LETTER_SOURCE_YELLOW
         )
         
@@ -376,7 +371,7 @@ class TestShieldPushBackToYellowLine:
 
     def test_shield_pushes_to_yellow_when_letter_at_red_line(self):
         """Shield should push red line and letter to yellow line when letter is at red line."""
-        from game.descent_strategy import TimeBasedDescentStrategy
+        from game.descent_strategy import UnifiedDescentStrategy
         from rendering.animations import PositionTracker
         
         # This would normally be tested in an integration test with the full game

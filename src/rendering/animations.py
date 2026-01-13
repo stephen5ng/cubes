@@ -59,14 +59,13 @@ class LetterSource:
     MIN_HEIGHT = 1
     MAX_HEIGHT = 20
 
-    def __init__(self, letter, x: int, width: int, initial_y: int, descent_mode: str = "discrete", color: pygame.Color = None) -> None:
+    def __init__(self, letter, x: int, width: int, initial_y: int, color: pygame.Color = None) -> None:
         self.x = x
         self.last_y = 0
         self.initial_y = initial_y
         self.height = LetterSource.MIN_HEIGHT
         self.width = width
         self.letter = letter
-        self.descent_mode = descent_mode
         self.color = color if color is not None else LETTER_SOURCE_RED
         self.easing = easing_functions.QuinticEaseInOut(start=1, end=LetterSource.MAX_HEIGHT, duration=1)
         self.last_update = 0

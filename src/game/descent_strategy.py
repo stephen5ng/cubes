@@ -1,99 +1,50 @@
-"""Strategies for controlling how the fall source descends toward player."""
+from typing import Optional, Tuple
 
-from abc import ABC, abstractmethod
-from typing import Tuple
+class UnifiedDescentStrategy:
+    """Consolidated descent strategy handling both time and event-based descent."""
 
+    def __init__(self, game_duration_ms: Optional[int], event_descent_amount: int):
+        self.game_duration_ms = game_duration_ms
+        self.event_descent_amount = event_descent_amount
+        self.start_time_ms = 0
+        self.event_offset = 0
+        self.pending_descent = False
 
-class DescentStrategy(ABC):
-    """Strategy for controlling how the fall source descends toward player."""
-
-    @abstractmethod
-    def update(self, current_y: int, now_ms: int, height: int) -> Tuple[int, bool]:
-        """
-        Update the descent position.
-
-        Args:
-            current_y: Current start_fall_y position
-            now_ms: Current timestamp
-            height: Total fall height available
-
-        Returns:
-            Tuple of (new_y_position, should_trigger_new_fall)
-        """
-        pass
-
-    @abstractmethod
     def reset(self, now_ms: int) -> None:
         """Reset strategy state for new game."""
-        pass
-
-
-class DiscreteDescentStrategy(DescentStrategy):
-    """Original behavior: descend by fixed increment on events.
-
-    This strategy maintains the classic game behavior where the fall source
-    moves down in discrete steps only when triggered by game events (like
-    completing a word or the letter hitting the rack).
-    """
-
-    def __init__(self, increment: int):
-        """
-        Args:
-            increment: Distance to descend on each trigger (e.g., Y_INCREMENT)
-        """
-        self.increment = increment
+        self.start_time_ms = now_ms
+        self.event_offset = 0
         self.pending_descent = False
 
     def trigger_descent(self) -> None:
-        """Called when word played/missed to trigger next descent."""
+        """Trigger an event-based descent (e.g. word formed)."""
         self.pending_descent = True
 
     def update(self, current_y: int, now_ms: int, height: int) -> Tuple[int, bool]:
-        """Apply pending descent if triggered."""
+        """Calculates the new Y position based on time and events."""
+        triggered = False
         if self.pending_descent:
+            self.event_offset += self.event_descent_amount
             self.pending_descent = False
-            new_y = min(current_y + self.increment, height)
-            return (new_y, new_y > current_y)
-        return (current_y, False)
+            triggered = True
 
-    def reset(self, now_ms: int) -> None:
-        """Clear pending descent."""
-        self.pending_descent = False
+        rate = 0.0
+        if self.game_duration_ms:
+            rate = height / self.game_duration_ms
 
+        elapsed = now_ms - self.start_time_ms
+        time_drop = int(elapsed * rate)
 
-class TimeBasedDescentStrategy(DescentStrategy):
-    """Continuous descent based on elapsed time.
+        target_y = time_drop + self.event_offset
+        return min(target_y, height), triggered
 
-    This strategy creates a fixed-duration game mode by making the fall source
-    descend at a constant rate regardless of player performance. Perfect for
-    timed competitive modes (e.g., 3-minute games).
-    """
-
-    def __init__(self, game_duration_ms: int, total_height: int):
+    def force_position(self, new_y: int, now_ms: int, height: int) -> None:
+        """Force the strategy to adopt a new position (e.g. physics adjustment).
+           This recalculates the event_offset so that update() yields new_y.
         """
-        Args:
-            game_duration_ms: Total game time (e.g., 180000 for 3 minutes)
-            total_height: Total distance to descend
-        """
-        self.game_duration_ms = game_duration_ms
-        self.total_height = total_height
-        self.descent_rate = total_height / game_duration_ms  # pixels per ms
-        self.start_time_ms = 0
-        self.last_y = 0
-
-    def update(self, current_y: int, now_ms: int, height: int) -> Tuple[int, bool]:
-        """Calculate position based on elapsed time."""
-        elapsed_ms = now_ms - self.start_time_ms
-        target_y = min(self.total_height,
-                      int(elapsed_ms * self.descent_rate))
-
-        # Time-based strategy continuously updates position but doesn't trigger new falls
-        # The red line descends, but the letter continues falling independently
-        self.last_y = target_y
-
-        return (target_y, False)
-
-    def reset(self, now_ms: int) -> None:
-        """Reset timer for new game."""
-        self.start_time_ms = now_ms
-        self.last_y = 0
+        rate = 0.0
+        if self.game_duration_ms:
+            rate = height / self.game_duration_ms
+        elapsed = now_ms - self.start_time_ms
+        time_drop = int(elapsed * rate)
+        self.event_offset = new_y - time_drop
