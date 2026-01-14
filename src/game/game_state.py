@@ -9,10 +9,14 @@ from core import app
 from core import tiles
 from config import game_config
 from hardware import cubes_to_game
+import os
+import subprocess
+from utils.pygameasync import events
 from utils.pygameasync import events
 from utils import textrect
 from game.components import Score, Shield
 from game.letter import GuessType, Letter
+from game.recorder import GameRecorder, NullRecorder
 from game.descent_strategy import UnifiedDescentStrategy
 from input.input_devices import InputDevice, CubesInput
 from rendering.animations import LetterSource, PositionTracker, LETTER_SOURCE_YELLOW
@@ -38,10 +42,12 @@ class Game:
                  event_descent_amount: int = Letter.Y_INCREMENT,
                  game_duration_s: Optional[int] = None,
                  descent_mode: str = "discrete",
-                 timed_duration_s: int = game_config.TIMED_DURATION_S) -> None:
+                 timed_duration_s: int = game_config.TIMED_DURATION_S,
+                 recorder: Optional[GameRecorder] = None) -> None:
         self._app = the_app
         self.game_logger = game_logger
         self.output_logger = output_logger
+        self.recorder = recorder if recorder else NullRecorder()
 
         # Required dependency injection - no defaults!
         self.sound_manager = sound_manager
@@ -98,6 +104,9 @@ class Game:
         self.aborted = False
         self.input_devices = []
         self.last_lock = False
+        
+        # Capture logic moved to recorder
+        
         # Initialize time tracking
         self.start_time_s = 0
         self.stop_time_s = 0
@@ -265,17 +274,6 @@ class Game:
         self.guesses_manager.update(window, now_ms)
 
         if self.running:
-            # Check for timed game expiration
-            if self.rack_metrics.letter_height > 0:
-                 # Check descent strategy for duration
-                 duration_ms = self.letter.descent_strategy.game_duration_ms
-                 if duration_ms:
-                     elapsed_ms = now_ms - (self.start_time_s * 1000)
-                     # Allow a small buffer (e.g. 1s) for animation to complete
-                     if elapsed_ms > duration_ms + 1000:
-                         logger.info(f"Game duration {duration_ms}ms exceeded ({elapsed_ms}ms). Stopping.")
-                         await self.stop(now_ms)
-                         return incidents
 
             # Update yellow line BEFORE red line so red draws on top
             if self.yellow_tracker:
@@ -312,6 +310,8 @@ class Game:
                     # Normal bounce behavior
                     self.letter.shield_collision(now_ms)
 
+                self.recorder.trigger(now_ms)
+
                 self.scores[shield.player].update_score(shield.score)
                 self._app.add_guess(shield.letters, shield.player)
                 self.sound_manager.play_crash()
@@ -329,4 +329,8 @@ class Game:
                 self.sound_manager.play_chunk()
                 self.letter.new_fall(now_ms)
                 await self.accept_letter(now_ms)
+        
+
+        
+        self.recorder.capture(window, now_ms)
         return incidents

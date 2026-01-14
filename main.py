@@ -119,6 +119,8 @@ if __name__ == "__main__":
                        help="Descent strategy: discrete (classic) or timed")
     parser.add_argument("--timed-duration", type=int, default=120,
                        help="Duration in seconds for timed mode (default: 240 seconds / 4 minutes)")
+    parser.add_argument("--record", action=argparse.BooleanOptionalAction, default=False,
+                       help="Enable screen recording of game events")
     args = parser.parse_args()
     
     seed = 1
@@ -159,7 +161,7 @@ if __name__ == "__main__":
     dictionary = Dictionary(game_config.MIN_LETTERS, game_config.MAX_LETTERS, open=my_open)
     dictionary.read(game_config.DICTIONARY_PATH, game_config.BINGOS_PATH)
     pygame.init()
-    block_words = pygamegameasync.BlockWordsPygame(replay_file=args.replay or "", descent_mode=args.descent_mode, timed_duration_s=args.timed_duration)
+    block_words = pygamegameasync.BlockWordsPygame(replay_file=args.replay or "", descent_mode=args.descent_mode, timed_duration_s=args.timed_duration, record=args.record)
     
     game_logger = GameLogger(None if args.replay else "output/game_replay.jsonl")
     try:

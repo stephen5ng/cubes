@@ -58,8 +58,11 @@ from ui.guess_display import (
 )
 from game.letter import GuessType, Letter
 from rendering.rack_display import RackDisplay
+from game.letter import GuessType, Letter
+from rendering.rack_display import RackDisplay
 from game.game_state import Game
 from events.game_events import GameAbortEvent
+from game.recorder import FileSystemRecorder, NullRecorder
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +77,7 @@ logger = logging.getLogger(__name__)
 
 
 class BlockWordsPygame:
-    def __init__(self, replay_file: str, descent_mode: str = "discrete", timed_duration_s: int = 240) -> None:
+    def __init__(self, replay_file: str, descent_mode: str = "discrete", timed_duration_s: int = 240, record: bool = False) -> None:
         self._window = pygame.display.set_mode(
             (SCREEN_WIDTH*SCALING_FACTOR, SCREEN_HEIGHT*SCALING_FACTOR))
         self.letter_font = pygame.freetype.SysFont(FONT, RackMetrics.LETTER_SIZE)
@@ -83,6 +86,7 @@ class BlockWordsPygame:
         self.replay_file = replay_file
         self.descent_mode = descent_mode
         self.timed_duration_s = timed_duration_s
+        self.record = record
         self.replayer = None
         self._mock_mqtt_client = None
 
@@ -252,9 +256,11 @@ class BlockWordsPygame:
         rack_metrics = RackMetrics()
 
         # Get letter beeps from sound manager for injection into Game
+        recorder = FileSystemRecorder() if self.record else NullRecorder()
         self.game = Game(the_app, self.letter_font, game_logger, output_logger, sound_manager,
                         rack_metrics, sound_manager.get_letter_beeps(),
-                        descent_mode=self.descent_mode, timed_duration_s=self.timed_duration_s)
+                        descent_mode=self.descent_mode, timed_duration_s=self.timed_duration_s,
+                        recorder=recorder)
         self.input_controller = GameInputController(self.game)
 
         # Define handlers dictionary after dependencies are initialized
