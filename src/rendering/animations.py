@@ -62,6 +62,7 @@ class LetterSource:
     def __init__(self, letter, x: int, width: int, initial_y: int, color: pygame.Color = None) -> None:
         self.x = x
         self.last_y = 0
+        self.moving_down = True
         self.initial_y = initial_y
         self.height = LetterSource.MIN_HEIGHT
         self.width = width
@@ -95,7 +96,10 @@ class LetterSource:
         incidents = []
         if self.last_y != self.letter.start_fall_y:
             # Letter source position changed - calculate distance moved (inclusive)
-            distance_moved = abs(self.letter.start_fall_y - self.last_y)
+            diff = self.letter.start_fall_y - self.last_y
+            self.moving_down = diff > 0
+            
+            distance_moved = abs(diff)
             self.last_y = self.letter.start_fall_y
 
             # Use inclusive range: distance + 1 gives minimum 2px for any movement
@@ -114,7 +118,13 @@ class LetterSource:
                                     now_ms))
             self.draw()
 
-        # Position source above falling letter
-        self.pos = [self.x, self.initial_y + self.letter.start_fall_y - self.height]
+        # Position source based on movement direction
+        # If moving down, trail appears above the new line (y - height)
+        # If moving up, trail appears below the new line (y)
+        y_pos = self.initial_y + self.letter.start_fall_y
+        if self.moving_down:
+            y_pos -= self.height
+            
+        self.pos = [self.x, y_pos]
         window.blit(self.surface, self.pos)
         return incidents
