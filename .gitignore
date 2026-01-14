@@ -114,3 +114,4 @@ assets/speech/
 word_sounds.tar.gz
 word_sounds.tar.gz.part.*
 .aider*
+capture/
