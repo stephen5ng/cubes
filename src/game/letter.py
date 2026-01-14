@@ -39,6 +39,7 @@ class Letter:
         self.letter_width, self.letter_height = rack_metrics.letter_width, rack_metrics.letter_height
         self.width = rack_metrics.letter_width
         self.height = SCREEN_HEIGHT - (rack_metrics.letter_height + initial_y)
+        assert self.height > 0, f"Letter height must be positive, got {self.height} (screen={SCREEN_HEIGHT}, letter={rack_metrics.letter_height}, y={initial_y})"
         self.fraction_complete = 0.0
         self.locked_on = False
         self.start_x = self.rack_metrics.get_rect().x
@@ -58,6 +59,26 @@ class Letter:
         self.start(0)
         self.draw(0)
 
+    def _get_fall_percent(self, now_ms: int) -> float:
+        """Calculate the current fall completion percentage (0.0 to 1.0)."""
+        remaining_height = self.height - self.start_fall_y
+        
+        if remaining_height <= 0:
+            return 1.0
+
+        # Calculate duration dynamically based on current line position
+        # self.height > 0 invariant enforced in __init__
+        current_duration_ms = self.DROP_TIME_MS * remaining_height / self.height
+
+        return (now_ms - self.start_fall_time_ms) / current_duration_ms
+
+    def _compute_fall_y(self, now_ms: int) -> int:
+        """Compute Y position based on current time/state."""
+        fall_percent = self._get_fall_percent(now_ms)
+        fall_easing = self.top_bottom_easing(fall_percent)
+        # Ensure letter never appears above the red line
+        return max(self.start_fall_y, int(self.current_fall_start_y + fall_easing * self.height))
+
     def start(self, now_ms: int) -> None:
         """Initialize letter state for a new game."""
         self.letter = ""
@@ -66,10 +87,9 @@ class Letter:
         self.current_fall_start_y = 0
         self.column_move_direction = 1
         self.next_column_move_time_ms = now_ms + self.NEXT_COLUMN_MS
-        self.fall_duration_ms = self.DROP_TIME_MS
+        self.start_fall_time_ms = now_ms
         self.rect = pygame.Rect(0, 0, 0, 0)
         self.pos = [0, 0]
-        self.start_fall_time_ms = now_ms
         self.last_beep_time_ms = now_ms
 
         # Reset the descent strategy for new game
@@ -169,25 +189,9 @@ class Letter:
         """Update and render the letter, returning incidents."""
         incidents = []
 
-        # Update red line position from strategy
-        new_y, should_trigger_fall = self.descent_strategy.update(self.start_fall_y, now_ms, self.height)
-        self.start_fall_y = new_y  # Update red line position without resetting fall
+        self.start_fall_y = self.descent_strategy.update(now_ms, self.height)
 
-        # Red line is above bottom - continue falling
-        if should_trigger_fall:
-            # Recalculate fall duration based on new starting position
-            remaining_height = self.height - self.start_fall_y  # Guaranteed > 0 in this branch
-            self.fall_duration_ms = self.DROP_TIME_MS * remaining_height / self.height
-
-        # Safeguard against edge cases where fall_duration_ms could be very small
-        if self.fall_duration_ms > 0:
-            fall_percent = (now_ms - self.start_fall_time_ms) / self.fall_duration_ms
-        else:
-            fall_percent = 1.0
-
-        fall_easing = self.top_bottom_easing(fall_percent)
-        # Ensure letter never appears above the red line
-        self.pos[1] = max(self.start_fall_y, int(self.current_fall_start_y + fall_easing * self.height))
+        self.pos[1] = self._compute_fall_y(now_ms)
 
         self._update_beeping(now_ms)
         self.draw(now_ms)
@@ -221,28 +225,18 @@ class Letter:
         """
         self.start_fall_y = new_y
 
-        # Ensure duration is never negative
-        remaining_height = max(0, self.height - self.start_fall_y)
-        self.fall_duration_ms = self.DROP_TIME_MS * remaining_height / self.height
-
         self.pos[1] = self.current_fall_start_y = self.start_fall_y
         self.start_fall_time_ms = now_ms
 
         # Synchronize strategy state if needed
         if hasattr(self.descent_strategy, 'force_position'):
             self.descent_strategy.force_position(new_y, now_ms, self.height)
-        elif hasattr(self.descent_strategy, 'start_time_ms'):
-            # Legacy TimeBasedDescentStrategy support
-            descent_rate = self.descent_strategy.descent_rate
-            elapsed_for_position = new_y / descent_rate if descent_rate > 0 else 0
-            self.descent_strategy.start_time_ms = now_ms - int(elapsed_for_position)
 
     def new_fall(self, now_ms: int) -> None:
         """Start a new falling segment."""
         # Trigger descent in the strategy
-        if hasattr(self.descent_strategy, 'trigger_descent'):
-            self.descent_strategy.trigger_descent()
+        self.descent_strategy.trigger_descent()
 
         # Get current red line position and start new fall from there
-        new_y, should_trigger = self.descent_strategy.update(self.start_fall_y, now_ms, self.height)
+        new_y = self.descent_strategy.update(now_ms, self.height)
         self._apply_descent(new_y, now_ms)

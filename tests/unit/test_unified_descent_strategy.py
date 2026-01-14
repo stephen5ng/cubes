@@ -9,20 +9,17 @@ class TestUnifiedDescentStrategy:
         strategy = UnifiedDescentStrategy(game_duration_ms=None, event_descent_amount=10)
         
         # 1. No movement on time update
-        pos, triggered = strategy.update(current_y=0, now_ms=1000, height=100)
+        pos = strategy.update(now_ms=1000, height=100)
         assert pos == 0
-        assert not triggered
         
         # 2. Trigger event
         strategy.trigger_descent()
-        pos, triggered = strategy.update(current_y=0, now_ms=2000, height=100)
+        pos = strategy.update(now_ms=2000, height=100)
         assert pos == 10
-        assert triggered is True
         
-        # 3. Subsequent update clears trigger
-        pos, triggered = strategy.update(current_y=10, now_ms=3000, height=100)
+        # 3. Subsequent update clears trigger (implicit check via pos remaining 10)
+        pos = strategy.update(now_ms=3000, height=100)
         assert pos == 10
-        assert triggered is False
 
     def test_timed_mode_time_only(self):
         """Test timed behavior: moves based on time, ignores events if amount is 0."""
@@ -47,14 +44,12 @@ class TestUnifiedDescentStrategy:
         strategy.reset(start_ms)
         
         # 500ms elapsed = 50% progress
-        pos, triggered = strategy.update(current_y=0, now_ms=500, height=100)
+        pos = strategy.update(now_ms=500, height=100)
         assert pos == 50
-        assert triggered is False
         
         # 1000ms elapsed = 100% progress
-        pos, triggered = strategy.update(current_y=50, now_ms=1000, height=100)
+        pos = strategy.update(now_ms=1000, height=100)
         assert pos == 100
-        assert triggered is False
 
     def test_hybrid_mode(self):
         """Test both time and events contributing."""
@@ -64,12 +59,12 @@ class TestUnifiedDescentStrategy:
         strategy.reset(0)
         
         # 1. Time passes (1000ms -> 10px)
-        pos, _ = strategy.update(current_y=0, now_ms=1000, height=100)
+        pos = strategy.update(now_ms=1000, height=100)
         assert pos == 10
         
         # 2. Trigger event (+10px)
         strategy.trigger_descent()
-        pos, triggered = strategy.update(current_y=10, now_ms=1000, height=100)
+        pos = strategy.update(now_ms=1000, height=100)
         # Should be time_pos (10) + event_offset (10) = 20?
         # Or does event change the base "time" tracking?
         # Implementation detail: Does force_position update the time anchor?
@@ -80,16 +75,14 @@ class TestUnifiedDescentStrategy:
         # If I drop 10px, does the time-based fall continue from there?
         # Usually yes.
         assert pos == 20
-        assert triggered is True
 
     def test_reset(self):
         strategy = UnifiedDescentStrategy(game_duration_ms=1000, event_descent_amount=10)
         strategy.trigger_descent()
-        strategy.update(0, 100, 100)
+        strategy.update(100, 100)
         
         strategy.reset(200)
         assert strategy.start_time_ms == 200
         # Internal state should be cleared
-        pos, triggered = strategy.update(0, 200, 100)
+        pos = strategy.update(200, 100)
         assert pos == 0
-        assert not triggered

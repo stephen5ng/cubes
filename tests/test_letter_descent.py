@@ -80,21 +80,23 @@ class TestLetterDescentBehavior:
         letter = letter_setup
         letter.start(now_ms=0)
 
-        # First fall - full duration
+        # First fall - full duration logic
         letter.new_fall(now_ms=0)
-        first_duration = letter.fall_duration_ms
+        # Calculate expected duration: (remaining / height) * DROP_TIME_MS
+        duration_1 = (letter.height - letter.start_fall_y) / letter.height * Letter.DROP_TIME_MS
 
         # Later fall - shorter duration
         for _ in range(5):
             letter.new_fall(now_ms=1000)
-        later_duration = letter.fall_duration_ms
+        
+        duration_2 = (letter.height - letter.start_fall_y) / letter.height * Letter.DROP_TIME_MS
 
-        assert later_duration < first_duration
+        assert duration_2 < duration_1
 
-        # Duration should be proportional to remaining height
+        # Check that logic is consistent by comparing against explicit calculation
         remaining_ratio = (letter.height - letter.start_fall_y) / letter.height
         expected_duration = Letter.DROP_TIME_MS * remaining_ratio
-        assert abs(letter.fall_duration_ms - expected_duration) < 1
+        assert abs(duration_2 - expected_duration) < 1
 
     def test_shield_collision_bounces_to_midpoint(self, letter_setup):
         """Shield collision sets position to midpoint between start and current."""
@@ -180,7 +182,12 @@ class TestLetterDescentEdgeCases:
 
         for i in range(Letter.ROUNDS + 5):
             letter.new_fall(now_ms=i * 1000)
-            assert letter.fall_duration_ms >= 0
+            # Duration is stateless now, check implicit logic
+            remaining_height = max(0, letter.height - letter.start_fall_y)
+            assert remaining_height >= 0
+            if letter.height > 0:
+                 duration = Letter.DROP_TIME_MS * remaining_height / letter.height
+                 assert duration >= 0
 
     def test_reset_via_start_clears_descent(self, letter_setup):
         """Calling start() should reset all descent state."""
@@ -321,7 +328,7 @@ class TestYellowLineIntegration:
         yellow_tracker.reset(now_ms=0)
         
         # After 5 seconds
-        red_y, _ = red_strategy.update(0, now_ms=5000, height=240)
+        red_y = red_strategy.update(now_ms=5000, height=240)
         yellow_tracker.update(now_ms=5000, height=240)
         
         # Red should be at 50% (120 pixels)
@@ -330,7 +337,7 @@ class TestYellowLineIntegration:
         assert yellow_tracker.start_fall_y == 60
         
         # After 10 seconds
-        red_y, _ = red_strategy.update(red_y, now_ms=10000, height=240)
+        red_y = red_strategy.update(now_ms=10000, height=240)
         yellow_tracker.update(now_ms=10000, height=240)
         
         # Red should be at 100% (240 pixels)

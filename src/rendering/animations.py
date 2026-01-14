@@ -23,7 +23,7 @@ class PositionTracker:
 
     def update(self, now_ms: int, height: int) -> None:
         """Update position based on descent strategy."""
-        new_y, _ = self.descent_strategy.update(self.start_fall_y, now_ms, height)
+        new_y = self.descent_strategy.update(now_ms, height)
         self.start_fall_y = new_y
 
     def reset(self, now_ms: int) -> None:
