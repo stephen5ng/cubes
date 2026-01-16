@@ -109,7 +109,7 @@ def ensure_pygame_initialized(visual: bool) -> None:
         if not pygame.font.get_init():
             pygame.font.init()
 
-async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool] = None, player_count: int = 1, timed_duration_s: int = game_config.TIMED_DURATION_S) -> Tuple[Game, FakeMqttClient, asyncio.Queue]:
+async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool] = None, player_count: int = 1, timed_duration_s: int = game_config.TIMED_DURATION_S, winning_score: int = 0) -> Tuple[Game, FakeMqttClient, asyncio.Queue]:
     """Factory for common test game setup."""
     if visual is None:
         visual = is_visual_mode()
@@ -170,7 +170,8 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
         rack_metrics=rack_metrics,
         letter_beeps=sound_manager.get_letter_beeps(),
         letter_strategy=descent_strategy,
-        yellow_strategy=yellow_strategy
+        yellow_strategy=yellow_strategy,
+        winning_score=winning_score
     )
     
     # Attach provider to game for tests that might want to access it (though updating mock_time_var via loop is preferred)

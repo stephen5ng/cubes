@@ -41,10 +41,12 @@ class Game:
                  letter_beeps: list,
                  letter_strategy: DescentStrategy,
                  yellow_strategy: DescentStrategy,
+                 winning_score: int = 0,
                  recorder: Optional[GameRecorder] = None) -> None:
         self._app = the_app
         self.game_logger = game_logger
         self.output_logger = output_logger
+        self.winning_score = winning_score
         self.recorder = recorder if recorder else NullRecorder()
 
         # Required dependency injection - no defaults!
@@ -293,6 +295,10 @@ class Game:
                 self.scores[shield.player].update_score(shield.score)
                 self._app.add_guess(shield.letters, shield.player)
                 self.sound_manager.play_crash()
+
+                # Check for win condition
+                if self.winning_score > 0 and self.scores[shield.player].score >= self.winning_score:
+                    await self.stop(now_ms)
 
         self.shields[:] = [s for s in self.shields if s.active]
         for player in range(self._app.player_count):

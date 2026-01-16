@@ -78,16 +78,18 @@ logger = logging.getLogger(__name__)
 
 
 class BlockWordsPygame:
-    def __init__(self, replay_file: str, descent_mode: str = "discrete", timed_duration_s: int = 240, record: bool = False) -> None:
+    def __init__(self, replay_file: str = "", descent_mode: str = "discrete", timed_duration_s: int = game_config.TIMED_DURATION_S, record: bool = False, winning_score: int = 0) -> None:
         self._window = pygame.display.set_mode(
             (SCREEN_WIDTH*SCALING_FACTOR, SCREEN_HEIGHT*SCALING_FACTOR))
         self.letter_font = pygame.freetype.SysFont(FONT, RackMetrics.LETTER_SIZE)
         self.the_app = None
         self.game = None
+        self.running = True
         self.replay_file = replay_file
         self.descent_mode = descent_mode
         self.timed_duration_s = timed_duration_s
         self.record = record
+        self.winning_score = winning_score
         self.replayer = None
         self._mock_mqtt_client = None
 
@@ -270,6 +272,7 @@ class BlockWordsPygame:
         self.game = Game(the_app, self.letter_font, game_logger, output_logger, sound_manager,
                         rack_metrics, sound_manager.get_letter_beeps(),
                         letter_strategy=descent_strategy, yellow_strategy=yellow_strategy,
+                        winning_score=self.winning_score,
                         recorder=recorder)
         self.input_controller = GameInputController(self.game)
 

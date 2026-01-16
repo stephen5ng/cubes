@@ -121,6 +121,8 @@ if __name__ == "__main__":
                        help="Duration in seconds for timed mode (default: 240 seconds / 4 minutes)")
     parser.add_argument("--record", action=argparse.BooleanOptionalAction, default=False,
                        help="Enable screen recording of game events")
+    parser.add_argument("--winning-score", type=int, default=0,
+                       help="Points required to win the game (0 to disable)")
     args = parser.parse_args()
     
     seed = 1
@@ -161,7 +163,7 @@ if __name__ == "__main__":
     dictionary = Dictionary(game_config.MIN_LETTERS, game_config.MAX_LETTERS, open=my_open)
     dictionary.read(game_config.DICTIONARY_PATH, game_config.BINGOS_PATH)
     pygame.init()
-    block_words = pygamegameasync.BlockWordsPygame(replay_file=args.replay or "", descent_mode=args.descent_mode, timed_duration_s=args.timed_duration, record=args.record)
+    block_words = pygamegameasync.BlockWordsPygame(replay_file=args.replay or "", descent_mode=args.descent_mode, timed_duration_s=args.timed_duration, record=args.record, winning_score=args.winning_score)
     
     game_logger = GameLogger(None if args.replay else "output/game_replay.jsonl")
     try:
