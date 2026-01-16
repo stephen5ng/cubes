@@ -19,5 +19,29 @@ cleanup() {
 trap cleanup EXIT
 ./tools/delete_all_mqtt.sh
 
-#python -X dev -X tracemalloc=5 ./main.py "$@"
-python ./main.py "$@"
+# Parse arguments for --mode flag
+args=()
+mode="classic" # Default mode
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --mode)
+      mode="$2"
+      shift 2
+      ;;
+    *)
+      args+=("$1")
+      shift
+      ;;
+  esac
+done
+
+# Apply mode settings
+if [[ "$mode" == "new" ]]; then
+    args+=("--descent-mode" "timed")
+elif [[ "$mode" == "classic" ]]; then
+    : # No extra args, rely on defaults
+fi
+
+#python -X dev -X tracemalloc=5 ./main.py "${args[@]}"
+python ./main.py "${args[@]}"
