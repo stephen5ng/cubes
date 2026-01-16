@@ -271,7 +271,14 @@ class Game:
         """Update all game components and handle collisions."""
         incidents = []
         window.set_alpha(255)
-        self.guesses_manager.update(window, now_ms)
+        # Calculate if we should animate (Game Over and within 15s)
+        game_over_animate = False
+        if not self.running:
+            time_since_over = (now_ms / 1000.0) - self.stop_time_s
+            if time_since_over < 15.0:
+                game_over_animate = True
+
+        self.guesses_manager.update(window, now_ms, game_over=game_over_animate)
 
         if self.running:
 

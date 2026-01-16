@@ -3,7 +3,17 @@
 import functools
 import pygame
 import pygame.freetype
+import math
+import random
 # https://www.pygame.org/pcr/text_rect/index.php
+
+VICTORY_PALETTE = [
+    pygame.Color("gold"),
+    pygame.Color("white"),
+    pygame.Color("cyan"),
+    pygame.Color("magenta"),
+    pygame.Color("orange")
+]
 
 class TextRectException(BaseException):
     def __init__(self, message: str) -> None:
@@ -37,13 +47,24 @@ class Blitter():
         return font.render(word, pygame.Color(color_tuple))[0]
 
     def _render_blit_xy(self, surface: pygame.Surface, font: pygame.freetype.Font, word: str, x: int, y: int, color: pygame.Color) -> None:
-        surface.blit(self._render_word(font, word, (color.r, color.g, color.b, color.a)), (x, y))
+        color_obj = pygame.Color(color.r, color.g, color.b, color.a)
+        surface.blit(self._render_word(font, word, (color_obj.r, color_obj.g, color_obj.b, color_obj.a)), (x, y))
 
-    def blit_words(self, words: tuple[str], pos_dict: dict[str, tuple[int, int]], colors: list[pygame.Color]) -> pygame.Surface:
+    def blit_words(self, words: tuple[str], pos_dict: dict[str, tuple[int, int]], colors: list[pygame.Color], animation_time: float = 0.0, animate: bool = False) -> pygame.Surface:
         surface = self._empty_surface.copy()
-        for word, color in zip(words, colors):
+        
+        for i, (word, color) in enumerate(zip(words, colors)):
             x, y = pos_dict[word]
-            self._render_blit_xy(surface, self._font, word, x, y, color)
+            
+            if animate:
+                # Festive Color Cycling
+                # Palette index cycles or shifts
+                palette_index = int(animation_time * 2 + i) % len(VICTORY_PALETTE)
+                festive_color = VICTORY_PALETTE[palette_index]
+                self._render_blit_xy(surface, self._font, word, x, y, festive_color)
+            else:
+                 self._render_blit_xy(surface, self._font, word, x, y, color)
+            
         return surface
 
 class TextRectRenderer():
@@ -56,13 +77,24 @@ class TextRectRenderer():
         self._space_width = int(self._font_rect_getter.get_size("I")[0]*1.5)
         x_height = self._font_rect_getter.get_size("X")[1]
         self._vertical_gap = int(1.25 * x_height)
+        self._vertical_gap = int(1.25 * x_height)
+        self.animation_time = 0.0
+
+    def reset_animation(self) -> None:
+        """Reset the animation phase."""
+        self.animation_time = 0.0
 
     def update_pos_dict(self, words: list[str]) -> None:
         self._pos_dict = self._prerender_textrect(words)
 
-    def render(self, words: list[str], colors: list[pygame.Color]) -> pygame.Surface:
+    def render(self, words: list[str], colors: list[pygame.Color], animate: bool = False) -> pygame.Surface:
         self.update_pos_dict(words)
-        return self._blitter.blit_words(words, self._pos_dict, colors)
+        
+        if animate:
+            # Advance animation time
+            self.animation_time += 0.05
+        
+        return self._blitter.blit_words(words, self._pos_dict, colors, self.animation_time, animate=animate)
 
     def get_pos(self, word: str) -> tuple[int, int]:
         return self._pos_dict[word]

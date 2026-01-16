@@ -3,7 +3,7 @@
 import pygame
 import pygame.freetype
 
-from utils import textrect
+from rendering import text_renderer as textrect
 from config import game_config
 from config.game_config import (
     SCREEN_WIDTH, SCREEN_HEIGHT,
@@ -55,6 +55,8 @@ class PreviousGuessesDisplay(PreviousGuessesDisplayBase):
         new_instance.bloop_sound = instance.bloop_sound
         if instance.previous_guesses and instance.fader_inputs:
             new_instance._recreate_faders(now_ms)
+        # Copy animation state
+        new_instance._text_rect_renderer.animation_time = instance._text_rect_renderer.animation_time
         return new_instance
 
     def _try_add_fader(self, guess: str, color: pygame.Color, duration: int, now_ms: int) -> None:
@@ -69,11 +71,12 @@ class PreviousGuessesDisplay(PreviousGuessesDisplayBase):
         for last_guess, last_update_ms, color, duration in self.fader_inputs:
             self._try_add_fader(last_guess, color, duration, now_ms)
 
-    def draw(self) -> None:
+    def draw(self, animate: bool = False) -> None:
         """Draw the previous guesses display."""
         self.surface = self._text_rect_renderer.render(
             self.previous_guesses,
-            [self.PLAYER_COLORS[self.guess_to_player.get(guess, 0)] for guess in self.previous_guesses])
+            [self.PLAYER_COLORS[self.guess_to_player.get(guess, 0)] for guess in self.previous_guesses],
+            animate=animate)
 
     def old_guess(self, old_guess: str, now_ms: int) -> None:
         """Handle display of an old guess with fade effect."""
@@ -114,8 +117,12 @@ class PreviousGuessesDisplay(PreviousGuessesDisplayBase):
         self._recreate_faders(now_ms)
         self.draw()
 
-    def update(self, window: pygame.Surface, now: int) -> None:
+    def update(self, window: pygame.Surface, now: int, game_over: bool = False) -> None:
         """Render the display with faders to the window."""
+        # Drive animation (rainbow) only if game_over
+        if self.previous_guesses and game_over:
+            self.draw(animate=True)
+            
         surface_with_faders = self.surface.copy()
         for fader in self.faders:
             fader.blit(surface_with_faders, now)
@@ -150,15 +157,21 @@ class RemainingPreviousGuessesDisplay(PreviousGuessesDisplayBase):
         """Create a new instance from an existing one with a new font size."""
         new_instance = cls(font_size, instance.guess_to_player)
         new_instance.remaining_guesses = instance.remaining_guesses
-        new_instance.color = instance.color
+        # Copy animation state
+        new_instance._text_rect_renderer.animation_time = instance._text_rect_renderer.animation_time
         return new_instance
 
-    def update(self, window: pygame.Surface, height: int) -> None:
+    def update(self, window: pygame.Surface, height: int, game_over: bool = False) -> None:
         """Render the display to the window at the appropriate position."""
         top = height + PreviousGuessesDisplay.POSITION_TOP + RemainingPreviousGuessesDisplay.TOP_GAP
         total_height = top + self.surface.get_bounding_rect().height
         if total_height > SCREEN_HEIGHT:
             raise textrect.TextRectException("can't update RemainingPreviousGuessesDisplay")
+            
+        # Drive animation (rainbow) only if game_over
+        if self.remaining_guesses and game_over:
+            self.draw(animate=True)
+            
         window.blit(self.surface, [0, top])
 
     def update_remaining_guesses(self, remaining_guesses: list[str]) -> None:
@@ -166,11 +179,12 @@ class RemainingPreviousGuessesDisplay(PreviousGuessesDisplayBase):
         self.remaining_guesses = remaining_guesses
         self.draw()
 
-    def draw(self) -> None:
+    def draw(self, animate: bool = False) -> None:
         """Draw the remaining previous guesses display."""
         self.surface = self._text_rect_renderer.render(
             self.remaining_guesses,
-            [self.PLAYER_COLORS[self.guess_to_player.get(guess, 0)] for guess in self.remaining_guesses])
+            [self.PLAYER_COLORS[self.guess_to_player.get(guess, 0)] for guess in self.remaining_guesses],
+            animate=animate)
 
 
 class PreviousGuessesManager:
@@ -224,12 +238,12 @@ class PreviousGuessesManager:
         self.exec_with_resize(lambda: self.remaining_previous_guesses_display.update_remaining_guesses(
             previous_guesses), now_ms)
 
-    def update(self, window: pygame.Surface, now_ms: int) -> None:
+    def update(self, window: pygame.Surface, now_ms: int, game_over: bool = False) -> None:
         """Update all displays with automatic resizing."""
         def update_all_displays():
-            self.previous_guesses_display.update(window, now_ms)
+            self.previous_guesses_display.update(window, now_ms, game_over=game_over)
             self.remaining_previous_guesses_display.update(
-                window, self.previous_guesses_display.surface.get_bounding_rect().height)
+                window, self.previous_guesses_display.surface.get_bounding_rect().height, game_over=game_over)
 
         self.exec_with_resize(update_all_displays, now_ms)
 

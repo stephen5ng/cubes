@@ -5,7 +5,7 @@ import functools
 import pygame
 import pygame.freetype
 
-from utils import textrect
+from rendering import text_renderer as textrect
 from rendering.animations import get_alpha
 
 
