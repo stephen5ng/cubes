@@ -1,6 +1,6 @@
 from typing import Optional, Tuple
 
-class UnifiedDescentStrategy:
+class DescentStrategy:
     """Consolidated descent strategy handling both time and event-based descent."""
 
     def __init__(self, game_duration_ms: Optional[int], event_descent_amount: int):

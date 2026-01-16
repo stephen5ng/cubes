@@ -63,6 +63,7 @@ from rendering.rack_display import RackDisplay
 from game.game_state import Game
 from events.game_events import GameAbortEvent
 from game.recorder import FileSystemRecorder, NullRecorder
+from game.descent_strategy import DescentStrategy
 
 logger = logging.getLogger(__name__)
 
@@ -257,9 +258,18 @@ class BlockWordsPygame:
 
         # Get letter beeps from sound manager for injection into Game
         recorder = FileSystemRecorder() if self.record else NullRecorder()
+
+        # Create strategies
+        duration_ms = self.timed_duration_s * 1000 if self.descent_mode == "timed" else None
+        event_descent_amount = Letter.Y_INCREMENT if self.descent_mode == "discrete" else 0
+        descent_strategy = DescentStrategy(game_duration_ms=duration_ms, event_descent_amount=event_descent_amount)
+
+        yellow_duration_ms = self.timed_duration_s * 3 * 1000
+        yellow_strategy = DescentStrategy(game_duration_ms=yellow_duration_ms, event_descent_amount=0)
+
         self.game = Game(the_app, self.letter_font, game_logger, output_logger, sound_manager,
                         rack_metrics, sound_manager.get_letter_beeps(),
-                        descent_mode=self.descent_mode, timed_duration_s=self.timed_duration_s,
+                        letter_strategy=descent_strategy, yellow_strategy=yellow_strategy,
                         recorder=recorder)
         self.input_controller = GameInputController(self.game)
 

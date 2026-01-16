@@ -3,7 +3,7 @@ import pytest
 import asyncio
 import pygame
 from tests.fixtures.game_factory import create_test_game, async_test
-from game.descent_strategy import UnifiedDescentStrategy
+from game.descent_strategy import DescentStrategy
 
 @async_test
 async def test_discrete_mode_descent_behavior():
@@ -25,7 +25,7 @@ async def test_discrete_mode_descent_behavior():
     
     # 1. Initial State
     initial_y = game.letter.start_fall_y
-    assert isinstance(game.letter.descent_strategy, UnifiedDescentStrategy)
+    assert isinstance(game.letter.descent_strategy, DescentStrategy)
     assert game.letter.descent_strategy.game_duration_ms is None
     
     # 2. Advance time (no events)
@@ -53,7 +53,7 @@ async def test_timed_mode_continuous_descent():
     
     # 1. Initial State
     initial_y = game.letter.start_fall_y
-    assert isinstance(game.letter.descent_strategy, UnifiedDescentStrategy)
+    assert isinstance(game.letter.descent_strategy, DescentStrategy)
     assert game.letter.descent_strategy.game_duration_ms is not None
     
     # 2. Advance time
@@ -74,7 +74,7 @@ async def test_timed_mode_yellow_line_presence():
     game, mqtt, queue = await create_test_game(player_count=1, descent_mode="timed")
     
     assert game.yellow_source is not None
-    assert isinstance(game.yellow_tracker.descent_strategy, UnifiedDescentStrategy)
+    assert isinstance(game.yellow_tracker.descent_strategy, DescentStrategy)
     assert game.yellow_tracker.descent_strategy.game_duration_ms is not None
 
 @async_test

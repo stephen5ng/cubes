@@ -1,12 +1,12 @@
 import pytest
-from game.descent_strategy import UnifiedDescentStrategy
+from game.descent_strategy import DescentStrategy
 
-class TestUnifiedDescentStrategy:
+class TestDescentStrategy:
     
     def test_infinite_mode_events_only(self):
         """Test classic behavior: only moves on events."""
         # Setup: No time duration (infinite), 10px per event
-        strategy = UnifiedDescentStrategy(game_duration_ms=None, event_descent_amount=10)
+        strategy = DescentStrategy(game_duration_ms=None, event_descent_amount=10)
         
         # 1. No movement on time update
         pos = strategy.update(now_ms=1000, height=100)
@@ -24,7 +24,7 @@ class TestUnifiedDescentStrategy:
     def test_timed_mode_time_only(self):
         """Test timed behavior: moves based on time, ignores events if amount is 0."""
         # Setup: 1000ms duration for 100px height (0.1px/ms), no event movement
-        strategy = UnifiedDescentStrategy(game_duration_ms=1000, event_descent_amount=0)
+        strategy = DescentStrategy(game_duration_ms=1000, event_descent_amount=0)
         
         # 1. Update halfway through
         # Note: height is passed to update() to calculate rate dynamically or cached?
@@ -55,7 +55,7 @@ class TestUnifiedDescentStrategy:
         """Test both time and events contributing."""
         # Setup: 10s duration (slow fall), plus events
         # 10000ms, 100px height -> 0.01px/ms
-        strategy = UnifiedDescentStrategy(game_duration_ms=10000, event_descent_amount=10)
+        strategy = DescentStrategy(game_duration_ms=10000, event_descent_amount=10)
         strategy.reset(0)
         
         # 1. Time passes (1000ms -> 10px)
@@ -77,7 +77,7 @@ class TestUnifiedDescentStrategy:
         assert pos == 20
 
     def test_reset(self):
-        strategy = UnifiedDescentStrategy(game_duration_ms=1000, event_descent_amount=10)
+        strategy = DescentStrategy(game_duration_ms=1000, event_descent_amount=10)
         strategy.trigger_descent()
         strategy.update(100, 100)
         

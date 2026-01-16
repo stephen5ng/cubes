@@ -150,6 +150,17 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
     rack_metrics = RackMetrics()
     sound_manager = SoundManager()
 
+    from game.descent_strategy import DescentStrategy
+    from game.letter import Letter
+
+    # Create strategies
+    duration_ms = timed_duration_s * 1000 if descent_mode == "timed" else None
+    event_descent_amount = Letter.Y_INCREMENT if descent_mode == "discrete" else 0
+    descent_strategy = DescentStrategy(game_duration_ms=duration_ms, event_descent_amount=event_descent_amount)
+
+    yellow_duration_ms = timed_duration_s * 3 * 1000
+    yellow_strategy = DescentStrategy(game_duration_ms=yellow_duration_ms, event_descent_amount=0)
+
     game = Game(
         the_app=app,
         letter_font=rack_metrics.font,
@@ -158,8 +169,8 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
         sound_manager=sound_manager,
         rack_metrics=rack_metrics,
         letter_beeps=sound_manager.get_letter_beeps(),
-        descent_mode=descent_mode,
-        timed_duration_s=timed_duration_s
+        letter_strategy=descent_strategy,
+        yellow_strategy=yellow_strategy
     )
     
     # Attach provider to game for tests that might want to access it (though updating mock_time_var via loop is preferred)
@@ -170,7 +181,6 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
     game._app.player_count = player_count
     
     return game, fake_mqtt, publish_queue
-
 
 def create_shield(
     word: str,

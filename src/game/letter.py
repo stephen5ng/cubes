@@ -10,7 +10,7 @@ from core import tiles
 from config import game_config
 from config.game_config import SCREEN_HEIGHT, LETTER_SOURCE_COLOR
 from rendering.metrics import RackMetrics
-from game.descent_strategy import UnifiedDescentStrategy
+from game.descent_strategy import DescentStrategy
 
 
 class GuessType(Enum):
@@ -32,7 +32,7 @@ class Letter:
 
     def __init__(
         self, font: pygame.freetype.Font, initial_y: int, rack_metrics: RackMetrics, output_logger, letter_beeps: list,
-        descent_strategy: Optional[UnifiedDescentStrategy] = None) -> None:
+        descent_strategy: Optional[DescentStrategy] = None) -> None:
         self.rack_metrics = rack_metrics
         self.game_area_offset_y = initial_y  # Offset from screen top to game area
         self.font = font
@@ -53,7 +53,7 @@ class Letter:
 
         # Use strategy pattern for descent control
         if descent_strategy is None:
-            descent_strategy = UnifiedDescentStrategy(game_duration_ms=None, event_descent_amount=Letter.Y_INCREMENT)
+            descent_strategy = DescentStrategy(game_duration_ms=None, event_descent_amount=Letter.Y_INCREMENT)
         self.descent_strategy = descent_strategy
 
         self.start(0)

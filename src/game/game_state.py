@@ -17,7 +17,7 @@ from utils import textrect
 from game.components import Score, Shield
 from game.letter import GuessType, Letter
 from game.recorder import GameRecorder, NullRecorder
-from game.descent_strategy import UnifiedDescentStrategy
+from game.descent_strategy import DescentStrategy
 from input.input_devices import InputDevice, CubesInput
 from rendering.animations import LetterSource, PositionTracker, LETTER_SOURCE_YELLOW
 from rendering.metrics import RackMetrics
@@ -39,10 +39,8 @@ class Game:
                  sound_manager: SoundManager,
                  rack_metrics: RackMetrics,
                  letter_beeps: list,
-                 event_descent_amount: int = Letter.Y_INCREMENT,
-                 game_duration_s: Optional[int] = None,
-                 descent_mode: str = "discrete",
-                 timed_duration_s: int = game_config.TIMED_DURATION_S,
+                 letter_strategy: DescentStrategy,
+                 yellow_strategy: DescentStrategy,
                  recorder: Optional[GameRecorder] = None) -> None:
         self._app = the_app
         self.game_logger = game_logger
@@ -57,29 +55,7 @@ class Game:
         self.scores = [Score(the_app, player, self.rack_metrics) for player in range(game_config.MAX_PLAYERS)]
         letter_y = self.scores[0].get_size()[1] + 4
 
-        # Choose descent strategy based on mode
-        game_height = game_config.SCREEN_HEIGHT - (self.rack_metrics.letter_height + letter_y)
-
-        # Compatibility logic for legacy params
-        if game_duration_s is None:
-            if descent_mode == "timed":
-                game_duration_s = timed_duration_s
-                event_descent_amount = 0  # Timed mode implies no event descent?
-                # Actually legacy Timed mode usually has event_descent? No, legacy Timed is pure time.
-            else:
-                # discrete/default
-                game_duration_s = None
-                # event_descent_amount is already set to default
-
-        # Create unified strategy
-        # Convert duration to ms if it exists
-        duration_ms = game_duration_s * 1000 if game_duration_s else None
-        
-        from game.descent_strategy import UnifiedDescentStrategy
-        descent_strategy = UnifiedDescentStrategy(game_duration_ms=duration_ms, 
-                                                event_descent_amount=event_descent_amount)
-
-        self.letter = Letter(letter_font, letter_y, self.rack_metrics, self.output_logger, letter_beeps, descent_strategy)
+        self.letter = Letter(letter_font, letter_y, self.rack_metrics, self.output_logger, letter_beeps, letter_strategy)
         self.racks = [RackDisplay(the_app, self.rack_metrics, self.letter, player) for player in range(game_config.MAX_PLAYERS)]
         self.guess_to_player = {}
         self.guesses_manager = PreviousGuessesManager(30, self.guess_to_player)
@@ -89,9 +65,6 @@ class Game:
             letter_y)
 
         # Add yellow line that takes twice as long to fall
-        # Restore legacy behavior: always present even in discrete mode
-        yellow_duration_ms = timed_duration_s * 3 * 1000
-        yellow_strategy = UnifiedDescentStrategy(game_duration_ms=yellow_duration_ms, event_descent_amount=0)
         self.yellow_tracker = PositionTracker(yellow_strategy)
         self.yellow_source = LetterSource(
             self.yellow_tracker,
@@ -104,9 +77,7 @@ class Game:
         self.aborted = False
         self.input_devices = []
         self.last_lock = False
-        
-        # Capture logic moved to recorder
-        
+
         # Initialize time tracking
         self.start_time_s = 0
         self.stop_time_s = 0
