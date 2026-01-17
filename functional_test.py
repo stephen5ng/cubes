@@ -299,6 +299,11 @@ def main():
                        help="Show human-readable test summary (always shown on failure)")
 
     args = parser.parse_args()
+    
+    # Sanitize test_name to handle paths (e.g. "replay/2player" -> "2player")
+    # This allows tab completion to work naturally
+    args.test_name = os.path.basename(args.test_name.rstrip('/'))
+
     if args.mode == "replay":
         success = run_replay_test(args.test_name, verbose=args.verbose)
         if success:

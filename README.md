@@ -113,32 +113,21 @@ For 2-player mode, both players can complete ABC sequence to join the same game.
 
 ## Testing
 
-### Run Unit Tests
+For detailed instructions on running unit, integration, and functional tests, please see [TESTING.md](TESTING.md).
+
+### Quick Commands
 ```bash
+# Run unit tests
 ./run_unit_tests.sh
-```
 
-### Run Functional Tests
-Functional tests use replay files to ensure consistent behavior:
-```bash
+# Run integration tests
+python3 -m pytest tests/integration/
+
+# Run all functional tests
 ./run_functional_tests.sh
-```
 
-### Run Individual Functional Test
-```bash
-./functional_test.py replay <test_name>
-# Example:
+# Run a specific functional test
 ./functional_test.py replay 2player
-```
-
-### Record New Golden Files
-```bash
-./functional_test.py record <test_name>
-```
-
-### Update Existing Golden Files
-```bash
-./functional_test.py rerecord <test_name>
 ```
 
 ## Project Structure
