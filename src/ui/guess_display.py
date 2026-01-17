@@ -11,6 +11,9 @@ from config.game_config import (
     FADER_COLOR_P0, FADER_COLOR_P1, REMAINING_PREVIOUS_GUESSES_COLOR
 )
 from ui.guess_faders import FaderManager, LastGuessFader
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class PreviousGuessesDisplayBase:
@@ -111,8 +114,10 @@ class PreviousGuessesDisplay(PreviousGuessesDisplayBase):
 
     def update_previous_guesses(self, previous_guesses: list[str], now_ms: int) -> None:
         """Update the list of previous guesses and refresh faders."""
+        # Try updating positions first - this will raise TextRectException if it overflows
+        self._text_rect_renderer.update_pos_dict(previous_guesses)
+        
         self.previous_guesses = previous_guesses
-        self._text_rect_renderer.update_pos_dict(self.previous_guesses)
         self.fader_manager = FaderManager(self.previous_guesses, self.font, self._text_rect_renderer)
         self._recreate_faders(now_ms)
         self.draw()
@@ -166,7 +171,9 @@ class RemainingPreviousGuessesDisplay(PreviousGuessesDisplayBase):
         top = height + PreviousGuessesDisplay.POSITION_TOP + RemainingPreviousGuessesDisplay.TOP_GAP
         total_height = top + self.surface.get_bounding_rect().height
         if total_height > SCREEN_HEIGHT:
-            raise textrect.TextRectException("can't update RemainingPreviousGuessesDisplay")
+            if not game_over:
+                raise textrect.TextRectException("can't update RemainingPreviousGuessesDisplay")
+            return
             
         # Drive animation (rainbow) only if game_over
         if self.remaining_guesses and game_over:
@@ -216,36 +223,54 @@ class PreviousGuessesManager:
         retry_count = 0
         while True:
             try:
-                retry_count += 1
-                if retry_count > 2:
-                    raise Exception("too many TextRectException in PreviousGuessesManager")
                 return f()
             except textrect.TextRectException:
+                retry_count += 1
+                if retry_count > 5:
+                    logger.error("Unable to fit guesses even after resizing. Ignoring update.")
+                    return
                 self.resize(now_ms)
 
     def add_guess(self, previous_guesses: list[str], guess: str, player: int, now_ms: int) -> None:
-        """Add a new guess with automatic resizing."""
-        self.exec_with_resize(lambda: self.previous_guesses_display.add_guess(
-            previous_guesses, guess, player, now_ms), now_ms)
+        """Add a new guess."""
+        self.exec_with_resize(lambda: self.previous_guesses_display.add_guess(previous_guesses, guess, player, now_ms), now_ms)
 
     def update_previous_guesses(self, previous_guesses: list[str], now_ms: int) -> None:
-        """Update previous guesses with automatic resizing."""
-        self.exec_with_resize(lambda: self.previous_guesses_display.update_previous_guesses(
-            previous_guesses, now_ms), now_ms)
+        """Update previous guesses."""
+        self.exec_with_resize(lambda: self.previous_guesses_display.update_previous_guesses(previous_guesses, now_ms), now_ms)
 
     def update_remaining_guesses(self, previous_guesses: list[str], now_ms: int) -> None:
-        """Update remaining guesses with automatic resizing."""
-        self.exec_with_resize(lambda: self.remaining_previous_guesses_display.update_remaining_guesses(
-            previous_guesses), now_ms)
+        """Update remaining guesses."""
+        self.exec_with_resize(lambda: self.remaining_previous_guesses_display.update_remaining_guesses(previous_guesses), now_ms)
 
     def update(self, window: pygame.Surface, now_ms: int, game_over: bool = False) -> None:
-        """Update all displays with automatic resizing."""
-        def update_all_displays():
+        """Update all displays."""
+        def _update():
             self.previous_guesses_display.update(window, now_ms, game_over=game_over)
             self.remaining_previous_guesses_display.update(
                 window, self.previous_guesses_display.surface.get_bounding_rect().height, game_over=game_over)
+        
+        self.exec_with_resize(_update, now_ms)
 
-        self.exec_with_resize(update_all_displays, now_ms)
+    @property
+    def is_full(self) -> bool:
+        """Check if the display is effectively full (no room for another line)."""
+        rect_prev = self.previous_guesses_display.surface.get_bounding_rect()
+        height_prev = rect_prev.height
+        
+        # Calculate total bottom including remaining guesses if any
+        total_bottom = PreviousGuessesDisplay.POSITION_TOP + height_prev
+        
+        if self.remaining_previous_guesses_display.remaining_guesses:
+            rect_rem = self.remaining_previous_guesses_display.surface.get_bounding_rect()
+            height_rem = rect_rem.height
+            total_bottom += RemainingPreviousGuessesDisplay.TOP_GAP + height_rem
+            
+        available = SCREEN_HEIGHT - total_bottom
+        line_height = self.previous_guesses_display.font.get_sized_height()
+        
+        # If available space is less than a line height, we are full.
+        return available < line_height
 
     def old_guess(self, old_guess: str, now_ms: int) -> None:
         """Handle an old guess display."""

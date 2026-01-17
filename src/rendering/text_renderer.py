@@ -119,6 +119,8 @@ class TextRectRenderer():
                 last_x, last_y = next_x, last_y
             else:
                 new_y = last_y + self._vertical_gap
+                if new_y + self._vertical_gap > self._rect.height:
+                    raise TextRectException("The word " + word + " causes vertical overflow.")
                 last_x, last_y = 0, new_y
             pos_dict[word] = (last_x, last_y)
             last_width = word_width

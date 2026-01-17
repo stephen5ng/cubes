@@ -273,6 +273,7 @@ class BlockWordsPygame:
                         rack_metrics, sound_manager.get_letter_beeps(),
                         letter_strategy=descent_strategy, yellow_strategy=yellow_strategy,
                         winning_score=self.winning_score,
+                        allow_overflow=bool(self.replay_file),
                         recorder=recorder)
         self.input_controller = GameInputController(self.game)
 

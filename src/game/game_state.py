@@ -12,8 +12,7 @@ from hardware import cubes_to_game
 import os
 import subprocess
 from utils.pygameasync import events
-from utils.pygameasync import events
-from utils import textrect
+
 from game.components import Score, Shield
 from game.letter import GuessType, Letter
 from game.recorder import GameRecorder, NullRecorder
@@ -42,11 +41,13 @@ class Game:
                  letter_strategy: DescentStrategy,
                  yellow_strategy: DescentStrategy,
                  winning_score: int = 0,
+                 allow_overflow: bool = False,
                  recorder: Optional[GameRecorder] = None) -> None:
         self._app = the_app
         self.game_logger = game_logger
         self.output_logger = output_logger
         self.winning_score = winning_score
+        self.allow_overflow = allow_overflow
         self.recorder = recorder if recorder else NullRecorder()
 
         # Required dependency injection - no defaults!
@@ -227,18 +228,31 @@ class Game:
             next_letter = "!"
         self.letter.change_letter(next_letter, now_ms)
 
+    async def _end_game_if_full(self, now_ms: int) -> None:
+        """End the game if the guesses display is full."""
+        if self.allow_overflow:
+            # In replay mode (or when configured), we allow visual overflow without stopping
+            return
+
+        if self.guesses_manager.is_full:
+            logger.info("Guesses display is full, ending game")
+            await self.stop(now_ms)
+
     async def add_guess(self, previous_guesses: list[str], guess: str, player: int, now_ms: int) -> None:
         """Add a new guess to the display."""
         self.guess_to_player[guess] = player
         self.guesses_manager.add_guess(previous_guesses, guess, player, now_ms)
+        await self._end_game_if_full(now_ms)
 
     async def update_previous_guesses(self, previous_guesses: list[str], now_ms: int) -> None:
         """Update the previous guesses display."""
         self.guesses_manager.update_previous_guesses(previous_guesses, now_ms)
+        await self._end_game_if_full(now_ms)
 
     async def update_remaining_guesses(self, previous_guesses: list[str], now_ms: int) -> None:
         """Update the remaining/unused guesses display."""
         self.guesses_manager.update_remaining_guesses(previous_guesses, now_ms)
+        await self._end_game_if_full(now_ms)
 
     async def update(self, window: pygame.Surface, now_ms: int) -> None:
         """Update all game components and handle collisions."""
