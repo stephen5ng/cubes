@@ -29,6 +29,10 @@ while [[ $# -gt 0 ]]; do
       mode="$2"
       shift 2
       ;;
+    --level)
+      level="$2"
+      shift 2
+      ;;
     *)
       args+=("$1")
       shift
@@ -41,6 +45,25 @@ if [[ "$mode" == "new" ]]; then
     args+=("--descent-mode" "timed")
 elif [[ "$mode" == "classic" ]]; then
     : # No extra args, rely on defaults
+elif [[ "$mode" == "game_on" ]]; then
+    args+=("--descent-mode" "timed")
+    
+    # Default level 0 if not specified
+    level=${level:-0}
+    
+    if [[ "$level" == "0" ]]; then
+        args+=("--previous-guesses-font-size" "50")
+        args+=("--remaining-guesses-font-size-delta" "4")
+    elif [[ "$level" == "1" ]]; then
+        args+=("--previous-guesses-font-size" "40")
+        args+=("--remaining-guesses-font-size-delta" "4")
+    elif [[ "$level" == "2" ]]; then
+        args+=("--previous-guesses-font-size" "20")
+        args+=("--remaining-guesses-font-size-delta" "2")
+    else
+        echo "Error: Unknown level '$level' for game_on mode. Supported levels: 0, 1, 2"
+        exit 1
+    fi
 fi
 
 #python -X dev -X tracemalloc=5 ./main.py "${args[@]}"
