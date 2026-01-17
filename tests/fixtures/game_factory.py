@@ -171,6 +171,8 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
         letter_beeps=sound_manager.get_letter_beeps(),
         letter_strategy=descent_strategy,
         yellow_strategy=yellow_strategy,
+        previous_guesses_font_size=30,
+        remaining_guesses_font_size_delta=game_config.FONT_SIZE_DELTA,
         winning_score=winning_score
     )
     

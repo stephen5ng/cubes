@@ -123,6 +123,10 @@ if __name__ == "__main__":
                        help="Enable screen recording of game events")
     parser.add_argument("--winning-score", type=int, default=0,
                        help="Points required to win the game (0 to disable)")
+    parser.add_argument("--previous-guesses-font-size", type=int, default=30,
+                       help="Font size for previous guesses (default: 30)")
+    parser.add_argument("--remaining-guesses-font-size-delta", type=int, default=game_config.FONT_SIZE_DELTA,
+                       help="Font size delta for remaining guesses (default: 4)")
     args = parser.parse_args()
     
     seed = 1
@@ -163,7 +167,15 @@ if __name__ == "__main__":
     dictionary = Dictionary(game_config.MIN_LETTERS, game_config.MAX_LETTERS, open=my_open)
     dictionary.read(game_config.DICTIONARY_PATH, game_config.BINGOS_PATH)
     pygame.init()
-    block_words = pygamegameasync.BlockWordsPygame(replay_file=args.replay or "", descent_mode=args.descent_mode, timed_duration_s=args.timed_duration, record=args.record, winning_score=args.winning_score)
+    block_words = pygamegameasync.BlockWordsPygame(
+        previous_guesses_font_size=args.previous_guesses_font_size,
+        remaining_guesses_font_size_delta=args.remaining_guesses_font_size_delta,
+        replay_file=args.replay or "", 
+        descent_mode=args.descent_mode, 
+        timed_duration_s=args.timed_duration, 
+        record=args.record, 
+        winning_score=args.winning_score
+    )
     
     game_logger = GameLogger(None if args.replay else "output/game_replay.jsonl")
     try:

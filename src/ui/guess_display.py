@@ -22,6 +22,11 @@ class PreviousGuessesDisplayBase:
     FONT = "Arial"
 
     def __init__(self, font_size: int) -> None:
+        print(f"----------Initializing PreviousGuessesDisplayBase with font size {font_size}")
+        # dump stack
+        import traceback
+        traceback.print_stack()
+        # font_size = 5-0
         self.font = pygame.freetype.SysFont(PreviousGuessesDisplayBase.FONT, font_size)
         self.font.kerning = True
         self._text_rect_renderer = textrect.TextRectRenderer(self.font,
@@ -30,7 +35,6 @@ class PreviousGuessesDisplayBase:
 
 class PreviousGuessesDisplay(PreviousGuessesDisplayBase):
     """Display for showing previous guesses with fading effects."""
-
     FONT_SIZE = 30
     POSITION_TOP = 24
     FADE_DURATION_NEW_GUESS = 2000
@@ -197,8 +201,8 @@ class RemainingPreviousGuessesDisplay(PreviousGuessesDisplayBase):
 class PreviousGuessesManager:
     """Manages previous guess displays and handles automatic resizing on overflow."""
 
-    def __init__(self, font_size: int, guess_to_player: dict[str, int]) -> None:
-        self.font_size_delta = game_config.FONT_SIZE_DELTA
+    def __init__(self, font_size: int, guess_to_player: dict[str, int], font_size_delta: int) -> None:
+        self.font_size_delta = font_size_delta
         self.guess_to_player = guess_to_player
         self.previous_guesses_display = PreviousGuessesDisplay(font_size, guess_to_player)
         self.remaining_previous_guesses_display = RemainingPreviousGuessesDisplay(

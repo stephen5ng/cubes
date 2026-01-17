@@ -77,6 +77,8 @@ async def test_integration():
 
         # Create BlockWordsPygame instance (creates window)
         block_words = pygamegameasync.BlockWordsPygame(
+            previous_guesses_font_size=30,
+            remaining_guesses_font_size_delta=5, # Default delta
             replay_file="",
             descent_mode="discrete",
             timed_duration_s=120

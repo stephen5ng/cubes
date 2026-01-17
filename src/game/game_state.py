@@ -40,6 +40,8 @@ class Game:
                  letter_beeps: list,
                  letter_strategy: DescentStrategy,
                  yellow_strategy: DescentStrategy,
+                 previous_guesses_font_size: int,
+                 remaining_guesses_font_size_delta: int,
                  winning_score: int = 0,
                  allow_overflow: bool = False,
                  recorder: Optional[GameRecorder] = None) -> None:
@@ -60,8 +62,10 @@ class Game:
 
         self.letter = Letter(letter_font, letter_y, self.rack_metrics, self.output_logger, letter_beeps, letter_strategy)
         self.racks = [RackDisplay(the_app, self.rack_metrics, self.letter, player) for player in range(game_config.MAX_PLAYERS)]
+        self.previous_guesses_font_size = previous_guesses_font_size
+        self.remaining_guesses_font_size_delta = remaining_guesses_font_size_delta
         self.guess_to_player = {}
-        self.guesses_manager = PreviousGuessesManager(30, self.guess_to_player)
+        self.guesses_manager = PreviousGuessesManager(self.previous_guesses_font_size, self.guess_to_player, self.remaining_guesses_font_size_delta)
         self.letter_source = LetterSource(
             self.letter,
             self.rack_metrics.get_rect().x, self.rack_metrics.get_rect().width,
@@ -169,7 +173,7 @@ class Game:
         print(f"ADDED {str(input_device)} in self.input_devices: {str(input_device) in self.input_devices}")
 
         self.guess_to_player = {}
-        self.guesses_manager = PreviousGuessesManager(30, self.guess_to_player)
+        self.guesses_manager = PreviousGuessesManager(self.previous_guesses_font_size, self.guess_to_player, self.remaining_guesses_font_size_delta)
         print(f"start_cubes: starting letter {now_ms}")
         self.letter.start(now_ms)
         if self.yellow_tracker:

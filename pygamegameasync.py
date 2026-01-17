@@ -78,7 +78,18 @@ logger = logging.getLogger(__name__)
 
 
 class BlockWordsPygame:
-    def __init__(self, replay_file: str = "", descent_mode: str = "discrete", timed_duration_s: int = game_config.TIMED_DURATION_S, record: bool = False, winning_score: int = 0) -> None:
+    def __init__(self, previous_guesses_font_size: int, remaining_guesses_font_size_delta: int,
+                 replay_file: str = "", descent_mode: str = "discrete", timed_duration_s: int = game_config.TIMED_DURATION_S, record: bool = False, winning_score: int = 0) -> None:
+        """
+        Args:
+            replay_file: Path to replay file, or empty string for live game.
+            descent_mode: Mode for letter descent ("discrete" or "timed").
+            timed_duration_s: Duration of game in seconds for timed mode.
+            record: Whether to record the game.
+            winning_score: Score required to win.
+            previous_guesses_font_size: Font size for previous guesses.
+            remaining_guesses_font_size_delta: Font size delta for remaining guesses.
+        """
         self._window = pygame.display.set_mode(
             (SCREEN_WIDTH*SCALING_FACTOR, SCREEN_HEIGHT*SCALING_FACTOR))
         self.letter_font = pygame.freetype.SysFont(FONT, RackMetrics.LETTER_SIZE)
@@ -90,6 +101,8 @@ class BlockWordsPygame:
         self.timed_duration_s = timed_duration_s
         self.record = record
         self.winning_score = winning_score
+        self.previous_guesses_font_size = previous_guesses_font_size
+        self.remaining_guesses_font_size_delta = remaining_guesses_font_size_delta
         self.replayer = None
         self._mock_mqtt_client = None
 
@@ -272,6 +285,8 @@ class BlockWordsPygame:
         self.game = Game(the_app, self.letter_font, game_logger, output_logger, sound_manager,
                         rack_metrics, sound_manager.get_letter_beeps(),
                         letter_strategy=descent_strategy, yellow_strategy=yellow_strategy,
+                        previous_guesses_font_size=self.previous_guesses_font_size,
+                        remaining_guesses_font_size_delta=self.remaining_guesses_font_size_delta,
                         winning_score=self.winning_score,
                         allow_overflow=bool(self.replay_file),
                         recorder=recorder)
