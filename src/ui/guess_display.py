@@ -22,11 +22,6 @@ class PreviousGuessesDisplayBase:
     FONT = "Arial"
 
     def __init__(self, font_size: int) -> None:
-        print(f"----------Initializing PreviousGuessesDisplayBase with font size {font_size}")
-        # dump stack
-        import traceback
-        traceback.print_stack()
-        # font_size = 5-0
         self.font = pygame.freetype.SysFont(PreviousGuessesDisplayBase.FONT, font_size)
         self.font.kerning = True
         self._text_rect_renderer = textrect.TextRectRenderer(self.font,
