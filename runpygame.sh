@@ -44,7 +44,8 @@ done
 if [[ "$mode" == "new" ]]; then
     args+=("--descent-mode" "timed")
 elif [[ "$mode" == "classic" ]]; then
-    : # No extra args, rely on defaults
+    # Classic mode implies legacy looping behavior
+    args+=("--continuous")
 elif [[ "$mode" == "game_on" ]]; then
     args+=("--descent-mode" "timed")
     

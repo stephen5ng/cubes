@@ -79,7 +79,7 @@ logger = logging.getLogger(__name__)
 
 class BlockWordsPygame:
     def __init__(self, previous_guesses_font_size: int, remaining_guesses_font_size_delta: int,
-                 replay_file: str = "", descent_mode: str = "discrete", timed_duration_s: int = game_config.TIMED_DURATION_S, record: bool = False, winning_score: int = 0) -> None:
+                 replay_file: str = "", descent_mode: str = "discrete", timed_duration_s: int = game_config.TIMED_DURATION_S, record: bool = False, winning_score: int = 0, continuous: bool = False) -> None:
         """
         Args:
             replay_file: Path to replay file, or empty string for live game.
@@ -105,6 +105,8 @@ class BlockWordsPygame:
         self.remaining_guesses_font_size_delta = remaining_guesses_font_size_delta
         self.replayer = None
         self._mock_mqtt_client = None
+        self.continuous = continuous
+        self._has_auto_started = False
 
     def get_mock_mqtt_client(self):
         """Get the mock MQTT client for replay mode."""
@@ -339,6 +341,21 @@ class BlockWordsPygame:
                                mqtt_message_queue, publish_queue, time_offset):
         """Run a single frame of the game. Returns (should_exit, new_time_offset)."""
         now_ms = pygame.time.get_ticks() + time_offset
+
+        # Handle auto-start for non-continuous mode
+        if not self.continuous and not self.replay_file and not self.game.running and not self._has_auto_started:
+            print("Auto-starting game (non-continuous mode)")
+            keyboard_input.player_number = await self.start_game(keyboard_input, now_ms)
+            self._has_auto_started = True
+
+        # Handle auto-exit for non-continuous mode
+        if not self.continuous and self._has_auto_started and not self.game.running:
+            # Check if post-game animation is done
+            time_since_over = (now_ms / 1000.0) - self.game.stop_time_s
+            # Wait a bit longer than the 15s animation to ensure it's fully done
+            if time_since_over > 16.0:
+                print("Game finished and animation complete. Exiting (non-continuous mode).")
+                return True, time_offset
 
         if self.game.aborted:
             await events.stop()
