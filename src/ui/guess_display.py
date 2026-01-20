@@ -254,6 +254,9 @@ class PreviousGuessesManager:
     @property
     def is_full(self) -> bool:
         """Check if the display is effectively full (no room for another line)."""
+        if not self.previous_guesses_display.previous_guesses:
+            return False
+            
         rect_prev = self.previous_guesses_display.surface.get_bounding_rect()
         height_prev = rect_prev.height
         

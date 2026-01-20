@@ -173,7 +173,8 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
         yellow_strategy=yellow_strategy,
         previous_guesses_font_size=30,
         remaining_guesses_font_size_delta=game_config.FONT_SIZE_DELTA,
-        winning_score=winning_score
+        winning_score=winning_score,
+        timed_duration_s=timed_duration_s if descent_mode == "timed" else 0
     )
     
     # Attach provider to game for tests that might want to access it (though updating mock_time_var via loop is preferred)

@@ -11,6 +11,7 @@ from config import game_config
 from hardware import cubes_to_game
 import os
 import subprocess
+import traceback
 from utils.pygameasync import events
 
 from game.components import Score, Shield
@@ -44,12 +45,14 @@ class Game:
                  remaining_guesses_font_size_delta: int,
                  winning_score: int = 0,
                  allow_overflow: bool = False,
+                 timed_duration_s: int = 0,
                  recorder: Optional[GameRecorder] = None) -> None:
         self._app = the_app
         self.game_logger = game_logger
         self.output_logger = output_logger
         self.winning_score = winning_score
         self.allow_overflow = allow_overflow
+        self.timed_duration_s = timed_duration_s
         self.recorder = recorder if recorder else NullRecorder()
 
         # Required dependency injection - no defaults!
@@ -87,7 +90,9 @@ class Game:
 
         # Initialize time tracking
         self.start_time_s = 0
+        self.start_time_s = 0
         self.stop_time_s = 0
+        self.exit_code = 0
 
         events.on("game.stage_guess")(self.stage_guess)
         events.on("game.old_guess")(self.old_guess)
@@ -205,10 +210,11 @@ class Game:
         self.letter.letter = ""
         self.last_letter_time_s = now_ms/1000
 
-    async def stop(self, now_ms: int) -> None:
+    async def stop(self, now_ms: int, exit_code: int = 0) -> None:
         """Stop the game."""
+        self.exit_code = exit_code
         self.sound_manager.play_game_over()
-        logger.info("GAME OVER")
+        logger.info(f"GAME OVER (Exit Code: {exit_code})")
         for rack in self.racks:
             rack.stop()
         self.input_devices = []
@@ -240,7 +246,7 @@ class Game:
 
         if self.guesses_manager.is_full:
             logger.info("Guesses display is full, ending game")
-            await self.stop(now_ms)
+            await self.stop(now_ms, exit_code=10)
 
     async def add_guess(self, previous_guesses: list[str], guess: str, player: int, now_ms: int) -> None:
         """Add a new guess to the display."""
@@ -271,7 +277,16 @@ class Game:
 
         self.guesses_manager.update(window, now_ms, game_over=game_over_animate)
 
+        self.guesses_manager.update(window, now_ms, game_over=game_over_animate)
+
         if self.running:
+            # Check for timed game completion
+            if self.timed_duration_s > 0:
+                elapsed_s = (now_ms / 1000.0) - self.start_time_s
+                if elapsed_s >= self.timed_duration_s:
+                    logger.info("Time limit reached, ending game (Win)")
+                    await self.stop(now_ms, exit_code=10)
+                    return incidents
 
             # Update yellow line BEFORE red line so red draws on top
             if self.yellow_tracker:
@@ -316,7 +331,7 @@ class Game:
 
                 # Check for win condition
                 if self.winning_score > 0 and self.scores[shield.player].score >= self.winning_score:
-                    await self.stop(now_ms)
+                    await self.stop(now_ms, exit_code=10)
 
         self.shields[:] = [s for s in self.shields if s.active]
         for player in range(self._app.player_count):
@@ -325,8 +340,15 @@ class Game:
         # letter collide with rack
         if self.running and self.letter.get_screen_bottom_y() > self.rack_metrics.get_rect().y:
             incidents.append("letter_rack_collision")
+            
+            # Special case for Timed Mode: Hitting the bottom means level complete (Win)
+            if self.timed_duration_s > 0:
+                 logger.info("Timed mode floor reached (Win)")
+                 await self.stop(now_ms, exit_code=10)
+                 return incidents
+
             if self.letter.letter == "!":
-                await self.stop(now_ms)
+                await self.stop(now_ms, exit_code=11)
             else:
                 self.sound_manager.play_chunk()
                 self.letter.new_fall(now_ms)

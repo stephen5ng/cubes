@@ -291,6 +291,7 @@ class BlockWordsPygame:
                         remaining_guesses_font_size_delta=self.remaining_guesses_font_size_delta,
                         winning_score=self.winning_score,
                         allow_overflow=bool(self.replay_file),
+                        timed_duration_s=self.timed_duration_s if self.descent_mode == "timed" else 0,
                         recorder=recorder)
         self.input_controller = GameInputController(self.game)
 
@@ -339,7 +340,7 @@ class BlockWordsPygame:
 
     async def run_single_frame(self, screen, keyboard_input, input_devices,
                                mqtt_message_queue, publish_queue, time_offset):
-        """Run a single frame of the game. Returns (should_exit, new_time_offset)."""
+        """Run a single frame of the game. Returns (should_exit, new_time_offset, exit_code)."""
         now_ms = pygame.time.get_ticks() + time_offset
 
         # Handle auto-start for non-continuous mode
@@ -355,11 +356,11 @@ class BlockWordsPygame:
             # Wait a bit longer than the 15s animation to ensure it's fully done
             if time_since_over > 16.0:
                 print("Game finished and animation complete. Exiting (non-continuous mode).")
-                return True, time_offset
+                return True, time_offset, self.game.exit_code
 
         if self.game.aborted:
             await events.stop()
-            return True, time_offset
+            return True, time_offset, 1
 
         pygame_events = self._get_pygame_events()
         mqtt_events = self._get_mqtt_events(mqtt_message_queue)
@@ -374,7 +375,7 @@ class BlockWordsPygame:
             now_ms = time_offset = self._get_replay_events(pygame_events, mqtt_events)
 
         if await self._handle_pygame_events(pygame_events, keyboard_input, input_devices, now_ms, events_to_log):
-            return True, time_offset
+            return True, time_offset, 0
 
         for mqtt_event in mqtt_events:
             await self.handle_mqtt_message(mqtt_event['topic'], mqtt_event['payload'], now_ms)
@@ -406,11 +407,11 @@ class BlockWordsPygame:
         # Yield control to event loop to allow background tasks (like event worker) to run
         await asyncio.sleep(0)
 
-        return False, time_offset
+        return False, time_offset, 0
 
     async def main(self, the_app: app.App, subscribe_client: aiomqtt.Client, start: bool,
                    keyboard_player_number: int, publish_queue: asyncio.Queue,
-                   game_logger, output_logger) -> None:
+                   game_logger, output_logger) -> int:
         """Main game loop using production setup."""
         screen, keyboard_input, input_devices, mqtt_message_queue, clock = await self.setup_game(
             the_app, subscribe_client, publish_queue, game_logger, output_logger
@@ -418,13 +419,13 @@ class BlockWordsPygame:
 
         time_offset = 0  # so that time doesn't go backwards after playing a replay file
         while True:
-            should_exit, time_offset = await self.run_single_frame(
+            should_exit, time_offset, exit_code = await self.run_single_frame(
                 screen, keyboard_input, input_devices, mqtt_message_queue,
                 publish_queue, time_offset
             )
             if should_exit:
                 await events.stop()
-                return
+                return exit_code
 
             if self.replay_file:
                 await asyncio.sleep(0)

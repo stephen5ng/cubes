@@ -1,0 +1,771 @@
+Scanning retained messages under topic: # (preserving cube/right/* topics)
+Timed out
+Found retained topics:
+cube/1/border
+cube/1/letter
+cube/11/border
+cube/11/letter
+cube/12/border
+cube/12/letter
+cube/13/border
+cube/13/letter
+cube/14/border
+cube/14/letter
+cube/15/border
+cube/15/letter
+cube/16/border
+cube/16/letter
+cube/2/border
+cube/2/letter
+cube/3/border
+cube/3/letter
+cube/4/border
+cube/4/letter
+cube/5/border
+cube/5/letter
+cube/6/border
+cube/6/letter
+Deleting...
+Cleared retained message on topic: cube/1/border
+Cleared retained message on topic: cube/1/letter
+Cleared retained message on topic: cube/11/border
+Cleared retained message on topic: cube/11/letter
+Cleared retained message on topic: cube/12/border
+Cleared retained message on topic: cube/12/letter
+Cleared retained message on topic: cube/13/border
+Cleared retained message on topic: cube/13/letter
+Cleared retained message on topic: cube/14/border
+Cleared retained message on topic: cube/14/letter
+Cleared retained message on topic: cube/15/border
+Cleared retained message on topic: cube/15/letter
+Cleared retained message on topic: cube/16/border
+Cleared retained message on topic: cube/16/letter
+Cleared retained message on topic: cube/2/border
+Cleared retained message on topic: cube/2/letter
+Cleared retained message on topic: cube/3/border
+Cleared retained message on topic: cube/3/letter
+Cleared retained message on topic: cube/4/border
+Cleared retained message on topic: cube/4/letter
+Cleared retained message on topic: cube/5/border
+Cleared retained message on topic: cube/5/letter
+Cleared retained message on topic: cube/6/border
+Cleared retained message on topic: cube/6/letter
+Done.
+[2026-01-16 18:20:43] [RGBME] [INFO]: RGBME v0.12.2 - 192x256 Matrix | 1x1 Chain | 4px per LED (CIRCLE) | BrowserAdapter
+INFO:RGBME:RGBME v0.12.2 - 192x256 Matrix | 1x1 Chain | 4px per LED (CIRCLE) | BrowserAdapter
+[2026-01-16 18:20:43] [RGBME] [INFO]: Starting server...
+INFO:RGBME:Starting server...
+[2026-01-16 18:20:43] [RGBME] [INFO]: Server started and ready to accept requests on http://localhost:8888/
+INFO:RGBME:Server started and ready to accept requests on http://localhost:8888/
+INFO:core.anagram_helper:Built in-memory anagram index with 22314 signatures from 29768 words
+INFO:root:INIT: cube_list p0=['1', '2', '3', '4', '5', '6'] p1=['11', '12', '13', '14', '15', '16']
+INFO:root:INIT: cube_to_cube_set={'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '11': 1, '12': 1, '13': 1, '14': 1, '15': 1, '16': 1}
+INFO:root:Game running state set to: True
+INFO:root:LOAD RACK tiles_with_letters: [Tile(letter='A', id='0'), Tile(letter='N', id='1'), Tile(letter='N', id='2'), Tile(letter='O', id='3'), Tile(letter='T', id='4'), Tile(letter='W', id='5')]
+INFO:root:LOAD RACK tiles_with_letters done: {'1': 'A', '2': 'N', '3': 'N', '4': 'O', '5': 'T', '6': 'W'}
+INFO:root:LOAD RACK guessing
+INFO:root:guess_last_tiles last_guess_tiles []
+INFO:root:LOAD RACK: Skipping player 1 - game not started
+INFO:root:guess_last_tiles last_guess_tiles []
+INFO:root:guess_last_tiles last_guess_tiles [[]]
+INFO:app:core.app:guess_tiles: word_tile_ids []
+INFO:root:guess_last_tiles last_guess_tiles [['2']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['2']
+INFO:__main__:publishing: cube/1/letter,  
+INFO:__main__:publishing: cube/2/letter,  
+INFO:__main__:publishing: cube/3/letter,  
+INFO:__main__:publishing: cube/4/letter,  
+INFO:__main__:publishing: cube/5/letter,  
+INFO:__main__:publishing: cube/6/letter,  
+INFO:__main__:publishing: cube/11/letter,  
+INFO:__main__:publishing: cube/12/letter,  
+INFO:__main__:publishing: cube/13/letter,  
+INFO:__main__:publishing: cube/14/letter,  
+INFO:root:guess_last_tiles last_guess_tiles [['1', '0']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['1', '0']
+INFO:__main__:publishing: cube/15/letter,  
+INFO:__main__:publishing: cube/16/letter,  
+INFO:__main__:publishing: cube/1/border, :
+INFO:__main__:publishing: cube/2/border, :
+INFO:root:guess_last_tiles last_guess_tiles [['2', '0', '3']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['2', '0', '3']
+INFO:__main__:publishing: cube/3/border, :
+INFO:__main__:publishing: cube/4/border, :
+INFO:__main__:publishing: cube/5/border, :
+INFO:__main__:publishing: cube/6/border, :
+INFO:__main__:publishing: cube/11/border, :
+INFO:__main__:publishing: cube/12/border, :
+INFO:__main__:publishing: cube/13/border, :
+INFO:root:guess_last_tiles last_guess_tiles [['1', '3']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['1', '3']
+INFO:__main__:publishing: cube/14/border, :
+INFO:__main__:publishing: cube/15/border, :
+INFO:__main__:publishing: cube/16/border, :
+INFO:root:guess_last_tiles last_guess_tiles [['2', '3', '1']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['2', '3', '1']
+INFO:__main__:publishing: cube/1/letter, A
+INFO:__main__:publishing: cube/2/letter, N
+INFO:__main__:publishing: cube/3/letter, N
+INFO:root:guess_last_tiles last_guess_tiles [['1', '3', '2']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['1', '3', '2']
+INFO:__main__:publishing: cube/4/letter, O
+INFO:__main__:publishing: cube/5/letter, T
+INFO:__main__:publishing: cube/6/letter, W
+INFO:__main__:publishing: cube/3/border, ENSW:0xFFFF
+INFO:__main__:publishing: cube/2/border, NSW:0xFFFF
+INFO:root:guess_last_tiles last_guess_tiles [['2', '3']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['2', '3']
+INFO:__main__:publishing: cube/1/border, ENS:0xFFFF
+INFO:__main__:publishing: cube/3/border, :
+INFO:__main__:publishing: cube/3/border, NSW:0xFFFF
+INFO:__main__:publishing: cube/1/border, NS:0xFFFF
+INFO:root:guess_last_tiles last_guess_tiles [['1', '3', '4']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['1', '3', '4']
+INFO:__main__:publishing: cube/4/border, ENS:0xFFFF
+INFO:__main__:publishing: cube/2/border, :
+INFO:root:guessing NOT
+INFO:root:guess(NOT)
+INFO:__main__:publishing: cube/2/border, NSW:0xFFFF
+INFO:__main__:publishing: cube/1/border, :
+INFO:__main__:publishing: cube/3/border, :
+INFO:__main__:publishing: cube/3/border, NSW:0xFFFF
+INFO:root:guess_last_tiles last_guess_tiles [['2', '3', '4', '0']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['2', '3', '4', '0']
+INFO:__main__:publishing: cube/4/border, NS:0xFFFF
+INFO:root:guessing NOTA
+INFO:root:guess(NOTA)
+INFO:__main__:publishing: cube/2/border, ENS:0xFFFF
+INFO:__main__:publishing: cube/2/border, NSW:0xFFFF
+INFO:__main__:publishing: cube/3/border, ENS:0xFFFF
+INFO:__main__:publishing: cube/3/border, NSW:0xFFFF
+INFO:__main__:publishing: cube/4/border, ENS:0xFFFF
+INFO:__main__:publishing: cube/2/border, :
+INFO:__main__:publishing: cube/2/flash, 1
+INFO:__main__:publishing: cube/4/flash, 1
+INFO:__main__:publishing: cube/5/flash, 1
+INFO:__main__:publishing: cube/2/border, NSW:0x07E0
+INFO:__main__:publishing: cube/4/border, NS:0x07E0
+INFO:root:guess_last_tiles last_guess_tiles [['0']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['0']
+INFO:__main__:publishing: cube/5/border, ENS:0x07E0
+INFO:__main__:publishing: cube/3/border, :
+INFO:__main__:publishing: cube/3/flash, 1
+INFO:root:guess_last_tiles last_guess_tiles [['0', '1']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['0', '1']
+INFO:__main__:publishing: cube/4/flash, 1
+INFO:__main__:publishing: cube/5/flash, 1
+INFO:__main__:publishing: cube/1/flash, 1
+INFO:__main__:publishing: cube/3/border, NSW:0x07E0
+INFO:root:guess_last_tiles last_guess_tiles [['0', '2', '4']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['0', '2', '4']
+INFO:__main__:publishing: cube/5/border, NS:0x07E0
+INFO:__main__:publishing: cube/1/border, ENS:0x07E0
+INFO:__main__:publishing: cube/2/border, :
+INFO:__main__:publishing: cube/1/border, ENSW:0xFFFF
+INFO:__main__:publishing: cube/3/border, :
+INFO:root:guessing ANT
+INFO:root:guess(ANT)
+INFO:__main__:publishing: cube/4/border, :
+INFO:__main__:publishing: cube/5/border, :
+INFO:root:guess_last_tiles last_guess_tiles [['0', '4']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['0', '4']
+INFO:__main__:publishing: cube/1/border, NSW:0xFFFF
+INFO:root:guess_last_tiles last_guess_tiles [['0']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['0']
+INFO:__main__:publishing: cube/2/border, ENS:0xFFFF
+INFO:__main__:publishing: cube/1/flash, 1
+INFO:__main__:publishing: cube/3/flash, 1
+INFO:root:guess_last_tiles last_guess_tiles [[]]
+INFO:app:core.app:guess_tiles: word_tile_ids []
+INFO:__main__:publishing: cube/5/flash, 1
+INFO:__main__:publishing: cube/1/border, NSW:0x07E0
+INFO:root:guess_last_tiles last_guess_tiles [['4']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['4']
+INFO:__main__:publishing: cube/3/border, NS:0x07E0
+INFO:root:guess_last_tiles last_guess_tiles [['4', '0']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['4', '0']
+INFO:__main__:publishing: cube/5/border, ENS:0x07E0
+INFO:__main__:publishing: cube/2/border, :
+INFO:__main__:publishing: cube/1/border, NSW:0xFFFF
+INFO:root:guess_last_tiles last_guess_tiles [['4', '0', '1']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['4', '0', '1']
+INFO:__main__:publishing: cube/5/border, ENS:0xFFFF
+INFO:root:guessing TAN
+INFO:root:guess(TAN)
+INFO:__main__:publishing: cube/3/border, :
+INFO:__main__:publishing: cube/1/border, ENSW:0xFFFF
+INFO:__main__:publishing: cube/5/border, :
+INFO:__main__:publishing: cube/1/border, :
+INFO:__main__:publishing: cube/5/border, ENSW:0xFFFF
+INFO:__main__:publishing: cube/5/border, NSW:0xFFFF
+INFO:__main__:publishing: cube/1/border, ENS:0xFFFF
+INFO:__main__:publishing: cube/5/flash, 1
+INFO:root:guess_last_tiles last_guess_tiles [['4', '2']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['4', '2']
+INFO:__main__:publishing: cube/1/flash, 1
+INFO:root:guess_last_tiles last_guess_tiles [['4']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['4']
+INFO:__main__:publishing: cube/2/flash, 1
+INFO:__main__:publishing: cube/5/border, NSW:0x07E0
+INFO:__main__:publishing: cube/1/border, NS:0x07E0
+INFO:__main__:publishing: cube/2/border, ENS:0x07E0
+INFO:__main__:publishing: cube/5/border, NSW:0xFFFF
+INFO:root:guess_last_tiles last_guess_tiles [['4', '3']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['4', '3']
+INFO:__main__:publishing: cube/3/border, ENS:0xFFFF
+INFO:__main__:publishing: cube/1/border, :
+INFO:root:guess_last_tiles last_guess_tiles [['4', '3', '1']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['4', '3', '1']
+INFO:__main__:publishing: cube/2/border, :
+INFO:__main__:publishing: cube/5/border, ENSW:0xFFFF
+INFO:root:guessing TON
+INFO:root:guess(TON)
+INFO:__main__:publishing: cube/3/border, :
+INFO:root:guess_last_tiles last_guess_tiles [['4', '3', '2', '1']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['4', '3', '2', '1']
+INFO:__main__:publishing: cube/5/border, NSW:0xFFFF
+INFO:__main__:publishing: cube/4/border, ENS:0xFFFF
+INFO:root:guess_last_tiles last_guess_tiles [['4', '3', '1']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['4', '3', '1']
+INFO:__main__:publishing: cube/5/flash, 1
+INFO:__main__:publishing: cube/4/flash, 1
+INFO:root:guess_last_tiles last_guess_tiles [['4', '3']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['4', '3']
+INFO:__main__:publishing: cube/2/flash, 1
+INFO:__main__:publishing: cube/5/border, NSW:0x07E0
+INFO:__main__:publishing: cube/4/border, NS:0x07E0
+INFO:__main__:publishing: cube/2/border, ENS:0x07E0
+INFO:__main__:publishing: cube/5/border, NSW:0xFFFF
+INFO:root:guess_last_tiles last_guess_tiles [['4', '3', '5']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['4', '3', '5']
+INFO:__main__:publishing: cube/4/border, NS:0xFFFF
+INFO:__main__:publishing: cube/3/border, NS:0xFFFF
+INFO:root:guessing TOW
+INFO:root:guess(TOW)
+INFO:__main__:publishing: cube/2/border, ENS:0xFFFF
+INFO:__main__:publishing: cube/5/border, NSW:0xFFE0
+INFO:__main__:publishing: cube/4/border, NS:0xFFE0
+INFO:root:guess_last_tiles last_guess_tiles [['4', '3', '5', '2']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['4', '3', '5', '2']
+INFO:root:guessing TOWN
+INFO:root:guess(TOWN)
+INFO:__main__:publishing: cube/2/border, ENS:0xFFE0
+INFO:__main__:publishing: cube/3/border, :
+INFO:__main__:publishing: cube/5/border, NSW:0xFFFF
+INFO:__main__:publishing: cube/4/border, ENS:0xFFFF
+INFO:__main__:publishing: cube/2/border, :
+INFO:__main__:publishing: cube/5/flash, 1
+INFO:__main__:publishing: cube/4/flash, 1
+INFO:__main__:publishing: cube/6/flash, 1
+INFO:__main__:publishing: cube/5/border, NSW:0x07E0
+INFO:root:guess_last_tiles last_guess_tiles [['5']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5']
+INFO:__main__:publishing: cube/4/border, NS:0x07E0
+INFO:root:guess_last_tiles last_guess_tiles [['5', '3']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '3']
+INFO:__main__:publishing: cube/6/border, ENS:0x07E0
+INFO:__main__:publishing: cube/5/flash, 1
+INFO:__main__:publishing: cube/4/flash, 1
+INFO:root:guess_last_tiles last_guess_tiles [['5', '3', '1']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '3', '1']
+INFO:__main__:publishing: cube/6/flash, 1
+INFO:root:guess_last_tiles last_guess_tiles [['5', '3', '2', '4']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '3', '2', '4']
+INFO:__main__:publishing: cube/3/flash, 1
+INFO:root:guessing WON
+INFO:root:guess(WON)
+INFO:__main__:publishing: cube/6/border, NS:0x07E0
+INFO:root:guessing WONT
+INFO:root:guess(WONT)
+INFO:__main__:publishing: cube/3/border, ENS:0x07E0
+INFO:__main__:publishing: cube/6/border, ENSW:0xFFFF
+INFO:__main__:publishing: cube/3/border, :
+INFO:__main__:publishing: cube/4/border, :
+INFO:root:guess_last_tiles last_guess_tiles [['5', '1', '4']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '1', '4']
+INFO:__main__:publishing: cube/5/border, :
+INFO:root:guess_last_tiles last_guess_tiles [['5', '4']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '4']
+INFO:__main__:publishing: cube/6/border, NSW:0xFFFF
+INFO:root:guess_last_tiles last_guess_tiles [['5']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5']
+INFO:__main__:publishing: cube/4/border, ENS:0xFFFF
+INFO:__main__:publishing: cube/6/flash, 1
+INFO:__main__:publishing: cube/4/flash, 1
+INFO:__main__:publishing: cube/2/flash, 1
+INFO:__main__:publishing: cube/6/border, NSW:0x07E0
+INFO:__main__:publishing: cube/4/border, NS:0x07E0
+INFO:__main__:publishing: cube/2/border, ENS:0x07E0
+INFO:__main__:publishing: cube/6/flash, 1
+INFO:root:guess_last_tiles last_guess_tiles [['5', '0']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '0']
+INFO:__main__:publishing: cube/4/flash, 1
+INFO:__main__:publishing: cube/3/flash, 1
+INFO:__main__:publishing: cube/5/flash, 1
+INFO:__main__:publishing: cube/3/border, NS:0x07E0
+INFO:root:guess_last_tiles last_guess_tiles [['5', '0', '2']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '0', '2']
+INFO:__main__:publishing: cube/5/border, ENS:0x07E0
+INFO:__main__:publishing: cube/2/border, :
+INFO:__main__:publishing: cube/6/border, NSW:0xFFFF
+INFO:__main__:publishing: cube/2/border, NS:0xFFFF
+INFO:root:guessing WAN
+INFO:root:guess(WAN)
+INFO:root:guess_last_tiles last_guess_tiles [['5', '0', '1', '4']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '0', '1', '4']
+INFO:__main__:publishing: cube/5/border, ENS:0xFFFF
+INFO:__main__:publishing: cube/3/border, :
+INFO:root:guessing WANT
+INFO:root:guess(WANT)
+INFO:__main__:publishing: cube/4/border, :
+INFO:__main__:publishing: cube/2/border, :
+INFO:__main__:publishing: cube/6/border, ENSW:0xFFFF
+INFO:root:guess_last_tiles last_guess_tiles [['5', '0', '4']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '0', '4']
+INFO:__main__:publishing: cube/5/border, :
+INFO:root:guessing WAT
+INFO:root:guess(WAT)
+INFO:__main__:publishing: cube/6/border, NSW:0xFFFF
+INFO:__main__:publishing: cube/1/border, ENS:0xFFFF
+INFO:__main__:publishing: cube/6/flash, 1
+INFO:__main__:publishing: cube/1/flash, 1
+INFO:__main__:publishing: cube/3/flash, 1
+INFO:__main__:publishing: cube/6/border, NSW:0x07E0
+INFO:__main__:publishing: cube/1/border, NS:0x07E0
+INFO:__main__:publishing: cube/3/border, ENS:0x07E0
+INFO:__main__:publishing: cube/6/flash, 1
+INFO:__main__:publishing: cube/1/flash, 1
+INFO:__main__:publishing: cube/2/flash, 1
+INFO:__main__:publishing: cube/5/flash, 1
+INFO:__main__:publishing: cube/2/border, NS:0x07E0
+INFO:__main__:publishing: cube/5/border, ENS:0x07E0
+INFO:__main__:publishing: cube/3/border, :
+INFO:__main__:publishing: cube/6/flash, 1
+INFO:__main__:publishing: cube/1/flash, 1
+INFO:__main__:publishing: cube/5/flash, 1
+INFO:__main__:publishing: cube/2/border, :
+INFO:__main__:publishing: cube/4/lock, 1
+INFO:root:
+replace_letter() E -> TILES: [Tile(letter='W', id='5'), Tile(letter='A', id='0'), Tile(letter='T', id='4'), Tile(letter='N', id='1'), Tile(letter='N', id='2'), Tile(letter='O', id='3')]
+LAST_GUESS: [Tile(letter='W', id='5'), Tile(letter='A', id='0'), Tile(letter='T', id='4')], new_letter: E
+INFO:root:final: TILES: [Tile(letter='W', id='5'), Tile(letter='A', id='0'), Tile(letter='T', id='4'), Tile(letter='N', id='1'), Tile(letter='N', id='2'), Tile(letter='E', id='3')]
+LAST_GUESS: [Tile(letter='W', id='5'), Tile(letter='A', id='0'), Tile(letter='T', id='4')]
+INFO:root:
+replace_letter() E -> TILES: [Tile(letter='A', id='0'), Tile(letter='N', id='1'), Tile(letter='N', id='2'), Tile(letter='O', id='3'), Tile(letter='T', id='4'), Tile(letter='W', id='5')]
+LAST_GUESS: [], new_letter: E
+INFO:root:final: TILES: [Tile(letter='A', id='0'), Tile(letter='N', id='1'), Tile(letter='N', id='2'), Tile(letter='E', id='3'), Tile(letter='T', id='4'), Tile(letter='W', id='5')]
+LAST_GUESS: []
+INFO:__main__:publishing: cube/4/letter, E
+INFO:__main__:publishing: cube/4/lock, None
+INFO:root:guess_last_tiles last_guess_tiles [['3']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['3']
+INFO:__main__:publishing: cube/4/border, ENSW:0xFFFF
+INFO:__main__:publishing: cube/1/border, :
+INFO:__main__:publishing: cube/5/border, :
+INFO:__main__:publishing: cube/6/border, :
+INFO:root:guess_last_tiles last_guess_tiles [['3', '0']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['3', '0']
+INFO:__main__:publishing: cube/4/border, NSW:0xFFFF
+INFO:__main__:publishing: cube/1/border, ENS:0xFFFF
+INFO:root:guess_last_tiles last_guess_tiles [['3', '0', '2']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['3', '0', '2']
+INFO:__main__:publishing: cube/1/border, NS:0xFFFF
+INFO:__main__:publishing: cube/3/border, ENS:0xFFFF
+INFO:root:guess_last_tiles last_guess_tiles [['0']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['0']
+INFO:__main__:publishing: cube/1/border, ENSW:0xFFFF
+INFO:__main__:publishing: cube/3/border, :
+INFO:root:guess_last_tiles last_guess_tiles [['0', '1']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['0', '1']
+INFO:__main__:publishing: cube/4/border, :
+INFO:__main__:publishing: cube/1/border, NSW:0xFFFF
+INFO:__main__:publishing: cube/2/border, ENS:0xFFFF
+INFO:root:guess_last_tiles last_guess_tiles [['0', '2', '3']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['0', '2', '3']
+INFO:root:guessing ANE
+INFO:root:guess(ANE)
+INFO:__main__:publishing: cube/1/flash, 1
+INFO:__main__:publishing: cube/3/flash, 1
+INFO:__main__:publishing: cube/4/flash, 1
+INFO:__main__:publishing: cube/1/border, NSW:0x07E0
+INFO:__main__:publishing: cube/3/border, NS:0x07E0
+INFO:__main__:publishing: cube/4/border, ENS:0x07E0
+INFO:__main__:publishing: cube/2/border, :
+INFO:root:guess_last_tiles last_guess_tiles [['0', '1', '3', '5']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['0', '1', '3', '5']
+INFO:__main__:publishing: cube/1/flash, 1
+INFO:__main__:publishing: cube/2/flash, 1
+INFO:root:guessing ANEW
+INFO:root:guess(ANEW)
+INFO:__main__:publishing: cube/4/flash, 1
+INFO:__main__:publishing: cube/6/flash, 1
+INFO:__main__:publishing: cube/2/border, NS:0x07E0
+INFO:__main__:publishing: cube/4/border, NS:0x07E0
+INFO:__main__:publishing: cube/6/border, ENS:0x07E0
+INFO:__main__:publishing: cube/3/border, :
+INFO:root:guess_last_tiles last_guess_tiles [['5']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5']
+INFO:__main__:publishing: cube/6/border, ENSW:0xFFFF
+INFO:__main__:publishing: cube/1/border, :
+INFO:__main__:publishing: cube/2/border, :
+INFO:__main__:publishing: cube/4/border, :
+INFO:root:guess_last_tiles last_guess_tiles [['5', '0']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '0']
+INFO:root:guess_last_tiles last_guess_tiles [['5']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5']
+INFO:__main__:publishing: cube/6/border, NSW:0xFFFF
+INFO:root:guess_last_tiles last_guess_tiles [['5', '0']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '0']
+INFO:__main__:publishing: cube/1/border, ENS:0xFFFF
+INFO:__main__:publishing: cube/6/border, ENSW:0xFFFF
+INFO:root:guess_last_tiles last_guess_tiles [['5', '0', '2']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '0', '2']
+INFO:__main__:publishing: cube/1/border, :
+INFO:__main__:publishing: cube/6/border, NSW:0xFFFF
+INFO:__main__:publishing: cube/1/border, ENS:0xFFFF
+INFO:root:guess_last_tiles last_guess_tiles [['5', '0', '1', '2']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '0', '1', '2']
+INFO:__main__:publishing: cube/6/border, NSW:0xFFE0
+INFO:root:guess_last_tiles last_guess_tiles [['5', '0', '2']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '0', '2']
+INFO:__main__:publishing: cube/1/border, NS:0xFFE0
+INFO:__main__:publishing: cube/3/border, ENS:0xFFE0
+INFO:__main__:publishing: cube/6/border, NSW:0xFFFF
+INFO:root:guess_last_tiles last_guess_tiles [['5', '0', '1', '3']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '0', '1', '3']
+INFO:__main__:publishing: cube/1/border, NS:0xFFFF
+INFO:root:guessing WANE
+INFO:root:guess(WANE)
+INFO:__main__:publishing: cube/2/border, NS:0xFFFF
+INFO:__main__:publishing: cube/3/border, ENS:0xFFFF
+INFO:__main__:publishing: cube/6/border, NSW:0xFFE0
+INFO:__main__:publishing: cube/1/border, NS:0xFFE0
+INFO:__main__:publishing: cube/3/border, ENS:0xFFE0
+INFO:root:guess_last_tiles last_guess_tiles [['5', '0', '2']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '0', '2']
+INFO:__main__:publishing: cube/2/border, :
+INFO:__main__:publishing: cube/6/flash, 1
+INFO:__main__:publishing: cube/1/flash, 1
+INFO:__main__:publishing: cube/2/flash, 1
+INFO:root:guess_last_tiles last_guess_tiles [['5', '0', '1', '4']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '0', '1', '4']
+INFO:__main__:publishing: cube/4/flash, 1
+INFO:__main__:publishing: cube/6/border, NSW:0x07E0
+INFO:__main__:publishing: cube/1/border, NS:0x07E0
+INFO:__main__:publishing: cube/2/border, NS:0x07E0
+INFO:__main__:publishing: cube/4/border, ENS:0x07E0
+INFO:__main__:publishing: cube/3/border, :
+INFO:__main__:publishing: cube/6/border, NSW:0xFFE0
+INFO:__main__:publishing: cube/1/border, NS:0xFFE0
+INFO:__main__:publishing: cube/3/border, ENS:0xFFE0
+INFO:__main__:publishing: cube/2/border, :
+INFO:__main__:publishing: cube/4/border, :
+INFO:__main__:publishing: cube/2/border, NS:0xFFE0
+INFO:__main__:publishing: cube/5/border, ENS:0xFFE0
+INFO:__main__:publishing: cube/3/border, :
+INFO:__main__:publishing: cube/1/lock, 1
+INFO:root:guess_last_tiles last_guess_tiles [['5', '2', '4']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '2', '4']
+INFO:__main__:publishing: cube/6/border, NSW:0xFFFF
+INFO:__main__:publishing: cube/3/border, NS:0xFFFF
+INFO:root:
+replace_letter() S -> TILES: [Tile(letter='W', id='5'), Tile(letter='N', id='2'), Tile(letter='T', id='4'), Tile(letter='A', id='0'), Tile(letter='N', id='1'), Tile(letter='E', id='3')]
+LAST_GUESS: [Tile(letter='W', id='5'), Tile(letter='A', id='0'), Tile(letter='N', id='2'), Tile(letter='E', id='3')], new_letter: S
+INFO:root:final: TILES: [Tile(letter='W', id='5'), Tile(letter='S', id='2'), Tile(letter='T', id='4'), Tile(letter='A', id='0'), Tile(letter='N', id='1'), Tile(letter='E', id='3')]
+LAST_GUESS: [Tile(letter='W', id='5'), Tile(letter='A', id='0'), Tile(letter='N', id='2'), Tile(letter='E', id='3')]
+INFO:root:
+replace_letter() S -> TILES: [Tile(letter='A', id='0'), Tile(letter='N', id='1'), Tile(letter='N', id='2'), Tile(letter='E', id='3'), Tile(letter='T', id='4'), Tile(letter='W', id='5')]
+LAST_GUESS: [], new_letter: S
+INFO:root:final: TILES: [Tile(letter='A', id='0'), Tile(letter='N', id='1'), Tile(letter='S', id='2'), Tile(letter='E', id='3'), Tile(letter='T', id='4'), Tile(letter='W', id='5')]
+LAST_GUESS: []
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '2', '4']
+INFO:__main__:publishing: cube/5/border, ENS:0xFFFF
+INFO:__main__:publishing: cube/1/border, :
+INFO:__main__:publishing: cube/2/border, :
+INFO:__main__:publishing: cube/1/lock, None
+INFO:__main__:publishing: cube/3/lock, 1
+INFO:__main__:publishing: cube/3/letter, S
+INFO:__main__:publishing: cube/3/lock, None
+INFO:root:guess_last_tiles last_guess_tiles [['5', '4']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '4']
+INFO:root:guess_last_tiles last_guess_tiles [['5']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5']
+INFO:__main__:publishing: cube/3/border, :
+INFO:__main__:publishing: cube/6/border, ENSW:0xFFFF
+INFO:__main__:publishing: cube/5/border, :
+INFO:root:guess_last_tiles last_guess_tiles [['5', '0']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '0']
+INFO:root:guess_last_tiles last_guess_tiles [['5', '0', '2']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '0', '2']
+INFO:__main__:publishing: cube/6/border, NSW:0xFFFF
+INFO:__main__:publishing: cube/1/border, ENS:0xFFFF
+INFO:root:guessing WAS
+INFO:root:guess(WAS)
+INFO:game.game_state:Guesses display is full, ending game
+INFO:game.game_state:GAME OVER
+INFO:root:LOAD RACK tiles_with_letters: [Tile(letter=' ', id='0'), Tile(letter=' ', id='1'), Tile(letter=' ', id='2'), Tile(letter=' ', id='3'), Tile(letter=' ', id='4'), Tile(letter=' ', id='5')]
+INFO:root:LOAD RACK tiles_with_letters done: {'1': ' ', '2': ' ', '3': ' ', '4': ' ', '5': ' ', '6': ' '}
+INFO:root:LOAD RACK guessing
+INFO:root:guess_last_tiles last_guess_tiles [['5', '0', '2']]
+INFO:app:core.app:guess_tiles: word_tile_ids ['5', '0', '2']
+INFO:root:LOAD RACK: Skipping player 1 - game not started
+INFO:root:Game ended at 3324
+INFO:game.game_state:GAME OVER OVER
+INFO:__main__:publishing: cube/6/flash, 1
+INFO:__main__:publishing: cube/1/flash, 1
+INFO:__main__:publishing: cube/3/flash, 1
+INFO:__main__:publishing: cube/6/border, NSW:0x07E0
+INFO:__main__:publishing: cube/1/border, NS:0x07E0
+INFO:__main__:publishing: cube/3/border, ENS:0x07E0
+INFO:__main__:publishing: cube/1/letter,  
+INFO:__main__:publishing: cube/1/border, :
+INFO:__main__:publishing: cube/2/letter,  
+INFO:__main__:publishing: cube/3/letter,  
+INFO:__main__:publishing: cube/3/border, :
+INFO:__main__:publishing: cube/4/letter,  
+INFO:__main__:publishing: cube/5/letter,  
+INFO:__main__:publishing: cube/6/letter,  
+INFO:__main__:publishing: cube/6/border, :
+INFO:__main__:publishing: cube/6/border, NSW:0xFFFF
+INFO:__main__:publishing: cube/1/border, NS:0xFFFF
+INFO:__main__:publishing: cube/3/border, ENS:0xFFFF
+INFO:__main__:publishing: cube/1/border, :
+INFO:__main__:publishing: cube/3/border, :
+INFO:__main__:publishing: cube/6/border, :
+pygame-ce 2.5.2 (SDL 2.30.8, Python 3.13.1)
+STARTING LOGGING output/output.publish.jsonl
+STARTING LOGGING None
+Replay mode: loaded 2007 events from replay/gamepad/game_replay.jsonl
+joystick count: 0
+STARTING LOGGING output/output.jsonl
+=========start_game GamepadInput 1445
+1445 starting new game with input_device: GamepadInput
+ADDED GamepadInput in self.input_devices: True
+start_cubes: starting letter 1445
+>>>>>>>> app.STARTING
+initial bingo: ---------- WANTON --------
+>>>>>>>> app.STARTED
+start done
+JOYSTICK player_number: 0
+asyncio main done
+Running: ./runpygame.sh --replay replay/gamepad/game_replay.jsonl
+Replay completed with return code: 0
+Error: Files differ: goldens/gamepad/output.jsonl vs output/output.jsonl
+
+======================================================================
+SEMANTIC DIFF
+======================================================================
+Test: gamepad
+======================================================================
+SEMANTIC DIFFERENCES
+======================================================================
+
+  • Player 0: Missing word "ELS" (3 points)
+  • Player 0: Missing word "SAW" (3 points)
+  • Player 0: Score mismatch - Expected: 60, Actual: 54
+  • Letter move count differs significantly - Expected: 307, Actual: 245 (diff: 62)
+
+Total differences: 4
+======================================================================
+
+Byte-level Diff:
+--- goldens/gamepad/output.jsonl
++++ output/output.jsonl
+@@ -259,67 +259,3 @@
+ {"time": 108605, "event_type": "letter_position", "x": 113, "y": 48}
+
+ {"time": 108835, "event_type": "word_formed", "word": "WAS", "player": 0, "score": 3}
+
+ {"time": 109627, "event_type": "letter_position", "x": 129, "y": 58}
+
+-{"time": 110629, "event_type": "letter_position", "x": 113, "y": 46}
+
+-{"time": 111630, "event_type": "letter_position", "x": 97, "y": 46}
+
+-{"time": 112643, "event_type": "letter_position", "x": 81, "y": 48}
+
+-{"time": 113663, "event_type": "letter_position", "x": 65, "y": 52}
+
+-{"time": 114669, "event_type": "letter_position", "x": 49, "y": 59}
+
+-{"time": 114902, "event_type": "word_formed", "word": "SAW", "player": 0, "score": 3}
+
+-{"time": 115688, "event_type": "letter_position", "x": 65, "y": 69}
+
+-{"time": 116692, "event_type": "letter_position", "x": 81, "y": 51}
+
+-{"time": 117696, "event_type": "letter_position", "x": 97, "y": 51}
+
+-{"time": 118698, "event_type": "letter_position", "x": 113, "y": 53}
+
+-{"time": 119719, "event_type": "letter_position", "x": 129, "y": 58}
+
+-{"time": 120730, "event_type": "letter_position", "x": 113, "y": 64}
+
+-{"time": 121737, "event_type": "letter_position", "x": 97, "y": 74}
+
+-{"time": 122758, "event_type": "letter_position", "x": 81, "y": 89}
+
+-{"time": 123768, "event_type": "letter_position", "x": 65, "y": 108}
+
+-{"time": 124790, "event_type": "letter_position", "x": 49, "y": 132}
+
+-{"time": 125791, "event_type": "letter_position", "x": 65, "y": 162}
+
+-{"time": 126813, "event_type": "letter_position", "x": 65, "y": 199}
+
+-{"time": 127821, "event_type": "letter_position", "x": 65, "y": 244}
+
+-{"time": 127821, "event_type": "word_formed", "word": "ELS", "player": 0, "score": 3}
+
+-{"time": 128393, "event_type": "letter_position", "x": 66, "y": 51}
+
+-{"time": 129843, "event_type": "letter_position", "x": 82, "y": 78}
+
+-{"time": 130844, "event_type": "letter_position", "x": 98, "y": 80}
+
+-{"time": 131852, "event_type": "letter_position", "x": 114, "y": 85}
+
+-{"time": 132869, "event_type": "letter_position", "x": 130, "y": 94}
+
+-{"time": 133877, "event_type": "letter_position", "x": 114, "y": 110}
+
+-{"time": 134881, "event_type": "letter_position", "x": 98, "y": 133}
+
+-{"time": 135889, "event_type": "letter_position", "x": 82, "y": 165}
+
+-{"time": 136911, "event_type": "letter_position", "x": 82, "y": 208}
+
+-{"time": 137050, "event_type": "letter_position", "x": 80, "y": 95}
+
+-{"time": 138100, "event_type": "letter_position", "x": 64, "y": 95}
+
+-{"time": 139681, "event_type": "letter_position", "x": 48, "y": 102}
+
+-{"time": 140746, "event_type": "letter_position", "x": 64, "y": 114}
+
+-{"time": 141960, "event_type": "letter_position", "x": 80, "y": 140}
+
+-{"time": 142964, "event_type": "letter_position", "x": 96, "y": 173}
+
+-{"time": 143987, "event_type": "letter_position", "x": 96, "y": 220}
+
+-{"time": 144539, "event_type": "letter_position", "x": 97, "y": 112}
+
+-{"time": 145734, "event_type": "letter_position", "x": 113, "y": 114}
+
+-{"time": 147028, "event_type": "letter_position", "x": 129, "y": 127}
+
+-{"time": 148029, "event_type": "letter_position", "x": 113, "y": 148}
+
+-{"time": 149033, "event_type": "letter_position", "x": 97, "y": 182}
+
+-{"time": 149392, "event_type": "letter_position", "x": 97, "y": 198}
+
+-{"time": 149482, "event_type": "letter_position", "x": 97, "y": 202}
+
+-{"time": 149601, "event_type": "letter_position", "x": 97, "y": 208}
+
+... (diff truncated, showing first 50 lines)
+Error: Files differ: goldens/gamepad/output.publish.jsonl vs output/output.publish.jsonl
+Byte-level Diff:
+--- goldens/gamepad/output.publish.jsonl
++++ output/output.publish.jsonl
+@@ -263,81 +263,18 @@
+ {"time": 108835, "topic": "cube/6/border", "message": "NSW:0x07E0", "retain": true}
+
+ {"time": 108835, "topic": "cube/1/border", "message": "NS:0x07E0", "retain": true}
+
+ {"time": 108835, "topic": "cube/3/border", "message": "ENS:0x07E0", "retain": true}
+
+-{"time": 113253, "topic": "cube/3/border", "message": "ENSW:0xFFFF", "retain": true}
+
+-{"time": 113253, "topic": "cube/1/border", "message": ":", "retain": true}
+
+-{"time": 113253, "topic": "cube/6/border", "message": ":", "retain": true}
+
+-{"time": 114229, "topic": "cube/3/border", "message": "NSW:0xFFFF", "retain": true}
+
+-{"time": 114229, "topic": "cube/1/border", "message": "ENS:0xFFFF", "retain": true}
+
+-{"time": 114902, "topic": "cube/3/flash", "message": "1", "retain": false}
+
+-{"time": 114902, "topic": "cube/1/flash", "message": "1", "retain": false}
+
+-{"time": 114902, "topic": "cube/6/flash", "message": "1", "retain": false}
+
+-{"time": 114902, "topic": "cube/3/border", "message": "NSW:0x07E0", "retain": true}
+
+-{"time": 114902, "topic": "cube/1/border", "message": "NS:0x07E0", "retain": true}
+
+-{"time": 114902, "topic": "cube/6/border", "message": "ENS:0x07E0", "retain": true}
+
+-{"time": 118646, "topic": "cube/4/border", "message": "ENSW:0xFFFF", "retain": true}
+
+-{"time": 118646, "topic": "cube/1/border", "message": ":", "retain": true}
+
+-{"time": 118646, "topic": "cube/3/border", "message": ":", "retain": true}
+
+-{"time": 118646, "topic": "cube/6/border", "message": ":", "retain": true}
+
+-{"time": 121122, "topic": "cube/4/border", "message": "NSW:0xFFFF", "retain": true}
+
+-{"time": 121122, "topic": "cube/1/border", "message": "ENS:0xFFFF", "retain": true}
+
+-{"time": 122106, "topic": "cube/1/border", "message": "NS:0xFFFF", "retain": true}
+
+-{"time": 122106, "topic": "cube/3/border", "message": "ENS:0xFFFF", "retain": true}
+
+-{"time": 125791, "topic": "cube/1/lock", "message": "1", "retain": true}
+
+-{"time": 127821, "topic": "cube/1/letter", "message": "L", "retain": true}
+
+-{"time": 127821, "topic": "cube/4/flash", "message": "1", "retain": false}
+
+-{"time": 127821, "topic": "cube/1/flash", "message": "1", "retain": false}
+
+-{"time": 127821, "topic": "cube/3/flash", "message": "1", "retain": false}
+
+-{"time": 128393, "topic": "cube/1/lock", "message": null, "retain": true}
+
+-{"time": 129292, "topic": "cube/5/border", "message": "ENSW:0xFFFF", "retain": true}
+
+-{"time": 129292, "topic": "cube/1/border", "message": ":", "retain": true}
+
+-{"time": 129292, "topic": "cube/3/border", "message": ":", "retain": true}
+
+-{"time": 129292, "topic": "cube/4/border", "message": ":", "retain": true}
+
+-{"time": 131375, "topic": "cube/5/border", "message": "NSW:0xFFFF", "retain": true}
+
+-{"time": 131375, "topic": "cube/1/border", "message": "ENS:0xFFFF", "retain": true}
+
+-{"time": 132274, "topic": "cube/1/border", "message": "NS:0xFFFF", "retain": true}
+
+-{"time": 132274, "topic": "cube/4/border", "message": "ENS:0xFFFF", "retain": true}
+
+-{"time": 135889, "topic": "cube/4/lock", "message": "1", "retain": true}
+
+-{"time": 136911, "topic": "cube/4/letter", "message": "I", "retain": true}
+
+-{"time": 137050, "topic": "cube/4/lock", "message": null, "retain": true}
+
+-{"time": 138883, "topic": "cube/2/border", "message": "ENSW:0xFFFF", "retain": true}
+
+-{"time": 138883, "topic": "cube/1/border", "message": ":", "retain": true}
+
+-{"time": 138883, "topic": "cube/4/border", "message": ":", "retain": true}
+
+-{"time": 138883, "topic": "cube/5/border", "message": ":", "retain": true}
+
+-{"time": 140746, "topic": "cube/2/border", "message": "NSW:0xFFFF", "retain": true}
+
+-{"time": 140746, "topic": "cube/1/border", "message": "ENS:0xFFFF", "retain": true}
+
+-{"time": 141532, "topic": "cube/1/border", "message": "NS:0xFFFF", "retain": true}
+
+-{"time": 141532, "topic": "cube/3/border", "message": "ENS:0xFFFF", "retain": true}
+
+... (diff truncated, showing first 50 lines)
+
+✗ Test 'gamepad' failed

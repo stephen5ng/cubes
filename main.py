@@ -55,7 +55,7 @@ async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.
             sys.exit(1)
 
 
-async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: pygamegameasync.BlockWordsPygame, keyboard_player_number: int, seed: int, game_logger: GameLogger) -> None:
+async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: pygamegameasync.BlockWordsPygame, keyboard_player_number: int, seed: int, game_logger: GameLogger) -> int:
     # Set up loggers
     publish_logger = PublishLogger("output/output.publish.jsonl")
     output_logger = OutputLogger("output/output.jsonl")
@@ -90,8 +90,8 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
                 publish_task = asyncio.create_task(publish_tasks_in_queue(publish_client, publish_queue, publish_logger, {}),
                     name="mqtt publish handler")
 
-                await block_words.main(the_app, subscribe_client, args.start, keyboard_player_number, publish_queue, game_logger, output_logger)
-
+                exit_code = await block_words.main(the_app, subscribe_client, args.start, keyboard_player_number, publish_queue, game_logger, output_logger)
+                print(f"exit code was {exit_code}")
                 # Wait for the publish queue to be empty before shutting down
                 while not publish_queue.empty():
                     await asyncio.sleep(0.1)
@@ -104,6 +104,7 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
                     await publish_task
                 except asyncio.CancelledError:
                     pass
+                return exit_code
     finally:
         publish_logger.stop_logging()
 
@@ -182,8 +183,9 @@ if __name__ == "__main__":
     
     game_logger = GameLogger(None if args.replay else "output/game_replay.jsonl")
     try:
-        asyncio.run(main(args, dictionary, block_words, args.keyboard_player_number-1, seed, game_logger))
+        exit_code = asyncio.run(main(args, dictionary, block_words, args.keyboard_player_number-1, seed, game_logger))
         print("asyncio main done")
+        sys.exit(exit_code)
     except Exception as e:
         import traceback
         traceback.print_exc()
