@@ -129,7 +129,7 @@ async def test_integration():
                 esc_injected = True
             # Call the PRODUCTION game loop!
             # run_single_frame handles all pygame events internally (including QUIT and keyboard)
-            should_exit, time_offset = await block_words.run_single_frame(
+            should_exit, time_offset, _exit_code = await block_words.run_single_frame(
                 screen, keyboard_input, input_devices,
                 mqtt_message_queue, publish_queue, time_offset
             )
