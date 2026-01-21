@@ -46,7 +46,8 @@ class Game:
                  winning_score: int = 0,
                  allow_overflow: bool = False,
                  timed_duration_s: int = 0,
-                 recorder: Optional[GameRecorder] = None) -> None:
+                 recorder: Optional[GameRecorder] = None,
+                 replay_mode: bool = False) -> None:
         self._app = the_app
         self.game_logger = game_logger
         self.output_logger = output_logger
@@ -54,6 +55,7 @@ class Game:
         self.allow_overflow = allow_overflow
         self.timed_duration_s = timed_duration_s
         self.recorder = recorder if recorder else NullRecorder()
+        self.replay_mode = replay_mode
 
         # Required dependency injection - no defaults!
         self.sound_manager = sound_manager
@@ -105,6 +107,7 @@ class Game:
         events.on("input.add_guess")(self.add_guess)
         events.on("rack.update_rack")(self.update_rack)
         events.on("rack.update_letter")(self.update_letter)
+
 
     async def update_rack(self, tiles: list[tiles.Tile], highlight_length: int, guess_length: int, player: int, now_ms: int) -> None:
         """Update rack display for a player."""
@@ -250,6 +253,9 @@ class Game:
 
     async def add_guess(self, previous_guesses: list[str], guess: str, player: int, now_ms: int) -> None:
         """Add a new guess to the display."""
+        if not self.running:
+            return
+            
         self.guess_to_player[guess] = player
         self.guesses_manager.add_guess(previous_guesses, guess, player, now_ms)
         await self._end_game_if_full(now_ms)
@@ -340,7 +346,7 @@ class Game:
         # letter collide with rack
         if self.running and self.letter.get_screen_bottom_y() > self.rack_metrics.get_rect().y:
             incidents.append("letter_rack_collision")
-            
+
             # Special case for Timed Mode: Hitting the bottom means level complete (Win)
             if self.timed_duration_s > 0:
                  logger.info("Timed mode floor reached (Win)")

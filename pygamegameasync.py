@@ -58,8 +58,6 @@ from ui.guess_display import (
 )
 from game.letter import GuessType, Letter
 from rendering.rack_display import RackDisplay
-from game.letter import GuessType, Letter
-from rendering.rack_display import RackDisplay
 from game.game_state import Game
 from events.game_events import GameAbortEvent
 from game.recorder import FileSystemRecorder, NullRecorder
@@ -113,8 +111,13 @@ class BlockWordsPygame:
         if not self._mock_mqtt_client and self.replay_file:
             self.replayer = GameReplayer(self.replay_file)
             self.replayer.load_events()
+            # Override settings from replay metadata if available
+            if self.replayer.descent_mode is not None:
+                self.descent_mode = self.replayer.descent_mode
+            if self.replayer.timed_duration_s is not None:
+                self.timed_duration_s = self.replayer.timed_duration_s
+            print(f"Replay config: descent_mode={self.descent_mode}, timed_duration_s={self.timed_duration_s}")
             # Create mock client with MQTT events only
-            # print(f"self.replayer.events: {self.replayer.events}")
             mqtt_events = [e for e in self.replayer.events if hasattr(e, 'mqtt')]
             self._mock_mqtt_client = MockMqttClient(mqtt_events)
         return self._mock_mqtt_client
@@ -292,7 +295,8 @@ class BlockWordsPygame:
                         winning_score=self.winning_score,
                         allow_overflow=bool(self.replay_file),
                         timed_duration_s=self.timed_duration_s if self.descent_mode == "timed" else 0,
-                        recorder=recorder)
+                        recorder=recorder,
+                        replay_mode=bool(self.replay_file))
         self.input_controller = GameInputController(self.game)
 
         # Define handlers dictionary after dependencies are initialized
@@ -353,8 +357,8 @@ class BlockWordsPygame:
         if not self.continuous and self._has_auto_started and not self.game.running:
             # Check if post-game animation is done
             time_since_over = (now_ms / 1000.0) - self.game.stop_time_s
-            # Wait a bit longer than the 15s animation to ensure it's fully done
-            if time_since_over > 16.0:
+            # Wait a bit longer than the animation to ensure it's fully done
+            if time_since_over > 2.0:
                 print("Game finished and animation complete. Exiting (non-continuous mode).")
                 return True, time_offset, self.game.exit_code
 
@@ -373,6 +377,9 @@ class BlockWordsPygame:
 
         if self.replayer.events:
             now_ms = time_offset = self._get_replay_events(pygame_events, mqtt_events)
+        elif self.replay_file:
+            print("Replay events exhausted. Exiting.")
+            return True, time_offset, 0
 
         if await self._handle_pygame_events(pygame_events, keyboard_input, input_devices, now_ms, events_to_log):
             return True, time_offset, 0

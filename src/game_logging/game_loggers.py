@@ -55,7 +55,6 @@ class GameLogger(BaseLogger):
             "event_type": "seed",
             "seed": seed
         }
-        print(f">>>>>>>> logging seed {event}")
         self._write_event(event)
 
     def log_delay_ms(self, delay_ms: int):
@@ -63,9 +62,10 @@ class GameLogger(BaseLogger):
             "event_type": "delay_ms",
             "delay_ms": delay_ms
         }
-        print(f">>>>>>>> logging delay_ms {event}")
         self._write_event(event)
         
+
+
     def log_events(self, now_ms: int, events: dict):
         log_entry = {
             "timestamp_ms": now_ms,
