@@ -96,7 +96,6 @@ class TestFontConfiguration:
             descent_mode="discrete",
             timed_duration=120,
             record=False,
-            winning_score=0,
             previous_guesses_font_size=30,
             remaining_guesses_font_size_delta=game_config.FONT_SIZE_DELTA
         )
@@ -109,7 +108,6 @@ class TestFontConfiguration:
             descent_mode="discrete",
             timed_duration_s=120,
             record=False,
-            winning_score=0
         )
         
         
@@ -148,7 +146,6 @@ class TestFontConfiguration:
             descent_mode="discrete",
             timed_duration=120,
             record=False,
-            winning_score=0,
             previous_guesses_font_size=custom_font_size,
             remaining_guesses_font_size_delta=custom_delta
         )
@@ -161,7 +158,6 @@ class TestFontConfiguration:
             descent_mode="discrete",
             timed_duration_s=120,
             record=False,
-            winning_score=0
         )
         
         # Act

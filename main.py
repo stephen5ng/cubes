@@ -122,14 +122,14 @@ if __name__ == "__main__":
                        help="Duration in seconds for timed mode (default: 240 seconds / 4 minutes)")
     parser.add_argument("--record", action=argparse.BooleanOptionalAction, default=False,
                        help="Enable screen recording of game events")
-    parser.add_argument("--winning-score", type=int, default=0,
-                       help="Points required to win the game (0 to disable)")
     parser.add_argument("--previous-guesses-font-size", type=int, default=30,
                        help="Font size for previous guesses (default: 30)")
     parser.add_argument("--remaining-guesses-font-size-delta", type=int, default=game_config.FONT_SIZE_DELTA,
                        help="Font size delta for remaining guesses (default: 4)")
     parser.add_argument("--continuous", action="store_true",
                        help="Run in continuous mode (loop game, wait for ESC). Default is False (single-run auto-start).")
+    parser.add_argument("--one-round", action="store_true",
+                       help="End game after one round (next falling letter is '!')")
     args = parser.parse_args()
     
     seed = 1
@@ -177,8 +177,8 @@ if __name__ == "__main__":
         descent_mode=args.descent_mode, 
         timed_duration_s=args.timed_duration, 
         record=args.record, 
-        winning_score=args.winning_score,
-        continuous=args.continuous
+        continuous=args.continuous,
+        one_round=args.one_round
     )
     
     game_logger = GameLogger(None if args.replay else "output/game_replay.jsonl")

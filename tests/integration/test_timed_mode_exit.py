@@ -6,6 +6,8 @@ async def test_timed_mode_returns_exit_code_10_on_completion():
     # Setup - Use very short duration (1s)
     duration_s = 1
     game, fake_mqtt, queue = await create_test_game(descent_mode="timed", timed_duration_s=duration_s)
+    from tests.fixtures.game_factory import suppress_letter
+    suppress_letter(game)
     
     # Act - Run until game stops
     # We expect it to stop after approx 1s + overhead

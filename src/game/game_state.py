@@ -43,19 +43,17 @@ class Game:
                  yellow_strategy: DescentStrategy,
                  previous_guesses_font_size: int,
                  remaining_guesses_font_size_delta: int,
-                 winning_score: int = 0,
-                 allow_overflow: bool = False,
                  timed_duration_s: int = 0,
                  recorder: Optional[GameRecorder] = None,
-                 replay_mode: bool = False) -> None:
+                 replay_mode: bool = False,
+                 one_round: bool = False) -> None:
         self._app = the_app
         self.game_logger = game_logger
         self.output_logger = output_logger
-        self.winning_score = winning_score
-        self.allow_overflow = allow_overflow
         self.timed_duration_s = timed_duration_s
         self.recorder = recorder if recorder else NullRecorder()
         self.replay_mode = replay_mode
+        self.one_round = one_round
 
         # Required dependency injection - no defaults!
         self.sound_manager = sound_manager
@@ -237,19 +235,9 @@ class Game:
 
     async def next_tile(self, next_letter: str, now_ms: int) -> None:
         """Update the next letter to fall."""
-        if self.letter.get_screen_bottom_y() + Letter.Y_INCREMENT*3 > self.rack_metrics.get_rect().y:
+        if self.one_round or (self.letter.get_screen_bottom_y() + Letter.Y_INCREMENT*3 > self.rack_metrics.get_rect().y):
             next_letter = "!"
         self.letter.change_letter(next_letter, now_ms)
-
-    async def _end_game_if_full(self, now_ms: int) -> None:
-        """End the game if the guesses display is full."""
-        if self.allow_overflow:
-            # In replay mode (or when configured), we allow visual overflow without stopping
-            return
-
-        if self.guesses_manager.is_full:
-            logger.info("Guesses display is full, ending game")
-            await self.stop(now_ms, exit_code=10)
 
     async def add_guess(self, previous_guesses: list[str], guess: str, player: int, now_ms: int) -> None:
         """Add a new guess to the display."""
@@ -258,17 +246,14 @@ class Game:
             
         self.guess_to_player[guess] = player
         self.guesses_manager.add_guess(previous_guesses, guess, player, now_ms)
-        await self._end_game_if_full(now_ms)
 
     async def update_previous_guesses(self, previous_guesses: list[str], now_ms: int) -> None:
         """Update the previous guesses display."""
         self.guesses_manager.update_previous_guesses(previous_guesses, now_ms)
-        await self._end_game_if_full(now_ms)
 
     async def update_remaining_guesses(self, previous_guesses: list[str], now_ms: int) -> None:
         """Update the remaining/unused guesses display."""
         self.guesses_manager.update_remaining_guesses(previous_guesses, now_ms)
-        await self._end_game_if_full(now_ms)
 
     async def update(self, window: pygame.Surface, now_ms: int) -> None:
         """Update all game components and handle collisions."""
@@ -335,9 +320,6 @@ class Game:
                 self._app.add_guess(shield.letters, shield.player)
                 self.sound_manager.play_crash()
 
-                # Check for win condition
-                if self.winning_score > 0 and self.scores[shield.player].score >= self.winning_score:
-                    await self.stop(now_ms, exit_code=10)
 
         self.shields[:] = [s for s in self.shields if s.active]
         for player in range(self._app.player_count):
@@ -346,12 +328,6 @@ class Game:
         # letter collide with rack
         if self.running and self.letter.get_screen_bottom_y() > self.rack_metrics.get_rect().y:
             incidents.append("letter_rack_collision")
-
-            # Special case for Timed Mode: Hitting the bottom means level complete (Win)
-            if self.timed_duration_s > 0:
-                 logger.info("Timed mode floor reached (Win)")
-                 await self.stop(now_ms, exit_code=10)
-                 return incidents
 
             if self.letter.letter == "!":
                 await self.stop(now_ms, exit_code=11)

@@ -77,14 +77,13 @@ logger = logging.getLogger(__name__)
 
 class BlockWordsPygame:
     def __init__(self, previous_guesses_font_size: int, remaining_guesses_font_size_delta: int,
-                 replay_file: str = "", descent_mode: str = "discrete", timed_duration_s: int = game_config.TIMED_DURATION_S, record: bool = False, winning_score: int = 0, continuous: bool = False) -> None:
+                 replay_file: str = "", descent_mode: str = "discrete", timed_duration_s: int = game_config.TIMED_DURATION_S, record: bool = False, continuous: bool = False, one_round: bool = False) -> None:
         """
         Args:
             replay_file: Path to replay file, or empty string for live game.
             descent_mode: Mode for letter descent ("discrete" or "timed").
             timed_duration_s: Duration of game in seconds for timed mode.
             record: Whether to record the game.
-            winning_score: Score required to win.
             previous_guesses_font_size: Font size for previous guesses.
             remaining_guesses_font_size_delta: Font size delta for remaining guesses.
         """
@@ -98,12 +97,12 @@ class BlockWordsPygame:
         self.descent_mode = descent_mode
         self.timed_duration_s = timed_duration_s
         self.record = record
-        self.winning_score = winning_score
         self.previous_guesses_font_size = previous_guesses_font_size
         self.remaining_guesses_font_size_delta = remaining_guesses_font_size_delta
         self.replayer = None
         self._mock_mqtt_client = None
         self.continuous = continuous
+        self.one_round = one_round
         self._has_auto_started = False
 
     def get_mock_mqtt_client(self):
@@ -292,11 +291,10 @@ class BlockWordsPygame:
                         letter_strategy=descent_strategy, yellow_strategy=yellow_strategy,
                         previous_guesses_font_size=self.previous_guesses_font_size,
                         remaining_guesses_font_size_delta=self.remaining_guesses_font_size_delta,
-                        winning_score=self.winning_score,
-                        allow_overflow=bool(self.replay_file),
                         timed_duration_s=self.timed_duration_s if self.descent_mode == "timed" else 0,
                         recorder=recorder,
-                        replay_mode=bool(self.replay_file))
+                        replay_mode=bool(self.replay_file),
+                        one_round=self.one_round)
         self.input_controller = GameInputController(self.game)
 
         # Define handlers dictionary after dependencies are initialized
