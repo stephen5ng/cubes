@@ -43,7 +43,7 @@ class Game:
                  yellow_strategy: DescentStrategy,
                  previous_guesses_font_size: int,
                  remaining_guesses_font_size_delta: int,
-                 timed_duration_s: int = 0,
+                 descent_duration_s: int = 0,
                  recorder: Optional[GameRecorder] = None,
                  replay_mode: bool = False,
                  one_round: bool = False,
@@ -51,7 +51,7 @@ class Game:
         self._app = the_app
         self.game_logger = game_logger
         self.output_logger = output_logger
-        self.timed_duration_s = timed_duration_s
+        self.descent_duration_s = descent_duration_s
         self.recorder = recorder if recorder else NullRecorder()
         self.replay_mode = replay_mode
         self.recorder = recorder if recorder else NullRecorder()
@@ -280,13 +280,6 @@ class Game:
         self.guesses_manager.update(window, now_ms, game_over=game_over_animate)
 
         if self.running:
-            # Check for timed game completion
-            if self.timed_duration_s > 0:
-                elapsed_s = (now_ms / 1000.0) - self.start_time_s
-                if elapsed_s >= self.timed_duration_s:
-                    logger.info("Time limit reached, ending game (Win)")
-                    await self.stop(now_ms, exit_code=10)
-                    return incidents
 
             # Update yellow line BEFORE red line so red draws on top
             if self.yellow_tracker:

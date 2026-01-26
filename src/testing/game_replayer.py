@@ -35,7 +35,7 @@ class GameReplayer:
                 lines = lines[1:]
             elif event_type == "game_config":
                 self.descent_mode = first_event.get("descent_mode")
-                self.timed_duration_s = first_event.get("timed_duration_s")
+                self.timed_duration_s = first_event.get("timed_duration_s") or first_event.get("descent_duration_s")
                 lines = lines[1:]
             else:
                 break

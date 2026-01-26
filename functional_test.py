@@ -61,8 +61,8 @@ def run_replay_test(test_name, verbose=False):
     cmd = ["./runpygame.sh", "--replay", replay_file]
     if game_config.get("descent_mode"):
         cmd.extend(["--descent-mode", game_config["descent_mode"]])
-    if game_config.get("timed_duration_s"):
-        cmd.extend(["--timed-duration", str(game_config["timed_duration_s"])])
+    if game_config.get("descent_duration_s"):
+        cmd.extend(["--descent-duration", str(game_config["descent_duration_s"])])
 
     print(f"Running: {' '.join(cmd)}")
 
@@ -185,8 +185,8 @@ def rerecord_test(test_name):
     cmd = ["./runpygame.sh", "--replay", replay_file]
     if game_config.get("descent_mode"):
         cmd.extend(["--descent-mode", game_config["descent_mode"]])
-    if game_config.get("timed_duration_s"):
-        cmd.extend(["--timed-duration", str(game_config["timed_duration_s"])])
+    if game_config.get("descent_duration_s"):
+        cmd.extend(["--descent-duration", str(game_config["descent_duration_s"])])
 
     print(f"Running: {' '.join(cmd)}")
     

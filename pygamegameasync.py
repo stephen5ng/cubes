@@ -77,12 +77,12 @@ logger = logging.getLogger(__name__)
 
 class BlockWordsPygame:
     def __init__(self, previous_guesses_font_size: int, remaining_guesses_font_size_delta: int,
-                 replay_file: str = "", descent_mode: str = "discrete", timed_duration_s: int = game_config.TIMED_DURATION_S, record: bool = False, continuous: bool = False, one_round: bool = False, min_win_score: int = 0) -> None:
+                 replay_file: str = "", descent_mode: str = "discrete", descent_duration_s: int = game_config.DESCENT_DURATION_S, record: bool = False, continuous: bool = False, one_round: bool = False, min_win_score: int = 0) -> None:
         """
         Args:
             replay_file: Path to replay file, or empty string for live game.
             descent_mode: Mode for letter descent ("discrete" or "timed").
-            timed_duration_s: Duration of game in seconds for timed mode.
+            descent_duration_s: Duration in seconds for descent speed calculation.
             record: Whether to record the game.
             previous_guesses_font_size: Font size for previous guesses.
             remaining_guesses_font_size_delta: Font size delta for remaining guesses.
@@ -95,7 +95,7 @@ class BlockWordsPygame:
         self.running = True
         self.replay_file = replay_file
         self.descent_mode = descent_mode
-        self.timed_duration_s = timed_duration_s
+        self.descent_duration_s = descent_duration_s
         self.record = record
         self.previous_guesses_font_size = previous_guesses_font_size
         self.remaining_guesses_font_size_delta = remaining_guesses_font_size_delta
@@ -118,8 +118,8 @@ class BlockWordsPygame:
             if self.replayer.descent_mode is not None:
                 self.descent_mode = self.replayer.descent_mode
             if self.replayer.timed_duration_s is not None:
-                self.timed_duration_s = self.replayer.timed_duration_s
-            print(f"Replay config: descent_mode={self.descent_mode}, timed_duration_s={self.timed_duration_s}")
+                self.descent_duration_s = self.replayer.timed_duration_s
+            print(f"Replay config: descent_mode={self.descent_mode}, descent_duration_s={self.descent_duration_s}")
             # Create mock client with MQTT events only
             mqtt_events = [e for e in self.replayer.events if hasattr(e, 'mqtt')]
             self._mock_mqtt_client = MockMqttClient(mqtt_events)
@@ -283,11 +283,11 @@ class BlockWordsPygame:
         recorder = FileSystemRecorder() if self.record else NullRecorder()
 
         # Create strategies
-        duration_ms = self.timed_duration_s * 1000 if self.descent_mode == "timed" else None
+        duration_ms = self.descent_duration_s * 1000 if self.descent_mode == "timed" else None
         event_descent_amount = Letter.Y_INCREMENT if self.descent_mode == "discrete" else 0
         descent_strategy = DescentStrategy(game_duration_ms=duration_ms, event_descent_amount=event_descent_amount)
 
-        yellow_duration_ms = self.timed_duration_s * 3 * 1000
+        yellow_duration_ms = self.descent_duration_s * 3 * 1000
         yellow_strategy = DescentStrategy(game_duration_ms=yellow_duration_ms, event_descent_amount=0)
 
         self.game = Game(the_app, self.letter_font, game_logger, output_logger, sound_manager,
@@ -295,7 +295,7 @@ class BlockWordsPygame:
                         letter_strategy=descent_strategy, yellow_strategy=yellow_strategy,
                         previous_guesses_font_size=self.previous_guesses_font_size,
                         remaining_guesses_font_size_delta=self.remaining_guesses_font_size_delta,
-                        timed_duration_s=self.timed_duration_s if self.descent_mode == "timed" else 0,
+                        descent_duration_s=self.descent_duration_s if self.descent_mode == "timed" else 0,
                         recorder=recorder,
                         replay_mode=bool(self.replay_file),
                         one_round=self.one_round,

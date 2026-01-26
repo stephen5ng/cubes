@@ -5,8 +5,8 @@ from tests.fixtures.game_factory import create_test_game, async_test
 
 
 @async_test
-async def test_game_ends_on_guess_overflow():
-    """Verify that the game stops when guesses overflow the screen."""
+async def test_game_does_not_end_on_guess_overflow():
+    """Verify that the game continues when guesses overflow the screen."""
     game, mqtt, queue = await create_test_game(player_count=1)
 
     assert game.running is True
@@ -20,10 +20,10 @@ async def test_game_ends_on_guess_overflow():
         await game.add_guess(guesses, word, 0, 1000 + i * 100)
         await game.update(window, 1000 + i * 100)
 
-        if not game.running:
-            break
+        # Game should stay running
+        assert game.running is True, "Game should NOT end on overflow/full"
 
-    assert game.running is False, "Game should have ended on overflow/full"
+    assert game.running is True, "Game should NOT end on overflow/full"
 
     # Ensure calling update again doesn't raise or cause issues
     for i in range(10):

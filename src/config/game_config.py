@@ -48,7 +48,7 @@ FREE_SCORE = 0
 # Timing settings
 ABC_COUNTDOWN_DELAY_MS = 1000  # Delay for ABC countdown sequence (ms)
 UPDATE_TILES_REBROADCAST_S = 8  # How often to rebroadcast tile updates (seconds)
-TIMED_DURATION_S = 10  # Default duration for timed mode games (seconds)
+DESCENT_DURATION_S = 10  # Default duration for descent speed calculation (seconds)
 
 # Scrabble letter scores for word scoring
 SCRABBLE_LETTER_SCORES = {

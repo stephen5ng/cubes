@@ -118,8 +118,8 @@ if __name__ == "__main__":
     parser.add_argument("--replay", type=str, help="Replay a game from a log file")
     parser.add_argument("--descent-mode", type=str, default="discrete", choices=["discrete", "timed"],
                        help="Descent strategy: discrete (classic) or timed")
-    parser.add_argument("--timed-duration", type=int, default=120,
-                       help="Duration in seconds for timed mode (default: 240 seconds / 4 minutes)")
+    parser.add_argument("--descent-duration", type=int, default=120,
+                       help="Duration in seconds for descent speed calculation (default: 120 seconds)")
     parser.add_argument("--record", action=argparse.BooleanOptionalAction, default=False,
                        help="Enable screen recording of game events")
     parser.add_argument("--previous-guesses-font-size", type=int, default=30,
@@ -177,7 +177,7 @@ if __name__ == "__main__":
         remaining_guesses_font_size_delta=args.remaining_guesses_font_size_delta,
         replay_file=args.replay or "", 
         descent_mode=args.descent_mode, 
-        timed_duration_s=args.timed_duration, 
+        descent_duration_s=args.descent_duration, 
         record=args.record, 
         continuous=args.continuous,
         one_round=args.one_round,

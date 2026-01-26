@@ -81,7 +81,7 @@ async def test_integration():
             remaining_guesses_font_size_delta=5, # Default delta
             replay_file="",
             descent_mode="discrete",
-            timed_duration_s=120
+            descent_duration_s=120
         )
 
         # Initialize cubes_to_game

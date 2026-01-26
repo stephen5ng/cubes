@@ -174,7 +174,7 @@ async def test_letter_beeping_audio_scales_with_distance():
 @async_test
 async def test_letter_collision_with_shield():
     """Test that colliding with a shield causes the letter to bounce upwards."""
-    game, mqtt, queue = await create_test_game(descent_mode="timed", timed_duration_s=10)
+    game, mqtt, queue = await create_test_game(descent_mode="timed", descent_duration_s=10)
     game.start_time_s = 0
     
     game.letter.start(0)

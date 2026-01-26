@@ -23,7 +23,7 @@ async def test_yellow_descends_slower_than_red():
     """Verify yellow line descends slower than the red line (letter start_fall_y)."""
     # Create game in timed mode with specific duration (60s)
     duration_s = 60
-    game, fake_mqtt, queue = await create_test_game(descent_mode="timed", timed_duration_s=duration_s)
+    game, fake_mqtt, queue = await create_test_game(descent_mode="timed", descent_duration_s=duration_s)
     
     # Reset running to False to force a full start() which initializes start_time_s
     game.running = False
@@ -62,7 +62,7 @@ async def test_yellow_descends_slower_than_red():
 async def test_red_line_pushback_on_yellow_line():
     """Verify red line gets pushed back to yellow line on collision at the red line."""
     # Use 60s duration to allow setup time
-    game, fake_mqtt, queue = await create_test_game(descent_mode="timed", timed_duration_s=60)
+    game, fake_mqtt, queue = await create_test_game(descent_mode="timed", descent_duration_s=60)
     game.running = False
     await game.start_cubes(now_ms=0)
 
@@ -106,34 +106,4 @@ async def test_red_line_pushback_on_yellow_line():
         f"Red line ({game.letter.start_fall_y}) should be reset to Yellow line ({expected_red})"
 
 
-@pytest.mark.timed
-@pytest.mark.fast
-@async_test
-async def test_timed_game_ends_at_duration():
-    """Verify timed game ends automatically when duration is reached."""
-    # Use 5s duration for faster test
-    duration_s = 5
-    game, fake_mqtt, queue = await create_test_game(descent_mode="timed", timed_duration_s=duration_s)
 
-    game.running = False
-    await game.start_cubes(now_ms=0)
-    assert game.running
-
-    import pygame
-    window = pygame.display.get_surface()
-    if window is None:
-        window = pygame.Surface((game_config.SCREEN_WIDTH, game_config.SCREEN_HEIGHT))
-
-    # Verify game is running at start (0ms elapsed, letter at top)
-    await game.update(window, 0)
-    assert game.running, "Game should be running at start"
-
-    # Fast forward past the duration end
-    # Note: In timed mode, floor collision also ends game with exit_code=10,
-    # so game may end via floor OR duration - both are valid "win" conditions
-    game._test_time_provider.advance((duration_s + 1) * 1000)
-
-    await game.update(window, game._test_time_provider.get_ticks())
-
-    assert not game.running, "Game should have ended after duration expired"
-    assert game.exit_code == 10, f"Game should end with exit_code 10 (Win), got {game.exit_code}"
