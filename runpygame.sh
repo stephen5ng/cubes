@@ -64,6 +64,7 @@ while true; do
             python_args+=("--previous-guesses-font-size" "50")
             python_args+=("--remaining-guesses-font-size-delta" "4")
             python_args+=("--one-round")
+            python_args+=("--min-win-score" "50")
         elif [[ "$level" == "1" ]]; then
             python_args+=("--previous-guesses-font-size" "40")
             python_args+=("--remaining-guesses-font-size-delta" "4")

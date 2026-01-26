@@ -130,6 +130,8 @@ if __name__ == "__main__":
                        help="Run in continuous mode (loop game, wait for ESC). Default is False (single-run auto-start).")
     parser.add_argument("--one-round", action="store_true",
                        help="End game after one round (next falling letter is '!')")
+    parser.add_argument("--min-win-score", type=int, default=0,
+                       help="Minimum score required to treat exit code as Win (10)")
     args = parser.parse_args()
     
     seed = 1
@@ -178,7 +180,8 @@ if __name__ == "__main__":
         timed_duration_s=args.timed_duration, 
         record=args.record, 
         continuous=args.continuous,
-        one_round=args.one_round
+        one_round=args.one_round,
+        min_win_score=args.min_win_score
     )
     
     game_logger = GameLogger(None if args.replay else "output/game_replay.jsonl")

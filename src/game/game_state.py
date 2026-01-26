@@ -46,14 +46,18 @@ class Game:
                  timed_duration_s: int = 0,
                  recorder: Optional[GameRecorder] = None,
                  replay_mode: bool = False,
-                 one_round: bool = False) -> None:
+                 one_round: bool = False,
+                 min_win_score: int = 0) -> None:
         self._app = the_app
         self.game_logger = game_logger
         self.output_logger = output_logger
         self.timed_duration_s = timed_duration_s
         self.recorder = recorder if recorder else NullRecorder()
         self.replay_mode = replay_mode
+        self.recorder = recorder if recorder else NullRecorder()
+        self.replay_mode = replay_mode
         self.one_round = one_round
+        self.min_win_score = min_win_score
 
         # Required dependency injection - no defaults!
         self.sound_manager = sound_manager
@@ -213,6 +217,11 @@ class Game:
 
     async def stop(self, now_ms: int, exit_code: int = 0) -> None:
         """Stop the game."""
+        # Override exit code if score meets minimum win requirement
+        if self.min_win_score > 0 and self.scores[0].score >= self.min_win_score:
+            logger.info(f"Score {self.scores[0].score} >= min_win_score {self.min_win_score}. Setting exit code to 10 (Win)")
+            exit_code = 10
+            
         self.exit_code = exit_code
         self.sound_manager.play_game_over()
         logger.info(f"GAME OVER (Exit Code: {exit_code})")
