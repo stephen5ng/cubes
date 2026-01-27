@@ -288,6 +288,26 @@ class Game:
                 if incident := self.yellow_source.update(window, now_ms):
                     incidents.extend(incident)
 
+            # Draw solid yellow rectangle between red and yellow lines
+            if self.yellow_source and self.letter_source and self.yellow_tracker:
+                y_yellow = self.yellow_source.initial_y + self.yellow_tracker.start_fall_y
+                y_red = self.letter_source.initial_y + self.letter.start_fall_y
+                
+                top = min(y_yellow, y_red)
+                height = abs(y_yellow - y_red)
+                
+                if height > 0:
+                    # Optimize: Use pre-calculated gradient source if possible, or create on the fly efficiently
+                    # creating a 1x2 surface and scaling it is much faster than a loop
+                    if not hasattr(self, '_gradient_source'):
+                        self._gradient_source = pygame.Surface((1, 2), pygame.SRCALPHA)
+                        self._gradient_source.set_at((0, 0), (LETTER_SOURCE_YELLOW.r, LETTER_SOURCE_YELLOW.g, LETTER_SOURCE_YELLOW.b, 51))   # Top: 20%
+                        self._gradient_source.set_at((0, 1), (LETTER_SOURCE_YELLOW.r, LETTER_SOURCE_YELLOW.g, LETTER_SOURCE_YELLOW.b, 204))  # Bottom: 80%
+
+                    # Smoothscale interpolates the colors/alpha between the two points
+                    rect_surface = pygame.transform.smoothscale(self._gradient_source, (self.rack_metrics.get_rect().width, height))
+                    window.blit(rect_surface, (self.rack_metrics.get_rect().x, top))
+
             if incident := self.letter_source.update(window, now_ms):
                 incidents.extend(incident)
             if incident := self.letter.update(window, now_ms):
