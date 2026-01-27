@@ -106,7 +106,7 @@ class TestFontConfiguration:
             remaining_guesses_font_size_delta=args.remaining_guesses_font_size_delta,
             replay_file="", 
             descent_mode="discrete",
-            timed_duration_s=120,
+            descent_duration_s=120,
             record=False,
         )
         
@@ -156,7 +156,7 @@ class TestFontConfiguration:
             remaining_guesses_font_size_delta=args.remaining_guesses_font_size_delta,
             replay_file="", 
             descent_mode="discrete",
-            timed_duration_s=120,
+            descent_duration_s=120,
             record=False,
         )
         

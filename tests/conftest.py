@@ -62,11 +62,4 @@ def mock_hardware():
             has_player_started_game=has_player_started_game
         )
 
-@pytest.fixture(autouse=True)
-async def cleanup_events():
-    """Clear global event engine subscribers between tests."""
-    from utils.pygameasync import events
-    if not events.is_alive():
-        await events.start()
-    yield
-    events.clear()
+

@@ -67,7 +67,9 @@ def async_test(coro):
         async def run_with_events():
             mock_time = MockTime()
             token = mock_time_var.set(mock_time)
-            # Reset queue to bind to current loop
+            
+            # Clear previous listeners and reset queue to bind to current loop
+            events.clear()
             events.queue = asyncio.Queue()
 
             # Ensure events engine is running

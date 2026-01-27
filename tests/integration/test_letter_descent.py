@@ -132,13 +132,24 @@ async def test_letter_position_resets_after_word_accepted():
     game.letter.start(0)
     game.letter.letter = "A"
     
-    await advance_seconds(game, queue, 0.2) 
+    # Wait for letter to fall and be accepted (cleared)
+    from tests.fixtures.game_factory import run_until_condition
+    
+    # 1. Wait for collision/acceptance (letter becomes empty)
+    # DROP_TIME_MS is 100, so it should happen quickly
+    success = await run_until_condition(game, queue, lambda: game.letter.letter == "", max_frames=20)
+    assert success, f"Letter failed to fall/accept within time. Pos: {game.letter.pos[1]}"
+    assert game.letter.letter == "", "Letter should be cleared after acceptance"
+
+    # 2. Wait for next letter to be spawned (handling the event)
+    success = await run_until_condition(game, queue, lambda: game.letter.letter != "", max_frames=20)
+    assert success, "Game failed to spawn next letter"
     
     current_y = game.letter.pos[1]
     bottom_y = game.letter.height
     
     assert current_y < bottom_y * 0.5, f"Letter should reset to top area, got {current_y}"
-    assert game.letter.letter != "", "Game should immediately pick next letter"
+    assert game.letter.letter != "", "Game should have next letter"
 
 
 @async_test
