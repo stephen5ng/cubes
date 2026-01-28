@@ -56,6 +56,7 @@ while true; do
         python_args+=("--continuous")
     elif [[ "$mode" == "game_on" ]]; then
         python_args+=("--descent-mode" "timed")
+        python_args+=("--stars")
         
         # Default level 0 if not specified
         level=${level:-0}

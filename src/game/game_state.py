@@ -15,7 +15,7 @@ import subprocess
 import traceback
 from utils.pygameasync import events
 
-from game.components import Score, Shield
+from game.components import Score, Shield, StarsDisplay, NullStarsDisplay
 from game.letter import GuessType, Letter
 from game.recorder import GameRecorder, NullRecorder
 from game.descent_strategy import DescentStrategy
@@ -48,7 +48,8 @@ class Game:
                  recorder: Optional[GameRecorder] = None,
                  replay_mode: bool = False,
                  one_round: bool = False,
-                 min_win_score: int = 0) -> None:
+                 min_win_score: int = 0,
+                 stars: bool = False) -> None:
         self._app = the_app
         self.game_logger = game_logger
         self.output_logger = output_logger
@@ -66,6 +67,10 @@ class Game:
 
         # Now create components that depend on injected dependencies
         self.scores = [Score(the_app, player, self.rack_metrics) for player in range(game_config.MAX_PLAYERS)]
+        if stars:
+            self.stars_display = StarsDisplay(self.rack_metrics)
+        else:
+            self.stars_display = NullStarsDisplay()
         letter_y = self.scores[0].get_size()[1] + 4
 
         self.letter = Letter(letter_font, letter_y, self.rack_metrics, self.output_logger, letter_beeps, letter_strategy)
@@ -348,6 +353,7 @@ class Game:
                 self.recorder.trigger(now_ms)
 
                 self.scores[shield.player].update_score(shield.score)
+                self.stars_display.draw(self.scores[0].score)
                 self._app.add_guess(shield.letters, shield.player)
                 self.sound_manager.play_crash()
 
@@ -355,6 +361,7 @@ class Game:
         self.shields[:] = [s for s in self.shields if s.active]
         for player in range(self._app.player_count):
             self.scores[player].update(window)
+        self.stars_display.update(window)
 
         # letter collide with rack
         if self.running and self.letter.get_screen_bottom_y() > self.rack_metrics.get_rect().y:

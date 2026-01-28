@@ -77,7 +77,7 @@ logger = logging.getLogger(__name__)
 
 class BlockWordsPygame:
     def __init__(self, previous_guesses_font_size: int, remaining_guesses_font_size_delta: int,
-                 replay_file: str = "", descent_mode: str = "discrete", descent_duration_s: int = game_config.DESCENT_DURATION_S, record: bool = False, continuous: bool = False, one_round: bool = False, min_win_score: int = 0) -> None:
+                 replay_file: str = "", descent_mode: str = "discrete", descent_duration_s: int = game_config.DESCENT_DURATION_S, record: bool = False, continuous: bool = False, one_round: bool = False, min_win_score: int = 0, stars: bool = False) -> None:
         """
         Args:
             replay_file: Path to replay file, or empty string for live game.
@@ -107,6 +107,7 @@ class BlockWordsPygame:
         self.continuous = continuous
         self.one_round = one_round
         self.min_win_score = min_win_score
+        self.stars = stars
         self._has_auto_started = False
 
     def get_mock_mqtt_client(self):
@@ -299,7 +300,8 @@ class BlockWordsPygame:
                         recorder=recorder,
                         replay_mode=bool(self.replay_file),
                         one_round=self.one_round,
-                        min_win_score=self.min_win_score)
+                        min_win_score=self.min_win_score,
+                        stars=self.stars)
         self.input_controller = GameInputController(self.game)
 
         # Define handlers dictionary after dependencies are initialized
