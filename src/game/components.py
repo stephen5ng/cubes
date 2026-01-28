@@ -103,7 +103,8 @@ class Shield:
 class StarsDisplay:
     """Displays stars in the upper right hand corner."""
 
-    def __init__(self, rack_metrics) -> None:
+    def __init__(self, rack_metrics, sound_manager=None) -> None:
+        self.sound_manager = sound_manager
         self.size = rack_metrics.LETTER_SIZE * 0.7
         self._filled_star = self._create_star_surface(self.size, filled=True)
         self._hollow_star = self._create_star_surface(self.size, filled=False)
@@ -175,6 +176,10 @@ class StarsDisplay:
         if num_filled > self._last_filled_count:
             for i in range(self._last_filled_count, num_filled):
                 self._star_animation_start_ms[i] = now_ms
+            
+            # Play tada sound when the 3rd star is earned
+            if num_filled == 3 and self._last_filled_count < 3 and self.sound_manager:
+                self.sound_manager.play_tada()
 
         self._last_filled_count = num_filled
         self._needs_redraw = True

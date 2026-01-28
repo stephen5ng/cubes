@@ -81,6 +81,11 @@ class MockSoundManager:
         """Mock right sound."""
         self.played_sounds.append("right_sound")
 
+    def play_tada(self) -> None:
+        """Mock tada sound."""
+        self.played_sounds.append("tada_sound")
+
+
     def get_played_sounds(self) -> List[str]:
         """Get list of sounds that were 'played' for test verification."""
         return self.played_sounds.copy()

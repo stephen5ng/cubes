@@ -68,7 +68,7 @@ class Game:
         # Now create components that depend on injected dependencies
         self.scores = [Score(the_app, player, self.rack_metrics) for player in range(game_config.MAX_PLAYERS)]
         if stars:
-            self.stars_display = StarsDisplay(self.rack_metrics)
+            self.stars_display = StarsDisplay(self.rack_metrics, sound_manager=self.sound_manager)
         else:
             self.stars_display = NullStarsDisplay()
         letter_y = self.scores[0].get_size()[1] + 4

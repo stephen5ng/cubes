@@ -42,6 +42,25 @@ def test_score_updates(stars_display):
     assert stars_display._last_filled_count == 3
     assert stars_display._star_animation_start_ms[2] == 4000
 
+def test_tada_sound():
+    """Verify tada sound is played when 3rd star is earned."""
+    pygame.init()
+    mock_sound_manager = MagicMock()
+    with patch('pygame.freetype.SysFont'):
+        display = StarsDisplay(MockRackMetrics(), sound_manager=mock_sound_manager)
+    
+    # Earn 2 stars
+    display.draw(20, now_ms=1000)
+    mock_sound_manager.play_tada.assert_not_called()
+    
+    # Earn 3rd star
+    display.draw(30, now_ms=2000)
+    mock_sound_manager.play_tada.assert_called_once()
+    
+    # Earn more points (already has 3 stars)
+    display.draw(40, now_ms=3000)
+    mock_sound_manager.play_tada.assert_called_once()
+
 def test_animation_state(stars_display):
     """Verify animation triggering logic."""
     # Trigger first star

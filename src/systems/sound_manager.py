@@ -30,9 +30,11 @@ class SoundManager:
         self.cleared_sound = pygame.mixer.Sound("sounds/cleared.wav")
         self.left_sound = pygame.mixer.Sound("sounds/left.wav")
         self.right_sound = pygame.mixer.Sound("sounds/right.wav")
+        self.tada_sound = pygame.mixer.Sound("sounds/tada.wav")
         
         self.left_sound.set_volume(0.5)
         self.right_sound.set_volume(0.5)
+        self.tada_sound.set_volume(0.8)
 
         self.sound_queue_task = asyncio.create_task(self.play_sounds_in_queue(), name="word sound player")
 
@@ -103,3 +105,7 @@ class SoundManager:
     def play_right(self) -> None:
         """Play cursor move right sound."""
         pygame.mixer.Sound.play(self.right_sound)
+
+    def play_tada(self) -> None:
+        """Play tada/victory fanfare sound."""
+        pygame.mixer.Sound.play(self.tada_sound)
