@@ -353,7 +353,7 @@ class Game:
                 self.recorder.trigger(now_ms)
 
                 self.scores[shield.player].update_score(shield.score)
-                self.stars_display.draw(self.scores[0].score)
+                self.stars_display.draw(self.scores[0].score, now_ms)
                 self._app.add_guess(shield.letters, shield.player)
                 self.sound_manager.play_crash()
 
@@ -361,7 +361,7 @@ class Game:
         self.shields[:] = [s for s in self.shields if s.active]
         for player in range(self._app.player_count):
             self.scores[player].update(window)
-        self.stars_display.update(window)
+        self.stars_display.update(window, now_ms)
 
         # letter collide with rack
         if self.running and self.letter.get_screen_bottom_y() > self.rack_metrics.get_rect().y:

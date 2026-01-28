@@ -3,6 +3,7 @@
 import math
 import pygame
 import pygame.freetype
+import easing_functions
 
 from core import app
 from config import game_config
@@ -109,7 +110,16 @@ class StarsDisplay:
         total_width = star_w * self.num_stars
         self.pos = [SCREEN_WIDTH - total_width - 10, 0]
         self.surface = pygame.Surface((total_width, star_h), pygame.SRCALPHA)
-        self.draw(0)
+        
+        # Track the animation state for each star
+        # -1 means no animation, otherwise timestamp of start
+        self._star_animation_start_ms = [-1] * self.num_stars
+        self._animation_duration_ms = 800
+        self._easing = easing_functions.CubicEaseOut(start=0, end=1, duration=self._animation_duration_ms)
+        self._last_filled_count = 0
+        self._needs_redraw = True
+
+        self._render_surface(0)  # Force initial render
 
     def _create_star_surface(self, size: float, filled: bool = True) -> pygame.Surface:
         """Create a single anti-aliased star surface."""
@@ -155,18 +165,56 @@ class StarsDisplay:
         # Downsample for anti-aliasing
         return pygame.transform.smoothscale(large_surface, (width, height))
 
-    def draw(self, current_score: int) -> None:
-        """Render the row of stars based on score."""
-        star_w = self._filled_star.get_width()
+    def draw(self, current_score: int, now_ms: int = 0) -> None:
+        """Update score and trigger animations."""
         num_filled = min(self.num_stars, current_score // 10)
 
-        self.surface.fill((0, 0, 0, 0))
-        for i in range(self.num_stars):
-            star = self._filled_star if i < num_filled else self._hollow_star
-            self.surface.blit(star, (i * star_w, 0))
+        if num_filled > self._last_filled_count:
+            for i in range(self._last_filled_count, num_filled):
+                self._star_animation_start_ms[i] = now_ms
 
-    def update(self, window: pygame.Surface) -> None:
+        self._last_filled_count = num_filled
+        self._needs_redraw = True
+        
+    def _render_surface(self, now_ms: int) -> None:
+        """Render stars to the internal surface."""
+        star_w = self._filled_star.get_width()
+        star_h = self._filled_star.get_height()
+
+        self.surface.fill((0, 0, 0, 0))
+
+        for i in range(self.num_stars):
+            x_pos = i * star_w
+            is_filled = i < self._last_filled_count
+            start_ms = self._star_animation_start_ms[i]
+
+            if is_filled and start_ms > 0 and (now_ms - start_ms) < self._animation_duration_ms:
+                elapsed = now_ms - start_ms
+                progress = self._easing(elapsed)
+                scale = max(0.0, progress)
+                angle = (1.0 - progress) * 360
+
+                scaled_star = pygame.transform.rotozoom(self._filled_star, angle, scale)
+                sw, sh = scaled_star.get_size()
+
+                cx = x_pos + star_w / 2
+                cy = star_h / 2
+                self.surface.blit(scaled_star, (cx - sw / 2, cy - sh / 2))
+            else:
+                star = self._filled_star if is_filled else self._hollow_star
+                self.surface.blit(star, (x_pos, 0))
+
+    def update(self, window: pygame.Surface, now_ms: int) -> None:
         """Render the stars to the window."""
+        animation_active = any(
+            start_ms > 0 and (now_ms - start_ms) < self._animation_duration_ms
+            for start_ms in self._star_animation_start_ms
+        )
+
+        if animation_active or self._needs_redraw:
+            self._render_surface(now_ms)
+            self._needs_redraw = animation_active
+
         window.blit(self.surface, self.pos)
 
 
@@ -176,8 +224,8 @@ class NullStarsDisplay:
     def __init__(self) -> None:
         pass
         
-    def draw(self, current_score: int) -> None:
+    def draw(self, current_score: int, now_ms: int = 0) -> None:
         pass
         
-    def update(self, window: pygame.Surface) -> None:
+    def update(self, window: pygame.Surface, now_ms: int) -> None:
         pass
