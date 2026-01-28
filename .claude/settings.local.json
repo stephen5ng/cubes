@@ -89,7 +89,9 @@
       "Bash(do echo \"Run $i:\")",
       "Bash(do python3 -m pytest tests/integration/test_abc_countdown.py --tb=no -q)",
       "Bash(python -m py_compile:*)",
-      "Bash(pytest:*)"
+      "Bash(pytest:*)",
+      "Bash(git cherry-pick:*)",
+      "Bash(xxd:*)"
     ],
     "deny": []
   }
