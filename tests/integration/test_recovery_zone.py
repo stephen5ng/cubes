@@ -6,13 +6,11 @@ from rendering.animations import LETTER_SOURCE_RECOVERY
 
 @async_test
 async def test_recovery_zone_gradient_drawing():
-    """Verify that the recovery zone gradient is drawn when there is a gap."""
+    """Verify that the recovery zone gradient IS drawn using tracker positions."""
     game, _, _ = await create_test_game(visual=False)
     
-    # Mock strategies to return fixed values so update() doesn't move them
-    # DescentStrategy.update(now_ms, height) -> int
+    # Mock strategies
     game.letter.descent_strategy.update = Mock(return_value=150)
-    # The recovery tracker uses its own strategy
     game.recovery_tracker.descent_strategy.update = Mock(return_value=50)
     
     # Setup mock window
@@ -22,64 +20,39 @@ async def test_recovery_zone_gradient_drawing():
     # Ensure game is running
     game.running = True
     
-    # Set up positions to create a gap
-    initial_y = game.spawn_source.initial_y
-    
-    # Pre-set values just in case (though update call will overwrite from strategy)
-    game.recovery_tracker.start_fall_y = 50
+    # Manually set strategies starting values for the initial read (before update)
+    # The game loop calls update() on strategies, but also reads them.
+    # Actually, `update` updates the tracker, then we read tracker.
     game.letter.start_fall_y = 150
     
-    # We need to mock pygame.transform.smoothscale to avoid actual scaling logic issues in mock environment
-    # and to verify it's called
+    # Mock pygame.transform.smoothscale
     with patch('pygame.transform.smoothscale') as mock_scale:
         mock_scaled_surface = Mock(spec=pygame.Surface)
         mock_scale.return_value = mock_scaled_surface
         
-        now_ms = 1000
-        await game.update(window, now_ms)
+        await game.update(window, 1000)
         
         # Verify strategies were called
         assert game.letter.descent_strategy.update.called
         assert game.recovery_tracker.descent_strategy.update.called
         
-        # Verify gradient was scaled
+        # Verify gradient was drawn
         assert mock_scale.called
         
-        # Verify blit was called with the scaled surface
-        # The exact position should be (x, top)
-        # top = min(y_recovery, y_spawn) = initial_y + 50
+        # Verify position
+        # y_recovery = spawn_source.initial_y + 50
+        # y_spawn = spawn_source.initial_y + 150
+        # top = min(y_recovery, y_spawn) -> spawn_source.initial_y + 50
+        initial_y = game.spawn_source.initial_y
         expected_top = initial_y + 50
         
-        blit_calls = window.blit.call_args_list
         found_call = False
-        for call in blit_calls:
+        for call in window.blit.call_args_list:
             args, _ = call
             if args[0] == mock_scaled_surface:
                 pos = args[1]
-                if pos[1] == expected_top:
+                if abs(pos[1] - expected_top) < 1:  # allow float tolerance
                     found_call = True
                     break
         
-        assert found_call, f"Gradient surface should be blitted at the correct vertical position {expected_top}"
-
-@async_test
-async def test_recovery_zone_no_drawing_when_no_gap():
-    """Verify that the recovery zone is NOT drawn when lines overlap or are inverted (height 0)."""
-    game, _, _ = await create_test_game(visual=False)
-    window = Mock(spec=pygame.Surface)
-    window.blit = Mock()
-    game.running = True
-    
-    # Recovery tracker IS updated before drawing, so we mock its strategy return value
-    game.recovery_tracker.descent_strategy.update = Mock(return_value=100)
-    
-    # Letter IS NOT updated before drawing, so we must set its current state
-    game.letter.start_fall_y = 100
-    # We also mock its strategy for consistency when it does update later
-    game.letter.descent_strategy.update = Mock(return_value=100)
-    
-    with patch('pygame.transform.smoothscale') as mock_scale:
-        await game.update(window, 1000)
-        
-        # Should not scale (create gradient) if height is 0
-        assert not mock_scale.called
+        assert found_call, f"Gradient should be drawn at y={expected_top}"

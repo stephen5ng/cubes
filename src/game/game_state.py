@@ -80,11 +80,8 @@ class Game:
 
         # Add recovery line that takes twice as long to fall
         self.recovery_tracker = PositionTracker(recovery_strategy)
-        self.recovery_source = LetterSource(
-            self.recovery_tracker,
-            self.rack_metrics.get_rect().x, self.rack_metrics.get_rect().width,
-            letter_y,
-            color=LETTER_SOURCE_RECOVERY)
+        # Recovery line is hidden
+        self.recovery_source = None
 
         self.shields: list[Shield] = []
         self.running = False
@@ -284,13 +281,12 @@ class Game:
             # Update recovery line BEFORE spawn line so spawn draws on top
             if self.recovery_tracker:
                 self.recovery_tracker.update(now_ms, self.letter.height)
-            if self.recovery_source:
-                if incident := self.recovery_source.update(window, now_ms):
-                    incidents.extend(incident)
+
 
             # Draw recovery gradient between spawn and recovery lines
-            if self.recovery_source and self.spawn_source and self.recovery_tracker:
-                y_recovery = self.recovery_source.initial_y + self.recovery_tracker.start_fall_y
+            # Even if recovery line (source) is hidden, we show the gradient
+            if self.spawn_source and self.recovery_tracker:
+                y_recovery = self.spawn_source.initial_y + self.recovery_tracker.start_fall_y
                 y_spawn = self.spawn_source.initial_y + self.letter.start_fall_y
 
                 top = min(y_recovery, y_spawn)

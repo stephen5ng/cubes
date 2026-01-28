@@ -69,21 +69,21 @@ async def test_timed_mode_continuous_descent():
     assert game.letter.start_fall_y > initial_y
 
 @async_test
-async def test_timed_mode_recovery_line_presence():
-    """Verify that recovery line exists in timed mode."""
+async def test_timed_mode_recovery_logic_configured():
+    """Verify that recovery logic is configured in timed mode, but visual line is removed."""
     game, mqtt, queue = await create_test_game(player_count=1, descent_mode="timed")
     
-    assert game.recovery_source is not None
+    assert game.recovery_source is None
     assert isinstance(game.recovery_tracker.descent_strategy, DescentStrategy)
     assert game.recovery_tracker.descent_strategy.game_duration_ms is not None
 
 @async_test
-async def test_discrete_mode_has_recovery_line_hidden():
-    """Verify that recovery line exists in discrete mode (legacy requirement)."""
+async def test_discrete_mode_recovery_source_removed():
+    """Verify that recovery visual source is removed in discrete mode, but tracker remains."""
     game, mqtt, queue = await create_test_game(player_count=1)
     # Default is discrete.
     
-    # Assertion: Recovery source/tracker should be present (legacy behavior)
-    assert game.recovery_source is not None
+    # Assertion: Recovery source logic removed (visuals), tracker logic preserved
+    assert game.recovery_source is None
     assert game.recovery_tracker is not None
 
