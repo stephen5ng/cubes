@@ -1,4 +1,3 @@
-
 import pytest
 from unittest.mock import MagicMock, patch
 import pygame
@@ -188,3 +187,45 @@ class TestFontConfiguration:
         # And check that PreviousGuessesDisplay was initialized with the correct font size
         # Since we can't easily introspect the real pygame object if we are running in a headless env without display, 
         # but we can rely on proper propogation to the manager class attributes we just added.
+
+    def test_invalid_font_size(self, mock_dependencies):
+        # Arrange
+        custom_font_size = -10  # Invalid font size
+        
+        args = argparse.Namespace(
+            replay=None, 
+            start=False, 
+            keyboard_player_number=1,
+            descent_mode="discrete",
+            timed_duration=120,
+            record=False,
+            previous_guesses_font_size=custom_font_size,
+            remaining_guesses_font_size_delta=game_config.FONT_SIZE_DELTA
+        )
+        
+        # Instantiate BlockWordsPygame with custom arguments
+        block_words = BlockWordsPygame(
+            previous_guesses_font_size=args.previous_guesses_font_size,
+            remaining_guesses_font_size_delta=args.remaining_guesses_font_size_delta,
+            replay_file="", 
+            descent_mode="discrete",
+            descent_duration_s=120,
+            record=False,
+        )
+        
+        # Act
+        mock_subscribe_client = MagicMock()
+        mock_subscribe_client.subscribe.return_value = asyncio.Future()
+        mock_subscribe_client.subscribe.return_value.set_result(None)
+
+        with pytest.raises(ValueError) as excinfo:
+            asyncio.run(block_words.setup_game(
+                mock_dependencies['app'], 
+                mock_subscribe_client, 
+                asyncio.Queue(), 
+                MagicMock(), 
+                MagicMock()
+            ))
+        
+        # Assert
+        assert "Invalid font size" in str(excinfo.value)
