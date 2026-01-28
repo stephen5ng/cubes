@@ -4,6 +4,7 @@ import logging
 import pygame
 import pygame.freetype
 from typing import cast, Optional
+import easing_functions
 
 from core import app
 from core import tiles
@@ -296,11 +297,21 @@ class Game:
                     # Optimize: Use pre-calculated gradient source if possible, or create on the fly efficiently
                     # creating a 1x2 surface and scaling it is much faster than a loop
                     if not hasattr(self, '_gradient_source'):
-                        gradient_alpha_top = int(255 * 0.20)     # 20% opacity
-                        gradient_alpha_bottom = int(255 * 0.80)  # 80% opacity
-                        self._gradient_source = pygame.Surface((1, 2), pygame.SRCALPHA)
-                        self._gradient_source.set_at((0, 0), (LETTER_SOURCE_RECOVERY.r, LETTER_SOURCE_RECOVERY.g, LETTER_SOURCE_RECOVERY.b, gradient_alpha_top))
-                        self._gradient_source.set_at((0, 1), (LETTER_SOURCE_RECOVERY.r, LETTER_SOURCE_RECOVERY.g, LETTER_SOURCE_RECOVERY.b, gradient_alpha_bottom))
+                        # Create a high-fidelity gradient texture
+                        texture_height = 256
+                        self._gradient_source = pygame.Surface((1, texture_height), pygame.SRCALPHA)
+                        
+                        start_alpha = int(255 * 0.10)
+                        end_alpha = int(255 * 0.80)
+                        
+                        # Use ExponentialEaseIn for the gradient curve
+                        easing = easing_functions.ExponentialEaseIn(start=start_alpha, end=end_alpha, duration=texture_height)
+                        
+                        for y in range(texture_height):
+                            alpha = int(easing(y))
+                            # Clamp just in case
+                            alpha = max(0, min(255, alpha))
+                            self._gradient_source.set_at((0, y), (LETTER_SOURCE_RECOVERY.r, LETTER_SOURCE_RECOVERY.g, LETTER_SOURCE_RECOVERY.b, alpha))
 
                     # Smoothscale interpolates the colors/alpha between the two points
                     rect_surface = pygame.transform.smoothscale(self._gradient_source, (self.rack_metrics.get_rect().width, height))
