@@ -243,7 +243,7 @@ class Game:
     async def next_tile(self, next_letter: str, now_ms: int) -> None:
         """Update the next letter to fall."""
         if self.one_round or (self.letter.get_screen_bottom_y() + Letter.Y_INCREMENT*3 > self.rack_metrics.get_rect().y):
-            next_letter = "!"
+            next_letter = "!!!!!!"
         self.letter.change_letter(next_letter, now_ms)
 
     async def add_guess(self, previous_guesses: list[str], guess: str, player: int, now_ms: int) -> None:
@@ -360,7 +360,7 @@ class Game:
         if self.running and self.letter.get_screen_bottom_y() > self.rack_metrics.get_rect().y:
             incidents.append("letter_rack_collision")
 
-            if self.letter.letter == "!":
+            if self.letter.letter == "!!!!!!":
                 await self.stop(now_ms, exit_code=11)
             else:
                 self.sound_manager.play_chunk()

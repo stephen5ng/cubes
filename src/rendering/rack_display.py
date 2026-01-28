@@ -130,8 +130,8 @@ class RackDisplay:
         """Render flashing letters when falling letter is locked."""
         if self.falling_letter.locked_on and self.running:
             if random.randint(0, 2) == 0:
-                if self.falling_letter.letter == "!":
-                    letter_index = random.randint(0, 6)
+                if self.falling_letter.letter == "!!!!!!":
+                    letter_index = random.randint(0, tiles.MAX_LETTERS - 1)
                 else:
                     letter_index = self.falling_letter.letter_index()
                     if self.the_app.player_count > 1:

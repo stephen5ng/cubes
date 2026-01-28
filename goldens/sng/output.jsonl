@@ -136,6 +136,6 @@
 {"time": 93959, "event_type": "letter_position", "x": 113, "y": 170}
 {"time": 94492, "event_type": "letter_position", "x": 113, "y": 190}
 {"time": 95509, "event_type": "letter_position", "x": 113, "y": 252}
-{"time": 96528, "event_type": "letter_position", "x": 117, "y": 165}
-{"time": 97529, "event_type": "letter_position", "x": 117, "y": 190}
-{"time": 98549, "event_type": "letter_position", "x": 117, "y": 258}
+{"time": 96528, "event_type": "letter_position", "x": 48, "y": 165}
+{"time": 97529, "event_type": "letter_position", "x": 48, "y": 190}
+{"time": 98549, "event_type": "letter_position", "x": 48, "y": 258}

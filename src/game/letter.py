@@ -169,6 +169,14 @@ class Letter:
 
     def _calculate_position(self, now_ms: int) -> None:
         """Calculate letter position based on current time and movement."""
+        if self.letter == "!!!!!!":
+            # Special case for the "nuke" letter: force it to align with the rack (column 0 start)
+            # and disable horizontal oscillation
+            self.pos[0] = self.rack_metrics.get_rect().x
+            self.fraction_complete = 1.0
+            self.fraction_complete_eased = 1.0
+            return
+
         remaining_ms = min(max(0, self.next_column_move_time_ms - now_ms), self.NEXT_COLUMN_MS)
         self.fraction_complete = 1.0 - remaining_ms/self.NEXT_COLUMN_MS
         self.fraction_complete_eased = self.next_letter_easing(self.fraction_complete)
@@ -181,7 +189,17 @@ class Letter:
 
     def draw(self, now_ms) -> None:
         """Render the letter surface."""
-        self.surface = self.font.render(self.letter, LETTER_SOURCE_COLOR)[0]
+        if self.letter == "!!!!!!":
+            # Render each ! separately to ensure it is centered over each slot
+            rack_rect = self.rack_metrics.get_rect()
+            self.surface = pygame.Surface((rack_rect.width, self.letter_height), pygame.SRCALPHA)
+            for i in range(tiles.MAX_LETTERS):
+                # get_letter_rect returns a rect with x/y relative to the rack's (0,0)
+                dest_rect = self.rack_metrics.get_letter_rect(i, "!")
+                # Render to the surface at the calculated position
+                self.font.render_to(self.surface, dest_rect, "!", LETTER_SOURCE_COLOR)
+        else:
+            self.surface = self.font.render(self.letter, LETTER_SOURCE_COLOR)[0]
         self._calculate_position(now_ms)
         self._update_locked_state()
 

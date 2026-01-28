@@ -22,6 +22,8 @@ class PreviousGuessesDisplayBase:
     FONT = "Arial"
 
     def __init__(self, font_size: int) -> None:
+        if font_size <= 0:
+            raise ValueError("Invalid font size")
         self.font = pygame.freetype.SysFont(PreviousGuessesDisplayBase.FONT, font_size)
         self.font.kerning = True
         self._text_rect_renderer = textrect.TextRectRenderer(self.font,
