@@ -19,7 +19,7 @@ from game.letter import GuessType, Letter
 from game.recorder import GameRecorder, NullRecorder
 from game.descent_strategy import DescentStrategy
 from input.input_devices import InputDevice, CubesInput
-from rendering.animations import LetterSource, PositionTracker, LETTER_SOURCE_YELLOW
+from rendering.animations import LetterSource, PositionTracker, LETTER_SOURCE_RECOVERY
 from rendering.metrics import RackMetrics
 from rendering.rack_display import RackDisplay
 from systems.sound_manager import SoundManager
@@ -40,7 +40,7 @@ class Game:
                  rack_metrics: RackMetrics,
                  letter_beeps: list,
                  letter_strategy: DescentStrategy,
-                 yellow_strategy: DescentStrategy,
+                 recovery_strategy: DescentStrategy,
                  previous_guesses_font_size: int,
                  remaining_guesses_font_size_delta: int,
                  descent_duration_s: int = 0,
@@ -73,18 +73,18 @@ class Game:
         self.remaining_guesses_font_size_delta = remaining_guesses_font_size_delta
         self.guess_to_player = {}
         self.guesses_manager = PreviousGuessesManager(self.previous_guesses_font_size, self.guess_to_player, self.remaining_guesses_font_size_delta)
-        self.letter_source = LetterSource(
+        self.spawn_source = LetterSource(
             self.letter,
             self.rack_metrics.get_rect().x, self.rack_metrics.get_rect().width,
             letter_y)
 
-        # Add yellow line that takes twice as long to fall
-        self.yellow_tracker = PositionTracker(yellow_strategy)
-        self.yellow_source = LetterSource(
-            self.yellow_tracker,
+        # Add recovery line that takes twice as long to fall
+        self.recovery_tracker = PositionTracker(recovery_strategy)
+        self.recovery_source = LetterSource(
+            self.recovery_tracker,
             self.rack_metrics.get_rect().x, self.rack_metrics.get_rect().width,
             letter_y,
-            color=LETTER_SOURCE_YELLOW)
+            color=LETTER_SOURCE_RECOVERY)
 
         self.shields: list[Shield] = []
         self.running = False
@@ -186,8 +186,8 @@ class Game:
         self.guesses_manager = PreviousGuessesManager(self.previous_guesses_font_size, self.guess_to_player, self.remaining_guesses_font_size_delta)
         print(f"start_cubes: starting letter {now_ms}")
         self.letter.start(now_ms)
-        if self.yellow_tracker:
-            self.yellow_tracker.reset(now_ms)
+        if self.recovery_tracker:
+            self.recovery_tracker.reset(now_ms)
 
         for score in self.scores:
             score.start()
@@ -281,34 +281,36 @@ class Game:
 
         if self.running:
 
-            # Update yellow line BEFORE red line so red draws on top
-            if self.yellow_tracker:
-                self.yellow_tracker.update(now_ms, self.letter.height)
-            if self.yellow_source:
-                if incident := self.yellow_source.update(window, now_ms):
+            # Update recovery line BEFORE spawn line so spawn draws on top
+            if self.recovery_tracker:
+                self.recovery_tracker.update(now_ms, self.letter.height)
+            if self.recovery_source:
+                if incident := self.recovery_source.update(window, now_ms):
                     incidents.extend(incident)
 
-            # Draw solid yellow rectangle between red and yellow lines
-            if self.yellow_source and self.letter_source and self.yellow_tracker:
-                y_yellow = self.yellow_source.initial_y + self.yellow_tracker.start_fall_y
-                y_red = self.letter_source.initial_y + self.letter.start_fall_y
-                
-                top = min(y_yellow, y_red)
-                height = abs(y_yellow - y_red)
-                
+            # Draw recovery gradient between spawn and recovery lines
+            if self.recovery_source and self.spawn_source and self.recovery_tracker:
+                y_recovery = self.recovery_source.initial_y + self.recovery_tracker.start_fall_y
+                y_spawn = self.spawn_source.initial_y + self.letter.start_fall_y
+
+                top = min(y_recovery, y_spawn)
+                height = abs(y_recovery - y_spawn)
+
                 if height > 0:
                     # Optimize: Use pre-calculated gradient source if possible, or create on the fly efficiently
                     # creating a 1x2 surface and scaling it is much faster than a loop
                     if not hasattr(self, '_gradient_source'):
+                        gradient_alpha_top = int(255 * 0.20)     # 20% opacity
+                        gradient_alpha_bottom = int(255 * 0.80)  # 80% opacity
                         self._gradient_source = pygame.Surface((1, 2), pygame.SRCALPHA)
-                        self._gradient_source.set_at((0, 0), (LETTER_SOURCE_YELLOW.r, LETTER_SOURCE_YELLOW.g, LETTER_SOURCE_YELLOW.b, 51))   # Top: 20%
-                        self._gradient_source.set_at((0, 1), (LETTER_SOURCE_YELLOW.r, LETTER_SOURCE_YELLOW.g, LETTER_SOURCE_YELLOW.b, 204))  # Bottom: 80%
+                        self._gradient_source.set_at((0, 0), (LETTER_SOURCE_RECOVERY.r, LETTER_SOURCE_RECOVERY.g, LETTER_SOURCE_RECOVERY.b, gradient_alpha_top))
+                        self._gradient_source.set_at((0, 1), (LETTER_SOURCE_RECOVERY.r, LETTER_SOURCE_RECOVERY.g, LETTER_SOURCE_RECOVERY.b, gradient_alpha_bottom))
 
                     # Smoothscale interpolates the colors/alpha between the two points
                     rect_surface = pygame.transform.smoothscale(self._gradient_source, (self.rack_metrics.get_rect().width, height))
                     window.blit(rect_surface, (self.rack_metrics.get_rect().x, top))
 
-            if incident := self.letter_source.update(window, now_ms):
+            if incident := self.spawn_source.update(window, now_ms):
                 incidents.extend(incident)
             if incident := self.letter.update(window, now_ms):
                 incidents.extend(incident)
@@ -326,12 +328,12 @@ class Game:
                 incidents.append("shield_letter_collision")
                 shield.letter_collision()
 
-                # Check if letter is at red line - if so, push both red line and letter up to yellow line
-                letter_at_red_line = abs(self.letter.pos[1] - self.letter.start_fall_y) < 1  # Within n pixels tolerance
-                if letter_at_red_line and self.yellow_tracker:
-                    yellow_pos = self.yellow_tracker.start_fall_y
-                    self.letter._apply_descent(yellow_pos, now_ms)
-                    incidents.append("red_line_pushed_to_yellow")
+                # Check if letter is at spawn line - if so, push both spawn line and letter up to recovery line
+                letter_at_spawn_line = abs(self.letter.pos[1] - self.letter.start_fall_y) < 1  # Within n pixels tolerance
+                if letter_at_spawn_line and self.recovery_tracker:
+                    recovery_pos = self.recovery_tracker.start_fall_y
+                    self.letter._apply_descent(recovery_pos, now_ms)
+                    incidents.append("spawn_line_pushed_to_recovery")
                 else:
                     # Normal bounce behavior
                     self.letter.shield_collision(now_ms)

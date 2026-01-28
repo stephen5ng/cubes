@@ -9,7 +9,7 @@ from unittest.mock import Mock
 from game.letter import Letter
 from game.descent_strategy import DescentStrategy
 from rendering.metrics import RackMetrics
-from rendering.animations import LetterSource, PositionTracker, LETTER_SOURCE_RED, LETTER_SOURCE_YELLOW
+from rendering.animations import LetterSource, PositionTracker, LETTER_SOURCE_SPAWN, LETTER_SOURCE_RECOVERY
 from config.game_config import SCREEN_HEIGHT
 
 
@@ -276,7 +276,7 @@ class TestLetterSourceColor:
             initial_y=0
         )
         
-        assert letter_source.color == LETTER_SOURCE_RED
+        assert letter_source.color == LETTER_SOURCE_SPAWN
 
     def test_letter_source_custom_color(self, letter_setup):
         """LetterSource should accept custom color."""
@@ -288,10 +288,10 @@ class TestLetterSourceColor:
             x=0,
             width=32,
             initial_y=0,
-            color=LETTER_SOURCE_YELLOW
+            color=LETTER_SOURCE_RECOVERY
         )
         
-        assert letter_source.color == LETTER_SOURCE_YELLOW
+        assert letter_source.color == LETTER_SOURCE_RECOVERY
 
     def test_letter_source_draws_with_custom_color(self, letter_setup):
         """LetterSource surface should use custom color."""
@@ -303,132 +303,132 @@ class TestLetterSourceColor:
             x=0,
             width=32,
             initial_y=0,
-            color=LETTER_SOURCE_YELLOW
+            color=LETTER_SOURCE_RECOVERY
         )
         
         # The surface should be filled with yellow color
         # We can't directly check the fill color, but we can verify it was created
         assert yellow_source.surface is not None
-        assert yellow_source.color == LETTER_SOURCE_YELLOW
+        assert yellow_source.color == LETTER_SOURCE_RECOVERY
 
 
-class TestYellowLineIntegration:
-    """Test yellow line with PositionTracker."""
+class TestRecoveryLineIntegration:
+    """Test recovery line with PositionTracker."""
 
-    def test_yellow_line_descends_slower(self):
-        """Yellow line should descend at half the speed of red line."""
-        # Red line: 10 second duration, 240 height
-        red_strategy = DescentStrategy(game_duration_ms=10000, event_descent_amount=0)
+    def test_recovery_line_descends_slower(self):
+        """Recovery line should descend at half the speed of spawn line."""
+        # Spawn line: 10 second duration, 240 height
+        spawn_strategy = DescentStrategy(game_duration_ms=10000, event_descent_amount=0)
         
-        # Yellow line: 20 second duration (twice as long), same height
-        yellow_strategy = DescentStrategy(game_duration_ms=20000, event_descent_amount=0)
-        yellow_tracker = PositionTracker(yellow_strategy)
+        # Recovery line: 20 second duration (twice as long), same height
+        recovery_strategy = DescentStrategy(game_duration_ms=20000, event_descent_amount=0)
+        recovery_tracker = PositionTracker(recovery_strategy)
         
-        red_strategy.reset(now_ms=0)
-        yellow_tracker.reset(now_ms=0)
+        spawn_strategy.reset(now_ms=0)
+        recovery_tracker.reset(now_ms=0)
         
         # After 5 seconds
-        red_y = red_strategy.update(now_ms=5000, height=240)
-        yellow_tracker.update(now_ms=5000, height=240)
+        spawn_y = spawn_strategy.update(now_ms=5000, height=240)
+        recovery_tracker.update(now_ms=5000, height=240)
         
-        # Red should be at 50% (120 pixels)
-        assert red_y == 120
-        # Yellow should be at 25% (60 pixels) - half the speed
-        assert yellow_tracker.start_fall_y == 60
+        # Spawn should be at 50% (120 pixels)
+        assert spawn_y == 120
+        # Recovery should be at 25% (60 pixels) - half the speed
+        assert recovery_tracker.start_fall_y == 60
         
         # After 10 seconds
-        red_y = red_strategy.update(now_ms=10000, height=240)
-        yellow_tracker.update(now_ms=10000, height=240)
+        spawn_y = spawn_strategy.update(now_ms=10000, height=240)
+        recovery_tracker.update(now_ms=10000, height=240)
         
-        # Red should be at 100% (240 pixels)
-        assert red_y == 240
-        # Yellow should be at 50% (120 pixels)
-        assert yellow_tracker.start_fall_y == 120
+        # Spawn should be at 100% (240 pixels)
+        assert spawn_y == 240
+        # Recovery should be at 50% (120 pixels)
+        assert recovery_tracker.start_fall_y == 120
 
-    def test_yellow_line_with_letter_source(self):
-        """Yellow line should work with LetterSource."""
-        yellow_strategy = DescentStrategy(game_duration_ms=20000, event_descent_amount=0)
-        yellow_tracker = PositionTracker(yellow_strategy)
-        yellow_tracker.reset(now_ms=0)
+    def test_recovery_line_with_letter_source(self):
+        """Recovery line should work with LetterSource."""
+        recovery_strategy = DescentStrategy(game_duration_ms=20000, event_descent_amount=0)
+        recovery_tracker = PositionTracker(recovery_strategy)
+        recovery_tracker.reset(now_ms=0)
         
-        yellow_source = LetterSource(
-            letter=yellow_tracker,
+        recovery_source = LetterSource(
+            letter=recovery_tracker,
             x=0,
             width=32,
             initial_y=0,
-            color=LETTER_SOURCE_YELLOW
+            color=LETTER_SOURCE_RECOVERY
         )
         
         # Initial state
-        assert yellow_source.color == LETTER_SOURCE_YELLOW
-        assert yellow_source.last_y == 0
+        assert recovery_source.color == LETTER_SOURCE_RECOVERY
+        assert recovery_source.last_y == 0
         
         # Update tracker position
-        yellow_tracker.update(now_ms=5000, height=240)
-        assert yellow_tracker.start_fall_y == 60
+        recovery_tracker.update(now_ms=5000, height=240)
+        assert recovery_tracker.start_fall_y == 60
         
         # LetterSource should track the position
         window = pygame.Surface((100, 100))
-        yellow_source.update(window, now_ms=5000)
-        assert yellow_source.last_y == 60
+        recovery_source.update(window, now_ms=5000)
+        assert recovery_source.last_y == 60
 
 
-class TestShieldPushBackToYellowLine:
-    """Test shield push-back feature when letter is at red line."""
+class TestShieldPushBackToRecoveryLine:
+    """Test shield push-back feature when letter is at spawn line."""
 
-    def test_shield_pushes_to_yellow_when_letter_at_red_line(self):
-        """Shield should push red line and letter to yellow line when letter is at red line."""
+    def test_shield_pushes_to_recovery_when_letter_at_spawn_line(self):
+        """Shield should push spawn line and letter to recovery line when letter is at spawn line."""
         from game.descent_strategy import DescentStrategy
         from rendering.animations import PositionTracker
         
         # This would normally be tested in an integration test with the full game
         # For now, we verify the logic directly
         
-        # Setup: letter at red line position
-        red_line_y = 100
-        yellow_line_y = 50  # Yellow line is higher (slower descent)
-        letter_y = 100  # Letter is at red line
+        # Setup: letter at spawn line position
+        spawn_line_y = 100
+        recovery_line_y = 50  # Recovery line is higher (slower descent)
+        letter_y = 100  # Letter is at spawn line
         
         # Check tolerance
-        letter_at_red_line = abs(letter_y - red_line_y) < 5
-        assert letter_at_red_line is True
+        letter_at_spawn_line = abs(letter_y - spawn_line_y) < 5
+        assert letter_at_spawn_line is True
         
         # Simulate push-back
-        new_letter_y = yellow_line_y
-        new_red_line_y = yellow_line_y
+        new_letter_y = recovery_line_y
+        new_spawn_line_y = recovery_line_y
         
-        assert new_letter_y == yellow_line_y
-        assert new_red_line_y == yellow_line_y
+        assert new_letter_y == recovery_line_y
+        assert new_spawn_line_y == recovery_line_y
 
-    def test_normal_bounce_when_letter_not_at_red_line(self, letter_setup):
-        """Shield should bounce normally when letter is not at red line."""
+    def test_normal_bounce_when_letter_not_at_spawn_line(self, letter_setup):
+        """Shield should bounce normally when letter is not at spawn line."""
         letter = letter_setup
         letter.start(now_ms=0)
         letter.new_fall(now_ms=0)
         
-        # Position letter away from red line
+        # Position letter away from spawn line
         letter.start_fall_y = 0
-        letter.pos[1] = 50  # 50 pixels away from red line
+        letter.pos[1] = 50  # 50 pixels away from spawn line
         initial_start = letter.start_fall_y
         
         # Should bounce to midpoint (normal behavior)
-        letter_at_red_line = abs(letter.pos[1] - letter.start_fall_y) < 5
-        assert letter_at_red_line is False
+        letter_at_spawn_line = abs(letter.pos[1] - letter.start_fall_y) < 5
+        assert letter_at_spawn_line is False
         
         # Normal shield collision
         letter.shield_collision(now_ms=1000)
         expected_midpoint = int(initial_start + (50 - initial_start) / 2)
         assert letter.pos[1] == expected_midpoint
 
-    def test_tolerance_boundary_for_red_line_detection(self):
-        """Test the 5-pixel tolerance for detecting letter at red line."""
-        red_line_y = 100
+    def test_tolerance_boundary_for_spawn_line_detection(self):
+        """Test the 5-pixel tolerance for detecting letter at spawn line."""
+        spawn_line_y = 100
         
         # Within tolerance (should be True)
-        assert abs(100 - red_line_y) < 5  # Exactly at red line
-        assert abs(103 - red_line_y) < 5  # 3 pixels away
-        assert abs(97 - red_line_y) < 5   # 3 pixels away (other direction)
+        assert abs(100 - spawn_line_y) < 5  # Exactly at spawn line
+        assert abs(103 - spawn_line_y) < 5  # 3 pixels away
+        assert abs(97 - spawn_line_y) < 5   # 3 pixels away (other direction)
         
         # Outside tolerance (should be False)
-        assert not (abs(106 - red_line_y) < 5)  # 6 pixels away
-        assert not (abs(94 - red_line_y) < 5)   # 6 pixels away (other direction)
+        assert not (abs(106 - spawn_line_y) < 5)  # 6 pixels away
+        assert not (abs(94 - spawn_line_y) < 5)   # 6 pixels away (other direction)

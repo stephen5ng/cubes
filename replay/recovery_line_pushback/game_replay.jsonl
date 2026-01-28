@@ -1,0 +1,11 @@
+{"event_type": "seed", "seed": 12345}
+{"event_type": "delay_ms", "delay_ms": 500}
+{"event_type": "game_config", "descent_mode": "timed", "timed_duration_s": 20}
+{"timestamp_ms": 1000, "events": {"pygame": [{"type": "KEYDOWN", "key": "ESCAPE"}]}}
+{"timestamp_ms": 5000, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 5100, "events": {"pygame": [{"type": "KEYDOWN", "key": "E"}]}}
+{"timestamp_ms": 5200, "events": {"pygame": [{"type": "KEYDOWN", "key": "S"}]}}
+{"timestamp_ms": 5300, "events": {"pygame": [{"type": "KEYDOWN", "key": "T"}]}}
+{"timestamp_ms": 5400, "events": {"pygame": [{"type": "KEYDOWN", "key": "ENTER"}]}}
+{"timestamp_ms": 10000, "events": {"pygame": [{"type": "KEYDOWN", "key": "ESCAPE"}]}}
+{"timestamp_ms": 10100, "events": {"pygame": [{"type": "QUIT"}]}}

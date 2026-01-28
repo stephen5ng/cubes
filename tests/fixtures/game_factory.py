@@ -160,8 +160,8 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
     event_descent_amount = Letter.Y_INCREMENT if descent_mode == "discrete" else 0
     descent_strategy = DescentStrategy(game_duration_ms=duration_ms, event_descent_amount=event_descent_amount)
 
-    yellow_duration_ms = descent_duration_s * 3 * 1000
-    yellow_strategy = DescentStrategy(game_duration_ms=yellow_duration_ms, event_descent_amount=0)
+    recovery_duration_ms = descent_duration_s * 3 * 1000
+    recovery_strategy = DescentStrategy(game_duration_ms=recovery_duration_ms, event_descent_amount=0)
 
     game = Game(
         the_app=app,
@@ -172,7 +172,7 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
         rack_metrics=rack_metrics,
         letter_beeps=sound_manager.get_letter_beeps(),
         letter_strategy=descent_strategy,
-        yellow_strategy=yellow_strategy,
+        recovery_strategy=recovery_strategy,
         previous_guesses_font_size=30,
         remaining_guesses_font_size_delta=game_config.FONT_SIZE_DELTA,
         descent_duration_s=descent_duration_s if descent_mode == "timed" else 0,

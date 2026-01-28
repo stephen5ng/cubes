@@ -287,12 +287,12 @@ class BlockWordsPygame:
         event_descent_amount = Letter.Y_INCREMENT if self.descent_mode == "discrete" else 0
         descent_strategy = DescentStrategy(game_duration_ms=duration_ms, event_descent_amount=event_descent_amount)
 
-        yellow_duration_ms = self.descent_duration_s * 3 * 1000
-        yellow_strategy = DescentStrategy(game_duration_ms=yellow_duration_ms, event_descent_amount=0)
+        recovery_duration_ms = self.descent_duration_s * 3 * 1000
+        recovery_strategy = DescentStrategy(game_duration_ms=recovery_duration_ms, event_descent_amount=0)
 
         self.game = Game(the_app, self.letter_font, game_logger, output_logger, sound_manager,
                         rack_metrics, sound_manager.get_letter_beeps(),
-                        letter_strategy=descent_strategy, yellow_strategy=yellow_strategy,
+                        letter_strategy=descent_strategy, recovery_strategy=recovery_strategy,
                         previous_guesses_font_size=self.previous_guesses_font_size,
                         remaining_guesses_font_size_delta=self.remaining_guesses_font_size_delta,
                         descent_duration_s=self.descent_duration_s if self.descent_mode == "timed" else 0,

@@ -2,18 +2,18 @@ import pytest
 import pygame
 from unittest.mock import Mock, patch
 from tests.fixtures.game_factory import create_test_game, async_test
-from rendering.animations import LETTER_SOURCE_YELLOW
+from rendering.animations import LETTER_SOURCE_RECOVERY
 
 @async_test
-async def test_yellow_zone_gradient_drawing():
-    """Verify that the yellow zone gradient is drawn when there is a gap."""
+async def test_recovery_zone_gradient_drawing():
+    """Verify that the recovery zone gradient is drawn when there is a gap."""
     game, _, _ = await create_test_game(visual=False)
     
     # Mock strategies to return fixed values so update() doesn't move them
     # DescentStrategy.update(now_ms, height) -> int
     game.letter.descent_strategy.update = Mock(return_value=150)
-    # The yellow tracker uses its own strategy
-    game.yellow_tracker.descent_strategy.update = Mock(return_value=50)
+    # The recovery tracker uses its own strategy
+    game.recovery_tracker.descent_strategy.update = Mock(return_value=50)
     
     # Setup mock window
     window = Mock(spec=pygame.Surface)
@@ -23,10 +23,10 @@ async def test_yellow_zone_gradient_drawing():
     game.running = True
     
     # Set up positions to create a gap
-    initial_y = game.letter_source.initial_y
+    initial_y = game.spawn_source.initial_y
     
     # Pre-set values just in case (though update call will overwrite from strategy)
-    game.yellow_tracker.start_fall_y = 50
+    game.recovery_tracker.start_fall_y = 50
     game.letter.start_fall_y = 150
     
     # We need to mock pygame.transform.smoothscale to avoid actual scaling logic issues in mock environment
@@ -40,14 +40,14 @@ async def test_yellow_zone_gradient_drawing():
         
         # Verify strategies were called
         assert game.letter.descent_strategy.update.called
-        assert game.yellow_tracker.descent_strategy.update.called
+        assert game.recovery_tracker.descent_strategy.update.called
         
         # Verify gradient was scaled
         assert mock_scale.called
         
         # Verify blit was called with the scaled surface
         # The exact position should be (x, top)
-        # top = min(y_yellow, y_red) = initial_y + 50
+        # top = min(y_recovery, y_spawn) = initial_y + 50
         expected_top = initial_y + 50
         
         blit_calls = window.blit.call_args_list
@@ -56,7 +56,6 @@ async def test_yellow_zone_gradient_drawing():
             args, _ = call
             if args[0] == mock_scaled_surface:
                 pos = args[1]
-                # print(f"DEBUG: Found call with pos={pos}, expected_top={expected_top}")
                 if pos[1] == expected_top:
                     found_call = True
                     break
@@ -64,15 +63,15 @@ async def test_yellow_zone_gradient_drawing():
         assert found_call, f"Gradient surface should be blitted at the correct vertical position {expected_top}"
 
 @async_test
-async def test_yellow_zone_no_drawing_when_no_gap():
-    """Verify that the yellow zone is NOT drawn when lines overlap or are inverted (height 0)."""
+async def test_recovery_zone_no_drawing_when_no_gap():
+    """Verify that the recovery zone is NOT drawn when lines overlap or are inverted (height 0)."""
     game, _, _ = await create_test_game(visual=False)
     window = Mock(spec=pygame.Surface)
     window.blit = Mock()
     game.running = True
     
-    # Yellow tracker IS updated before drawing, so we mock its strategy return value
-    game.yellow_tracker.descent_strategy.update = Mock(return_value=100)
+    # Recovery tracker IS updated before drawing, so we mock its strategy return value
+    game.recovery_tracker.descent_strategy.update = Mock(return_value=100)
     
     # Letter IS NOT updated before drawing, so we must set its current state
     game.letter.start_fall_y = 100

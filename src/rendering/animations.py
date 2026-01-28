@@ -10,8 +10,8 @@ from typing import Optional
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
 # Constants from main game
-LETTER_SOURCE_RED = pygame.Color("Red")
-LETTER_SOURCE_YELLOW = pygame.Color("Yellow")
+LETTER_SOURCE_SPAWN = pygame.Color("Red")
+LETTER_SOURCE_RECOVERY = pygame.Color("Yellow")
 
 
 class PositionTracker:
@@ -67,7 +67,7 @@ class LetterSource:
         self.height = LetterSource.MIN_HEIGHT
         self.width = width
         self.letter = letter
-        self.color = color if color is not None else LETTER_SOURCE_RED
+        self.color = color if color is not None else LETTER_SOURCE_SPAWN
         self.easing = easing_functions.QuinticEaseInOut(start=1, end=LetterSource.MAX_HEIGHT, duration=1)
         self.last_update = 0
         self.max_height_for_animation = LetterSource.MAX_HEIGHT
