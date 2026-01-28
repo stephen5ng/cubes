@@ -16,6 +16,7 @@ class GameEvent:
 
 class TestSummary:
     """Generates human-readable summaries from test output."""
+    __test__ = False
 
     def __init__(self, output_file: str):
         self.output_file = output_file
