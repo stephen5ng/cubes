@@ -69,11 +69,6 @@ class RackDisplay:
         for ix, letter in enumerate(self.letters()):
             self._render_letter(self.surface, ix, letter, self.rack_color_by_player[self.player+1])
 
-        pygame.draw.rect(self.surface,
-            self.guess_type_to_rect_color[self.guess_type],
-            self.rack_metrics.get_select_rect(self.select_count, self.player),
-            1)
-
     def start(self) -> None:
         """Start the rack display."""
         self.running = True
@@ -152,6 +147,12 @@ class RackDisplay:
         surface = self.surface.copy()
         self._render_flashing_letters(surface)
         self._render_fading_letters(surface, now)
+        
+        pygame.draw.rect(surface,
+            self.guess_type_to_rect_color[self.guess_type],
+            self.rack_metrics.get_select_rect(self.select_count, self.player),
+            1)
+
         top_left = self.rack_metrics.get_rect().topleft
         player_index = 0 if self.the_app.player_count == 1 else self.player+1
         top_left = (top_left[0] + self.left_offset_by_player[player_index], top_left[1])
