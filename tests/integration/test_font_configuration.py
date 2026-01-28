@@ -107,6 +107,10 @@ class TestFontConfiguration:
             descent_mode="discrete",
             descent_duration_s=120,
             record=False,
+            continuous=False,
+            one_round=False,
+            min_win_score=0,
+            stars=False
         )
         
         
@@ -157,6 +161,10 @@ class TestFontConfiguration:
             descent_mode="discrete",
             descent_duration_s=120,
             record=False,
+            continuous=False,
+            one_round=False,
+            min_win_score=0,
+            stars=False
         )
         
         # Act
@@ -211,6 +219,10 @@ class TestFontConfiguration:
             descent_mode="discrete",
             descent_duration_s=120,
             record=False,
+            continuous=False,
+            one_round=False,
+            min_win_score=0,
+            stars=False
         )
         
         # Act

@@ -23,7 +23,11 @@ def test_auto_start_assigns_player_number():
             continuous=False,  # Enable auto-start logic
             replay_file="",
             descent_mode="discrete",
-            descent_duration_s=120
+            descent_duration_s=120,
+            record=False,
+            one_round=False,
+            min_win_score=0,
+            stars=False
         )
         
         # Mock dependencies

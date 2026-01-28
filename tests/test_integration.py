@@ -81,7 +81,12 @@ async def test_integration():
             remaining_guesses_font_size_delta=5, # Default delta
             replay_file="",
             descent_mode="discrete",
-            descent_duration_s=120
+            descent_duration_s=120,
+            record=False,
+            continuous=False,
+            one_round=False,
+            min_win_score=0,
+            stars=False
         )
 
         # Initialize cubes_to_game
@@ -156,7 +161,7 @@ async def test_integration():
 
         logger.info("\nStopping game...")
         if block_words.game and block_words.game.running:
-            await block_words.game.stop(pygame.time.get_ticks())
+            await block_words.game.stop(pygame.time.get_ticks(), 0)
 
         logger.info("Closing window...")
         pygame.quit()
