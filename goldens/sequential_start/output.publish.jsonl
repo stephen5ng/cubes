@@ -35,10 +35,10 @@
 {"time": 8000, "topic": "cube/2/letter", "message": "?", "retain": true}
 {"time": 8000, "topic": "cube/3/letter", "message": "?", "retain": true}
 {"time": 6100, "topic": "cube/1/letter", "message": "A", "retain": true}
-{"time": 6100, "topic": "cube/2/letter", "message": "D", "retain": true}
-{"time": 6100, "topic": "cube/3/letter", "message": "E", "retain": true}
-{"time": 6100, "topic": "cube/4/letter", "message": "P", "retain": true}
-{"time": 6100, "topic": "cube/5/letter", "message": "T", "retain": true}
-{"time": 6100, "topic": "cube/6/letter", "message": "U", "retain": true}
+{"time": 6100, "topic": "cube/2/letter", "message": "E", "retain": true}
+{"time": 6100, "topic": "cube/3/letter", "message": "G", "retain": true}
+{"time": 6100, "topic": "cube/4/letter", "message": "L", "retain": true}
+{"time": 6100, "topic": "cube/5/letter", "message": "R", "retain": true}
+{"time": 6100, "topic": "cube/6/letter", "message": "Y", "retain": true}
 {"time": 6100, "topic": "cube/1/border", "message": "NSW:0xFFFF", "retain": true}
 {"time": 6100, "topic": "cube/2/border", "message": "ENS:0xFFFF", "retain": true}
