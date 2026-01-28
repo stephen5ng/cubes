@@ -121,7 +121,7 @@ class StarsDisplay:
 
         self._render_surface(0)  # Force initial render
 
-    def _create_star_surface(self, size: float, filled: bool = True) -> pygame.Surface:
+    def _create_star_surface(self, size: float, filled: bool) -> pygame.Surface:
         """Create a single anti-aliased star surface."""
         # Supersampling parameters
         factor = 4
@@ -165,7 +165,7 @@ class StarsDisplay:
         # Downsample for anti-aliasing
         return pygame.transform.smoothscale(large_surface, (width, height))
 
-    def draw(self, current_score: int, now_ms: int = 0) -> None:
+    def draw(self, current_score: int, now_ms: int) -> None:
         """Update score and trigger animations."""
         num_filled = min(self.num_stars, current_score // 10)
 
@@ -224,7 +224,7 @@ class NullStarsDisplay:
     def __init__(self) -> None:
         pass
         
-    def draw(self, current_score: int, now_ms: int = 0) -> None:
+    def draw(self, current_score: int, now_ms: int) -> None:
         pass
         
     def update(self, window: pygame.Surface, now_ms: int) -> None:

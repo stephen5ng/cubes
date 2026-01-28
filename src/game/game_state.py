@@ -44,12 +44,12 @@ class Game:
                  recovery_strategy: DescentStrategy,
                  previous_guesses_font_size: int,
                  remaining_guesses_font_size_delta: int,
-                 descent_duration_s: int = 0,
-                 recorder: Optional[GameRecorder] = None,
-                 replay_mode: bool = False,
-                 one_round: bool = False,
-                 min_win_score: int = 0,
-                 stars: bool = False) -> None:
+                 descent_duration_s: int,
+                 recorder: Optional[GameRecorder],
+                 replay_mode: bool,
+                 one_round: bool,
+                 min_win_score: int,
+                 stars: bool) -> None:
         self._app = the_app
         self.game_logger = game_logger
         self.output_logger = output_logger
@@ -218,7 +218,7 @@ class Game:
         self.letter.letter = ""
         self.last_letter_time_s = now_ms/1000
 
-    async def stop(self, now_ms: int, exit_code: int = 0) -> None:
+    async def stop(self, now_ms: int, exit_code: int) -> None:
         """Stop the game."""
         # Override exit code if score meets minimum win requirement
         if self.min_win_score > 0 and self.scores[0].score >= self.min_win_score:

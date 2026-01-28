@@ -37,7 +37,7 @@ async def test_festive_animation_on_game_over():
     assert renderer.animation_time == initial_time
     
     # 2. Stop game (Game Over)
-    await game.stop(0)
+    await game.stop(0, exit_code=0)
     assert game.running is False
     
     # 3. Update after game over

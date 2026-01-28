@@ -18,7 +18,7 @@ async def test_game_start_initialization():
     game.racks[0].guess_type = GuessType.GOOD # Set to non-default
     
     # Stop and Start again
-    await game.stop(0)
+    await game.stop(0, exit_code=0)
     await game.start_cubes(0)
     
     # Assertions
@@ -36,7 +36,7 @@ async def test_game_stop_cleanup():
         await game.start_cubes(0)
         
         # We need to manually stop the game
-        await game.stop(0)
+        await game.stop(0, exit_code=0)
         
         # Verify calls
         mock_unlock.assert_called()
@@ -56,7 +56,7 @@ async def test_game_end_logging():
         game.start_time_s = 100
         game.scores[0].score = 50
         
-        await game.stop(200000) # 200s
+        await game.stop(200000, 0) # 200s
         
         # Verify file write
         m_open.assert_called_with("output/durationlog.csv", "a")
@@ -75,7 +75,7 @@ async def test_multiple_game_sessions():
     # Game 1
     assert game.running is True
     game.scores[0].score = 10
-    await game.stop(0)
+    await game.stop(0, 0)
     assert game.running is False
     
     # Game 2
@@ -84,7 +84,7 @@ async def test_multiple_game_sessions():
     assert game.scores[0].score == 0 # Should be reset
     
     # Game 3 (stop and start)
-    await game.stop(0)
+    await game.stop(0, 0)
     await game.start_cubes(0)
     assert game.running is True
 

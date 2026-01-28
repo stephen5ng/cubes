@@ -77,7 +77,7 @@ logger = logging.getLogger(__name__)
 
 class BlockWordsPygame:
     def __init__(self, previous_guesses_font_size: int, remaining_guesses_font_size_delta: int,
-                 replay_file: str = "", descent_mode: str = "discrete", descent_duration_s: int = game_config.DESCENT_DURATION_S, record: bool = False, continuous: bool = False, one_round: bool = False, min_win_score: int = 0, stars: bool = False) -> None:
+                 replay_file: str, descent_mode: str, descent_duration_s: int, record: bool, continuous: bool, one_round: bool, min_win_score: int, stars: bool) -> None:
         """
         Args:
             replay_file: Path to replay file, or empty string for live game.

@@ -28,4 +28,4 @@ async def test_overflow_does_not_stop_game():
     # Verify our mock was called (multiple times due to retries)
     assert failing_mock.call_count >= 5, "Should have retried multiple times before giving up"
     
-    await game.stop(0)
+    await game.stop(0, exit_code=0)
