@@ -121,10 +121,10 @@ def run_replay_test(test_name, verbose=False):
                     print(semantic_report)
                     print("="*70 + "\n")
 
-                    # If semantically identical, note it's only a formatting difference
+                    # If semantically identical, clarify what that means
                     if matches:
-                        print("Note: Files are semantically identical but differ in formatting/timing")
-                        print("This may be acceptable depending on the test requirements.\n")
+                        print("Note: Words and scores match, but files differ in other data (e.g., positions).")
+                        print("The semantic diff only checks word formations and scores, not position data.\n")
                 except Exception as e:
                     print(f"Error generating semantic diff: {e}\n")
 
