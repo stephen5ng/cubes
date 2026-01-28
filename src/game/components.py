@@ -15,7 +15,9 @@ from config.game_config import (
     TICKS_PER_SECOND,
     FADER_PLAYER_COLORS,
     SHIELD_ACCELERATION_RATE,
-    SHIELD_INITIAL_SPEED_MULTIPLIER
+    SHIELD_INITIAL_SPEED_MULTIPLIER,
+    STAR_COLOR,
+    EMPTY_STAR_COLOR
 )
 
 
@@ -160,7 +162,8 @@ class StarsDisplay:
             ))
             current_angle += angle_step
         
-        pygame.draw.polygon(large_surface, SCORE_COLOR, points, stroke_width)
+        color = STAR_COLOR if filled else EMPTY_STAR_COLOR
+        pygame.draw.polygon(large_surface, color, points, stroke_width)
         
         # Downsample for anti-aliasing
         return pygame.transform.smoothscale(large_surface, (width, height))

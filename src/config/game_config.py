@@ -31,6 +31,10 @@ FADER_COLOR_P0 = Color("orange")
 FADER_COLOR_P1 = Color("lightblue")
 REMAINING_PREVIOUS_GUESSES_COLOR = Color("grey")
 PREVIOUS_GUESSES_COLOR = Color("orange")
+STAR_COLOR = Color("gold")
+EMPTY_STAR_COLOR = Color("grey30")
+
+
 
 # Player color arrays
 PLAYER_COLORS = [SHIELD_COLOR_P0, SHIELD_COLOR_P1]
