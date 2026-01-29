@@ -31,10 +31,12 @@ class SoundManager:
         self.left_sound = pygame.mixer.Sound("sounds/left.wav")
         self.right_sound = pygame.mixer.Sound("sounds/right.wav")
         self.tada_sound = pygame.mixer.Sound("sounds/tada.wav")
+        self.starspin_sound = pygame.mixer.Sound("sounds/starspin.wav")
         
         self.left_sound.set_volume(0.5)
         self.right_sound.set_volume(0.5)
         self.tada_sound.set_volume(0.8)
+        self.starspin_sound.set_volume(0.8)
 
         self.sound_queue_task = asyncio.create_task(self.play_sounds_in_queue(), name="word sound player")
 
@@ -109,3 +111,11 @@ class SoundManager:
     def play_tada(self) -> None:
         """Play tada/victory fanfare sound."""
         pygame.mixer.Sound.play(self.tada_sound)
+
+    def play_starspin(self) -> None:
+        """Play star earned sound."""
+        pygame.mixer.Sound.play(self.starspin_sound)
+
+    def get_starspin_length(self) -> float:
+        """Get the length of the starspin sound in seconds."""
+        return self.starspin_sound.get_length()

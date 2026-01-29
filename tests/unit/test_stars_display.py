@@ -57,13 +57,31 @@ def test_tada_sound():
     with patch('pygame.freetype.SysFont'):
         # Use 30 as min_win_score so 10 points = 1 star
         display = StarsDisplay(MockRackMetrics(), min_win_score=30, sound_manager=mock_sound_manager)
+        
+    # Mock starspin length to 1 second
+    mock_sound_manager.get_starspin_length.return_value = 1.0
     
     # Earn 2 stars
     display.draw(20, now_ms=1000)
     mock_sound_manager.play_tada.assert_not_called()
+    mock_sound_manager.play_starspin.assert_called_once()
+    
+    # Reset mocks for next step
+    mock_sound_manager.play_starspin.reset_mock()
     
     # Earn 3rd star
     display.draw(30, now_ms=2000)
+    # Tada should NOT play immediately (scheduled for 2000 + 1000 = 3000ms)
+    mock_sound_manager.play_tada.assert_not_called()
+    mock_sound_manager.play_starspin.assert_called_once()
+    
+    # Update not yet time
+    window = MagicMock()
+    display.update(window, now_ms=2500)
+    mock_sound_manager.play_tada.assert_not_called()
+    
+    # Update after scheduled time
+    display.update(window, now_ms=3000)
     mock_sound_manager.play_tada.assert_called_once()
     
     # Earn more points (already has 3 stars)

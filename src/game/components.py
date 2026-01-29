@@ -141,6 +141,7 @@ class StarsDisplay:
         self._easing = easing_functions.CubicEaseOut(start=0, end=1, duration=self._animation_duration_ms)
         self._last_filled_count = 0
         self._needs_redraw = True
+        self._tada_scheduled_ms = -1
 
         self._render_surface(0)  # Force initial render
 
@@ -195,12 +196,17 @@ class StarsDisplay:
         num_filled = min(self.num_stars, int(current_score / (self.min_win_score / 3.0)))
 
         if num_filled > self._last_filled_count:
+            # Play star spin sound for any newly earned star(s)
+            if self.sound_manager:
+                self.sound_manager.play_starspin()
+
             for i in range(self._last_filled_count, num_filled):
                 self._star_animation_start_ms[i] = now_ms
             
-            # Play tada sound when the 3rd star is earned
+            # Schedule tada sound when the 3rd star is earned
             if num_filled == 3 and self._last_filled_count < 3 and self.sound_manager:
-                self.sound_manager.play_tada()
+                starspin_length_ms = self.sound_manager.get_starspin_length() * 1000 * 0.5
+                self._tada_scheduled_ms = now_ms + starspin_length_ms
 
         self._last_filled_count = num_filled
         self._needs_redraw = True
@@ -244,6 +250,11 @@ class StarsDisplay:
         if animation_active or self._needs_redraw:
             self._render_surface(now_ms)
             self._needs_redraw = animation_active
+        
+        if self._tada_scheduled_ms > 0 and now_ms >= self._tada_scheduled_ms:
+            if self.sound_manager:
+                self.sound_manager.play_tada()
+            self._tada_scheduled_ms = -1
 
         window.blit(self.surface, self.pos)
 
