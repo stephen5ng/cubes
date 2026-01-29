@@ -11,6 +11,7 @@ import logging
 import pytest
 
 from core import app, dictionary
+from config import game_config
 from game_logging.game_loggers import GameLogger, OutputLogger
 from hardware import cubes_to_game
 from hardware.cubes_interface import CubesHardwareInterface
@@ -77,15 +78,13 @@ async def test_integration():
 
         # Create BlockWordsPygame instance (creates window)
         block_words = pygamegameasync.BlockWordsPygame(
-            previous_guesses_font_size=30,
-            remaining_guesses_font_size_delta=5, # Default delta
             replay_file="",
             descent_mode="discrete",
             descent_duration_s=120,
             record=False,
             continuous=False,
             one_round=False,
-            min_win_score=0,
+            min_win_score=game_config.DEFAULT_MIN_WIN_SCORE,
             stars=False
         )
 

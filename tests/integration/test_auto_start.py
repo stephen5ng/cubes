@@ -18,15 +18,13 @@ def test_auto_start_assigns_player_number():
             return 0 # Return player 0
             
         block_words = BlockWordsPygame(
-            previous_guesses_font_size=30,
-            remaining_guesses_font_size_delta=0,
             continuous=False,  # Enable auto-start logic
             replay_file="",
             descent_mode="discrete",
             descent_duration_s=120,
             record=False,
             one_round=False,
-            min_win_score=0,
+            min_win_score=game_config.DEFAULT_MIN_WIN_SCORE,
             stars=False
         )
         
