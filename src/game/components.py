@@ -103,8 +103,9 @@ class Shield:
 class StarsDisplay:
     """Displays stars in the upper right hand corner."""
 
-    def __init__(self, rack_metrics, sound_manager=None) -> None:
+    def __init__(self, rack_metrics, min_win_score: int = 0, sound_manager=None) -> None:
         self.sound_manager = sound_manager
+        self.min_win_score = min_win_score
         self.size = rack_metrics.LETTER_SIZE * 0.7
         self._filled_star = self._create_star_surface(self.size, filled=True)
         self._hollow_star = self._create_star_surface(self.size, filled=False)
@@ -169,9 +170,10 @@ class StarsDisplay:
         # Downsample for anti-aliasing
         return pygame.transform.smoothscale(large_surface, (width, height))
 
-    def draw(self, current_score: int, now_ms: int) -> None:
-        """Update score and trigger animations."""
-        num_filled = min(self.num_stars, current_score // 10)
+    def draw(self, current_score: int, now_ms: int) -> int:
+        """Update score and trigger animations. Returns the number of stars earned."""
+        # Earn a star for every min_win_score/3 points
+        num_filled = min(self.num_stars, int(current_score / (self.min_win_score / 3.0)))
 
         if num_filled > self._last_filled_count:
             for i in range(self._last_filled_count, num_filled):
@@ -183,6 +185,7 @@ class StarsDisplay:
 
         self._last_filled_count = num_filled
         self._needs_redraw = True
+        return num_filled
         
     def _render_surface(self, now_ms: int) -> None:
         """Render stars to the internal surface."""
@@ -232,8 +235,8 @@ class NullStarsDisplay:
     def __init__(self) -> None:
         pass
         
-    def draw(self, current_score: int, now_ms: int) -> None:
-        pass
+    def draw(self, current_score: int, now_ms: int) -> int:
+        return 0
         
     def update(self, window: pygame.Surface, now_ms: int) -> None:
         pass

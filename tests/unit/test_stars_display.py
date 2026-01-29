@@ -13,7 +13,8 @@ def stars_display():
     pygame.init()
     # Mock font rendering to avoid external dependencies if needed
     with patch('pygame.freetype.SysFont'):
-        return StarsDisplay(MockRackMetrics())
+        # Use 30 as min_win_score so 10 points = 1 star
+        return StarsDisplay(MockRackMetrics(), min_win_score=30)
 
 def test_initial_state(stars_display):
     """Verify stars start empty."""
@@ -23,22 +24,22 @@ def test_initial_state(stars_display):
 
 def test_score_updates(stars_display):
     """Verify stars fill based on score thresholds."""
-    # 5 points -> 0 stars
-    stars_display.draw(5, now_ms=1000)
+    # 5 points -> 0 stars (score < 30/3 = 10)
+    assert stars_display.draw(5, now_ms=1000) == 0
     assert stars_display._last_filled_count == 0
     
     # 10 points -> 1 star
-    stars_display.draw(10, now_ms=2000)
+    assert stars_display.draw(10, now_ms=2000) == 1
     assert stars_display._last_filled_count == 1
     assert stars_display._star_animation_start_ms[0] == 2000
     
-    # 25 points -> 2 stars
-    stars_display.draw(25, now_ms=3000)
+    # 20 points -> 2 stars
+    assert stars_display.draw(20, now_ms=3000) == 2
     assert stars_display._last_filled_count == 2
     assert stars_display._star_animation_start_ms[1] == 3000
     
-    # 50 points -> 3 stars (max)
-    stars_display.draw(50, now_ms=4000)
+    # 30 points -> 3 stars (max)
+    assert stars_display.draw(30, now_ms=4000) == 3
     assert stars_display._last_filled_count == 3
     assert stars_display._star_animation_start_ms[2] == 4000
 
@@ -47,7 +48,8 @@ def test_tada_sound():
     pygame.init()
     mock_sound_manager = MagicMock()
     with patch('pygame.freetype.SysFont'):
-        display = StarsDisplay(MockRackMetrics(), sound_manager=mock_sound_manager)
+        # Use 30 as min_win_score so 10 points = 1 star
+        display = StarsDisplay(MockRackMetrics(), min_win_score=30, sound_manager=mock_sound_manager)
     
     # Earn 2 stars
     display.draw(20, now_ms=1000)
