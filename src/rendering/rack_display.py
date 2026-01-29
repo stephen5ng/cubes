@@ -147,7 +147,7 @@ class RackDisplay:
         surface = self.surface.copy()
         self._render_flashing_letters(surface)
         self._render_fading_letters(surface, now)
-        
+
         pygame.draw.rect(surface,
             self.guess_type_to_rect_color[self.guess_type],
             self.rack_metrics.get_select_rect(self.select_count, self.player),

@@ -13,6 +13,7 @@ from hardware import cubes_to_game
 import os
 import subprocess
 import traceback
+import random
 from utils.pygameasync import events
 
 from game.components import Score, Shield, StarsDisplay, NullStarsDisplay
@@ -95,6 +96,10 @@ class Game:
         self.start_time_s = 0
         self.stop_time_s = 0
         self.exit_code = 0
+        
+        # Melting effect state
+        self.melt_surface = None
+        self.melt_columns = []
 
         events.on("game.stage_guess")(self.stage_guess)
         events.on("game.old_guess")(self.old_guess)
@@ -275,6 +280,79 @@ class Game:
             if time_since_over < 15.0:
                 game_over_animate = True
 
+        # Only enable melting if racks have been properly initialized (surfaces exist)
+        racks_initialized = all(hasattr(rack, 'surface') and rack.surface is not None for rack in self.racks)
+
+        if not self.running and self.exit_code != 10 and racks_initialized:
+             # Melting logic for "Game Lost"
+             if self.melt_surface is None:
+                  # First frame of loss: Capture the screen
+                  # Note: 'window' might be black here since run_single_frame clears it.
+                  # We should redraw everything one last time to capture the final state.
+                  
+                  # Re-draw the scene as if the game were running for one frame
+                  window.fill((0, 0, 0))
+                  self.guesses_manager.update(window, now_ms, game_over=game_over_animate)
+                  
+                  # Force racks to draw their letters, even though self.running is False
+                  # RackDisplay.update normally draws "GAME OVER" if !running.
+                  # We manually update_rack or call internal methods if needed?
+                  # RackDisplay.update checks self.running. 
+                  # But Game.stop() called rack.stop() which set rack.running=False.
+                  # So rack.update will draw GAME OVER.
+                  # We want to capture the letters.
+                  
+                  # Hack: temporarily set running=True for racks to draw them
+                  for player in range(self._app.player_count):
+                       if hasattr(self.racks[player], 'surface') and self.racks[player].surface is not None:
+                           original_running = self.racks[player].running
+                           self.racks[player].running = True
+                           self.racks[player].update(window, now_ms)
+                           self.racks[player].running = original_running
+                  
+                  for shield in self.shields:
+                      shield.update(window, now_ms)
+                  
+                  self.stars_display.update(window, now_ms)
+                  for player in range(self._app.player_count):
+                      self.scores[player].update(window)
+
+                  self.melt_surface = window.copy()
+                  
+                  # Initialize melt columns
+                  width, height = self.melt_surface.get_size()
+                  self.melt_columns = []
+                  for x in range(width):
+                      self.melt_columns.append({
+                          'y': 0.0,
+                          'vel': 0.0,                        # Start stationary
+                          'acc': random.uniform(0.1, 0.3),  # Gravity variance
+                          'delay': random.uniform(0, 20)    # Start delay frames
+                      })
+             
+             # Render Melt (on subsequent frames only)
+             elif self.melt_surface is not None:
+                 window.fill((0, 0, 0))
+                 width, height = self.melt_surface.get_size()
+
+                 # Update and Draw
+                 for x in range(width):
+                     col = self.melt_columns[x]
+                     if col['delay'] > 0:
+                         col['delay'] -= 1
+                     else:
+                         col['vel'] += col['acc']
+                         col['y'] += col['vel']
+
+                     # Draw column at new position (pygame will clip if off-screen)
+                     dest_y = int(col['y'])
+                     if dest_y < height:
+                         window.blit(self.melt_surface, (x, dest_y), area=pygame.Rect(x, 0, 1, height))
+
+                 # Skip normal component updates
+                 return incidents
+
+        # Normal Update Loop
         self.guesses_manager.update(window, now_ms, game_over=game_over_animate)
 
         if self.running:

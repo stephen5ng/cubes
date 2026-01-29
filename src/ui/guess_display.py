@@ -128,7 +128,7 @@ class PreviousGuessesDisplay(PreviousGuessesDisplayBase):
         # Drive animation (rainbow) only if game_over
         if self.previous_guesses and game_over:
             self.draw(animate=True)
-            
+
         surface_with_faders = self.surface.copy()
         for fader in self.faders:
             fader.blit(surface_with_faders, now)
@@ -252,7 +252,7 @@ class PreviousGuessesManager:
             self.previous_guesses_display.update(window, now_ms, game_over=game_over)
             self.remaining_previous_guesses_display.update(
                 window, self.previous_guesses_display.surface.get_bounding_rect().height, game_over=game_over)
-        
+
         self.exec_with_resize(_update, now_ms)
 
     @property
