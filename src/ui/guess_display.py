@@ -198,12 +198,14 @@ class RemainingPreviousGuessesDisplay(PreviousGuessesDisplayBase):
 class PreviousGuessesManager:
     """Manages previous guess displays and handles automatic resizing on overflow."""
 
-    def __init__(self, font_size: int, guess_to_player: dict[str, int], font_size_delta: int) -> None:
-        self.font_size_delta = font_size_delta
+    DEFAULT_FONT_SIZE = 30
+
+    def __init__(self, guess_to_player: dict[str, int]) -> None:
+        self.font_size_delta = game_config.FONT_SIZE_DELTA
         self.guess_to_player = guess_to_player
-        self.previous_guesses_display = PreviousGuessesDisplay(font_size, guess_to_player)
+        self.previous_guesses_display = PreviousGuessesDisplay(self.DEFAULT_FONT_SIZE, guess_to_player)
         self.remaining_previous_guesses_display = RemainingPreviousGuessesDisplay(
-            font_size - self.font_size_delta, guess_to_player)
+            self.DEFAULT_FONT_SIZE - self.font_size_delta, guess_to_player)
 
     def resize(self, now_ms: int) -> None:
         """Resize both displays to fit more words."""

@@ -76,7 +76,7 @@ logger = logging.getLogger(__name__)
 
 
 class BlockWordsPygame:
-    def __init__(self, previous_guesses_font_size: int, remaining_guesses_font_size_delta: int,
+    def __init__(self,
                  replay_file: str, descent_mode: str, descent_duration_s: int, record: bool, continuous: bool, one_round: bool, min_win_score: int, stars: bool) -> None:
         """
         Args:
@@ -84,8 +84,6 @@ class BlockWordsPygame:
             descent_mode: Mode for letter descent ("discrete" or "timed").
             descent_duration_s: Duration in seconds for descent speed calculation.
             record: Whether to record the game.
-            previous_guesses_font_size: Font size for previous guesses.
-            remaining_guesses_font_size_delta: Font size delta for remaining guesses.
         """
         self._window = pygame.display.set_mode(
             (SCREEN_WIDTH*SCALING_FACTOR, SCREEN_HEIGHT*SCALING_FACTOR))
@@ -97,8 +95,6 @@ class BlockWordsPygame:
         self.descent_mode = descent_mode
         self.descent_duration_s = descent_duration_s
         self.record = record
-        self.previous_guesses_font_size = previous_guesses_font_size
-        self.remaining_guesses_font_size_delta = remaining_guesses_font_size_delta
         self.replayer = None
         self._mock_mqtt_client = None
         self.continuous = continuous
@@ -294,8 +290,6 @@ class BlockWordsPygame:
         self.game = Game(the_app, self.letter_font, game_logger, output_logger, sound_manager,
                         rack_metrics, sound_manager.get_letter_beeps(),
                         letter_strategy=descent_strategy, recovery_strategy=recovery_strategy,
-                        previous_guesses_font_size=self.previous_guesses_font_size,
-                        remaining_guesses_font_size_delta=self.remaining_guesses_font_size_delta,
                         descent_duration_s=self.descent_duration_s if self.descent_mode == "timed" else 0,
                         recorder=recorder,
                         replay_mode=bool(self.replay_file),

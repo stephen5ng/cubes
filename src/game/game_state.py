@@ -42,8 +42,6 @@ class Game:
                  letter_beeps: list,
                  letter_strategy: DescentStrategy,
                  recovery_strategy: DescentStrategy,
-                 previous_guesses_font_size: int,
-                 remaining_guesses_font_size_delta: int,
                  descent_duration_s: int,
                  recorder: Optional[GameRecorder],
                  replay_mode: bool,
@@ -59,6 +57,8 @@ class Game:
         self.recorder = recorder if recorder else NullRecorder()
         self.replay_mode = replay_mode
         self.one_round = one_round
+        if min_win_score <= 0:
+            raise ValueError(f"min_win_score must be positive, got {min_win_score}")
         self.min_win_score = min_win_score
 
         # Required dependency injection - no defaults!
@@ -68,17 +68,15 @@ class Game:
         # Now create components that depend on injected dependencies
         self.scores = [Score(the_app, player, self.rack_metrics) for player in range(game_config.MAX_PLAYERS)]
         if stars:
-            self.stars_display = StarsDisplay(self.rack_metrics, sound_manager=self.sound_manager)
+            self.stars_display = StarsDisplay(self.rack_metrics, min_win_score=self.min_win_score, sound_manager=self.sound_manager)
         else:
             self.stars_display = NullStarsDisplay()
         letter_y = self.scores[0].get_size()[1] + 4
 
         self.letter = Letter(letter_font, letter_y, self.rack_metrics, self.output_logger, letter_beeps, letter_strategy)
         self.racks = [RackDisplay(the_app, self.rack_metrics, self.letter, player) for player in range(game_config.MAX_PLAYERS)]
-        self.previous_guesses_font_size = previous_guesses_font_size
-        self.remaining_guesses_font_size_delta = remaining_guesses_font_size_delta
         self.guess_to_player = {}
-        self.guesses_manager = PreviousGuessesManager(self.previous_guesses_font_size, self.guess_to_player, self.remaining_guesses_font_size_delta)
+        self.guesses_manager = PreviousGuessesManager(self.guess_to_player)
         self.spawn_source = LetterSource(
             self.letter,
             self.rack_metrics.get_rect().x, self.rack_metrics.get_rect().width,
@@ -186,7 +184,7 @@ class Game:
         print(f"ADDED {str(input_device)} in self.input_devices: {str(input_device) in self.input_devices}")
 
         self.guess_to_player = {}
-        self.guesses_manager = PreviousGuessesManager(self.previous_guesses_font_size, self.guess_to_player, self.remaining_guesses_font_size_delta)
+        self.guesses_manager = PreviousGuessesManager(self.guess_to_player)
         print(f"start_cubes: starting letter {now_ms}")
         self.letter.start(now_ms)
         if self.recovery_tracker:
@@ -220,9 +218,14 @@ class Game:
 
     async def stop(self, now_ms: int, exit_code: int) -> None:
         """Stop the game."""
-        # Override exit code if score meets minimum win requirement
-        if self.min_win_score > 0 and self.scores[0].score >= self.min_win_score:
-            logger.info(f"Score {self.scores[0].score} >= min_win_score {self.min_win_score}. Setting exit code to 10 (Win)")
+        if not self.running:
+            return
+            
+        # Override exit code if score meets minimum win requirement (3 stars)
+        num_stars = int(self.scores[0].score / (self.min_win_score / 3.0))
+
+        if num_stars >= 3:
+            logger.info(f"Stars earned: {num_stars} >= 3. Setting exit code to 10 (Win)")
             exit_code = 10
             
         self.exit_code = exit_code
@@ -353,7 +356,9 @@ class Game:
                 self.recorder.trigger(now_ms)
 
                 self.scores[shield.player].update_score(shield.score)
-                self.stars_display.draw(self.scores[0].score, now_ms)
+                num_stars = self.stars_display.draw(self.scores[0].score, now_ms)
+                # Stars are just visual feedback during the game; winning status is evaluated at game end.
+                
                 self._app.add_guess(shield.letters, shield.player)
                 self.sound_manager.play_crash()
 

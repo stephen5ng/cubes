@@ -122,16 +122,12 @@ if __name__ == "__main__":
                        help="Duration in seconds for descent speed calculation (default: 120 seconds)")
     parser.add_argument("--record", action=argparse.BooleanOptionalAction, default=False,
                        help="Enable screen recording of game events")
-    parser.add_argument("--previous-guesses-font-size", type=int, default=30,
-                       help="Font size for previous guesses (default: 30)")
-    parser.add_argument("--remaining-guesses-font-size-delta", type=int, default=game_config.FONT_SIZE_DELTA,
-                       help="Font size delta for remaining guesses (default: 4)")
     parser.add_argument("--continuous", action="store_true",
                        help="Run in continuous mode (loop game, wait for ESC). Default is False (single-run auto-start).")
     parser.add_argument("--one-round", action="store_true",
                        help="End game after one round (next falling letter is '!')")
-    parser.add_argument("--min-win-score", type=int, default=0,
-                       help="Minimum score required to treat exit code as Win (10)")
+    parser.add_argument("--min-win-score", type=int, default=game_config.DEFAULT_MIN_WIN_SCORE,
+                       help=f"Minimum score required to treat exit code as Win (10) (default: {game_config.DEFAULT_MIN_WIN_SCORE})")
     parser.add_argument("--stars", action="store_true", default=False,
                        help="Show progress stars in the upper right corner")
     args = parser.parse_args()
@@ -175,8 +171,6 @@ if __name__ == "__main__":
     dictionary.read(game_config.DICTIONARY_PATH, game_config.BINGOS_PATH)
     pygame.init()
     block_words = pygamegameasync.BlockWordsPygame(
-        previous_guesses_font_size=args.previous_guesses_font_size,
-        remaining_guesses_font_size_delta=args.remaining_guesses_font_size_delta,
         replay_file=args.replay or "", 
         descent_mode=args.descent_mode, 
         descent_duration_s=args.descent_duration, 

@@ -38,7 +38,7 @@ class TestPreviousGuessesManager(unittest.TestCase):
         self.mock_previous_instance.get_line_height.return_value = 30
         self.mock_previous_instance.font.get_sized_height.return_value = 30
         
-        self.manager = PreviousGuessesManager(font_size=30, guess_to_player={}, font_size_delta=5)
+        self.manager = PreviousGuessesManager(guess_to_player={})
         # Manually wire up the mocks to the manager instance (init replaced them)
         self.manager.previous_guesses_display = self.mock_previous_instance
         self.manager.remaining_previous_guesses_display = self.mock_remaining_instance
