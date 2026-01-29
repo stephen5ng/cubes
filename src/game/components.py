@@ -122,6 +122,9 @@ class Shield:
 class StarsDisplay:
     """Displays stars in the upper right hand corner."""
 
+    # Star earning animation timing
+    STAR_SPIN_DURATION_MS = 800
+
     def __init__(self, rack_metrics, min_win_score: int, sound_manager) -> None:
         self.sound_manager = sound_manager
         self.min_win_score = min_win_score
@@ -137,8 +140,7 @@ class StarsDisplay:
         # Track the animation state for each star
         # -1 means no animation, otherwise timestamp of start
         self._star_animation_start_ms = [-1] * self.num_stars
-        self._animation_duration_ms = 800
-        self._easing = easing_functions.CubicEaseOut(start=0, end=1, duration=self._animation_duration_ms)
+        self._easing = easing_functions.CubicEaseOut(start=0, end=1, duration=self.STAR_SPIN_DURATION_MS)
         self._last_filled_count = 0
         self._needs_redraw = True
         self._tada_scheduled_ms = -1
@@ -204,9 +206,9 @@ class StarsDisplay:
                 self._star_animation_start_ms[i] = now_ms
             
             # Schedule tada sound when the 3rd star is earned
+            # Start after the 3rd star finishes spinning in (animation_duration_ms)
             if num_filled == 3 and self._last_filled_count < 3 and self.sound_manager:
-                starspin_length_ms = self.sound_manager.get_starspin_length() * 1000 * 0.5
-                self._tada_scheduled_ms = now_ms + starspin_length_ms
+                self._tada_scheduled_ms = now_ms + self.STAR_SPIN_DURATION_MS
 
         self._last_filled_count = num_filled
         self._needs_redraw = True
@@ -224,26 +226,38 @@ class StarsDisplay:
             is_filled = i < self._last_filled_count
             start_ms = self._star_animation_start_ms[i]
 
-            if is_filled and start_ms > 0 and (now_ms - start_ms) < self._animation_duration_ms:
+            scale = 1.0
+            angle = 0.0
+
+            # Scale/Rotate animation (when earning a star)
+            if is_filled and start_ms > 0 and (now_ms - start_ms) < self.STAR_SPIN_DURATION_MS:
                 elapsed = now_ms - start_ms
                 progress = self._easing(elapsed)
                 scale = max(0.0, progress)
                 angle = (1.0 - progress) * 360
 
-                scaled_star = pygame.transform.rotozoom(self._filled_star, angle, scale)
+            # Get the base star to render
+            star_to_draw = self._filled_star if is_filled else self._hollow_star
+
+            # Apply scale/rotation if needed
+            if scale != 1.0 or angle != 0.0:
+                scaled_star = pygame.transform.rotozoom(star_to_draw, angle, scale)
                 sw, sh = scaled_star.get_size()
 
                 cx = x_pos + star_w / 2
                 cy = star_h / 2
-                self.surface.blit(scaled_star, (cx - sw / 2, cy - sh / 2))
+                render_pos = (cx - sw / 2, cy - sh / 2)
+                star_surface = scaled_star
             else:
-                star = self._filled_star if is_filled else self._hollow_star
-                self.surface.blit(star, (x_pos, 0))
+                render_pos = (x_pos, 0)
+                star_surface = star_to_draw
+
+            self.surface.blit(star_surface, render_pos)
 
     def update(self, window: pygame.Surface, now_ms: int) -> None:
         """Render the stars to the window."""
         animation_active = any(
-            start_ms > 0 and (now_ms - start_ms) < self._animation_duration_ms
+            start_ms > 0 and (now_ms - start_ms) < self.STAR_SPIN_DURATION_MS
             for start_ms in self._star_animation_start_ms
         )
 
