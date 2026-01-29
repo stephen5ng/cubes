@@ -125,6 +125,13 @@ class StarsDisplay:
     # Star earning animation timing
     STAR_SPIN_DURATION_MS = 800
 
+    # Tada celebration blink animation timing
+    BLINK_DURATION_PER_STAR_MS = 200  # Each star blinks for 200ms
+    BLINK_FADE_OUT_MS = 50  # Fade to 30% opacity in 50ms
+    BLINK_MIN_OPACITY = 0.3
+    BLINK_STAR_OFFSET_MS = 100  # Stagger each star's blink by 100ms
+    TADA_TOTAL_DURATION_MS = 1000  # Total tada animation is 1000ms
+
     def __init__(self, rack_metrics, min_win_score: int, sound_manager) -> None:
         self.sound_manager = sound_manager
         self.min_win_score = min_win_score
@@ -144,6 +151,11 @@ class StarsDisplay:
         self._last_filled_count = 0
         self._needs_redraw = True
         self._tada_scheduled_ms = -1
+        self._heartbeat_start_ms = -1
+
+        # Pre-create easing function for tada blink animation
+        # Creates a smooth fade curve for blinking effect
+        self._blink_easing = easing_functions.QuadEaseInOut(start=0, end=1, duration=100)
 
         self._render_surface(0)  # Force initial render
 
@@ -214,12 +226,56 @@ class StarsDisplay:
         self._needs_redraw = True
         return num_filled
         
+    def _apply_per_star_blinking(self, star_surface: pygame.Surface, star_index: int, tada_elapsed_ms: int) -> pygame.Surface:
+        """Apply blinking effect to a star surface during tada animation.
+
+        Args:
+            star_surface: The star surface to blink
+            star_index: Index of the star (0-2), used to stagger blinks
+            tada_elapsed_ms: Elapsed time since tada started
+
+        Returns:
+            The star surface with alpha applied if blinking, otherwise the original
+        """
+        # Stagger each star's blink by BLINK_STAR_OFFSET_MS
+        star_blink_start = star_index * self.BLINK_STAR_OFFSET_MS
+        star_elapsed = tada_elapsed_ms - star_blink_start
+
+        # Star blinks for BLINK_DURATION_PER_STAR_MS after its staggered start
+        if 0 <= star_elapsed < self.BLINK_DURATION_PER_STAR_MS * 3:
+            opacity = self._get_blink_opacity(star_elapsed)
+            # Create a copy to apply alpha
+            blinking_surface = star_surface.copy()
+            blinking_surface.set_alpha(int(255 * opacity))
+            return blinking_surface
+
+        return star_surface
+
+    def _get_blink_opacity(self, elapsed_ms: int) -> float:
+        """Calculate opacity for a single blink cycle."""
+        position_in_blink = elapsed_ms % self.BLINK_DURATION_PER_STAR_MS
+
+        # Fade out phase
+        if position_in_blink < self.BLINK_FADE_OUT_MS:
+            progress = position_in_blink / self.BLINK_FADE_OUT_MS
+            opacity_change = (1.0 - self.BLINK_MIN_OPACITY) * self._blink_easing(progress)
+            return 1.0 - opacity_change
+
+        # Fade in phase
+        fade_in_duration = self.BLINK_DURATION_PER_STAR_MS - self.BLINK_FADE_OUT_MS
+        progress = (position_in_blink - self.BLINK_FADE_OUT_MS) / fade_in_duration
+        opacity_change = (1.0 - self.BLINK_MIN_OPACITY) * self._blink_easing(progress)
+        return self.BLINK_MIN_OPACITY + opacity_change
+
     def _render_surface(self, now_ms: int) -> None:
         """Render stars to the internal surface."""
         star_w = self._filled_star.get_width()
         star_h = self._filled_star.get_height()
 
         self.surface.fill((0, 0, 0, 0))
+
+        # Calculate tada animation elapsed time if active
+        tada_elapsed_ms = (now_ms - self._heartbeat_start_ms) if self._heartbeat_start_ms > 0 else -1
 
         for i in range(self.num_stars):
             x_pos = i * star_w
@@ -252,7 +308,35 @@ class StarsDisplay:
                 render_pos = (x_pos, 0)
                 star_surface = star_to_draw
 
+            # Apply per-star blinking during tada animation
+            if tada_elapsed_ms >= 0 and is_filled:
+                star_surface = self._apply_per_star_blinking(star_surface, i, tada_elapsed_ms)
+
             self.surface.blit(star_surface, render_pos)
+
+    def _update_tada_animation(self, now_ms: int) -> bool:
+        """Update tada animation state and return whether it's active.
+
+        Returns:
+            True if tada animation is currently active
+        """
+        # Check if tada sound should play
+        if self._tada_scheduled_ms > 0 and now_ms >= self._tada_scheduled_ms:
+            if self.sound_manager:
+                self.sound_manager.play_tada()
+            self._tada_scheduled_ms = -1
+            self._heartbeat_start_ms = now_ms
+
+        # Check if tada animation is active
+        if self._heartbeat_start_ms > 0:
+            if (now_ms - self._heartbeat_start_ms) >= self.TADA_TOTAL_DURATION_MS:
+                # Tada animation finished
+                self._heartbeat_start_ms = -1
+                self._render_surface(now_ms)
+                return False
+            return True
+
+        return False
 
     def update(self, window: pygame.Surface, now_ms: int) -> None:
         """Render the stars to the window."""
@@ -261,14 +345,11 @@ class StarsDisplay:
             for start_ms in self._star_animation_start_ms
         )
 
-        if animation_active or self._needs_redraw:
+        tada_active = self._update_tada_animation(now_ms)
+
+        if animation_active or self._needs_redraw or tada_active:
             self._render_surface(now_ms)
-            self._needs_redraw = animation_active
-        
-        if self._tada_scheduled_ms > 0 and now_ms >= self._tada_scheduled_ms:
-            if self.sound_manager:
-                self.sound_manager.play_tada()
-            self._tada_scheduled_ms = -1
+            self._needs_redraw = animation_active or tada_active
 
         window.blit(self.surface, self.pos)
 

@@ -22,6 +22,7 @@ def test_initial_state(stars_display):
     assert stars_display._last_filled_count == 0
     assert all(t == -1 for t in stars_display._star_animation_start_ms)
     assert stars_display.num_stars == 3
+    assert stars_display._heartbeat_start_ms == -1
     
     # Verify centered position
     # pos = [int(SCREEN_WIDTH/2 - total_width/2), 0]
@@ -71,18 +72,19 @@ def test_tada_sound():
     
     # Earn 3rd star
     display.draw(30, now_ms=2000)
-    # Tada should NOT play immediately (scheduled for 2000 + 1000 = 3000ms)
+    # Tada should NOT play immediately (scheduled for 2000 + 800ms = 2800ms, when 3rd star finishes spinning)
     mock_sound_manager.play_tada.assert_not_called()
     mock_sound_manager.play_starspin.assert_called_once()
-    
-    # Update not yet time
+
+    # Update before tada scheduled time
     window = MagicMock()
-    display.update(window, now_ms=2500)
+    display.update(window, now_ms=2400)
     mock_sound_manager.play_tada.assert_not_called()
-    
-    # Update after scheduled time
-    display.update(window, now_ms=3000)
+
+    # Update after scheduled time (tada and blink animation start)
+    display.update(window, now_ms=2900)
     mock_sound_manager.play_tada.assert_called_once()
+    assert display._heartbeat_start_ms == 2900
     
     # Earn more points (already has 3 stars)
     display.draw(40, now_ms=3000)

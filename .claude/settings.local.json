@@ -91,7 +91,8 @@
       "Bash(python -m py_compile:*)",
       "Bash(pytest:*)",
       "Bash(git cherry-pick:*)",
-      "Bash(xxd:*)"
+      "Bash(xxd:*)",
+      "Bash(python test_heartbeat_easing.py:*)"
     ],
     "deny": []
   }
