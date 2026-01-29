@@ -48,6 +48,7 @@ MAX_PLAYERS = 2
 MIN_LETTERS = 3  # Minimum word length
 MAX_LETTERS = 6  # Maximum word length
 FREE_SCORE = 0
+DEFAULT_MIN_WIN_SCORE = 500
 
 # Timing settings
 ABC_COUNTDOWN_DELAY_MS = 1000  # Delay for ABC countdown sequence (ms)
