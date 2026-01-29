@@ -24,13 +24,19 @@ from config.game_config import (
 class Score:
     """Displays and manages player score."""
     
-    def __init__(self, the_app: app.App, player: int, rack_metrics, stars_enabled: bool = False) -> None:
+    def __init__(self, the_app: app.App, player: int, rack_metrics, stars_enabled: bool) -> None:
         self.the_app = the_app
         self.player = player
         self.stars_enabled = stars_enabled
         
         # Required dependency injection - no fallback!
-        self.font = pygame.freetype.SysFont(FONT, rack_metrics.LETTER_SIZE)
+        font_size = rack_metrics.LETTER_SIZE
+        self.star_height = 0
+        if self.stars_enabled:
+             font_size = int(font_size * 0.8)
+             self.star_height = int(rack_metrics.LETTER_SIZE * 0.7 * 1.2)
+             
+        self.font = pygame.freetype.SysFont(FONT, font_size)
         self.pos = [0, 0]
         self.x = SCREEN_WIDTH/3 * (player+1)
         self.midscreen = SCREEN_WIDTH/2
@@ -54,11 +60,15 @@ class Score:
             if self.stars_enabled:
                  # Right aligned (where stars were default)
                  self.pos[0] = int(SCREEN_WIDTH - self.surface.get_width() - 10)
+                 # Adjust vertical position to align with stars
+                 self.pos[1] = (self.star_height - self.surface.get_height()) // 2
             else:
                  # Center
                  self.pos[0] = int(self.midscreen - self.surface.get_width()/2)
+                 self.pos[1] = 0
         else:
              self.pos[0] = int(self.x - self.surface.get_width()/2)
+             self.pos[1] = 0
 
     def update_score(self, score: int) -> None:
         """Add points to the score."""
@@ -112,7 +122,7 @@ class Shield:
 class StarsDisplay:
     """Displays stars in the upper right hand corner."""
 
-    def __init__(self, rack_metrics, min_win_score: int = 0, sound_manager=None) -> None:
+    def __init__(self, rack_metrics, min_win_score: int, sound_manager) -> None:
         self.sound_manager = sound_manager
         self.min_win_score = min_win_score
         self.size = rack_metrics.LETTER_SIZE * 0.7

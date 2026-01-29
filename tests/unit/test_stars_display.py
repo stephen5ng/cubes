@@ -3,6 +3,7 @@ import pytest
 from unittest.mock import MagicMock, patch
 import pygame
 from game.components import StarsDisplay, NullStarsDisplay
+from config.game_config import SCREEN_WIDTH
 
 class MockRackMetrics:
     LETTER_SIZE = 20
@@ -14,13 +15,19 @@ def stars_display():
     # Mock font rendering to avoid external dependencies if needed
     with patch('pygame.freetype.SysFont'):
         # Use 30 as min_win_score so 10 points = 1 star
-        return StarsDisplay(MockRackMetrics(), min_win_score=30)
+        return StarsDisplay(MockRackMetrics(), min_win_score=30, sound_manager=None)
 
 def test_initial_state(stars_display):
     """Verify stars start empty."""
     assert stars_display._last_filled_count == 0
     assert all(t == -1 for t in stars_display._star_animation_start_ms)
     assert stars_display.num_stars == 3
+    
+    # Verify centered position
+    # pos = [int(SCREEN_WIDTH/2 - total_width/2), 0]
+    total_width = stars_display.surface.get_width()
+    expected_x = int(SCREEN_WIDTH/2 - total_width/2)
+    assert stars_display.pos[0] == expected_x
 
 def test_score_updates(stars_display):
     """Verify stars fill based on score thresholds."""
