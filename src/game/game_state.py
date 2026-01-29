@@ -54,8 +54,6 @@ class Game:
         self.descent_duration_s = descent_duration_s
         self.recorder = recorder if recorder else NullRecorder()
         self.replay_mode = replay_mode
-        self.recorder = recorder if recorder else NullRecorder()
-        self.replay_mode = replay_mode
         self.one_round = one_round
         if min_win_score <= 0:
             raise ValueError(f"min_win_score must be positive, got {min_win_score}")
@@ -66,7 +64,7 @@ class Game:
         self.rack_metrics = rack_metrics
 
         # Now create components that depend on injected dependencies
-        self.scores = [Score(the_app, player, self.rack_metrics) for player in range(game_config.MAX_PLAYERS)]
+        self.scores = [Score(the_app, player, self.rack_metrics, stars_enabled=stars) for player in range(game_config.MAX_PLAYERS)]
         if stars:
             self.stars_display = StarsDisplay(self.rack_metrics, min_win_score=self.min_win_score, sound_manager=self.sound_manager)
         else:
@@ -94,7 +92,6 @@ class Game:
         self.last_lock = False
 
         # Initialize time tracking
-        self.start_time_s = 0
         self.start_time_s = 0
         self.stop_time_s = 0
         self.exit_code = 0
@@ -161,9 +158,6 @@ class Game:
                     return -1
 
                 # Add P2
-                print(f"self.running: {self.running}, {str(input_device) in self.input_devices}, {self.input_devices}")
-                # Add P2
-                print(f"self.running: {self.running}, {str(input_device) in self.input_devices}, {self.input_devices}")
                 print(f"starting second player with input_device: {input_device}, {self.input_devices}")
                 # Maxed out player count
                 if self._app.player_count >= 2:
@@ -280,8 +274,6 @@ class Game:
             time_since_over = (now_ms / 1000.0) - self.stop_time_s
             if time_since_over < 15.0:
                 game_over_animate = True
-
-        self.guesses_manager.update(window, now_ms, game_over=game_over_animate)
 
         self.guesses_manager.update(window, now_ms, game_over=game_over_animate)
 

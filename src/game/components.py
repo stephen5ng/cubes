@@ -24,9 +24,10 @@ from config.game_config import (
 class Score:
     """Displays and manages player score."""
     
-    def __init__(self, the_app: app.App, player: int, rack_metrics) -> None:
+    def __init__(self, the_app: app.App, player: int, rack_metrics, stars_enabled: bool = False) -> None:
         self.the_app = the_app
         self.player = player
+        self.stars_enabled = stars_enabled
         
         # Required dependency injection - no fallback!
         self.font = pygame.freetype.SysFont(FONT, rack_metrics.LETTER_SIZE)
@@ -48,8 +49,16 @@ class Score:
     def draw(self) -> None:
         """Render the score text."""
         self.surface = self.font.render(str(self.score), SCORE_COLOR)[0]
-        self.pos[0] = int((self.midscreen if self.the_app.player_count == 1 else self.x) 
-                          - self.surface.get_width()/2)
+        
+        if self.the_app.player_count == 1:
+            if self.stars_enabled:
+                 # Right aligned (where stars were default)
+                 self.pos[0] = int(SCREEN_WIDTH - self.surface.get_width() - 10)
+            else:
+                 # Center
+                 self.pos[0] = int(self.midscreen - self.surface.get_width()/2)
+        else:
+             self.pos[0] = int(self.x - self.surface.get_width()/2)
 
     def update_score(self, score: int) -> None:
         """Add points to the score."""
@@ -112,7 +121,7 @@ class StarsDisplay:
         self.num_stars = 3
         star_w, star_h = self._filled_star.get_size()
         total_width = star_w * self.num_stars
-        self.pos = [SCREEN_WIDTH - total_width - 10, 0]
+        self.pos = [int(SCREEN_WIDTH/2 - total_width/2), 0]
         self.surface = pygame.Surface((total_width, star_h), pygame.SRCALPHA)
         
         # Track the animation state for each star
