@@ -62,17 +62,15 @@ while true; do
         level=${level:-0}
         
         if [[ "$level" == "0" ]]; then
-            python_args+=("--previous-guesses-font-size" "50")
-            python_args+=("--remaining-guesses-font-size-delta" "4")
             python_args+=("--one-round")
-            python_args+=("--min-win-score" "50")
+            python_args+=("--min-win-score" "60")
             python_args+=("--descent-duration" "90") # Added based on user's implied intent
         elif [[ "$level" == "1" ]]; then
-            python_args+=("--previous-guesses-font-size" "40")
-            python_args+=("--remaining-guesses-font-size-delta" "4")
+            # Level 1 specific args if any
+            python_args+=("--min-win-score" "180")
         elif [[ "$level" == "2" ]]; then
-            python_args+=("--previous-guesses-font-size" "20")
-            python_args+=("--remaining-guesses-font-size-delta" "2")
+            # Level 2 specific args if any
+            python_args+=("--min-win-score" "360")
         else
             echo "Error: Unknown level '$level' for game_on mode. Supported levels: 0, 1, 2"
             exit 1
