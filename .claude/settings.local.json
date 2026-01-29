@@ -92,7 +92,8 @@
       "Bash(pytest:*)",
       "Bash(git cherry-pick:*)",
       "Bash(xxd:*)",
-      "Bash(python test_heartbeat_easing.py:*)"
+      "Bash(python test_heartbeat_easing.py:*)",
+      "Bash(git merge:*)"
     ],
     "deny": []
   }
