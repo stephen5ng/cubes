@@ -11,8 +11,9 @@ from config import game_config
 from config.game_config import (
     SCREEN_WIDTH,
     BAD_GUESS_COLOR, GOOD_GUESS_COLOR, OLD_GUESS_COLOR,
-    LETTER_SOURCE_COLOR, RACK_COLOR, FADER_COLOR_P0, FADER_COLOR_P1
+    LETTER_SOURCE_COLOR, RACK_COLOR
 )
+from config.player_config import PlayerConfig
 from game.letter import GuessType, Letter
 from rendering.animations import get_alpha
 from rendering.metrics import RackMetrics
@@ -24,10 +25,11 @@ class RackDisplay:
     LETTER_TRANSITION_DURATION_MS = 4000
     GUESS_TRANSITION_DURATION_MS = 800
 
-    def __init__(self, the_app: app.App, rack_metrics: RackMetrics, falling_letter: Letter, player: int) -> None:
+    def __init__(self, the_app: app.App, rack_metrics: RackMetrics, falling_letter: Letter, player_config: PlayerConfig) -> None:
         self.the_app = the_app
         self.rack_metrics = rack_metrics
-        self.player = player
+        self.player_config = player_config
+        self.player = player_config.player_id
         self.font = rack_metrics.font
         self.falling_letter = falling_letter
         self.tiles: list[tiles.Tile] = []
@@ -49,9 +51,7 @@ class RackDisplay:
         self.game_over_surface, game_over_rect = self.font.render("GAME OVER", RACK_COLOR)
         self.game_over_pos = [SCREEN_WIDTH/2 - game_over_rect.width/2, rack_metrics.y]
 
-        # Player -1 means single-player mode.
-        self.left_offset_by_player = [0, -self.rack_metrics.letter_width*3, self.rack_metrics.letter_width*3]
-        self.rack_color_by_player = [FADER_COLOR_P0, FADER_COLOR_P0, FADER_COLOR_P1]
+        self.game_over_pos = [SCREEN_WIDTH/2 - game_over_rect.width/2, rack_metrics.y]
 
     def _render_letter(self, surface: pygame.Surface,
         position: int, letter: str, color: pygame.Color) -> None:
@@ -67,7 +67,7 @@ class RackDisplay:
         """Draw the rack surface."""
         self.surface = pygame.Surface(self.rack_metrics.get_size())
         for ix, letter in enumerate(self.letters()):
-            self._render_letter(self.surface, ix, letter, self.rack_color_by_player[self.player+1])
+            self._render_letter(self.surface, ix, letter, self.player_config.fader_color)
 
     def start(self) -> None:
         """Start the rack display."""
@@ -128,13 +128,12 @@ class RackDisplay:
                 if self.falling_letter.letter == "!!!!!!":
                     letter_index = random.randint(0, tiles.MAX_LETTERS - 1)
                 else:
-                    letter_index = self.falling_letter.letter_index()
-                    if self.the_app.player_count > 1:
-                        # Only flash letters in our half of the rack
-                        hit_rack = 0 if letter_index < 3 else 1
-                        if self.player != hit_rack:
-                            return
-                        letter_index += 3 * (1 if hit_rack == 0 else -1)
+                    letter_index = self.player_config.get_flashing_index(
+                        self.falling_letter.letter_index(),
+                        self.the_app.player_count > 1
+                    )
+                    if letter_index is None:
+                        return
                 surface_with_faders.fill(Color("black"),
                     rect=self.rack_metrics.get_largest_letter_rect(letter_index),
                     special_flags=pygame.BLEND_RGBA_MULT)
@@ -150,10 +149,9 @@ class RackDisplay:
 
         pygame.draw.rect(surface,
             self.guess_type_to_rect_color[self.guess_type],
-            self.rack_metrics.get_select_rect(self.select_count, self.player),
+            self.rack_metrics.get_select_rect(self.select_count, self.player_config),
             1)
 
         top_left = self.rack_metrics.get_rect().topleft
-        player_index = 0 if self.the_app.player_count == 1 else self.player+1
-        top_left = (top_left[0] + self.left_offset_by_player[player_index], top_left[1])
+        top_left = (top_left[0] + self.player_config.rack_horizontal_offset, top_left[1])
         window.blit(surface, top_left)

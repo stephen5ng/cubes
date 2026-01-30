@@ -188,6 +188,12 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
     game.running = True
     game._app.player_count = player_count
     
+    if player_count > 1:
+        # Manually switch P0 to multiplayer config as Game.start() would do
+        p0_config = game.player_config_manager.get_config(0)
+        game.racks[0].player_config = p0_config
+        game.scores[0].player_config = p0_config
+    
     return game, fake_mqtt, publish_queue
 
 def create_shield(
@@ -216,7 +222,12 @@ def create_shield(
         game.shields.append(shield)
     """
     from game.components import Shield
-    return Shield((x, y), word, health, player, created_time_ms)
+    from config.player_config import PlayerConfigManager
+    # Use standard letter size (24) for test config
+    manager = PlayerConfigManager(24)
+    config = manager.get_config(player) if player >= 0 else manager.get_single_player_config()
+    
+    return Shield((x, y), word, health, player, config, created_time_ms)
 
 
 async def create_game_with_started_players(

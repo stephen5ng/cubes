@@ -57,12 +57,8 @@ class RackMetrics:
         """Get the size of the rack."""
         return self.get_rect().size
 
-    def get_select_rect(self, select_count: int, player: int) -> pygame.Rect:
-        """Get the rectangle for selected letters based on player and count."""
-        if player == 1:
-            # For player 1, start from right side and expand left
-            x = self.letter_width * (tiles.MAX_LETTERS - select_count)
-            return pygame.Rect(x, 0, self.letter_width * select_count, self.letter_height)
-        else:
-            # For player 0, start from left side and expand right (original behavior)
-            return pygame.Rect(0, 0, self.letter_width * select_count, self.letter_height)
+    def get_select_rect(self, select_count: int, player_config) -> pygame.Rect:
+        """Get the rectangle for selected letters based on player configuration."""
+        return player_config.get_selection_rect(
+            select_count, self.letter_width, self.letter_height, tiles.MAX_LETTERS
+        )

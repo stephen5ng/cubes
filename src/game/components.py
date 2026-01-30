@@ -13,20 +13,20 @@ from config.game_config import (
     FONT,
     SCORE_COLOR,
     TICKS_PER_SECOND,
-    FADER_PLAYER_COLORS,
     SHIELD_ACCELERATION_RATE,
     SHIELD_INITIAL_SPEED_MULTIPLIER,
     STAR_COLOR,
     EMPTY_STAR_COLOR
 )
+from config.player_config import PlayerConfig
 
 
 class Score:
     """Displays and manages player score."""
     
-    def __init__(self, the_app: app.App, player: int, rack_metrics, stars_enabled: bool) -> None:
+    def __init__(self, the_app: app.App, player_config: PlayerConfig, rack_metrics, stars_enabled: bool) -> None:
         self.the_app = the_app
-        self.player = player
+        self.player_config = player_config
         self.stars_enabled = stars_enabled
         
         # Required dependency injection - no fallback!
@@ -38,7 +38,7 @@ class Score:
              
         self.font = pygame.freetype.SysFont(FONT, font_size)
         self.pos = [0, 0]
-        self.x = SCREEN_WIDTH/3 * (player+1)
+        self.x = SCREEN_WIDTH/3 * (player_config.player_id+1)
         self.midscreen = SCREEN_WIDTH/2
         self.start()
         self.draw()
@@ -56,7 +56,7 @@ class Score:
         """Render the score text."""
         self.surface = self.font.render(str(self.score), SCORE_COLOR)[0]
         
-        if self.the_app.player_count == 1:
+        if self.player_config.player_id == -1:
             if self.stars_enabled:
                  # Right aligned (where stars were default)
                  self.pos[0] = int(SCREEN_WIDTH - self.surface.get_width() - 10)
@@ -83,7 +83,7 @@ class Score:
 class Shield:
     """Flying text shield that shows scored words."""
     
-    def __init__(self, base_pos: tuple[int, int], letters: str, score: int, player: int, now_ms: int) -> None:
+    def __init__(self, base_pos: tuple[int, int], letters: str, score: int, player: int, player_config: PlayerConfig, now_ms: int) -> None:
         self.font = pygame.freetype.SysFont("Arial", int(2+math.log(1+score)*8))
         self.letters = letters
         self.base_pos = [base_pos[0], float(base_pos[1])]
@@ -96,7 +96,7 @@ class Shield:
         self.start_time_ms = now_ms
         self.initial_speed = -math.log(1+score) * SHIELD_INITIAL_SPEED_MULTIPLIER
         self.acceleration_rate = SHIELD_ACCELERATION_RATE
-        self.surface = self.font.render(self.letters, FADER_PLAYER_COLORS[self.player])[0]
+        self.surface = self.font.render(self.letters, player_config.fader_color)[0]
         self.pos[0] = int(SCREEN_WIDTH/2 - self.surface.get_width()/2)
 
     def update(self, window: pygame.Surface, now_ms: int) -> None:

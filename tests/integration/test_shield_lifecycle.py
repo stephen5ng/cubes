@@ -26,7 +26,8 @@ from tests.fixtures.game_factory import (
     advance_frames,
     async_test,
     FRAME_DURATION_MS,
-    suppress_letter
+    suppress_letter,
+    create_shield
 )
 
 logger = logging.getLogger(__name__)
@@ -123,7 +124,7 @@ async def test_shield_creation_from_word_scoring():
 async def test_shield_sizing(score, label, min_font, max_font):
     """Shield font size scales correctly with score levels."""
     game, _mqtt, _queue = await create_test_game()
-    shield = Shield((100, RACK_TOP_Y), "TEST", score, 0, 0)
+    shield = create_shield("TEST", x=100, y=RACK_TOP_Y, health=score, player=0, created_time_ms=0)
     expected_size = calculate_expected_font_size(score)
 
     assert shield.font.size == expected_size
@@ -141,7 +142,7 @@ async def test_shield_font_size_scales_with_score():
     font_sizes = []
 
     for score in scores:
-        shield = Shield((100, RACK_TOP_Y), "TEST", score, 0, 0)
+        shield = create_shield("TEST", x=100, y=RACK_TOP_Y, health=score, player=0, created_time_ms=0)
         font_sizes.append(shield.font.size)
 
     # Each font size should be larger than the previous
@@ -160,7 +161,7 @@ async def test_shield_moves_upward_from_creation():
     suppress_letter(game)
 
     base_y = RACK_TOP_Y
-    shield = Shield((100, base_y), "SHIELD", 20, 0, 0)
+    shield = create_shield("SHIELD", x=100, y=base_y, health=20, player=0, created_time_ms=0)
     game.shields.append(shield)
 
     initial_y = shield.pos[1]
@@ -184,7 +185,7 @@ async def test_shield_animation_trajectory():
 
     score = 20
     base_y = RACK_TOP_Y
-    shield = Shield((100, base_y), "TRAJECTORY", score, 0, 0)
+    shield = create_shield("TRAJECTORY", x=100, y=base_y, health=score, player=0, created_time_ms=0)
     game.shields.append(shield)
 
     initial_base_y = shield.base_pos[1]
@@ -218,7 +219,9 @@ async def test_shield_acceleration_over_time():
     # Position letter far above screen to prevent collision during animation
     suppress_letter(game)
 
-    shield = Shield((100, RACK_TOP_Y), "ACCEL", 25, 0, 0)
+    suppress_letter(game)
+
+    shield = create_shield("ACCEL", x=100, y=RACK_TOP_Y, health=25, player=0, created_time_ms=0)
     game.shields.append(shield)
 
     # Track positions at 10-frame intervals - single continuous simulation
@@ -250,8 +253,10 @@ async def test_shield_higher_score_moves_faster():
     """Shields with higher scores have faster initial velocity."""
     game, _mqtt, _queue = await create_test_game()
 
-    low_shield = Shield((100, RACK_TOP_Y), "LOW", 5, 0, 0)
-    high_shield = Shield((200, RACK_TOP_Y), "HIGH", 50, 0, 0)
+    game, _mqtt, _queue = await create_test_game()
+
+    low_shield = create_shield("LOW", x=100, y=RACK_TOP_Y, health=5, player=0, created_time_ms=0)
+    high_shield = create_shield("HIGH", x=200, y=RACK_TOP_Y, health=50, player=0, created_time_ms=0)
 
     game.shields.extend([low_shield, high_shield])
 
@@ -275,8 +280,10 @@ async def test_shield_initial_speed_formula():
     """Shield initial speed matches formula: -log(1+score) * SHIELD_INITIAL_SPEED_MULTIPLIER."""
     game, _mqtt, _queue = await create_test_game()
 
+    game, _mqtt, _queue = await create_test_game()
+
     score = 15
-    shield = Shield((100, RACK_TOP_Y), "SPEED", score, 0, 0)
+    shield = create_shield("SPEED", x=100, y=RACK_TOP_Y, health=score, player=0, created_time_ms=0)
 
     expected_speed = -math.log(1 + score) * SHIELD_INITIAL_SPEED_MULTIPLIER
 
@@ -291,8 +298,10 @@ async def test_shield_state_active_to_inactive():
     """Shield transitions from active to inactive on collision."""
     game, _mqtt, _queue = await create_test_game()
 
+    game, _mqtt, _queue = await create_test_game()
+
     shield_x, shield_y = 100, 300
-    shield = Shield((shield_x, shield_y), "STATE", 20, 0, 0)
+    shield = create_shield("STATE", x=shield_x, y=shield_y, health=20, player=0, created_time_ms=0)
     game.shields.append(shield)
 
     # Initially active
@@ -313,7 +322,9 @@ async def test_shield_moves_offscreen_on_deactivation():
     """Shield moves off-screen when deactivated via letter_collision."""
     game, _mqtt, _queue = await create_test_game()
 
-    shield = Shield((100, 300), "OFFSCREEN", 20, 0, 0)
+    game, _mqtt, _queue = await create_test_game()
+
+    shield = create_shield("OFFSCREEN", x=100, y=300, health=20, player=0, created_time_ms=0)
 
     # Manually trigger deactivation
     shield.letter_collision()
@@ -332,7 +343,7 @@ async def test_shield_text_content_preserved():
     test_words = ["CAT", "DOGS", "AMAZING", "Q"]
 
     for word in test_words:
-        shield = Shield((100, 200), word, 10, 0, 0)
+        shield = create_shield(word, x=100, y=200, health=10, player=0, created_time_ms=0)
         assert shield.letters == word
 
         # Verify surface was rendered with the word
@@ -346,11 +357,11 @@ async def test_shield_player_ownership():
     game, _mqtt, _queue = await create_test_game()
 
     # Player 0 shield
-    shield_p0 = Shield((100, 200), "P0", 10, 0, 0)
+    shield_p0 = create_shield("P0", x=100, y=200, health=10, player=0, created_time_ms=0)
     assert shield_p0.player == 0
 
     # Player 1 shield
-    shield_p1 = Shield((100, 200), "P1", 10, 1, 0)
+    shield_p1 = create_shield("P1", x=100, y=200, health=10, player=1, created_time_ms=0)
     assert shield_p1.player == 1
 
 
@@ -360,7 +371,7 @@ async def test_shield_creation_timestamp():
     game, _mqtt, _queue = await create_test_game()
 
     creation_time = 5000  # 5 seconds
-    shield = Shield((100, 200), "TIME", 10, 0, creation_time)
+    shield = create_shield("TIME", x=100, y=200, health=10, player=0, created_time_ms=creation_time)
 
     assert shield.start_time_ms == creation_time
 
@@ -370,8 +381,10 @@ async def test_shield_horizontal_centering():
     """Shield horizontally centers itself on screen."""
     game, _mqtt, _queue = await create_test_game()
 
+    game, _mqtt, _queue = await create_test_game()
+
     # Create shield at arbitrary X position
-    shield = Shield((999, 200), "CENTER", 20, 0, 0)
+    shield = create_shield("CENTER", x=999, y=200, health=20, player=0, created_time_ms=0)
 
     # Shield should reposition X to center based on surface width
     expected_x = int(game_config.SCREEN_WIDTH / 2 - shield.surface.get_width() / 2)
@@ -385,7 +398,9 @@ async def test_inactive_shield_not_rendered():
     """Inactive shields skip rendering in update method."""
     game, _mqtt, _queue = await create_test_game()
 
-    shield = Shield((100, 200), "INACTIVE", 10, 0, 0)
+    game, _mqtt, _queue = await create_test_game()
+
+    shield = create_shield("INACTIVE", x=100, y=200, health=10, player=0, created_time_ms=0)
     game.shields.append(shield)
 
     # Deactivate shield
@@ -405,8 +420,10 @@ async def test_shield_removed_from_list_after_collision():
     """Game state removes inactive shields from the shields list."""
     game, _mqtt, _queue = await create_test_game()
 
+    game, _mqtt, _queue = await create_test_game()
+
     shield_x, shield_y = 100, 300
-    shield = Shield((shield_x, shield_y), "REMOVE", 20, 0, 0)
+    shield = create_shield("REMOVE", x=shield_x, y=shield_y, health=20, player=0, created_time_ms=0)
     game.shields.append(shield)
 
     assert len(game.shields) == 1

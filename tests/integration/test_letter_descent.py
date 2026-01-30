@@ -192,7 +192,8 @@ async def test_letter_collision_with_shield():
     game.letter.letter = "A"
     
     shield_y = game.letter.height // 2
-    new_shield = Shield(base_pos=(0, shield_y), letters="BINGO", score=100, player=0, now_ms=0)
+    from tests.fixtures.game_factory import create_shield
+    new_shield = create_shield(word="BINGO", x=0, y=shield_y, health=100, player=0, created_time_ms=0)
     game.shields.append(new_shield)
     
     game.letter.pos[1] = shield_y

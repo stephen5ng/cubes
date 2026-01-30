@@ -8,7 +8,9 @@ import easing_functions
 
 from core import app
 from core import tiles
+from core import tiles
 from config import game_config
+from config.player_config import PlayerConfigManager
 from hardware import cubes_to_game
 import os
 import subprocess
@@ -64,9 +66,20 @@ class Game:
         # Required dependency injection - no defaults!
         self.sound_manager = sound_manager
         self.rack_metrics = rack_metrics
+        self.player_config_manager = PlayerConfigManager(rack_metrics.letter_width)
+        
+        # Initial configs: P0 starts as Single Player (-1), P1 is configured as P1 (1)
+        # but inactive until 2-player mode starts.
+        configs = [
+            self.player_config_manager.get_single_player_config(),
+            self.player_config_manager.get_config(1)
+        ]
 
         # Now create components that depend on injected dependencies
-        self.scores = [Score(the_app, player, self.rack_metrics, stars_enabled=stars) for player in range(game_config.MAX_PLAYERS)]
+        self.scores = [
+            Score(the_app, configs[player], self.rack_metrics, stars_enabled=stars) 
+            for player in range(game_config.MAX_PLAYERS)
+        ]
         if stars:
             self.stars_display = StarsDisplay(self.rack_metrics, min_win_score=self.min_win_score, sound_manager=self.sound_manager)
         else:
@@ -74,9 +87,12 @@ class Game:
         letter_y = self.scores[0].get_size()[1] + 4
 
         self.letter = Letter(letter_font, letter_y, self.rack_metrics, self.output_logger, letter_beeps, letter_strategy)
-        self.racks = [RackDisplay(the_app, self.rack_metrics, self.letter, player) for player in range(game_config.MAX_PLAYERS)]
+        self.racks = [
+            RackDisplay(the_app, self.rack_metrics, self.letter, configs[player]) 
+            for player in range(game_config.MAX_PLAYERS)
+        ]
         self.guess_to_player = {}
-        self.guesses_manager = PreviousGuessesManager(self.guess_to_player)
+        self.guesses_manager = PreviousGuessesManager(self.guess_to_player, self.player_config_manager)
         self.spawn_source = LetterSource(
             self.letter,
             self.rack_metrics.get_rect().x, self.rack_metrics.get_rect().width,
@@ -194,6 +210,13 @@ class Game:
                     return -1
 
                 self._app.player_count = 2
+                
+                # Switch P0 to multiplayer configuration
+                p0_config = self.player_config_manager.get_config(0)
+                self.racks[0].player_config = p0_config
+                self.scores[0].player_config = p0_config
+                self.scores[0].start() # Re-draw with new config/position
+                self.racks[0].draw()   # Re-draw rack
                 self.input_devices.append(str(input_device))
                 self._draw_all_players()
                 # Load letters for both players when entering 2-player mode
@@ -201,12 +224,20 @@ class Game:
                 return 1
 
         self._app.player_count = 1
+        
+        # Reset P0 to single player configuration
+        single_config = self.player_config_manager.get_single_player_config()
+        self.racks[0].player_config = single_config
+        self.scores[0].player_config = single_config
+        self.scores[0].start()
+        self.racks[0].draw()
+
         print(f"{now_ms} starting new game with input_device: {input_device}")
         self.input_devices = [str(input_device)]
         print(f"ADDED {str(input_device)} in self.input_devices: {str(input_device) in self.input_devices}")
 
         self.guess_to_player = {}
-        self.guesses_manager = PreviousGuessesManager(self.guess_to_player)
+        self.guesses_manager = PreviousGuessesManager(self.guess_to_player, self.player_config_manager)
         print(f"start_cubes: starting letter {now_ms}")
         self.letter.start(now_ms)
         if self.recovery_tracker:
@@ -230,7 +261,14 @@ class Game:
         """Stage a good guess with shield animation."""
         await self.sound_manager.queue_word_sound(last_guess, player)
         self.racks[player].guess_type = GuessType.GOOD
-        self.shields.append(Shield(self.rack_metrics.get_rect().topleft, last_guess, score, player, now_ms))
+        self.shields.append(Shield(
+            self.rack_metrics.get_rect().topleft, 
+            last_guess, 
+            score, 
+            player,
+            self.racks[player].player_config, 
+            now_ms
+        ))
 
     async def accept_letter(self, now_ms: int) -> None:
         """Accept the falling letter into the rack."""

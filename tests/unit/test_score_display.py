@@ -4,9 +4,11 @@ from unittest.mock import MagicMock, patch
 from game.components import Score
 from config import game_config
 from config.game_config import SCREEN_WIDTH
+from config.player_config import PlayerConfigManager
 
 class MockRackMetrics:
     LETTER_SIZE = 20
+    letter_width = 20
 
 @pytest.fixture
 def mock_app():
@@ -20,10 +22,11 @@ def test_score_initialization(mock_app):
     with patch('pygame.init', pygame_init_mock), \
          patch('pygame.freetype.SysFont') as mock_font_cls:
         
-        score = Score(mock_app, 0, MockRackMetrics(), stars_enabled=False)
-        score = Score(mock_app, 0, MockRackMetrics(), stars_enabled=False)
+        manager = PlayerConfigManager(20)
+        config = manager.get_config(0)
+        score = Score(mock_app, config, MockRackMetrics(), stars_enabled=False)
         assert score.score == 0
-        assert score.player == 0
+        assert score.player_config.player_id == 0
         
         # Verify default font size
         mock_font_cls.assert_called_with(game_config.FONT, MockRackMetrics.LETTER_SIZE)
@@ -37,7 +40,9 @@ def test_score_position_single_player_no_stars(mock_app):
         mock_surface.get_width.return_value = 100
         mock_font.render.return_value = (mock_surface, MagicMock())
 
-        score = Score(mock_app, 0, MockRackMetrics(), stars_enabled=False)
+        manager = PlayerConfigManager(20)
+        config = manager.get_single_player_config()
+        score = Score(mock_app, config, MockRackMetrics(), stars_enabled=False)
         
         # Center: SCREEN_WIDTH/2 - width/2
         expected_x = int(SCREEN_WIDTH/2 - 100/2)
@@ -58,7 +63,9 @@ def test_score_position_single_player_with_stars(mock_app):
         mock_surface.get_height.return_value = 10
         mock_font.render.return_value = (mock_surface, MagicMock())
 
-        score = Score(mock_app, 0, MockRackMetrics(), stars_enabled=True)
+        manager = PlayerConfigManager(20)
+        config = manager.get_single_player_config()
+        score = Score(mock_app, config, MockRackMetrics(), stars_enabled=True)
         
         # Verify reduced font size
         # 20 * 0.8 = 16
@@ -80,14 +87,15 @@ def test_score_position_multiplayer(mock_app):
         mock_surface.get_width.return_value = 100
         mock_font.render.return_value = (mock_surface, MagicMock())
 
+        manager = PlayerConfigManager(20)
         # Player 0
-        score_p0 = Score(mock_app, 0, MockRackMetrics(), stars_enabled=False)
+        score_p0 = Score(mock_app, manager.get_config(0), MockRackMetrics(), stars_enabled=False)
         # x = SCREEN_WIDTH/3 * (0+1) = SCREEN_WIDTH/3
         expected_x_p0 = int((SCREEN_WIDTH/3) - 100/2)
         assert score_p0.pos[0] == expected_x_p0
 
         # Player 1
-        score_p1 = Score(mock_app, 1, MockRackMetrics(), stars_enabled=False)
+        score_p1 = Score(mock_app, manager.get_config(1), MockRackMetrics(), stars_enabled=False)
         # x = SCREEN_WIDTH/3 * (1+1) = 2*SCREEN_WIDTH/3
         expected_x_p1 = int((2*SCREEN_WIDTH/3) - 100/2)
         assert score_p1.pos[0] == expected_x_p1

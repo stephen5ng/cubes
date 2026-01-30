@@ -7,9 +7,10 @@ from rendering import text_renderer as textrect
 from config import game_config
 from config.game_config import (
     SCREEN_WIDTH, SCREEN_HEIGHT,
-    OLD_GUESS_COLOR, SHIELD_COLOR_P0, SHIELD_COLOR_P1,
-    FADER_COLOR_P0, FADER_COLOR_P1, REMAINING_PREVIOUS_GUESSES_COLOR
+    SCREEN_WIDTH, SCREEN_HEIGHT,
+    OLD_GUESS_COLOR, REMAINING_PREVIOUS_GUESSES_COLOR
 )
+from config.player_config import PlayerConfigManager
 from ui.guess_faders import FaderManager, LastGuessFader
 import logging
 
@@ -36,11 +37,10 @@ class PreviousGuessesDisplay(PreviousGuessesDisplayBase):
     POSITION_TOP = 24
     FADE_DURATION_NEW_GUESS = 2000
     FADE_DURATION_OLD_GUESS = 500
-    PLAYER_COLORS = [SHIELD_COLOR_P0, SHIELD_COLOR_P1]  # Static array for player colors
-    FADER_PLAYER_COLORS = [FADER_COLOR_P0, FADER_COLOR_P1]
 
-    def __init__(self, font_size: int, guess_to_player: dict[str, int]) -> None:
+    def __init__(self, font_size: int, guess_to_player: dict[str, int], config_manager: PlayerConfigManager) -> None:
         super().__init__(font_size)
+        self.config_manager = config_manager
         self.fader_inputs = []
         self.previous_guesses = []
         self.bloop_sound = pygame.mixer.Sound("./sounds/bloop.wav")
@@ -53,7 +53,7 @@ class PreviousGuessesDisplay(PreviousGuessesDisplayBase):
     @classmethod
     def from_instance(cls, instance: 'PreviousGuessesDisplay', font_size: int, now_ms: int) -> 'PreviousGuessesDisplay':
         """Create a new instance from an existing one with a new font size."""
-        new_instance = cls(font_size, instance.guess_to_player)
+        new_instance = cls(font_size, instance.guess_to_player, instance.config_manager)
         new_instance.previous_guesses = instance.previous_guesses
         new_instance.fader_inputs = instance.fader_inputs
         new_instance.bloop_sound = instance.bloop_sound
@@ -77,9 +77,14 @@ class PreviousGuessesDisplay(PreviousGuessesDisplayBase):
 
     def draw(self, animate: bool = False) -> None:
         """Draw the previous guesses display."""
+        colors = []
+        for guess in self.previous_guesses:
+            player_id = self.guess_to_player.get(guess, 0)
+            colors.append(self.config_manager.get_config(player_id).shield_color)
+
         self.surface = self._text_rect_renderer.render(
             self.previous_guesses,
-            [self.PLAYER_COLORS[self.guess_to_player.get(guess, 0)] for guess in self.previous_guesses],
+            colors,
             animate=animate)
 
     def old_guess(self, old_guess: str, now_ms: int) -> None:
@@ -95,17 +100,18 @@ class PreviousGuessesDisplay(PreviousGuessesDisplayBase):
 
     def add_guess(self, previous_guesses: list[str], guess: str, player: int, now_ms: int) -> None:
         """Add a new guess and update the display."""
+        fader_color = self.config_manager.get_config(player).fader_color
         self.fader_inputs.append(
-            [guess, now_ms, self.FADER_PLAYER_COLORS[player], PreviousGuessesDisplay.FADE_DURATION_NEW_GUESS])
+            [guess, now_ms, fader_color, PreviousGuessesDisplay.FADE_DURATION_NEW_GUESS])
         self.update_previous_guesses(previous_guesses, now_ms)
         self._try_add_fader(guess,
-                            self.FADER_PLAYER_COLORS[player],
+                            fader_color,
                             PreviousGuessesDisplay.FADE_DURATION_NEW_GUESS,
                             now_ms)
 
     def new_guess(self, new_guess: str, player: int, now_ms: int) -> None:
         """Handle display of a new guess with fade effect."""
-        fader_color = self.FADER_PLAYER_COLORS[player]
+        fader_color = self.config_manager.get_config(player).fader_color
         self.fader_inputs.append(
             [new_guess, now_ms, fader_color, PreviousGuessesDisplay.FADE_DURATION_NEW_GUESS])
         self._try_add_fader(new_guess,
@@ -148,11 +154,10 @@ class RemainingPreviousGuessesDisplay(PreviousGuessesDisplayBase):
 
     COLOR = pygame.Color("grey")
     TOP_GAP = 3
-    PLAYER_COLORS = [pygame.Color(SHIELD_COLOR_P0.r, SHIELD_COLOR_P0.g, SHIELD_COLOR_P0.b, 192),
-                     pygame.Color(SHIELD_COLOR_P1.r, SHIELD_COLOR_P1.g, SHIELD_COLOR_P1.b, 192)]  # Static array for player colors with 0.5 alpha
 
-    def __init__(self, font_size: int, guess_to_player: dict[str, int]) -> None:
+    def __init__(self, font_size: int, guess_to_player: dict[str, int], config_manager: PlayerConfigManager) -> None:
         super().__init__(font_size)
+        self.config_manager = config_manager
         self.guess_to_player = guess_to_player
         self.color = REMAINING_PREVIOUS_GUESSES_COLOR
         self.surface = pygame.Surface((0, 0))
@@ -161,7 +166,7 @@ class RemainingPreviousGuessesDisplay(PreviousGuessesDisplayBase):
     @classmethod
     def from_instance(cls, instance: 'RemainingPreviousGuessesDisplay', font_size: int) -> 'RemainingPreviousGuessesDisplay':
         """Create a new instance from an existing one with a new font size."""
-        new_instance = cls(font_size, instance.guess_to_player)
+        new_instance = cls(font_size, instance.guess_to_player, instance.config_manager)
         new_instance.remaining_guesses = instance.remaining_guesses
         # Copy animation state
         new_instance._text_rect_renderer.animation_time = instance._text_rect_renderer.animation_time
@@ -189,9 +194,15 @@ class RemainingPreviousGuessesDisplay(PreviousGuessesDisplayBase):
 
     def draw(self, animate: bool = False) -> None:
         """Draw the remaining previous guesses display."""
+        colors = []
+        for guess in self.remaining_guesses:
+            player_id = self.guess_to_player.get(guess, 0)
+            base_color = self.config_manager.get_config(player_id).shield_color
+            colors.append(pygame.Color(base_color.r, base_color.g, base_color.b, 192))
+
         self.surface = self._text_rect_renderer.render(
             self.remaining_guesses,
-            [self.PLAYER_COLORS[self.guess_to_player.get(guess, 0)] for guess in self.remaining_guesses],
+            colors,
             animate=animate)
 
 
@@ -200,12 +211,13 @@ class PreviousGuessesManager:
 
     DEFAULT_FONT_SIZE = 30
 
-    def __init__(self, guess_to_player: dict[str, int]) -> None:
+    def __init__(self, guess_to_player: dict[str, int], config_manager: PlayerConfigManager) -> None:
         self.font_size_delta = game_config.FONT_SIZE_DELTA
         self.guess_to_player = guess_to_player
-        self.previous_guesses_display = PreviousGuessesDisplay(self.DEFAULT_FONT_SIZE, guess_to_player)
+        self.config_manager = config_manager
+        self.previous_guesses_display = PreviousGuessesDisplay(self.DEFAULT_FONT_SIZE, guess_to_player, config_manager)
         self.remaining_previous_guesses_display = RemainingPreviousGuessesDisplay(
-            self.DEFAULT_FONT_SIZE - self.font_size_delta, guess_to_player)
+            self.DEFAULT_FONT_SIZE - self.font_size_delta, guess_to_player, config_manager)
 
     def resize(self, now_ms: int) -> None:
         """Resize both displays to fit more words."""

@@ -35,10 +35,10 @@ class TestPreviousGuessesManager(unittest.TestCase):
         self.mock_remaining_instance.surface = MagicMock()
         self.mock_remaining_instance.surface.get_bounding_rect.return_value = self.mock_remaining_rect
         
-        self.mock_previous_instance.get_line_height.return_value = 30
         self.mock_previous_instance.font.get_sized_height.return_value = 30
         
-        self.manager = PreviousGuessesManager(guess_to_player={})
+        self.mock_config_manager = MagicMock()
+        self.manager = PreviousGuessesManager(guess_to_player={}, config_manager=self.mock_config_manager)
         # Manually wire up the mocks to the manager instance (init replaced them)
         self.manager.previous_guesses_display = self.mock_previous_instance
         self.manager.remaining_previous_guesses_display = self.mock_remaining_instance

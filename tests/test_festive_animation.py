@@ -3,6 +3,7 @@ import pygame
 import pygame.freetype
 from rendering.text_renderer import TextRectRenderer, VICTORY_PALETTE
 from ui.guess_display import PreviousGuessesDisplay
+from config.player_config import PlayerConfigManager
 
 def test_victory_animation_state():
     """Verify TextRectRenderer handles animation time and bouncing."""
@@ -39,7 +40,10 @@ def test_festive_display_drive():
         pygame.font.init()
         
     font_size = 20
-    display = PreviousGuessesDisplay(font_size, {})
+    
+    config_manager = PlayerConfigManager(letter_width=20)
+    
+    display = PreviousGuessesDisplay(font_size, {}, config_manager=config_manager)
     
     # Add content
     display.add_guess(["TEST"], "TEST", 0, 0)
