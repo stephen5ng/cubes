@@ -36,14 +36,14 @@ async def test_festive_animation_on_game_over():
     assert game.running is True
     assert renderer.animation_time == initial_time
     
-    # 2. Stop game (Game Over)
-    await game.stop(0, exit_code=0)
+    # 2. Stop game (Game Over - WIN)
+    await game.stop(0, exit_code=10)
     assert game.running is False
     
     # 3. Update after game over
     await game.update(window, 0)
     
-    # Should HAVE animated because game.running is False and we are within 15s
+    # Should HAVE animated because it is a WIN
     assert renderer.animation_time > initial_time
     
     # 4. Advance time > 15s
@@ -55,3 +55,36 @@ async def test_festive_animation_on_game_over():
     
     # Should stop animating
     assert renderer.animation_time == current_time
+
+@async_test
+async def test_no_festive_animation_on_loss():
+    """Verify that festive animation DOES NOT start on loss (exit_code != 10)."""
+    game, mqtt, queue = await create_test_game(player_count=1)
+    
+    await game.start_cubes(0)
+    
+    # Manually set rack tiles to make "TEST" a valid guess
+    from core.tiles import Tile
+    rack = game._app.rack_manager.get_rack(0)
+    rack.set_tiles([Tile(id=str(i), letter=l) for i, l in enumerate("TEST!!")])
+
+    # Add a guess so there is something to animate
+    game._app.add_guess("TEST", 0)
+    await asyncio.sleep(0.1)
+    
+    import pygame
+    window = pygame.Surface((800, 600))
+    
+    renderer = game.guesses_manager.previous_guesses_display._text_rect_renderer
+    initial_time = renderer.animation_time
+    
+    # 1. Stop game (Game Over - LOSS/NUKE)
+    # Using exit_code 11 (which typically means Nuke/Loss)
+    await game.stop(0, exit_code=11)
+    assert game.running is False
+    
+    # 2. Update after game over
+    await game.update(window, 0)
+    
+    # Should NOT have animated despite game over
+    assert renderer.animation_time == initial_time

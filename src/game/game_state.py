@@ -300,7 +300,8 @@ class Game:
         game_over_animate = False
         if not self.running:
             time_since_over = (now_ms / 1000.0) - self.stop_time_s
-            if time_since_over < 15.0:
+            # Only animate (rainbow) if it's a WIN (exit_code == 10)
+            if self.exit_code == 10 and time_since_over < 15.0:
                 game_over_animate = True
 
         # Only enable melting if racks have been properly initialized (surfaces exist)
