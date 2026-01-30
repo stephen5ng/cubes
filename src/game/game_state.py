@@ -24,6 +24,7 @@ from input.input_devices import InputDevice, CubesInput
 from rendering.animations import LetterSource, PositionTracker, LETTER_SOURCE_RECOVERY
 from rendering.metrics import RackMetrics
 from rendering.rack_display import RackDisplay
+from rendering.melt_effect import MeltEffect
 from systems.sound_manager import SoundManager
 from ui.guess_display import PreviousGuessesManager
 
@@ -95,11 +96,11 @@ class Game:
         # Initialize time tracking
         self.start_time_s = 0
         self.stop_time_s = 0
+        self.last_letter_time_s = 0.0
         self.exit_code = 0
-        
+
         # Melting effect state
-        self.melt_surface = None
-        self.melt_columns = []
+        self.melt_effect: Optional[MeltEffect] = None
 
         events.on("game.stage_guess")(self.stage_guess)
         events.on("game.old_guess")(self.old_guess)
@@ -113,6 +114,30 @@ class Game:
         events.on("rack.update_rack")(self.update_rack)
         events.on("rack.update_letter")(self.update_letter)
 
+    def _draw_all_players(self) -> None:
+        """Draw scores and racks for all players."""
+        for player in range(self._app.player_count):
+            self.scores[player].draw()
+            self.racks[player].draw()
+
+    def _update_all_scores(self, window: pygame.Surface) -> None:
+        """Update display for all player scores."""
+        for player in range(self._app.player_count):
+            self.scores[player].update(window)
+
+    def _update_all_racks(self, window: pygame.Surface, now_ms: int) -> None:
+        """Update display for all player racks."""
+        for player in range(self._app.player_count):
+            self.racks[player].update(window, now_ms)
+
+    def _update_racks_preserving_running_state(self, window: pygame.Surface, now_ms: int) -> None:
+        """Update racks while preserving their running state (used for game-over capture)."""
+        for player in range(self._app.player_count):
+            if hasattr(self.racks[player], 'surface') and self.racks[player].surface is not None:
+                original_running = self.racks[player].running
+                self.racks[player].running = True
+                self.racks[player].update(window, now_ms)
+                self.racks[player].running = original_running
 
     async def update_rack(self, tiles: list[tiles.Tile], highlight_length: int, guess_length: int, player: int, now_ms: int) -> None:
         """Update rack display for a player."""
@@ -170,9 +195,7 @@ class Game:
 
                 self._app.player_count = 2
                 self.input_devices.append(str(input_device))
-                for player in range(2):
-                    self.scores[player].draw()
-                    self.racks[player].draw()
+                self._draw_all_players()
                 # Load letters for both players when entering 2-player mode
                 await self._app.load_rack(now_ms)
                 return 1
@@ -285,7 +308,7 @@ class Game:
 
         if not self.running and self.exit_code != 10 and racks_initialized:
              # Melting logic for "Game Lost"
-             if self.melt_surface is None:
+             if self.melt_effect is None:
                   # First frame of loss: Capture the screen
                   # Note: 'window' might be black here since run_single_frame clears it.
                   # We should redraw everything one last time to capture the final state.
@@ -293,60 +316,22 @@ class Game:
                   # Re-draw the scene as if the game were running for one frame
                   window.fill((0, 0, 0))
                   self.guesses_manager.update(window, now_ms, game_over=game_over_animate)
-                  
-                  # Force racks to draw their letters, even though self.running is False
-                  # RackDisplay.update normally draws "GAME OVER" if !running.
-                  # We manually update_rack or call internal methods if needed?
-                  # RackDisplay.update checks self.running. 
-                  # But Game.stop() called rack.stop() which set rack.running=False.
-                  # So rack.update will draw GAME OVER.
-                  # We want to capture the letters.
-                  
-                  # Hack: temporarily set running=True for racks to draw them
-                  for player in range(self._app.player_count):
-                       if hasattr(self.racks[player], 'surface') and self.racks[player].surface is not None:
-                           original_running = self.racks[player].running
-                           self.racks[player].running = True
-                           self.racks[player].update(window, now_ms)
-                           self.racks[player].running = original_running
-                  
+
+                  # Force racks to draw their letters instead of "GAME OVER" text
+                  self._update_racks_preserving_running_state(window, now_ms)
+
                   for shield in self.shields:
                       shield.update(window, now_ms)
-                  
-                  for player in range(self._app.player_count):
-                      self.scores[player].update(window)
 
-                  self.melt_surface = window.copy()
-                  
-                  # Initialize melt columns
-                  width, height = self.melt_surface.get_size()
-                  self.melt_columns = []
-                  for x in range(width):
-                      self.melt_columns.append({
-                          'y': 0.0,
-                          'vel': 0.0,                        # Start stationary
-                          'acc': random.uniform(0.1, 0.3),  # Gravity variance
-                          'delay': random.uniform(0, 20)    # Start delay frames
-                      })
+                  self._update_all_scores(window)
+
+                  self.melt_effect = MeltEffect(window)
              
              # Render Melt (on subsequent frames only)
-             elif self.melt_surface is not None:
+             else:
                  window.fill((0, 0, 0))
-                 width, height = self.melt_surface.get_size()
-
-                 # Update and Draw
-                 for x in range(width):
-                     col = self.melt_columns[x]
-                     if col['delay'] > 0:
-                         col['delay'] -= 1
-                     else:
-                         col['vel'] += col['acc']
-                         col['y'] += col['vel']
-
-                     # Draw column at new position (pygame will clip if off-screen)
-                     dest_y = int(col['y'])
-                     if dest_y < height:
-                         window.blit(self.melt_surface, (x, dest_y), area=pygame.Rect(x, 0, 1, height))
+                 self.melt_effect.update()
+                 self.melt_effect.draw(window)
 
                  # Draw stars on top of the melt (so they don't melt)
                  self.stars_display.update(window, now_ms)
@@ -407,8 +392,7 @@ class Game:
                 if await self._app.letter_lock(self.letter.letter_index(), self.letter.locked_on, now_ms):
                     incidents.append("letter_lock")
 
-        for player in range(self._app.player_count):
-            self.racks[player].update(window, now_ms)
+        self._update_all_racks(window, now_ms)
         for shield in self.shields:
             shield.update(window, now_ms)
             if shield.rect.y <= self.letter.get_screen_bottom_y():
@@ -436,8 +420,7 @@ class Game:
 
 
         self.shields[:] = [s for s in self.shields if s.active]
-        for player in range(self._app.player_count):
-            self.scores[player].update(window)
+        self._update_all_scores(window)
         self.stars_display.update(window, now_ms)
 
         # letter collide with rack
