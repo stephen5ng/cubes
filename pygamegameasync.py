@@ -47,7 +47,6 @@ from config.game_config import (
     RACK_COLOR, SCORE_COLOR,
     REMAINING_PREVIOUS_GUESSES_COLOR, PREVIOUS_GUESSES_COLOR
 )
-from testing.game_replayer import GameReplayer
 from ui.guess_faders import LastGuessFader, FaderManager
 from ui.guess_display import (
     PreviousGuessesDisplayBase,
@@ -64,14 +63,8 @@ from game.descent_strategy import DescentStrategy
 logger = logging.getLogger(__name__)
 
 
-# get_alpha function moved to src/rendering/animations.py
-# GuessType enum moved to src/game/letter.py
-# Input device classes moved to src/input/input_devices.py
-# RackMetrics class moved to src/rendering/metrics.py
-# Letter class moved to src/game/letter.py
-# RackDisplay class moved to src/rendering/rack_display.py
-# Game class moved to src/game/game_state.py
-
+from input.input_manager import InputManager
+from input.keyboard_handler import KeyboardHandler
 
 class BlockWordsPygame:
     def __init__(self,
@@ -97,27 +90,28 @@ class BlockWordsPygame:
         self._mock_mqtt_client = None
         self.continuous = continuous
         self.one_round = one_round
-        self._mock_mqtt_client = None
-        self.continuous = continuous
-        self.one_round = one_round
         self.min_win_score = min_win_score
         self.stars = stars
         self._has_auto_started = False
+        
+        self.input_manager = InputManager(replay_file)
+        self.keyboard_handler = None  # Initialized in setup_game
 
     def get_mock_mqtt_client(self):
         """Get the mock MQTT client for replay mode."""
         if not self._mock_mqtt_client and self.replay_file:
-            self.replayer = GameReplayer(self.replay_file)
-            self.replayer.load_events()
-            # Override settings from replay metadata if available
-            if self.replayer.descent_mode is not None:
-                self.descent_mode = self.replayer.descent_mode
-            if self.replayer.timed_duration_s is not None:
-                self.descent_duration_s = self.replayer.timed_duration_s
-            print(f"Replay config: descent_mode={self.descent_mode}, descent_duration_s={self.descent_duration_s}")
-            # Create mock client with MQTT events only
-            mqtt_events = [e for e in self.replayer.events if hasattr(e, 'mqtt')]
-            self._mock_mqtt_client = MockMqttClient(mqtt_events)
+            # Replayer is already initialized in InputManager
+            replayer = self.input_manager.replayer
+            if replayer:
+                # Override settings from replay metadata if available
+                if replayer.descent_mode is not None:
+                    self.descent_mode = replayer.descent_mode
+                if replayer.timed_duration_s is not None:
+                    self.descent_duration_s = replayer.timed_duration_s
+                print(f"Replay config: descent_mode={self.descent_mode}, descent_duration_s={self.descent_duration_s}")
+                # Create mock client with MQTT events only
+                mqtt_events = [e for e in replayer.events if hasattr(e, 'mqtt')]
+                self._mock_mqtt_client = MockMqttClient(mqtt_events)
         return self._mock_mqtt_client
 
     async def handle_mqtt_message(self, topic_str: str, payload, now_ms: int) -> None:
@@ -141,97 +135,7 @@ class BlockWordsPygame:
             # print(f"!!!-----> message: {message}")
             await cubes_to_game.handle_mqtt_message(self._publish_queue, message, now_ms, self.game.sound_manager)
 
-    async def start_game(self, input_device: InputDevice, now_ms: int):
-        return await self.input_controller.start_game(input_device, now_ms)
 
-    async def handle_keyboard_event(self, key: str, keyboard_input: KeyboardInput, now_ms: int) -> None:
-        """Handle keyboard events for the game."""
-        if key == "ESCAPE":
-            print("starting due to ESC")
-            keyboard_input.player_number = await self.start_game(keyboard_input, now_ms)
-            return
-
-        if keyboard_input.player_number is None:
-            return
-
-        elif key == "LEFT":
-            self.input_controller.handle_left_movement(keyboard_input)
-        elif key == "RIGHT":
-            self.input_controller.handle_right_movement(keyboard_input)
-        elif key == "SPACE":
-            await self.input_controller.handle_space_action(keyboard_input, now_ms)
-        elif key == "BACKSPACE":
-            if keyboard_input.current_guess:
-                keyboard_input.current_guess = keyboard_input.current_guess[:-1]
-                self.game.racks[keyboard_input.player_number].select_count = len(keyboard_input.current_guess)
-                self.game.racks[keyboard_input.player_number].draw()
-        elif key == "RETURN":
-            self.input_controller.handle_return_action(keyboard_input)
-        elif key == "TAB":
-            self.the_app.player_count = 1 if self.the_app.player_count == 2 else 2
-            for player in range(game_config.MAX_PLAYERS):
-                self.game.scores[player].draw()
-                self.game.racks[player].draw()
-        elif len(key) == 1:
-            # print(f"player_number: {keyboard_input.player_number}")
-            remaining_letters = list(self.game.racks[keyboard_input.player_number].letters())
-            for l in keyboard_input.current_guess:
-                if l in remaining_letters:
-                    remaining_letters.remove(l)
-            if key not in remaining_letters:
-                keyboard_input.current_guess = ""
-                self.game.racks[keyboard_input.player_number].select_count = len(keyboard_input.current_guess)
-                remaining_letters = list(self.game.racks[keyboard_input.player_number].letters())
-            if key in remaining_letters:
-                keyboard_input.current_guess += key
-                await self.the_app.guess_word_keyboard(keyboard_input.current_guess, keyboard_input.player_number, now_ms)
-                self.game.racks[keyboard_input.player_number].select_count = len(keyboard_input.current_guess)
-                logger.info(f"key: {str(key)} {keyboard_input.current_guess}")
-
-    def _get_mqtt_events(self, mqtt_message_queue: asyncio.Queue) -> list:
-        mqtt_events = []
-        try:
-            while not mqtt_message_queue.empty():
-                mqtt_message = mqtt_message_queue.get_nowait()
-                event = {'topic': str(mqtt_message.topic),
-                         'payload': mqtt_message.payload.decode() if mqtt_message.payload else None}
-                # print(f"adding to quee {event}")
-                mqtt_events.append(event)
-        except asyncio.QueueEmpty:
-            pass
-        return mqtt_events
-
-    def _get_pygame_events(self):
-        pygame_events = []
-        for pygame_event in pygame.event.get():
-            if pygame_event.type == pygame.QUIT:
-                pygame_events.append({"type": "QUIT"})
-            elif pygame_event.type == pygame.KEYDOWN:
-                pygame_events.append({
-                    "type": "KEYDOWN",
-                    "key": pygame.key.name(pygame_event.key).upper()
-                })
-            elif pygame_event.type == pygame.JOYAXISMOTION:
-                pygame_events.append({
-                    "type": "JOYAXISMOTION",
-                    "axis": pygame_event.axis,
-                    "value": pygame_event.value
-                })
-            elif pygame_event.type == pygame.JOYBUTTONDOWN:
-                pygame_events.append({
-                    "type": "JOYBUTTONDOWN",
-                    "button": pygame_event.button,
-                })
-        return pygame_events
-
-    def _get_replay_events(self, pygame_events: list, mqtt_events: list) -> int:
-        replay_events = self.replayer.events.pop()
-        now_ms = replay_events['timestamp_ms']
-        if 'pygame' in replay_events['events']:
-            pygame_events.extend(replay_events['events']['pygame'])
-        if 'mqtt' in replay_events['events']:
-            mqtt_events.extend(replay_events['events']['mqtt'])
-        return now_ms
 
     async def _handle_pygame_events(self, pygame_events, keyboard_input, input_devices, now_ms, events_to_log):
         for pygame_event in pygame_events:
@@ -244,7 +148,7 @@ class BlockWordsPygame:
                 return True
 
             if event_type == "KEYDOWN":
-                await self.handle_keyboard_event(pygame_event['key'], keyboard_input, now_ms)
+                await self.keyboard_handler.handle_event(pygame_event['key'], keyboard_input, now_ms)
             
             if 'JOY' in event_type:
                 for input_device in input_devices: 
@@ -261,10 +165,9 @@ class BlockWordsPygame:
         screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         clock = Clock()
 
-        self.replayer = GameReplayer(self.replay_file)
         if self.replay_file:
-            self.replayer.load_events()
-            print(f"Replay mode: loaded {len(self.replayer.events)} events from {self.replay_file}")
+            if self.input_manager.replayer and self.input_manager.replayer.events:
+                 print(f"Replay mode: loaded {len(self.input_manager.replayer.events)} events from {self.replay_file}")
             mqtt_client = self.get_mock_mqtt_client()
         else:
             await subscribe_client.subscribe("app/#")
@@ -306,6 +209,8 @@ class BlockWordsPygame:
             'return': self.input_controller.handle_return_action,
             'start': self.input_controller.start_game,
         }
+        
+        self.keyboard_handler = KeyboardHandler(self.game, the_app, self.input_controller)
 
         keyboard_input = KeyboardInput(handlers)
         input_devices = [keyboard_input]
@@ -347,7 +252,7 @@ class BlockWordsPygame:
         # Handle auto-start for non-continuous mode
         if not self.continuous and not self.replay_file and not self.game.running and not self._has_auto_started:
             print("Auto-starting game (non-continuous mode)")
-            keyboard_input.player_number = await self.start_game(keyboard_input, now_ms)
+            keyboard_input.player_number = await self.input_controller.start_game(keyboard_input, now_ms)
             self._has_auto_started = True
 
         # Handle auto-exit for non-continuous mode
@@ -363,8 +268,8 @@ class BlockWordsPygame:
             await events.stop()
             return True, time_offset, 1
 
-        pygame_events = self._get_pygame_events()
-        mqtt_events = self._get_mqtt_events(mqtt_message_queue)
+        pygame_events = self.input_manager.get_pygame_events()
+        mqtt_events = self.input_manager.get_mqtt_events(mqtt_message_queue)
         events_to_log = {}
         if pygame_events:
             events_to_log['pygame'] = pygame_events
@@ -372,8 +277,8 @@ class BlockWordsPygame:
         if mqtt_events:
             events_to_log['mqtt'] = mqtt_events
 
-        if self.replayer.events:
-            now_ms = time_offset = self._get_replay_events(pygame_events, mqtt_events)
+        if self.input_manager.has_replay_events_remaining():
+            now_ms = time_offset = self.input_manager.get_replay_events(pygame_events, mqtt_events)
         elif self.replay_file:
             print("Replay events exhausted. Exiting.")
             return True, time_offset, 0

@@ -32,7 +32,11 @@ def test_auto_start_assigns_player_number():
         block_words.game = MagicMock()
         block_words.game.running = False
         block_words.game.stop_time_s = 0
-        block_words.start_game = MagicMock(side_effect=mock_start_game)
+        block_words.game.running = False
+        block_words.game.stop_time_s = 0
+        
+        block_words.input_controller = MagicMock()
+        block_words.input_controller.start_game = MagicMock(side_effect=mock_start_game)
         
         # Mock inputs
         handlers = {}
@@ -56,7 +60,7 @@ def test_auto_start_assigns_player_number():
         )
         
         # Assert
-        block_words.start_game.assert_called_once()
+        block_words.input_controller.start_game.assert_called_once()
         assert keyboard_input.player_number == 0
         assert block_words._has_auto_started is True
 

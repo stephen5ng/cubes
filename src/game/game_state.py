@@ -130,6 +130,28 @@ class Game:
         events.on("rack.update_rack")(self.update_rack)
         events.on("rack.update_letter")(self.update_letter)
 
+    def toggle_player_count(self) -> None:
+        """Toggle between 1 and 2 player modes and update configurations."""
+        new_count = 1 if self._app.player_count == 2 else 2
+        self._app.player_count = new_count
+        
+        # Update configs based on new count
+        if new_count == 2:
+            p0_config = self.player_config_manager.get_config(0)
+            self.racks[0].player_config = p0_config
+            self.scores[0].player_config = p0_config
+        else:
+            single_config = self.player_config_manager.get_single_player_config()
+            self.racks[0].player_config = single_config
+            self.scores[0].player_config = single_config
+            
+        # Redraw all components
+        for player in range(game_config.MAX_PLAYERS):
+            if player < len(self.scores):
+                self.scores[player].start()  # Redraws with new config
+            if player < len(self.racks):
+                self.racks[player].draw()
+
     def _draw_all_players(self) -> None:
         """Draw scores and racks for all players."""
         for player in range(self._app.player_count):
