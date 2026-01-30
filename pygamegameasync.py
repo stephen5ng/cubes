@@ -65,6 +65,7 @@ logger = logging.getLogger(__name__)
 
 from input.input_manager import InputManager
 from input.keyboard_handler import KeyboardHandler
+from mqtt.mqtt_coordinator import MQTTCoordinator
 
 class BlockWordsPygame:
     def __init__(self,
@@ -114,26 +115,7 @@ class BlockWordsPygame:
                 self._mock_mqtt_client = MockMqttClient(mqtt_events)
         return self._mock_mqtt_client
 
-    async def handle_mqtt_message(self, topic_str: str, payload, now_ms: int) -> None:
-        # print(f"{now_ms} Handling message: {topic_str} {payload}")
-        if topic_str == "app/start":
-            print("Starting due to topic")
-            await self.game.start_cubes(now_ms)
-        elif topic_str == "app/abort":
-            events.trigger(GameAbortEvent())
-        elif topic_str == "game/guess":
-            payload_str = payload.decode() if payload else ""
-            await self.the_app.guess_word_keyboard(payload_str, 1, now_ms)
-        elif topic_str.startswith("cube/right/"):
-            # Handle None payload by converting to empty string
-            # payload_data = payload.decode() if payload is not None else ""
-            # Create a simple message-like object for cubes_to_game
-            message = type('Message', (), {
-                'topic': type('Topic', (), {'value': topic_str})(),
-                'payload': payload.encode() if payload is not None else b''
-            })()
-            # print(f"!!!-----> message: {message}")
-            await cubes_to_game.handle_mqtt_message(self._publish_queue, message, now_ms, self.game.sound_manager)
+
 
 
 
@@ -161,6 +143,9 @@ class BlockWordsPygame:
         """Set up all game components. Returns (screen, keyboard_input, input_devices, mqtt_message_queue, clock)."""
         self.the_app = the_app
         self._publish_queue = publish_queue
+        
+        # Initialize MQTT coordinator
+        self.mqtt_coordinator = MQTTCoordinator(None, the_app, publish_queue)  # Game injected later
 
         screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         clock = Clock()
@@ -198,6 +183,9 @@ class BlockWordsPygame:
                         min_win_score=self.min_win_score,
                         stars=self.stars)
         self.input_controller = GameInputController(self.game)
+        
+        # Update coordinator with game instance
+        self.mqtt_coordinator.game = self.game
 
         # Define handlers dictionary after dependencies are initialized
         handlers = {
@@ -239,8 +227,8 @@ class BlockWordsPygame:
 
         mqtt_message_queue = asyncio.Queue()
         if not self.replay_file:
-            asyncio.create_task(self._process_mqtt_messages(
-                mqtt_client, mqtt_message_queue, publish_queue), name="mqtt processor")
+            asyncio.create_task(self.mqtt_coordinator.process_messages_task(
+                mqtt_client, mqtt_message_queue), name="mqtt processor")
 
         return screen, keyboard_input, input_devices, mqtt_message_queue, clock
 
@@ -287,7 +275,7 @@ class BlockWordsPygame:
             return True, time_offset, 0
 
         for mqtt_event in mqtt_events:
-            await self.handle_mqtt_message(mqtt_event['topic'], mqtt_event['payload'], now_ms)
+            await self.mqtt_coordinator.handle_message(mqtt_event['topic'], mqtt_event['payload'], now_ms)
 
         # Check if ABC start sequence should be activated
         await cubes_to_game.activate_abc_start_if_ready(publish_queue, now_ms)
@@ -341,15 +329,4 @@ class BlockWordsPygame:
             else:
                 await clock.tick(TICKS_PER_SECOND)
 
-    async def _process_mqtt_messages(self, mqtt_client: aiomqtt.Client, message_queue: asyncio.Queue, publish_queue: asyncio.Queue) -> None:
-        """Process MQTT messages and add them to the polling queue for main loop processing."""
-        try:
-            async for message in mqtt_client.messages:
-                await message_queue.put(message)
-        except aiomqtt.exceptions.MqttError:
-            # This is expected when the client disconnects, so we can ignore it.
-            pass
-        except Exception as e:
-            print(f"MQTT processing error: {e}")
-            events.trigger(GameAbortEvent())
-            raise e
+
