@@ -313,7 +313,6 @@ class Game:
                   for shield in self.shields:
                       shield.update(window, now_ms)
                   
-                  self.stars_display.update(window, now_ms)
                   for player in range(self._app.player_count):
                       self.scores[player].update(window)
 
@@ -348,6 +347,9 @@ class Game:
                      dest_y = int(col['y'])
                      if dest_y < height:
                          window.blit(self.melt_surface, (x, dest_y), area=pygame.Rect(x, 0, 1, height))
+
+                 # Draw stars on top of the melt (so they don't melt)
+                 self.stars_display.update(window, now_ms)
 
                  # Skip normal component updates
                  return incidents
