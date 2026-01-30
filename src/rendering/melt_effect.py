@@ -1,6 +1,7 @@
 import pygame
 import random
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
+import easing_functions
 
 class MeltEffect:
     """Handles the screen melt animation effect."""
@@ -15,11 +16,24 @@ class MeltEffect:
         """Initialize the physics state for each column."""
         self.columns = []
         for _ in range(self.width):
+            # Calculate random duration based on previous physics
+            # d = 0.5 * a * t^2  ->  t = sqrt(2*d/a)
+            # a ~ 0.2, d ~ height
+            # But let's just tune it to look good: 60-120 frames (1-2 seconds at 60fps)
+            duration = random.uniform(60, 120)
+            
+            easing = easing_functions.ExponentialEaseIn(
+                start=0, 
+                end=self.height, 
+                duration=duration
+            )
+            
             self.columns.append({
                 'y': 0.0,
-                'vel': 0.0,
-                'acc': random.uniform(0.1, 0.3),  # Gravity variance
-                'delay': random.uniform(0, 20)    # Start delay frames
+                'timer': 0.0,
+                'delay': random.uniform(0, 20),
+                'easing': easing,
+                'finished': False
             })
 
     def update(self) -> None:
@@ -27,9 +41,14 @@ class MeltEffect:
         for col in self.columns:
             if col['delay'] > 0:
                 col['delay'] -= 1
-            else:
-                col['vel'] += col['acc']
-                col['y'] += col['vel']
+            elif not col['finished']:
+                col['timer'] += 1
+                new_y = col['easing'](col['timer'])
+                col['y'] = new_y
+                
+                # Check completion
+                if new_y >= self.height:
+                    col['finished'] = True
 
     def draw(self, target_surface: pygame.Surface) -> None:
         """Draw the melting effect onto the target surface.
