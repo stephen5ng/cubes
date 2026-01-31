@@ -111,7 +111,7 @@ def ensure_pygame_initialized(visual: bool) -> None:
         if not pygame.font.get_init():
             pygame.font.init()
 
-async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool] = None, player_count: int = 1, descent_duration_s: int = game_config.DESCENT_DURATION_S, min_win_score: int = game_config.DEFAULT_MIN_WIN_SCORE) -> Tuple[Game, FakeMqttClient, asyncio.Queue]:
+async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool] = None, player_count: int = 1, descent_duration_s: int = game_config.DESCENT_DURATION_S, min_win_score: int = 0) -> Tuple[Game, FakeMqttClient, asyncio.Queue]:
     """Factory for common test game setup."""
     if visual is None:
         visual = is_visual_mode()

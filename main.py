@@ -124,8 +124,8 @@ if __name__ == "__main__":
                        help="Run in continuous mode (loop game, wait for ESC). Default is False (single-run auto-start).")
     parser.add_argument("--one-round", action="store_true",
                        help="End game after one round (next falling letter is '!')")
-    parser.add_argument("--min-win-score", type=int, default=game_config.DEFAULT_MIN_WIN_SCORE,
-                       help=f"Minimum score required to treat exit code as Win (10) (default: {game_config.DEFAULT_MIN_WIN_SCORE})")
+    parser.add_argument("--min-win-score", type=int, default=0,
+                       help="Minimum score required to treat exit code as Win (10) (default: 0)")
     parser.add_argument("--stars", action="store_true", default=False,
                        help="Show progress stars in the upper right corner")
     args = parser.parse_args()

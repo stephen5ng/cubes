@@ -4,7 +4,6 @@ import asyncio
 from unittest.mock import MagicMock
 from pygamegameasync import BlockWordsPygame
 from input.input_devices import KeyboardInput
-from config import game_config
 import pygame
 
 
@@ -24,7 +23,7 @@ def test_auto_start_assigns_player_number():
             descent_duration_s=120,
             record=False,
             one_round=False,
-            min_win_score=game_config.DEFAULT_MIN_WIN_SCORE,
+            min_win_score=0,
             stars=False
         )
         

@@ -100,10 +100,6 @@ class BlockWordsPygame:
         self.game_coordinator = GameCoordinator()
         self.keyboard_handler = None  # Initialized in setup_game
 
-
-
-
-
     async def _handle_pygame_events(self, pygame_events, keyboard_input, input_devices, now_ms, events_to_log):
         for pygame_event in pygame_events:
             event_type = pygame_event['type']
@@ -115,6 +111,13 @@ class BlockWordsPygame:
                 return True
 
             if event_type == "KEYDOWN":
+                if (self.min_win_score > 0) and pygame_event['key'] == "ESCAPE":
+                    self.game.game_logger.log_events(now_ms, events_to_log)
+                    self.game.game_logger.stop_logging()
+                    self.game.output_logger.stop_logging()
+                    await events.stop()
+                    return True
+
                 await self.keyboard_handler.handle_event(pygame_event['key'], keyboard_input, now_ms)
             
             if 'JOY' in event_type:
@@ -152,8 +155,8 @@ class BlockWordsPygame:
             keyboard_input.player_number = await self.input_controller.start_game(keyboard_input, now_ms)
             self._has_auto_started = True
 
-        # Handle auto-exit for non-continuous mode
-        if not self.continuous and self._has_auto_started and not self.game.running:
+        # Handle auto-exit for non-continuous mode (unless game is winnable i.e. has specific win criteria)
+        if not self.continuous and not (self.min_win_score > 0) and self._has_auto_started and not self.game.running:
             # Check if post-game animation is done
             time_since_over = (now_ms / 1000.0) - self.game.stop_time_s
             # Wait a bit longer than the animation to ensure it's fully done
@@ -181,7 +184,7 @@ class BlockWordsPygame:
             return True, time_offset, 0
 
         if await self._handle_pygame_events(pygame_events, keyboard_input, input_devices, now_ms, events_to_log):
-            return True, time_offset, 0
+            return True, time_offset, self.game.exit_code
 
         for mqtt_event in mqtt_events:
             await self.mqtt_coordinator.handle_message(mqtt_event['topic'], mqtt_event['payload'], now_ms)

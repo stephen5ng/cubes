@@ -84,7 +84,7 @@ async def test_integration():
             record=False,
             continuous=False,
             one_round=False,
-            min_win_score=game_config.DEFAULT_MIN_WIN_SCORE,
+            min_win_score=0,
             stars=False
         )
 

@@ -25,7 +25,7 @@ async def test_min_win_score_exit_code():
 
 @async_test
 async def test_min_win_score_invalid():
-    """Verify that min_win_score must be positive."""
+    """Verify that min_win_score must be non-negative."""
     with pytest.raises(ValueError) as excinfo:
-        await create_test_game(player_count=1, min_win_score=0)
-    assert "must be positive" in str(excinfo.value)
+        await create_test_game(player_count=1, min_win_score=-1)
+    assert "must be non-negative" in str(excinfo.value)

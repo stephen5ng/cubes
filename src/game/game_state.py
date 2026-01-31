@@ -60,8 +60,8 @@ class Game:
         self.recorder = recorder if recorder else NullRecorder()
         self.replay_mode = replay_mode
         self.one_round = one_round
-        if min_win_score <= 0:
-            raise ValueError(f"min_win_score must be positive, got {min_win_score}")
+        if min_win_score < 0:
+            raise ValueError(f"min_win_score must be non-negative, got {min_win_score}")
         self.min_win_score = min_win_score
 
         # Required dependency injection - no defaults!
@@ -307,7 +307,10 @@ class Game:
             return
             
         # Override exit code if score meets minimum win requirement (3 stars)
-        num_stars = int(self.scores[0].score / (self.min_win_score / 3.0))
+        if self.min_win_score > 0:
+            num_stars = int(self.scores[0].score / (self.min_win_score / 3.0))
+        else:
+            num_stars = 0
 
         if num_stars >= 3:
             logger.info(f"Stars earned: {num_stars} >= 3. Setting exit code to 10 (Win)")
