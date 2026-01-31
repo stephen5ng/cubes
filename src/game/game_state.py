@@ -27,8 +27,9 @@ from rendering.animations import LetterSource, PositionTracker, LETTER_SOURCE_RE
 from rendering.metrics import RackMetrics
 from rendering.rack_display import RackDisplay
 from rendering.melt_effect import MeltEffect
+from rendering.balloon_effect import BalloonEffect
 from systems.sound_manager import SoundManager
-from ui.guess_display import PreviousGuessesManager
+from ui.guess_display import PreviousGuessesManager, PreviousGuessesDisplay, RemainingPreviousGuessesDisplay
 from ui.game_over_display import GameOverDisplay
 
 logger = logging.getLogger(__name__)
@@ -120,6 +121,7 @@ class Game:
 
         # Melting effect state
         self.melt_effect: Optional[MeltEffect] = None
+        self.balloon_effects: list[BalloonEffect] = []
 
         events.on("game.stage_guess")(self.stage_guess)
         events.on("game.old_guess")(self.old_guess)
@@ -407,6 +409,54 @@ class Game:
 
                  # Skip normal component updates
                  return incidents
+
+        # Winning logic for "Game Won"
+        if not self.running and self.exit_code == 10:
+             if not self.balloon_effects:
+                 # First frame of win: draw guesses to populate surfaces before
+                 # reading their geometry for balloon placement
+                 window.fill((0, 0, 0))
+                 self.guesses_manager.update(window, now_ms, game_over=game_over_animate)
+
+                 # Initialize BalloonEffects
+                 config_manager = self.guesses_manager.config_manager
+                 
+                 # 1. Main previous guesses
+                 pg_display = self.guesses_manager.previous_guesses_display
+                 words_pg = pg_display.previous_guesses
+                 if words_pg:
+                     colors_pg = [config_manager.get_config(pg_display.guess_to_player.get(w, 0)).shield_color for w in words_pg]
+                     renderer_pg = pg_display._text_rect_renderer
+                     self.balloon_effects.append(
+                         BalloonEffect(renderer_pg, words_pg, colors_pg, PreviousGuessesDisplay.POSITION_TOP, rainbow=True)
+                     )
+
+                 # 2. Remaining/Overflow guesses
+                 rem_display = self.guesses_manager.remaining_previous_guesses_display
+                 words_rem = rem_display.remaining_guesses
+                 if words_rem:
+                     colors_rem = [config_manager.get_config(rem_display.guess_to_player.get(w, 0)).shield_color for w in words_rem]
+                     renderer_rem = rem_display._text_rect_renderer
+                     
+                     # Calculate offset: Top + Height of valid guesses + Gap
+                     # Ensure surface of valid guesses is updated or at least has correct rect
+                     height_pg = pg_display.surface.get_bounding_rect().height
+                     start_y_rem = PreviousGuessesDisplay.POSITION_TOP + height_pg + RemainingPreviousGuessesDisplay.TOP_GAP
+                     
+                     self.balloon_effects.append(
+                         BalloonEffect(renderer_rem, words_rem, colors_rem, start_y_rem, rainbow=True)
+                     )
+
+             window.fill((0, 0, 0))
+             
+             for effect in self.balloon_effects:
+                 effect.update()
+                 effect.draw(window)
+             
+             self.stars_display.update(window, now_ms)
+             self.game_over_display.draw(window, won=True)
+             
+             return incidents
 
         # Normal Update Loop
         self.guesses_manager.update(window, now_ms, game_over=game_over_animate)
