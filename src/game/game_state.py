@@ -29,6 +29,7 @@ from rendering.rack_display import RackDisplay
 from rendering.melt_effect import MeltEffect
 from systems.sound_manager import SoundManager
 from ui.guess_display import PreviousGuessesManager
+from ui.game_over_display import GameOverDisplay
 
 logger = logging.getLogger(__name__)
 
@@ -102,6 +103,8 @@ class Game:
         self.recovery_tracker = PositionTracker(recovery_strategy)
         # Recovery line is hidden
         self.recovery_source = None
+        
+        self.game_over_display = GameOverDisplay()
 
         self.shields: list[Shield] = []
         self.running = False
@@ -396,6 +399,8 @@ class Game:
 
                  # Draw stars on top of the melt (so they don't melt)
                  self.stars_display.update(window, now_ms)
+                 
+                 self.game_over_display.draw(window, won=False)
 
                  # Skip normal component updates
                  return incidents
@@ -495,7 +500,8 @@ class Game:
                 self.letter.new_fall(now_ms)
                 await self.accept_letter(now_ms)
         
+        if not self.running and self.exit_code == 10:
+             self.game_over_display.draw(window, won=True)
 
-        
         self.recorder.capture(window, now_ms)
         return incidents
