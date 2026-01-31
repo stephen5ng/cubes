@@ -166,8 +166,8 @@ cubes/
 │
 ├── replay/                       # Replay files for functional tests
 ├── goldens/                      # Golden output files for tests
-├── assets/                       # Game assets
-├── sounds/                       # Sound effects (dings, etc.)
+├── assets/                       # Game assets: fonts and sounds
+│   └── sounds/                   # Sound effects (dings, etc.)
 ├── word_sounds_0/                # Player 0 audio (downloaded from releases)
 ├── word_sounds_1/                # Player 1 audio (downloaded from releases)
 │

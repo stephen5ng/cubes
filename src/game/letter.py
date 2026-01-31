@@ -43,7 +43,7 @@ class Letter:
         self.fraction_complete = 0.0
         self.locked_on = False
         self.start_x = self.rack_metrics.get_rect().x
-        self.bounce_sound = pygame.mixer.Sound("sounds/bounce.wav")
+        self.bounce_sound = pygame.mixer.Sound("assets/sounds/bounce.wav")
         self.bounce_sound.set_volume(0.1)
         self.next_letter_easing = easing_functions.ExponentialEaseOut(start=0, end=1, duration=1)
         self.left_right_easing = easing_functions.ExponentialEaseIn(start=1000, end=10000, duration=1)

@@ -63,7 +63,7 @@ simple_test.jsonl
 test_latency.jsonl
 
 # Audio assets (large binary files)
-sounds/
+
 voices/
 word_sounds*/
 gcptts*

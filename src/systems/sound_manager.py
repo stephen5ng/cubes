@@ -12,26 +12,26 @@ class SoundManager:
 
     def __init__(self):
         self.sound_queue: asyncio.Queue = asyncio.Queue()
-        self.start_sound = pygame.mixer.Sound("./sounds/start.wav")
-        self.crash_sound = pygame.mixer.Sound("./sounds/ping.wav")
+        self.start_sound = pygame.mixer.Sound("assets/sounds/start.wav")
+        self.crash_sound = pygame.mixer.Sound("assets/sounds/ping.wav")
         self.crash_sound.set_volume(0.8)
-        self.chunk_sound = pygame.mixer.Sound("./sounds/chunk.wav")
-        self.game_over_sound = pygame.mixer.Sound("./sounds/game_over.wav")
-        self.bloop_sound = pygame.mixer.Sound("./sounds/bloop.wav")
+        self.chunk_sound = pygame.mixer.Sound("assets/sounds/chunk.wav")
+        self.game_over_sound = pygame.mixer.Sound("assets/sounds/game_over.wav")
+        self.bloop_sound = pygame.mixer.Sound("assets/sounds/bloop.wav")
         self.bloop_sound.set_volume(0.2)
         
         self.letter_beeps: list = []
         for n in range(11):
-            self.letter_beeps.append(pygame.mixer.Sound(f"sounds/{n}.wav"))
+            self.letter_beeps.append(pygame.mixer.Sound(f"assets/sounds/{n}.wav"))
             
         # UI sounds
-        self.add_sound = pygame.mixer.Sound("sounds/add.wav")
-        self.erase_sound = pygame.mixer.Sound("sounds/erase.wav")
-        self.cleared_sound = pygame.mixer.Sound("sounds/cleared.wav")
-        self.left_sound = pygame.mixer.Sound("sounds/left.wav")
-        self.right_sound = pygame.mixer.Sound("sounds/right.wav")
-        self.tada_sound = pygame.mixer.Sound("sounds/tada.wav")
-        self.starspin_sound = pygame.mixer.Sound("sounds/starspin.wav")
+        self.add_sound = pygame.mixer.Sound("assets/sounds/add.wav")
+        self.erase_sound = pygame.mixer.Sound("assets/sounds/erase.wav")
+        self.cleared_sound = pygame.mixer.Sound("assets/sounds/cleared.wav")
+        self.left_sound = pygame.mixer.Sound("assets/sounds/left.wav")
+        self.right_sound = pygame.mixer.Sound("assets/sounds/right.wav")
+        self.tada_sound = pygame.mixer.Sound("assets/sounds/tada.wav")
+        self.starspin_sound = pygame.mixer.Sound("assets/sounds/starspin.wav")
         
         self.left_sound.set_volume(0.5)
         self.right_sound.set_volume(0.5)

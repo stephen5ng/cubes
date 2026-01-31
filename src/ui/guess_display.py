@@ -43,7 +43,7 @@ class PreviousGuessesDisplay(PreviousGuessesDisplayBase):
         self.config_manager = config_manager
         self.fader_inputs = []
         self.previous_guesses = []
-        self.bloop_sound = pygame.mixer.Sound("./sounds/bloop.wav")
+        self.bloop_sound = pygame.mixer.Sound("assets/sounds/bloop.wav")
         self.bloop_sound.set_volume(0.2)
         self.guess_to_player = guess_to_player
         self.fader_manager = FaderManager(self.previous_guesses, self.font, self._text_rect_renderer)

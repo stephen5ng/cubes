@@ -93,7 +93,10 @@
       "Bash(git cherry-pick:*)",
       "Bash(xxd:*)",
       "Bash(python test_heartbeat_easing.py:*)",
-      "Bash(git merge:*)"
+      "Bash(git merge:*)",
+      "Bash(python -m pytest:*)",
+      "Bash(afplay:*)",
+      "Bash(sox:*)"
     ],
     "deny": []
   }

@@ -23,7 +23,7 @@ def letter_setup():
     rack_metrics = RackMetrics()
     font = rack_metrics.font
     output_logger = Mock()
-    letter_beeps = [pygame.mixer.Sound("sounds/bounce.wav")]
+    letter_beeps = [pygame.mixer.Sound("assets/sounds/bounce.wav")]
 
     letter = Letter(
         font=font,
