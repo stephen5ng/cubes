@@ -1,4 +1,4 @@
 #!/bin/bash
 
-python ./textrect.py x
-diff textrect.ref.png textrect.png
+python src/rendering/text_renderer.py x
+diff tests/textrect.png textrect.png
