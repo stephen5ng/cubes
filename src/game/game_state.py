@@ -177,7 +177,7 @@ class Game:
             if hasattr(self.racks[player], 'surface') and self.racks[player].surface is not None:
                 original_running = self.racks[player].running
                 self.racks[player].running = True
-                self.racks[player].update(window, now_ms)
+                self.racks[player].update(window, now_ms, flash=False)
                 self.racks[player].running = original_running
 
     async def update_rack(self, tiles: list[tiles.Tile], highlight_length: int, guess_length: int, player: int, now_ms: int) -> None:

@@ -138,13 +138,14 @@ class RackDisplay:
                     rect=self.rack_metrics.get_largest_letter_rect(letter_index),
                     special_flags=pygame.BLEND_RGBA_MULT)
 
-    def update(self, window: pygame.Surface, now: int) -> None:
+    def update(self, window: pygame.Surface, now: int, flash: bool = True) -> None:
         """Update and render the rack to the window."""
         if not self.running:
             window.blit(self.game_over_surface, self.game_over_pos)
             return
         surface = self.surface.copy()
-        self._render_flashing_letters(surface)
+        if flash:
+            self._render_flashing_letters(surface)
         self._render_fading_letters(surface, now)
 
         pygame.draw.rect(surface,
