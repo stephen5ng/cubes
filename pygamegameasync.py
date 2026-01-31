@@ -108,6 +108,7 @@ class BlockWordsPygame:
                 self.game.game_logger.stop_logging()
                 self.game.output_logger.stop_logging()
                 await events.stop()
+                self.game.exit_code = 0
                 return True
 
             if event_type == "KEYDOWN":
