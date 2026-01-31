@@ -2,6 +2,7 @@ import pygame
 import random
 from typing import List, Dict, Optional, Any
 import easing_functions
+from config import game_config
 
 class MeltEffect:
     """Handles the screen melt animation effect."""
@@ -20,7 +21,11 @@ class MeltEffect:
             # d = 0.5 * a * t^2  ->  t = sqrt(2*d/a)
             # a ~ 0.2, d ~ height
             # But let's just tune it to look good: 60-120 frames (1-2 seconds at 60fps)
-            duration = random.uniform(60, 120)
+            # Duration is tuned to look good: 2-4 seconds at 60fps
+            duration = random.uniform(
+                game_config.MELT_DURATION_MAX_FRAMES / 2,
+                game_config.MELT_DURATION_MAX_FRAMES
+            )
             
             easing = easing_functions.ExponentialEaseIn(
                 start=0, 

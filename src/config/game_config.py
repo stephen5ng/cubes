@@ -85,3 +85,6 @@ BINGOS_PATH = os.path.join(DATA_DIR, "bingos.txt")
 #   Negative initial_speed moves upward (negative Y direction)
 SHIELD_ACCELERATION_RATE = 1.05  # Exponential growth rate for upward velocity
 SHIELD_INITIAL_SPEED_MULTIPLIER = 1.0  # Multiplied by -log(1+score) for initial velocity
+
+# Melt Effect Animation
+MELT_DURATION_MAX_FRAMES = 240
