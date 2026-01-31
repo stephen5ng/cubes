@@ -187,13 +187,10 @@ class App:
         print(">>>>>>>> app.STARTED")
 
     async def stop(self, now_ms: int) -> None:
-        for player in range(game_config.MAX_PLAYERS):
+        # Clear hardware cubes - we do this directly without clearing our logical RackManager, 
+        # so that post-game UI effects (like melting) can still access the final game state.
+        await self.hardware.clear_all_letters(self._publish_queue, now_ms)
 
-            # Reset racks to empty
-            empty_tiles = tiles.Rack(' ' * game_config.MAX_LETTERS).get_tiles()
-            self.rack_manager.get_rack(player).set_tiles(empty_tiles)
-            
-        await self.load_rack(now_ms)
         self._running = False
         # Set game ended state
         self.hardware.set_game_end_time(now_ms)

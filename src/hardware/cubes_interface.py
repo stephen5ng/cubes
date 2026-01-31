@@ -44,6 +44,9 @@ class CubesHardwareInterface(HardwareInterface):
     async def unlock_all_letters(self, publish_queue: asyncio.Queue, now_ms: int) -> None:
         await cubes_to_game.unlock_all_letters(publish_queue, now_ms)
         
+    async def clear_all_letters(self, publish_queue: asyncio.Queue, now_ms: int) -> None:
+        await cubes_to_game.clear_all_letters(publish_queue, now_ms)
+        
     async def clear_all_borders(self, publish_queue: asyncio.Queue, now_ms: int) -> None:
         await cubes_to_game.clear_all_borders(publish_queue, now_ms)
         

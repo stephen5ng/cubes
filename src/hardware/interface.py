@@ -55,6 +55,10 @@ class HardwareInterface(ABC):
         pass
         
     @abstractmethod
+    async def clear_all_letters(self, publish_queue: asyncio.Queue, now_ms: int) -> None:
+        pass
+
+    @abstractmethod
     async def clear_all_borders(self, publish_queue: asyncio.Queue, now_ms: int) -> None:
         pass
         
