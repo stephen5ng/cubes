@@ -63,14 +63,14 @@ while true; do
         
         if [[ "$level" == "0" ]]; then
             python_args+=("--one-round")
-            python_args+=("--min-win-score" "120")
-            python_args+=("--descent-duration" "90") # Added based on user's implied intent
+            python_args+=("--min-win-score" "90")
+            python_args+=("--descent-duration" "90")
         elif [[ "$level" == "1" ]]; then
-            # Level 1 specific args if any
-            python_args+=("--min-win-score" "360")
+            python_args+=("--min-win-score" "90")
+            python_args+=("--descent-duration" "180")
         elif [[ "$level" == "2" ]]; then
-            # Level 2 specific args if any
-            python_args+=("--min-win-score" "720")
+            python_args+=("--min-win-score" "360")
+            python_args+=("--descent-duration" "120")
         else
             echo "Error: Unknown level '$level' for game_on mode. Supported levels: 0, 1, 2"
             exit 1
