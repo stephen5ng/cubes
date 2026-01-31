@@ -6,11 +6,17 @@ import random
 import time
 
 # Add src to path
-sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 
-from rendering.rack_display import RackDisplay
-from rendering.metrics import RackMetrics
-from ui.guess_display import PreviousGuessesManager
+try:
+    from rendering.rack_display import RackDisplay
+    from rendering.metrics import RackMetrics
+    from ui.guess_display import PreviousGuessesManager
+    from config.player_config import PlayerConfigManager
+except ImportError as e:
+    print(f"Import error: {e}")
+    sys.exit(1)
+
 from core import tiles
 
 # Mock classes
@@ -42,8 +48,12 @@ def main():
     rack_metrics = RackMetrics()
     mock_letter = MockLetter()
     
+    # Setup Config
+    config_manager = PlayerConfigManager(letter_width=rack_metrics.letter_width)
+    player_config = config_manager.get_config(0)
+    
     # Setup Rack
-    rack = RackDisplay(mock_app, rack_metrics, mock_letter, player=0)
+    rack = RackDisplay(mock_app, rack_metrics, mock_letter, player_config)
     rack.running = True
     
     # Populate rack with some letters
@@ -59,7 +69,7 @@ def main():
     
     # Setup Guesses
     guess_to_player = {}
-    guesses_manager = PreviousGuessesManager(guess_to_player)
+    guesses_manager = PreviousGuessesManager(guess_to_player, config_manager)
     
     # Populate guesses with a bunch of words to fill the screen
     dummy_guesses = [
