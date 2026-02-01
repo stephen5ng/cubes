@@ -153,6 +153,7 @@ class StarsDisplay:
         self._needs_redraw = True
         self._tada_scheduled_ms = -1
         self._heartbeat_start_ms = -1
+        self._post_game_spin_enabled = False
 
         # Pre-create easing function for tada blink animation
         # Creates a smooth fade curve for blinking effect
@@ -268,6 +269,11 @@ class StarsDisplay:
         opacity_change = (1.0 - self.BLINK_MIN_OPACITY) * self._blink_easing(progress)
         return self.BLINK_MIN_OPACITY + opacity_change
 
+    def start_post_game_spin(self) -> None:
+        """Enable slow continuous star rotation for post-game celebration."""
+        self._post_game_spin_enabled = True
+        self._needs_redraw = True
+
     def _render_surface(self, now_ms: int) -> None:
         """Render stars to the internal surface."""
         star_w = self._filled_star.get_width()
@@ -292,6 +298,9 @@ class StarsDisplay:
                 progress = self._easing(elapsed)
                 scale = max(0.0, progress)
                 angle = (1.0 - progress) * 360
+            elif self._post_game_spin_enabled and is_filled:
+                # Slow continuous spin: 360 degrees every 5 seconds
+                angle = (now_ms % 5000) / 5000.0 * 360.0
 
             # Get the base star to render
             star_to_draw = self._filled_star if is_filled else self._hollow_star
@@ -348,21 +357,24 @@ class StarsDisplay:
 
         tada_active = self._update_tada_animation(now_ms)
 
-        if animation_active or self._needs_redraw or tada_active:
+        if animation_active or self._needs_redraw or tada_active or self._post_game_spin_enabled:
             self._render_surface(now_ms)
-            self._needs_redraw = animation_active or tada_active
+            self._needs_redraw = animation_active or tada_active or self._post_game_spin_enabled
 
         window.blit(self.surface, self.pos)
 
 
 class NullStarsDisplay:
     """Null object for stars display."""
-    
+
     def __init__(self) -> None:
         pass
-        
+
     def draw(self, current_score: int, now_ms: int) -> int:
         return 0
-        
+
     def update(self, window: pygame.Surface, now_ms: int) -> None:
+        pass
+
+    def start_post_game_spin(self) -> None:
         pass
