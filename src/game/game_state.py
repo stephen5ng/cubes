@@ -415,8 +415,8 @@ class Game:
 
                  # Draw stars on top of the melt (so they don't melt)
                  self.stars_display.update(window, now_ms)
-                 
-                 self.game_over_display.draw(window, won=False)
+
+                 self.game_over_display.draw(window, won=False, now_ms=now_ms)
 
                  # Skip normal component updates
                  return incidents
@@ -467,8 +467,8 @@ class Game:
                  effect.draw(window)
              
              self.stars_display.update(window, now_ms)
-             self.game_over_display.draw(window, won=True)
-             
+             self.game_over_display.draw(window, won=True, now_ms=now_ms)
+
              return incidents
 
         # Normal Update Loop
@@ -582,7 +582,7 @@ class Game:
                 await self.accept_letter(now_ms)
         
         if not self.running and self.exit_code == 10:
-             self.game_over_display.draw(window, won=True)
+             self.game_over_display.draw(window, won=True, now_ms=now_ms)
 
         self.recorder.capture(window, now_ms)
         return incidents
