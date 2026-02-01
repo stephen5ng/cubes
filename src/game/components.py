@@ -127,11 +127,11 @@ class StarsDisplay:
     STAR_SPIN_DURATION_MS = 800
 
     # Tada celebration blink animation timing
-    BLINK_DURATION_PER_STAR_MS = 200  # Each star blinks for 200ms
-    BLINK_FADE_OUT_MS = 50  # Fade to 30% opacity in 50ms
+    BLINK_DURATION_PER_STAR_MS = 300  # Each star blinks for 300ms (increased from 200ms)
+    BLINK_FADE_OUT_MS = 75  # Fade to 30% opacity in 75ms (increased from 50ms)
     BLINK_MIN_OPACITY = 0.3
-    BLINK_STAR_OFFSET_MS = 100  # Stagger each star's blink by 100ms
-    TADA_TOTAL_DURATION_MS = 1000  # Total tada animation is 1000ms
+    BLINK_STAR_OFFSET_MS = 150  # Stagger each star's blink by 150ms (increased from 100ms)
+    TADA_TOTAL_DURATION_MS = 1500  # Total tada animation is 1500ms (increased from 1000ms)
 
     def __init__(self, rack_metrics, min_win_score: int, sound_manager) -> None:
         self.sound_manager = sound_manager
