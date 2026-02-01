@@ -36,7 +36,7 @@ class SoundManager:
         self.left_sound.set_volume(0.5)
         self.right_sound.set_volume(0.5)
         self.tada_sound.set_volume(0.8)
-        self.starspin_sound.set_volume(0.8)
+        self.starspin_sound.set_volume(1.0)
 
         self.sound_queue_task = asyncio.create_task(self.play_sounds_in_queue(), name="word sound player")
 
