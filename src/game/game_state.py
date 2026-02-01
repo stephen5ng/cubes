@@ -467,6 +467,7 @@ class Game:
                  effect.draw(window)
              
              self.stars_display.update(window, now_ms)
+             self._update_all_scores(window)
              self.game_over_display.draw(window, won=True, now_ms=now_ms)
 
              return incidents
@@ -484,7 +485,7 @@ class Game:
             
             if self.show_level:
                 # Draw Level in the background
-                level_color = game_config.REMAINING_PREVIOUS_GUESSES_COLOR if self.level == 0 else game_config.GOOD_GUESS_COLOR
+                level_color = game_config.REMAINING_PREVIOUS_GUESSES_COLOR
                 self.game_over_display.draw_text(window, f"LEVEL\n{self.level}", level_color, alpha=alpha)
         
         self.guesses_manager.update(window, now_ms, game_over=game_over_animate)
