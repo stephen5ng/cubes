@@ -325,7 +325,8 @@ class Game:
             exit_code = 10
             
         self.exit_code = exit_code
-        self.sound_manager.play_game_over()
+        if exit_code != 10:
+            self.sound_manager.play_game_over()
         logger.info(f"GAME OVER (Exit Code: {exit_code})")
         for rack in self.racks:
             rack.stop()
@@ -456,6 +457,8 @@ class Game:
                      self.balloon_effects.append(
                          BalloonEffect(renderer_rem, words_rem, colors_rem, start_y_rem, rainbow=True)
                      )
+
+                 self.stars_display.start_post_game_spin()
 
              window.fill((0, 0, 0))
              
