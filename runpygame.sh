@@ -60,6 +60,7 @@ while true; do
         
         # Default level 0 if not specified
         level=${level:-0}
+        python_args+=("--level" "$level")
         
         if [[ "$level" == "0" ]]; then
             python_args+=("--one-round")

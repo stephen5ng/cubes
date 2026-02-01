@@ -58,7 +58,8 @@ class GameCoordinator:
                          input_manager, letter_font,
                          replay_file: str, descent_mode: str, descent_duration_s: int,
                          record: bool, one_round: bool, min_win_score: int,
-                         stars: bool) -> tuple:
+                         stars: bool,
+                         level: int = 0) -> tuple:
         """Set up all game components.
         
         Returns:
@@ -106,7 +107,8 @@ class GameCoordinator:
                         replay_mode=bool(replay_file),
                         one_round=one_round,
                         min_win_score=min_win_score,
-                        stars=stars)
+                        stars=stars,
+                        level=level)
         self.input_controller = GameInputController(self.game)
         
         # Update coordinator with game instance

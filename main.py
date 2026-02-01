@@ -128,6 +128,8 @@ if __name__ == "__main__":
                        help="Minimum score required to treat exit code as Win (10) (default: 0)")
     parser.add_argument("--stars", action="store_true", default=False,
                        help="Show progress stars in the upper right corner")
+    parser.add_argument("--level", type=int, default=0,
+                       help="Level number for display at start (default: 0)")
     args = parser.parse_args()
     
     seed = 1
@@ -176,7 +178,8 @@ if __name__ == "__main__":
         continuous=args.continuous,
         one_round=args.one_round,
         min_win_score=args.min_win_score,
-        stars=args.stars
+        stars=args.stars,
+        level=args.level
     )
     
     game_logger = GameLogger(None if args.replay else "output/game_replay.jsonl")

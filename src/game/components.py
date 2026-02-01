@@ -108,7 +108,8 @@ class Shield:
             # This is a geometric series: initial_speed * (1 - (1.05)^update_count) / (1 - 1.05)
             displacement = self.initial_speed * (1 - (self.acceleration_rate ** update_count)) / (1 - self.acceleration_rate)
             self.pos[1] = self.base_pos[1] + displacement
-            window.blit(self.surface, self.pos)
+            if window is not None:
+                window.blit(self.surface, self.pos)
 
             # Get the tightest rectangle around the content for collision detection.
             self.rect = self.surface.get_bounding_rect().move(self.pos[0], self.pos[1])

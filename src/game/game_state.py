@@ -53,7 +53,8 @@ class Game:
                  replay_mode: bool,
                  one_round: bool,
                  min_win_score: int,
-                 stars: bool) -> None:
+                 stars: bool,
+                 level: int = 0) -> None:
         self._app = the_app
         self.game_logger = game_logger
         self.output_logger = output_logger
@@ -64,6 +65,11 @@ class Game:
         if min_win_score < 0:
             raise ValueError(f"min_win_score must be non-negative, got {min_win_score}")
         self.min_win_score = min_win_score
+        self.level = level
+        self.show_level = level > 0 or stars # Only show level if level > 0 or stars enabled (game_on mode)
+        self.level_fade_start_ms = -1
+        self.level_fade_duration_ms = 1000
+        self.level_fade_easing = easing_functions.CubicEaseInOut(start=255, end=0, duration=self.level_fade_duration_ms)
 
         # Required dependency injection - no defaults!
         self.sound_manager = sound_manager
@@ -349,6 +355,9 @@ class Game:
         if not self.running:
             return
             
+        if self.show_level and self.level_fade_start_ms == -1:
+            self.level_fade_start_ms = now_ms
+
         self.guess_to_player[guess] = player
         self.guesses_manager.add_guess(previous_guesses, guess, player, now_ms)
 
@@ -366,8 +375,9 @@ class Game:
         window.set_alpha(255)
         # Calculate if we should animate (Game Over and within 15s)
         game_over_animate = False
+        now_s = now_ms / 1000.0
         if not self.running:
-            time_since_over = (now_ms / 1000.0) - self.stop_time_s
+            time_since_over = now_s - self.stop_time_s
             # Only animate (rainbow) if it's a WIN (exit_code == 10)
             if self.exit_code == 10 and time_since_over < 15.0:
                 game_over_animate = True
@@ -459,6 +469,21 @@ class Game:
              return incidents
 
         # Normal Update Loop
+        if self.show_level:
+            alpha = 255
+            if self.level_fade_start_ms > 0:
+                elapsed = now_ms - self.level_fade_start_ms
+                if elapsed >= self.level_fade_duration_ms:
+                    self.show_level = False
+                    alpha = 0
+                else:
+                    alpha = int(self.level_fade_easing(elapsed))
+            
+            if self.show_level:
+                # Draw Level in the background
+                level_color = game_config.REMAINING_PREVIOUS_GUESSES_COLOR if self.level == 0 else game_config.GOOD_GUESS_COLOR
+                self.game_over_display.draw_text(window, f"LEVEL\n{self.level}", level_color, alpha=alpha)
+        
         self.guesses_manager.update(window, now_ms, game_over=game_over_animate)
 
         if self.running:

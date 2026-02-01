@@ -71,7 +71,7 @@ from mqtt.mqtt_coordinator import MQTTCoordinator
 
 class BlockWordsPygame:
     def __init__(self,
-                 replay_file: str, descent_mode: str, descent_duration_s: int, record: bool, continuous: bool, one_round: bool, min_win_score: int, stars: bool) -> None:
+                 replay_file: str, descent_mode: str, descent_duration_s: int, record: bool, continuous: bool, one_round: bool, min_win_score: int, stars: bool, level: int = 0) -> None:
         """
         Args:
             replay_file: Path to replay file, or empty string for live game.
@@ -94,6 +94,7 @@ class BlockWordsPygame:
         self.one_round = one_round
         self.min_win_score = min_win_score
         self.stars = stars
+        self.level = level
         self._has_auto_started = False
         
         self.input_manager = InputManager(replay_file)
@@ -134,7 +135,7 @@ class BlockWordsPygame:
             the_app, subscribe_client, publish_queue, game_logger, output_logger,
             self.input_manager, self.letter_font,
             self.replay_file, self.descent_mode, self.descent_duration_s,
-            self.record, self.one_round, self.min_win_score, self.stars
+            self.record, self.one_round, self.min_win_score, self.stars, self.level
         )
         
         # Hydrate local references
