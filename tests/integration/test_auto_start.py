@@ -54,6 +54,7 @@ def test_auto_start_assigns_player_number():
             keyboard_input,
             input_devices,
             mqtt_queue,
+            None, # control_message_queue
             publish_queue,
             0 # time_offset
         )

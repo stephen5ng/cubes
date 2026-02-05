@@ -100,7 +100,7 @@ async def test_integration():
 
         # Use production setup
         logger.info("Setting up game with production code...")
-        screen, keyboard_input, input_devices, mqtt_message_queue, _ = await block_words.setup_game(
+        screen, keyboard_input, input_devices, mqtt_message_queue, control_message_queue, _ = await block_words.setup_game(
             the_app, subscribe_client, publish_queue, game_logger, output_logger
         )
 
@@ -135,7 +135,7 @@ async def test_integration():
             # run_single_frame handles all pygame events internally (including QUIT and keyboard)
             should_exit, time_offset, _exit_code = await block_words.run_single_frame(
                 screen, keyboard_input, input_devices,
-                mqtt_message_queue, publish_queue, time_offset
+                mqtt_message_queue, control_message_queue, publish_queue, time_offset
             )
 
             if should_exit:

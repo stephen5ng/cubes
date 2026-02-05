@@ -130,25 +130,25 @@ class BlockWordsPygame:
 
     async def setup_game(self, the_app: app.App, subscribe_client: aiomqtt.Client,
                          publish_queue: asyncio.Queue, game_logger, output_logger, control_client: aiomqtt.Client = None):
-        """Set up all game components. Returns (screen, keyboard_input, input_devices, mqtt_message_queue, clock)."""
-        screen, keyboard_input, input_devices, mqtt_message_queue, clock, self.descent_mode, self.descent_duration_s = await self.game_coordinator.setup_game(
+        """Set up all game components. Returns (screen, keyboard_input, input_devices, mqtt_message_queue, control_message_queue, clock)."""
+        screen, keyboard_input, input_devices, mqtt_message_queue, control_message_queue, clock, self.descent_mode, self.descent_duration_s = await self.game_coordinator.setup_game(
             the_app, subscribe_client, publish_queue, game_logger, output_logger,
             self.input_manager, self.letter_font,
             self.replay_file, self.descent_mode, self.descent_duration_s,
             self.record, self.one_round, self.min_win_score, self.stars, self.level,
             control_client
         )
-        
+
         # Hydrate local references
         self.game = self.game_coordinator.game
         self.mqtt_coordinator = self.game_coordinator.mqtt_coordinator
         self.input_controller = self.game_coordinator.input_controller
         self.keyboard_handler = self.game_coordinator.keyboard_handler
-        
-        return screen, keyboard_input, input_devices, mqtt_message_queue, clock
+
+        return screen, keyboard_input, input_devices, mqtt_message_queue, control_message_queue, clock
 
     async def run_single_frame(self, screen, keyboard_input, input_devices,
-                               mqtt_message_queue, publish_queue, time_offset):
+                               mqtt_message_queue, control_message_queue, publish_queue, time_offset):
         """Run a single frame of the game. Returns (should_exit, new_time_offset, exit_code)."""
         now_ms = pygame.time.get_ticks() + time_offset
 
@@ -192,6 +192,12 @@ class BlockWordsPygame:
         for mqtt_event in mqtt_events:
             await self.mqtt_coordinator.handle_message(mqtt_event['topic'], mqtt_event['payload'], now_ms)
 
+        # Process control broker messages
+        if control_message_queue:
+            control_events = self.input_manager.get_mqtt_events(control_message_queue)
+            for control_event in control_events:
+                await self.mqtt_coordinator.handle_message(control_event['topic'], control_event['payload'], now_ms)
+
         # Check if ABC start sequence should be activated
         await cubes_to_game.activate_abc_start_if_ready(publish_queue, now_ms)
 
@@ -225,14 +231,14 @@ class BlockWordsPygame:
                    keyboard_player_number: int, publish_queue: asyncio.Queue,
                    game_logger, output_logger, control_client: aiomqtt.Client = None) -> int:
         """Main game loop using production setup."""
-        screen, keyboard_input, input_devices, mqtt_message_queue, clock = await self.setup_game(
+        screen, keyboard_input, input_devices, mqtt_message_queue, control_message_queue, clock = await self.setup_game(
             the_app, subscribe_client, publish_queue, game_logger, output_logger, control_client
         )
 
         time_offset = 0  # so that time doesn't go backwards after playing a replay file
         while True:
             should_exit, time_offset, exit_code = await self.run_single_frame(
-                screen, keyboard_input, input_devices, mqtt_message_queue,
+                screen, keyboard_input, input_devices, mqtt_message_queue, control_message_queue,
                 publish_queue, time_offset
             )
             if should_exit:

@@ -25,7 +25,11 @@ class MQTTCoordinator:
             await self.game.start_cubes(now_ms)
 
         elif topic_str == "game/start":
-            logger.info("Starting due to control broker topic")
+            logger.info("Restarting game due to control broker topic")
+            # Stop the game if it's running, then restart
+            if self.game.running:
+                logger.info("Game is running, stopping before restart")
+                await self.game.stop(now_ms, 0)
             await self.game.start_cubes(now_ms)
 
         elif topic_str == "app/abort":

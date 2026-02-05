@@ -63,7 +63,7 @@ class GameCoordinator:
         """Set up all game components.
         
         Returns:
-            tuple: (screen, keyboard_input, input_devices, mqtt_message_queue, clock)
+            tuple: (screen, keyboard_input, input_devices, mqtt_message_queue, control_message_queue, clock)
         """
         
         # Initialize MQTT coordinator
@@ -161,9 +161,10 @@ class GameCoordinator:
                 mqtt_client, mqtt_message_queue), name="mqtt processor")
 
         # Start control broker message processor if available
+        control_message_queue = None
         if not replay_file and control_client:
             control_message_queue = asyncio.Queue()
             asyncio.create_task(self.mqtt_coordinator.process_messages_task(
                 control_client, control_message_queue), name="control mqtt processor")
 
-        return screen, keyboard_input, input_devices, mqtt_message_queue, clock, descent_mode, descent_duration_s
+        return screen, keyboard_input, input_devices, mqtt_message_queue, control_message_queue, clock, descent_mode, descent_duration_s
