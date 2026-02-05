@@ -6,18 +6,20 @@ export PYTHONPATH=src:../easing-functions:../rpi-rgb-led-matrix/bindings/python:
 # Start gameplay broker (port 1883) if needed
 mqtt_server=${MQTT_SERVER:-localhost}
 mosquitto_pid=""
-if ! nc -zv $mqtt_server 1883 > /dev/null 2>&1; then
-  /opt/homebrew/opt/mosquitto/sbin/mosquitto -c /opt/homebrew/etc/mosquitto/mosquitto.conf &
+if ! nc -z $mqtt_server 1883 2>/dev/null; then
+  /opt/homebrew/opt/mosquitto/sbin/mosquitto -p 1883 &
   mosquitto_pid=$!
+  sleep 0.5
 fi
 
 # Start control broker (port 1884) if needed
 mqtt_control_server=${MQTT_CONTROL_SERVER:-localhost}
 mqtt_control_port=${MQTT_CONTROL_PORT:-1884}
 mosquitto_control_pid=""
-if ! nc -zv $mqtt_control_server $mqtt_control_port > /dev/null 2>&1; then
+if ! nc -z $mqtt_control_server $mqtt_control_port 2>/dev/null; then
   /opt/homebrew/opt/mosquitto/sbin/mosquitto -p $mqtt_control_port &
   mosquitto_control_pid=$!
+  sleep 0.5
 fi
 
 # Clean up function that kills both mosquitto processes we started
