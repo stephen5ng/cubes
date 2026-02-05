@@ -2,6 +2,8 @@
 
 . cube_env/bin/activate
 export PYTHONPATH=src:../easing-functions:../rpi-rgb-led-matrix/bindings/python:$PYTHONPATH
+
+# Start gameplay broker (port 1883) if needed
 mqtt_server=${MQTT_SERVER:-localhost}
 mosquitto_pid=""
 if ! nc -zv $mqtt_server 1883 > /dev/null 2>&1; then
@@ -9,15 +11,65 @@ if ! nc -zv $mqtt_server 1883 > /dev/null 2>&1; then
   mosquitto_pid=$!
 fi
 
-# Clean up function that only kills the mosquitto process we started
+# Start control broker (port 1884) if needed
+mqtt_control_server=${MQTT_CONTROL_SERVER:-localhost}
+mqtt_control_port=${MQTT_CONTROL_PORT:-1884}
+mosquitto_control_pid=""
+if ! nc -zv $mqtt_control_server $mqtt_control_port > /dev/null 2>&1; then
+  /opt/homebrew/opt/mosquitto/sbin/mosquitto -p $mqtt_control_port &
+  mosquitto_control_pid=$!
+fi
+
+# Clean up function that kills both mosquitto processes we started
 cleanup() {
   if [ -n "$mosquitto_pid" ]; then
     kill $mosquitto_pid 2>/dev/null || true
+  fi
+  if [ -n "$mosquitto_control_pid" ]; then
+    kill $mosquitto_control_pid 2>/dev/null || true
   fi
 }
 
 trap cleanup EXIT
 ./tools/delete_all_mqtt.sh
+
+# Helper function to fetch and display final score from control broker
+fetch_final_score() {
+    local mqtt_control_port=${MQTT_CONTROL_PORT:-1884}
+
+    # Use timeout to wait up to 2 seconds for the final score message
+    # -C 1 means "exit after receiving 1 message"
+    local score_json=$(timeout 2 mosquitto_sub -h localhost -p $mqtt_control_port -t "game/final_score" -C 1 2>/dev/null)
+
+    if [ -n "$score_json" ]; then
+        # Parse JSON and display formatted output
+        echo ""
+        echo "=========================================="
+        echo "           FINAL SCORE"
+        echo "=========================================="
+
+        # Extract fields using python for reliable JSON parsing
+        python3 -c "
+import json
+import sys
+try:
+    data = json.loads('''$score_json''')
+    print(f\"  Score:        {data.get('score', 'N/A')}\")
+    print(f\"  Stars:        {data.get('stars', 'N/A')}\")
+    exit_code = data.get('exit_code', 'N/A')
+    result = 'Win' if exit_code == 10 else ('Loss' if exit_code == 11 else 'Quit/Abort')
+    print(f\"  Result:       {result} (exit code: {exit_code})\")
+    print(f\"  Duration:     {data.get('duration_s', 0):.1f}s\")
+    if data.get('min_win_score', 0) > 0:
+        print(f\"  Win Target:   {data.get('min_win_score', 0)}\")
+except:
+    pass
+" || true
+
+        echo "=========================================="
+        echo ""
+    fi
+}
 
 # Parse arguments for --mode flag
 user_args=()
@@ -86,9 +138,12 @@ while true; do
     python ./main.py "${python_args[@]}"
     exit_code=$?
     set -e
-    
+
     echo "Game finished with exit code: $exit_code"
-    
+
+    # Fetch and display final score from control broker
+    fetch_final_score
+
     # Check if we should loop based on mode
     if [[ "$mode" == "game_on" ]]; then
         if [[ $exit_code -eq 10 ]]; then

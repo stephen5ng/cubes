@@ -23,6 +23,8 @@ def get_test_env():
     """Get environment variables for functional tests."""
     env = os.environ.copy()
     env['MQTT_SERVER'] = 'localhost'
+    env['MQTT_CONTROL_SERVER'] = 'localhost'
+    env['MQTT_CONTROL_PORT'] = '1884'
     return env
 
 

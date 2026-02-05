@@ -5,6 +5,8 @@ import pygame
 import pygame.freetype
 from typing import cast, Optional
 import easing_functions
+import aiomqtt
+import json
 
 from core import app
 from core import tiles
@@ -343,7 +345,35 @@ class Game:
             logger.error(f"Failed to write duration log: {e}")
 
         await self._app.stop(now_ms)
+
+        # Publish final score to control broker
+        await self._publish_final_score(exit_code, num_stars)
+
         logger.info("GAME OVER OVER")
+
+    async def _publish_final_score(self, exit_code: int, num_stars: int) -> None:
+        """Publish final game score to the control MQTT broker."""
+        try:
+            score_data = {
+                "score": self.scores[0].score,
+                "stars": num_stars,
+                "exit_code": exit_code,
+                "min_win_score": self.min_win_score,
+                "duration_s": self.stop_time_s - self.start_time_s if self.stop_time_s else 0
+            }
+
+            async with aiomqtt.Client(
+                hostname=game_config.MQTT_CONTROL_SERVER,
+                port=game_config.MQTT_CONTROL_PORT
+            ) as client:
+                await client.publish(
+                    "game/final_score",
+                    json.dumps(score_data),
+                    retain=True
+                )
+                logger.info(f"Published final score to control broker: {score_data}")
+        except Exception as e:
+            logger.error(f"Failed to publish final score to control broker: {e}")
 
     async def next_tile(self, next_letter: str, now_ms: int) -> None:
         """Update the next letter to fall."""
