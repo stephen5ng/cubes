@@ -178,14 +178,8 @@
 {"time": 93446, "topic": "cube/2/letter", "message": " ", "retain": true}
 {"time": 93446, "topic": "cube/3/letter", "message": " ", "retain": true}
 {"time": 93446, "topic": "cube/4/letter", "message": " ", "retain": true}
-{"time": 93446, "topic": "cube/4/border", "message": ":", "retain": true}
 {"time": 93446, "topic": "cube/5/letter", "message": " ", "retain": true}
-{"time": 93446, "topic": "cube/5/border", "message": ":", "retain": true}
 {"time": 93446, "topic": "cube/6/letter", "message": " ", "retain": true}
-{"time": 93446, "topic": "cube/6/border", "message": ":", "retain": true}
-{"time": 93446, "topic": "cube/4/border", "message": "NSW:0xFFFF", "retain": true}
-{"time": 93446, "topic": "cube/5/border", "message": "NS:0xFFFF", "retain": true}
-{"time": 93446, "topic": "cube/6/border", "message": "ENS:0xFFFF", "retain": true}
 {"time": 93446, "topic": "cube/6/lock", "message": null, "retain": true}
 {"time": 93446, "topic": "cube/4/border", "message": ":", "retain": true}
 {"time": 93446, "topic": "cube/5/border", "message": ":", "retain": true}

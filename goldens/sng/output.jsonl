@@ -139,3 +139,7 @@
 {"time": 96528, "event_type": "letter_position", "x": 48, "y": 165}
 {"time": 97529, "event_type": "letter_position", "x": 48, "y": 190}
 {"time": 98549, "event_type": "letter_position", "x": 48, "y": 258}
+{"time": 100432, "event_type": "word_formed", "word": "UNS", "player": 0, "score": 3}
+{"time": 196577, "event_type": "word_formed", "word": "NEST", "player": 0, "score": 4}
+{"time": 221959, "event_type": "word_formed", "word": "TEN", "player": 0, "score": 3}
+{"time": 222133, "event_type": "word_formed", "word": "TENS", "player": 0, "score": 4}
