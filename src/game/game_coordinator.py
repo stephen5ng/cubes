@@ -59,7 +59,7 @@ class GameCoordinator:
                          replay_file: str, descent_mode: str, descent_duration_s: int,
                          record: bool, one_round: bool, min_win_score: int,
                          stars: bool,
-                         level: int = 0) -> tuple:
+                         level: int = 0, control_client: aiomqtt.Client = None) -> tuple:
         """Set up all game components.
         
         Returns:
@@ -159,5 +159,11 @@ class GameCoordinator:
         if not replay_file:
             asyncio.create_task(self.mqtt_coordinator.process_messages_task(
                 mqtt_client, mqtt_message_queue), name="mqtt processor")
+
+        # Start control broker message processor if available
+        if not replay_file and control_client:
+            control_message_queue = asyncio.Queue()
+            asyncio.create_task(self.mqtt_coordinator.process_messages_task(
+                control_client, control_message_queue), name="control mqtt processor")
 
         return screen, keyboard_input, input_devices, mqtt_message_queue, clock, descent_mode, descent_duration_s

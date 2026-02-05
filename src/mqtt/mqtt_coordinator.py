@@ -24,6 +24,10 @@ class MQTTCoordinator:
             logger.info("Starting due to topic")
             await self.game.start_cubes(now_ms)
 
+        elif topic_str == "game/start":
+            logger.info("Starting due to control broker topic")
+            await self.game.start_cubes(now_ms)
+
         elif topic_str == "app/abort":
             events.trigger(GameAbortEvent())
 

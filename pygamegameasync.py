@@ -129,13 +129,14 @@ class BlockWordsPygame:
         return False
 
     async def setup_game(self, the_app: app.App, subscribe_client: aiomqtt.Client,
-                         publish_queue: asyncio.Queue, game_logger, output_logger):
+                         publish_queue: asyncio.Queue, game_logger, output_logger, control_client: aiomqtt.Client = None):
         """Set up all game components. Returns (screen, keyboard_input, input_devices, mqtt_message_queue, clock)."""
         screen, keyboard_input, input_devices, mqtt_message_queue, clock, self.descent_mode, self.descent_duration_s = await self.game_coordinator.setup_game(
             the_app, subscribe_client, publish_queue, game_logger, output_logger,
             self.input_manager, self.letter_font,
             self.replay_file, self.descent_mode, self.descent_duration_s,
-            self.record, self.one_round, self.min_win_score, self.stars, self.level
+            self.record, self.one_round, self.min_win_score, self.stars, self.level,
+            control_client
         )
         
         # Hydrate local references
@@ -222,10 +223,10 @@ class BlockWordsPygame:
 
     async def main(self, the_app: app.App, subscribe_client: aiomqtt.Client, start: bool,
                    keyboard_player_number: int, publish_queue: asyncio.Queue,
-                   game_logger, output_logger) -> int:
+                   game_logger, output_logger, control_client: aiomqtt.Client = None) -> int:
         """Main game loop using production setup."""
         screen, keyboard_input, input_devices, mqtt_message_queue, clock = await self.setup_game(
-            the_app, subscribe_client, publish_queue, game_logger, output_logger
+            the_app, subscribe_client, publish_queue, game_logger, output_logger, control_client
         )
 
         time_offset = 0  # so that time doesn't go backwards after playing a replay file

@@ -23,6 +23,8 @@ from utils import hub75
 from game_logging.game_loggers import OutputLogger, GameLogger, PublishLogger
 
 MQTT_SERVER = game_config.MQTT_SERVER
+MQTT_CONTROL_SERVER = game_config.MQTT_CONTROL_SERVER
+MQTT_CONTROL_PORT = game_config.MQTT_CONTROL_PORT
 my_open = open
 
 logger = logging.getLogger(__name__)
@@ -69,6 +71,18 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
             # Log the ABC countdown delay used in cubes_to_game.py
             game_logger.log_delay_ms(cubes_to_game.ABC_COUNTDOWN_DELAY_MS)
 
+        # Create control broker client (skip in replay mode)
+        control_client = None
+        if not args.replay:
+            try:
+                control_client = aiomqtt.Client(MQTT_CONTROL_SERVER, MQTT_CONTROL_PORT)
+                await control_client.__aenter__()
+                await control_client.subscribe("game/start")
+                logger.info(f"Connected to control broker at {MQTT_CONTROL_SERVER}:{MQTT_CONTROL_PORT}")
+            except Exception as e:
+                logger.warning(f"Failed to connect to control broker: {e}")
+                control_client = None
+
         async with aiomqtt.Client(MQTT_SERVER) as subscribe_client:
             async with aiomqtt.Client(MQTT_SERVER) as publish_client:
                 publish_queue: asyncio.Queue = asyncio.Queue()
@@ -88,7 +102,7 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
                 publish_task = asyncio.create_task(publish_tasks_in_queue(publish_client, publish_queue, publish_logger, {}),
                     name="mqtt publish handler")
 
-                exit_code = await block_words.main(the_app, subscribe_client, args.start, keyboard_player_number, publish_queue, game_logger, output_logger)
+                exit_code = await block_words.main(the_app, subscribe_client, args.start, keyboard_player_number, publish_queue, game_logger, output_logger, control_client)
                 print(f"exit code was {exit_code}")
                 # Wait for the publish queue to be empty before shutting down
                 while not publish_queue.empty():
@@ -96,7 +110,14 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
                 
                 publish_queue.shutdown()
                 publish_task.cancel()
-                
+
+                # Clean up control broker connection
+                if control_client:
+                    try:
+                        await control_client.__aexit__(None, None, None)
+                    except Exception as e:
+                        logger.warning(f"Error closing control broker connection: {e}")
+
                 # Wait for the publish task to complete
                 try:
                     await publish_task
