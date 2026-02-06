@@ -315,7 +315,7 @@ class Game:
         """Stop the game."""
         if not self.running:
             return
-            
+
         # Override exit code if score meets minimum win requirement (3 stars)
         if self.min_win_score > 0:
             num_stars = int(self.scores[0].score / (self.min_win_score / 3.0))
@@ -325,13 +325,17 @@ class Game:
         if num_stars >= 3:
             logger.info(f"Stars earned: {num_stars} >= 3. Setting exit code to 10 (Win)")
             exit_code = 10
-            
+
         self.exit_code = exit_code
         if exit_code != 10:
             self.sound_manager.play_game_over()
         logger.info(f"GAME OVER (Exit Code: {exit_code})")
         for rack in self.racks:
             rack.stop()
+
+        # Reset effects for next game
+        self.melt_effect = None
+        self.balloon_effects = []
         self.input_devices = []
         self.running = False
         now_s = now_ms / 1000

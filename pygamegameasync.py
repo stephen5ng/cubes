@@ -96,6 +96,8 @@ class BlockWordsPygame:
         self.stars = stars
         self.level = level
         self._has_auto_started = False
+        self.control_client = None  # Set in setup_game
+        self.game_awaiting_ready = False  # True when waiting for game/ready to start next game
         
         self.input_manager = InputManager(replay_file)
         self.game_coordinator = GameCoordinator()
@@ -114,11 +116,18 @@ class BlockWordsPygame:
 
             if event_type == "KEYDOWN":
                 if (self.min_win_score > 0) and pygame_event['key'] == "ESCAPE":
-                    self.game.game_logger.log_events(now_ms, events_to_log)
-                    self.game.game_logger.stop_logging()
-                    self.game.output_logger.stop_logging()
-                    await events.stop()
-                    return True
+                    # When min_win_score is set (game_on mode), ESC publishes game/ready
+                    # instead of quitting, allowing the script to control game restarts
+                    if self.control_client and not self.game.running:
+                        # Game has ended, signal ready for next game
+                        try:
+                            await self.control_client.publish("game/ready", "")
+                            logger.info("Published game/ready after ESC (game ended)")
+                        except Exception as e:
+                            logger.warning(f"Failed to publish game/ready: {e}")
+                        self.game_awaiting_ready = True
+                    # Don't quit - let the script control the flow
+                    return False
 
                 await self.keyboard_handler.handle_event(pygame_event['key'], keyboard_input, now_ms)
             
@@ -144,6 +153,7 @@ class BlockWordsPygame:
         self.mqtt_coordinator = self.game_coordinator.mqtt_coordinator
         self.input_controller = self.game_coordinator.input_controller
         self.keyboard_handler = self.game_coordinator.keyboard_handler
+        self.control_client = control_client
 
         return screen, keyboard_input, input_devices, mqtt_message_queue, control_message_queue, clock
 

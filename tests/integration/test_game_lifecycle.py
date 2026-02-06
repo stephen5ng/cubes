@@ -96,10 +96,30 @@ async def test_game_start_clears_abc_tracking():
         # Also need to patch clear_remaining_abc_cubes to avoid real calls
         with patch('tests.fixtures.game_factory.CubesHardwareInterface.clear_remaining_abc_cubes'):
             game, mqtt, queue = await create_test_game(player_count=1)
-            
+
             # create_test_game sets game.running=True manually without calling app.start()
             # We must force a start sequence to trigger the logic under test.
-            game.running = False 
+            game.running = False
             await game.start_cubes(0)
-            
+
             mock_remove.assert_called_with(0)
+
+@async_test
+async def test_game_stop_resets_effects():
+    """Verify that stopping the game resets melt and balloon effects."""
+    from rendering.melt_effect import MeltEffect
+    from rendering.balloon_effect import BalloonEffect
+
+    game, mqtt, queue = await create_test_game(player_count=1)
+    await game.start_cubes(0)
+
+    # Simulate effects being active (as would happen during game over)
+    game.melt_effect = MagicMock(spec=MeltEffect)
+    game.balloon_effects = [MagicMock(spec=BalloonEffect), MagicMock(spec=BalloonEffect)]
+
+    # Stop the game
+    await game.stop(0, exit_code=11)  # Loss exit code
+
+    # Verify effects are reset
+    assert game.melt_effect is None
+    assert game.balloon_effects == []

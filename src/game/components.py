@@ -274,6 +274,16 @@ class StarsDisplay:
         self._post_game_spin_enabled = True
         self._needs_redraw = True
 
+    def reset(self) -> None:
+        """Reset star tracking state for a new game."""
+        self._last_filled_count = 0
+        self._star_animation_start_ms = [-1] * self.num_stars
+        self._tada_scheduled_ms = -1
+        self._heartbeat_start_ms = -1
+        self._post_game_spin_enabled = False
+        self._needs_redraw = True
+        self._render_surface(0)
+
     def _render_surface(self, now_ms: int) -> None:
         """Render stars to the internal surface."""
         star_w = self._filled_star.get_width()
@@ -377,4 +387,7 @@ class NullStarsDisplay:
         pass
 
     def start_post_game_spin(self) -> None:
+        pass
+
+    def reset(self) -> None:
         pass

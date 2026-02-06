@@ -118,7 +118,35 @@ def test_null_stars_display():
     """Verify NullStarsDisplay interface works without error."""
     null_display = NullStarsDisplay()
     window = MagicMock()
-    
+
     # specific attributes should not crash
     null_display.draw(100, now_ms=1000)
     null_display.update(window, now_ms=1000)
+
+def test_stars_display_reset(stars_display):
+    """Verify reset() clears all star state between games."""
+    # Earn some stars
+    stars_display.draw(20, now_ms=1000)
+    assert stars_display._last_filled_count == 2
+    assert stars_display._star_animation_start_ms[0] == 1000
+    assert stars_display._star_animation_start_ms[1] == 1000
+
+    # Enable post-game spin
+    stars_display.start_post_game_spin()
+    assert stars_display._post_game_spin_enabled is True
+
+    # Reset
+    stars_display.reset()
+
+    # Verify all state is cleared
+    assert stars_display._last_filled_count == 0
+    assert all(t == -1 for t in stars_display._star_animation_start_ms)
+    assert stars_display._tada_scheduled_ms == -1
+    assert stars_display._heartbeat_start_ms == -1
+    assert stars_display._post_game_spin_enabled is False
+    assert stars_display._needs_redraw is True
+
+def test_null_stars_display_reset():
+    """Verify NullStarsDisplay.reset() exists and doesn't crash."""
+    null_display = NullStarsDisplay()
+    null_display.reset()  # Should not crash

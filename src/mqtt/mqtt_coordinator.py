@@ -52,6 +52,10 @@ class MQTTCoordinator:
             if self.game.running:
                 logger.info("Game is running, stopping before restart")
                 await self.game.stop(now_ms, 0)
+
+            # Reset stars display for new game
+            self.game.stars_display.reset()
+
             await self.game.start_cubes(now_ms)
 
         elif topic_str == "app/abort":

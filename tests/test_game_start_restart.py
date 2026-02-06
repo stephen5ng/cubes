@@ -7,13 +7,14 @@ from mqtt.mqtt_coordinator import MQTTCoordinator
 from game.game_state import Game
 from game.game_coordinator import GameCoordinator
 from core.app import App
+from game.components import StarsDisplay, NullStarsDisplay
 
 
 @pytest.mark.asyncio
 async def test_game_start_restarts_running_game():
     """Verify that game/start stops and restarts a running game."""
     # Create mock game and app
-    game = MagicMock(spec=Game)
+    game = MagicMock()
     app = MagicMock(spec=App)
     publish_queue = asyncio.Queue()
 
@@ -21,6 +22,7 @@ async def test_game_start_restarts_running_game():
     game.running = True
     game.stop = AsyncMock()
     game.start_cubes = AsyncMock()
+    game.stars_display = MagicMock(spec=StarsDisplay)
 
     # Create coordinator
     coordinator = MQTTCoordinator(game, app, publish_queue)
@@ -32,13 +34,15 @@ async def test_game_start_restarts_running_game():
     game.stop.assert_called_once_with(1000, 0)
     # Verify start_cubes was called (game restarted)
     game.start_cubes.assert_called_once_with(1000)
+    # Verify stars were reset
+    game.stars_display.reset.assert_called_once()
 
 
 @pytest.mark.asyncio
 async def test_game_start_starts_non_running_game():
     """Verify that game/start starts a game that's not running."""
     # Create mock game and app
-    game = MagicMock(spec=Game)
+    game = MagicMock()
     app = MagicMock(spec=App)
     publish_queue = asyncio.Queue()
 
@@ -46,6 +50,7 @@ async def test_game_start_starts_non_running_game():
     game.running = False
     game.stop = AsyncMock()
     game.start_cubes = AsyncMock()
+    game.stars_display = MagicMock(spec=StarsDisplay)
 
     # Create coordinator
     coordinator = MQTTCoordinator(game, app, publish_queue)
@@ -57,13 +62,15 @@ async def test_game_start_starts_non_running_game():
     game.stop.assert_not_called()
     # Verify start_cubes was called (game started)
     game.start_cubes.assert_called_once_with(1000)
+    # Verify stars were reset
+    game.stars_display.reset.assert_called_once()
 
 
 @pytest.mark.asyncio
 async def test_game_start_with_json_params():
     """Verify that game/start with JSON payload stores and applies params."""
     # Create mock game and app
-    game = MagicMock(spec=Game)
+    game = MagicMock()
     app = MagicMock(spec=App)
     publish_queue = asyncio.Queue()
 
@@ -71,6 +78,7 @@ async def test_game_start_with_json_params():
     game.running = True
     game.stop = AsyncMock()
     game.start_cubes = AsyncMock()
+    game.stars_display = MagicMock(spec=StarsDisplay)
 
     # Create GameCoordinator mock
     game_coordinator = MagicMock(spec=GameCoordinator)
@@ -107,13 +115,15 @@ async def test_game_start_with_json_params():
     # Verify stop and start_cubes were still called
     game.stop.assert_called_once_with(1000, 0)
     game.start_cubes.assert_called_once_with(1000)
+    # Verify stars were reset
+    game.stars_display.reset.assert_called_once()
 
 
 @pytest.mark.asyncio
 async def test_game_start_with_invalid_json():
     """Verify that game/start with invalid JSON logs warning but still restarts."""
     # Create mock game and app
-    game = MagicMock(spec=Game)
+    game = MagicMock()
     app = MagicMock(spec=App)
     publish_queue = asyncio.Queue()
 
@@ -121,6 +131,7 @@ async def test_game_start_with_invalid_json():
     game.running = True
     game.stop = AsyncMock()
     game.start_cubes = AsyncMock()
+    game.stars_display = MagicMock(spec=StarsDisplay)
 
     # Create coordinator
     coordinator = MQTTCoordinator(game, app, publish_queue)
@@ -128,6 +139,38 @@ async def test_game_start_with_invalid_json():
     # Send game/start message with invalid JSON payload
     # Should still restart despite invalid JSON
     await coordinator.handle_message("game/start", b"invalid json", 1000)
+
+    # Verify stop and start_cubes were still called
+    game.stop.assert_called_once_with(1000, 0)
+    game.start_cubes.assert_called_once_with(1000)
+    # Verify stars were still reset
+    game.stars_display.reset.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_game_start_resets_stars_display():
+    """Verify that game/start resets the stars display."""
+    # Create mock game with a real StarsDisplay
+    game = MagicMock(spec=Game)
+    game.running = True
+    game.stop = AsyncMock()
+    game.start_cubes = AsyncMock()
+
+    # Create a real StarsDisplay to verify reset is called
+    mock_stars = MagicMock(spec=StarsDisplay)
+    game.stars_display = mock_stars
+
+    app = MagicMock(spec=App)
+    publish_queue = asyncio.Queue()
+
+    # Create coordinator
+    coordinator = MQTTCoordinator(game, app, publish_queue)
+
+    # Send game/start message
+    await coordinator.handle_message("game/start", "", 1000)
+
+    # Verify stars reset was called
+    mock_stars.reset.assert_called_once()
 
     # Verify stop and start_cubes were still called
     game.stop.assert_called_once_with(1000, 0)
