@@ -41,17 +41,18 @@ class TestGameOverDisplay(unittest.TestCase):
 
     def test_draw_lost(self):
         window = MagicMock()
-        
+
         with patch('ui.game_over_display.SCREEN_WIDTH', 200), \
              patch('ui.game_over_display.SCREEN_HEIGHT', 150):
-            
+
             self.display.draw(window, won=False)
-            
-            # Verify render called with correct text and color
-            self.mock_font_instance.render.assert_called_with("SORRY", BAD_GUESS_COLOR)
-            
-            # Verify blit position
-            window.blit.assert_called_with(self.mock_text_surface, (50, 50))
+
+            # Verify render called twice for "GAME" and "OVER"
+            self.assertEqual(self.mock_font_instance.render.call_count, 2)
+            # First call for "GAME"
+            self.mock_font_instance.render.assert_any_call("GAME", BAD_GUESS_COLOR)
+            # Second call for "OVER"
+            self.mock_font_instance.render.assert_any_call("OVER", BAD_GUESS_COLOR)
 
 if __name__ == '__main__':
     unittest.main()

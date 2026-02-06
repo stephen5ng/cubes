@@ -45,7 +45,7 @@ class GameOverDisplay:
 
     def draw(self, window: pygame.Surface, won: bool, now_ms: int = 0) -> None:
         """Render the game over message centered on the screen."""
-        text = "CONGRATS!" if won else "SORRY"
+        text = "CONGRATS!" if won else "GAME\nOVER"
         color = GOOD_GUESS_COLOR if won else BAD_GUESS_COLOR
 
         # Simple blink for winning: 400ms on, 400ms off
