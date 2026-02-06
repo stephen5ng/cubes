@@ -144,7 +144,7 @@ class StarsDisplay:
         total_width = star_w * self.num_stars
         self.pos = [int(SCREEN_WIDTH/2 - total_width/2), 0]
         self.surface = pygame.Surface((total_width, star_h), pygame.SRCALPHA)
-        
+
         # Track the animation state for each star
         # -1 means no animation, otherwise timestamp of start
         self._star_animation_start_ms = [-1] * self.num_stars
@@ -154,6 +154,10 @@ class StarsDisplay:
         self._tada_scheduled_ms = -1
         self._heartbeat_start_ms = -1
         self._post_game_spin_enabled = False
+
+        # Baseline score for level progression (scores carry over between levels)
+        # Stars are earned based on (current_score - baseline_score)
+        self._baseline_score = 0
 
         # Pre-create easing function for tada blink animation
         # Creates a smooth fade curve for blinking effect
@@ -208,8 +212,10 @@ class StarsDisplay:
 
     def draw(self, current_score: int, now_ms: int) -> int:
         """Update score and trigger animations. Returns the number of stars earned."""
-        # Earn a star for every min_win_score/3 points
-        num_filled = min(self.num_stars, int(current_score / (self.min_win_score / 3.0)))
+        # Earn a star for every min_win_score/3 points above baseline
+        # Baseline allows scores to carry over between levels without instantly earning stars
+        effective_score = current_score - self._baseline_score
+        num_filled = min(self.num_stars, int(effective_score / (self.min_win_score / 3.0)))
 
         if num_filled > self._last_filled_count:
             # Play star spin sound for any newly earned star(s)
@@ -281,8 +287,20 @@ class StarsDisplay:
         self._tada_scheduled_ms = -1
         self._heartbeat_start_ms = -1
         self._post_game_spin_enabled = False
+        self._baseline_score = 0
         self._needs_redraw = True
         self._render_surface(0)
+
+    def set_baseline_score(self, score: int) -> None:
+        """Set the baseline score for level progression.
+
+        When scores carry over between levels, the baseline ensures stars
+        are earned based on points earned in the current level, not total score.
+
+        Args:
+            score: The baseline score (starting score for this level)
+        """
+        self._baseline_score = score
 
     def _render_surface(self, now_ms: int) -> None:
         """Render stars to the internal surface."""
@@ -390,4 +408,7 @@ class NullStarsDisplay:
         pass
 
     def reset(self) -> None:
+        pass
+
+    def set_baseline_score(self, score: int) -> None:
         pass

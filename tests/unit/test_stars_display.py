@@ -23,7 +23,8 @@ def test_initial_state(stars_display):
     assert all(t == -1 for t in stars_display._star_animation_start_ms)
     assert stars_display.num_stars == 3
     assert stars_display._heartbeat_start_ms == -1
-    
+    assert stars_display._baseline_score == 0
+
     # Verify centered position
     # pos = [int(SCREEN_WIDTH/2 - total_width/2), 0]
     total_width = stars_display.surface.get_width()
@@ -131,6 +132,10 @@ def test_stars_display_reset(stars_display):
     assert stars_display._star_animation_start_ms[0] == 1000
     assert stars_display._star_animation_start_ms[1] == 1000
 
+    # Set a baseline
+    stars_display.set_baseline_score(50)
+    assert stars_display._baseline_score == 50
+
     # Enable post-game spin
     stars_display.start_post_game_spin()
     assert stars_display._post_game_spin_enabled is True
@@ -144,9 +149,33 @@ def test_stars_display_reset(stars_display):
     assert stars_display._tada_scheduled_ms == -1
     assert stars_display._heartbeat_start_ms == -1
     assert stars_display._post_game_spin_enabled is False
+    assert stars_display._baseline_score == 0
     assert stars_display._needs_redraw is True
 
 def test_null_stars_display_reset():
     """Verify NullStarsDisplay.reset() exists and doesn't crash."""
     null_display = NullStarsDisplay()
     null_display.reset()  # Should not crash
+
+def test_stars_display_baseline_score(stars_display):
+    """Verify that baseline score affects star calculation for level progression."""
+    # Earn 2 stars (20 points)
+    stars_display.draw(20, now_ms=1000)
+    assert stars_display._last_filled_count == 2
+
+    # Reset and set baseline to 20 (simulate starting level 1 with 20 points from level 0)
+    stars_display.reset()
+    stars_display.set_baseline_score(20)
+
+    # With baseline 20, current score 20 should give 0 stars (20 - 20 = 0)
+    assert stars_display.draw(20, now_ms=2000) == 0
+    assert stars_display._last_filled_count == 0
+
+    # Earn 10 more points (total 30, effective 10) -> 1 star
+    assert stars_display.draw(30, now_ms=3000) == 1
+    assert stars_display._last_filled_count == 1
+
+def test_null_stars_display_set_baseline_score():
+    """Verify NullStarsDisplay.set_baseline_score() exists and doesn't crash."""
+    null_display = NullStarsDisplay()
+    null_display.set_baseline_score(100)  # Should not crash

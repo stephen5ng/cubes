@@ -48,6 +48,9 @@ class MQTTCoordinator:
                 if needs_re_setup:
                     logger.info("Descent parameters changed, full re-setup would be needed")
 
+            # Save current scores before stopping (for level progression)
+            saved_scores = [score.score for score in self.game.scores] if self.game.scores else []
+
             # Stop the game if it's running, then restart
             if self.game.running:
                 logger.info("Game is running, stopping before restart")
@@ -57,6 +60,17 @@ class MQTTCoordinator:
             self.game.stars_display.reset()
 
             await self.game.start_cubes(now_ms)
+
+            # Restore scores if level > 0 (preserve score across levels)
+            current_level = game_params.level if game_params else 0
+            if current_level > 0 and saved_scores:
+                for i, saved_score in enumerate(saved_scores):
+                    if i < len(self.game.scores):
+                        self.game.scores[i].score = saved_score
+                        self.game.scores[i].draw()
+                # Set baseline score so stars are earned based on points in current level
+                self.game.stars_display.set_baseline_score(saved_scores[0] if saved_scores else 0)
+                logger.info(f"Restored scores for level {current_level}: {saved_scores}, baseline: {saved_scores[0] if saved_scores else 0}")
 
         elif topic_str == "app/abort":
             events.trigger(GameAbortEvent())
