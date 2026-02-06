@@ -28,8 +28,6 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 MOSQUITTO_PATH = "/opt/homebrew/opt/mosquitto/sbin/mosquitto"
 DELETE_MQTT_SCRIPT = os.path.join(SCRIPT_DIR, "tools/delete_all_mqtt.sh")
 
-MAX_LEVEL = 2
-
 
 def is_port_open(host: str, port: int) -> bool:
     """Check if a port is open on a host."""
@@ -40,12 +38,46 @@ def is_port_open(host: str, port: int) -> bool:
         return False
 
 
+def _calculate_level_params(level: int) -> tuple[int, int]:
+    """Calculate min_win_score and descent_duration for a given level.
+
+    For levels 0-2, values are predefined. For levels 3+:
+    - min_win_score increases by 50% each level
+    - descent_duration decreases by 1/3 each level
+
+    Args:
+        level: The level number
+
+    Returns:
+        Tuple of (min_win_score, descent_duration)
+    """
+    # Base level configurations
+    level_configs = {
+        0: (90, 90),
+        1: (90, 180),
+        2: (360, 120),
+    }
+
+    if level in level_configs:
+        return level_configs[level]
+
+    # For levels > 2, calculate from level 2
+    min_win_score, descent_duration = level_configs[2]
+
+    # Level 3 and above: progressive difficulty
+    for _ in range(3, level + 1):
+        min_win_score = int(min_win_score * 1.5)  # +50%
+        descent_duration = int(descent_duration * 2 / 3)  # -1/3
+
+    return min_win_score, descent_duration
+
+
 def build_game_params(mode: str, level: int) -> str:
     """Build game parameters JSON based on mode and level.
 
     Args:
         mode: Game mode ("new", "game_on", or "classic")
-        level: Level number (0-2)
+        level: Level number (0+)
 
     Returns:
         JSON string with game parameters
@@ -56,31 +88,22 @@ def build_game_params(mode: str, level: int) -> str:
             "descent_duration": 120
         })
     elif mode == "game_on":
+        min_win_score, descent_duration = _calculate_level_params(level)
+
+        params = {
+            "descent_mode": "timed",
+            "descent_duration": descent_duration,
+            "min_win_score": min_win_score,
+            "stars": True,
+            "level": level
+        }
+
+        # Level 0 is one-round mode
         if level == 0:
-            return json.dumps({
-                "descent_mode": "timed",
-                "descent_duration": 90,
-                "one_round": True,
-                "min_win_score": 90,
-                "stars": True,
-                "level": 0
-            })
-        elif level == 1:
-            return json.dumps({
-                "descent_mode": "timed",
-                "descent_duration": 180,
-                "min_win_score": 90,
-                "stars": True,
-                "level": 1
-            })
-        elif level == 2:
-            return json.dumps({
-                "descent_mode": "timed",
-                "descent_duration": 120,
-                "min_win_score": 360,
-                "stars": True,
-                "level": 2
-            })
+            params["one_round"] = True
+
+        return json.dumps(params)
+
     # Classic mode - no special params
     return ""
 
@@ -91,7 +114,7 @@ def build_python_args(mode: str, level: int, extra_args: list[str]) -> list[str]
     Args:
         mode: Game mode
         level: Level number
-        extra_args: Additional arguments from command line
+        extra_args: Additional command-line arguments
 
     Returns:
         List of arguments to pass to main.py
@@ -103,14 +126,17 @@ def build_python_args(mode: str, level: int, extra_args: list[str]) -> list[str]
     elif mode == "classic":
         args.append("--continuous")
     elif mode == "game_on":
-        args.extend(["--descent-mode", "timed", "--stars", "--level", str(level)])
+        min_win_score, descent_duration = _calculate_level_params(level)
+        args.extend([
+            "--descent-mode", "timed",
+            "--stars",
+            "--level", str(level),
+            "--min-win-score", str(min_win_score),
+            "--descent-duration", str(descent_duration)
+        ])
 
         if level == 0:
-            args.extend(["--one-round", "--min-win-score", "90", "--descent-duration", "90"])
-        elif level == 1:
-            args.extend(["--min-win-score", "90", "--descent-duration", "180"])
-        elif level == 2:
-            args.extend(["--min-win-score", "360", "--descent-duration", "120"])
+            args.append("--one-round")
 
     return args
 
@@ -219,15 +245,16 @@ async def monitor_game_on(
                 if exit_code == 10:
                     # Win - Advance Level
                     print("Win! Advancing level...")
-                    if level < MAX_LEVEL:
-                        level += 1
-                        print(f"Current Level: {level}")
-                    else:
-                        print("Congratulations! You completed all levels!")
+                    level += 1
+                    min_win_score, descent_duration = _calculate_level_params(level)
+                    print(f"Current Level: {level} (target: {min_win_score}, duration: {descent_duration}s)")
                     print("Press ESC to continue...")
                 elif exit_code == 11:
-                    # Loss - Stay on same level
-                    print("Loss! Retrying current level...")
+                    # Loss - Reset to Level 0
+                    print("Sorry! Back to Level 0...")
+                    level = 0
+                    min_win_score, descent_duration = _calculate_level_params(level)
+                    print(f"Reset to Level {level} (target: {min_win_score}, duration: {descent_duration}s)")
                     print("Press ESC to try again...")
                 elif exit_code == 0:
                     # Normal exit - user quit
@@ -265,7 +292,9 @@ async def run_game_on(level: int, python_args: list[str]) -> int:
     Returns:
         Exit code from the game
     """
+    min_win_score, descent_duration = _calculate_level_params(level)
     print(f"Starting game_on mode at level: {level}")
+    print(f"Level parameters: min_win_score={min_win_score}, descent_duration={descent_duration}s")
     print(f"Running game with arguments: {' '.join(python_args)}")
 
     # Start the Python game process
@@ -422,7 +451,7 @@ def main():
         "--level",
         type=int,
         default=0,
-        help="Level for game_on mode (0-2, default: 0)",
+        help="Level for game_on mode (0+, default: 0)",
     )
     parser.add_argument(
         "extra_args",
