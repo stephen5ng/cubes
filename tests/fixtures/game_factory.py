@@ -111,11 +111,11 @@ def ensure_pygame_initialized(visual: bool) -> None:
         if not pygame.font.get_init():
             pygame.font.init()
 
-async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool] = None, player_count: int = 1, descent_duration_s: int = game_config.DESCENT_DURATION_S, min_win_score: int = 0) -> Tuple[Game, FakeMqttClient, asyncio.Queue]:
+async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool] = None, player_count: int = 1, descent_duration_s: int = game_config.DESCENT_DURATION_S, min_win_score: int = 0, stars: bool = False) -> Tuple[Game, FakeMqttClient, asyncio.Queue]:
     """Factory for common test game setup."""
     if visual is None:
         visual = is_visual_mode()
-        
+
     import random
     random.seed(42)
 
@@ -145,7 +145,7 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
     time_provider = ContextAwareTimeProvider()
     app = App(publish_queue, real_dictionary, CubesHardwareInterface(), time_provider=time_provider)
     await cubes_to_game.init(fake_mqtt)
-    
+
     # Clear initial state
     await cubes_to_game.clear_all_letters(publish_queue, 0)
 
@@ -178,7 +178,7 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
         replay_mode=False,
         one_round=False,
         min_win_score=min_win_score,
-        stars=False
+        stars=stars
     )
     
     # Attach provider to game for tests that might want to access it (though updating mock_time_var via loop is preferred)

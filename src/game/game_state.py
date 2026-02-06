@@ -316,15 +316,18 @@ class Game:
         if not self.running:
             return
 
-        # Override exit code if score meets minimum win requirement (3 stars)
-        if self.min_win_score > 0:
-            num_stars = int(self.scores[0].score / (self.min_win_score / 3.0))
-        else:
-            num_stars = 0
+        # Calculate stars earned (accounts for baseline score)
+        num_stars = self.stars_display.calculate_stars_for_score(self.scores[0].score)
 
-        if num_stars >= 3:
+        # When stars are enabled, player must earn 3 stars to win
+        if self.min_win_score > 0 and num_stars >= 3:
             logger.info(f"Stars earned: {num_stars} >= 3. Setting exit code to 10 (Win)")
             exit_code = 10
+        elif self.min_win_score > 0 and num_stars < 3:
+            # Less than 3 stars with stars enabled = loss, regardless of score
+            logger.info(f"Stars earned: {num_stars} < 3. Setting exit code to 11 (Loss)")
+            exit_code = 11
+        # Otherwise, keep the original exit_code (for games without stars enabled)
 
         self.exit_code = exit_code
         if exit_code != 10:

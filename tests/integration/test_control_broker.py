@@ -10,7 +10,7 @@ from tests.fixtures.game_factory import create_test_game, async_test
 @async_test
 async def test_final_score_data_format():
     """Verify final score data is correctly formatted."""
-    game, mqtt, queue = await create_test_game(player_count=1, min_win_score=100)
+    game, mqtt, queue = await create_test_game(player_count=1, min_win_score=100, stars=True)
 
     # Set up a known score
     game.scores[0].score = 150
@@ -39,8 +39,8 @@ async def test_final_score_data_format():
     # Verify the data was published
     assert published_data is not None, "Final score data should be published"
     assert published_data["score"] == 150
-    assert published_data["stars"] == 4  # 150 / (100/3) = 4.5, int() = 4
-    assert published_data["exit_code"] == 10  # Win (score >= min_win_score)
+    assert published_data["stars"] == 3  # 150 points = 3 stars (capped at 3)
+    assert published_data["exit_code"] == 10  # Win (3 stars earned)
     assert published_data["min_win_score"] == 100
     assert published_data["duration_s"] == 60.0
 
@@ -80,7 +80,7 @@ async def test_final_score_with_no_min_win_score():
 @async_test
 async def test_final_score_on_loss():
     """Verify final score data on game loss (exit code 11)."""
-    game, mqtt, queue = await create_test_game(player_count=1, min_win_score=100)
+    game, mqtt, queue = await create_test_game(player_count=1, min_win_score=100, stars=True)
 
     game.scores[0].score = 50
     game.start_time_s = 100.0
@@ -142,7 +142,7 @@ async def test_final_score_uses_retain():
 @async_test
 async def test_final_score_graceful_broker_failure():
     """Verify game continues even if control broker is unavailable."""
-    game, mqtt, queue = await create_test_game(player_count=1, min_win_score=50)
+    game, mqtt, queue = await create_test_game(player_count=1, min_win_score=50, stars=True)
 
     game.scores[0].score = 60
     game.start_time_s = 100.0
@@ -154,8 +154,8 @@ async def test_final_score_graceful_broker_failure():
         # Should not raise, just log error
         await game.stop(120000, exit_code=0)
 
-    # Game should still have exited normally
-    assert game.exit_code == 10  # Win (score >= min_win_score)
+    # Game should have exited with win (60 points = 3.6 stars -> 3 stars)
+    assert game.exit_code == 10  # Win (3 stars earned)
     assert not game.running
 
 
