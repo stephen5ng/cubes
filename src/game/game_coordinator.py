@@ -222,6 +222,7 @@ class GameCoordinator:
         self.game.min_win_score = params.min_win_score
         self.game.level = params.level
         self.game.show_level = params.level > 0 or params.stars
+        self.game.level_fade_start_ms = -1  # Reset level fade trigger to show level again
         self.game.descent_duration_s = params.descent_duration_s
 
         # Update stars display
