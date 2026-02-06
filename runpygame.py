@@ -9,6 +9,7 @@ import argparse
 import asyncio
 import json
 import os
+import shutil
 import signal
 import socket
 import subprocess
@@ -298,8 +299,10 @@ async def run_game_on(level: int, python_args: list[str]) -> int:
     print(f"Running game with arguments: {' '.join(python_args)}")
 
     # Start the Python game process
+    # Use 'python3' which will resolve to venv python if PATH is set correctly
+    python_exe = shutil.which("python3") or "python3"
     python_proc = subprocess.Popen(
-        [sys.executable, "./main.py"] + python_args,
+        [python_exe, "./main.py"] + python_args,
         cwd=SCRIPT_DIR,
     )
 
@@ -344,8 +347,10 @@ def run_simple(python_args: list[str]) -> int:
     """
     print(f"Running game with arguments: {' '.join(python_args)}")
 
+    # Use 'python3' which will resolve to venv python if PATH is set correctly
+    python_exe = shutil.which("python3") or "python3"
     proc = subprocess.Popen(
-        [sys.executable, "./main.py"] + python_args,
+        [python_exe, "./main.py"] + python_args,
         cwd=SCRIPT_DIR,
     )
 

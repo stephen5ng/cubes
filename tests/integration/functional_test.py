@@ -31,7 +31,7 @@ def run_replay_test(test_name):
     os.makedirs(output_dir)
     
     # Run the replay
-    cmd = ["./runpygame.sh", "--replay", replay_file]
+    cmd = ["python", "./runpygame.py", "--replay", replay_file]
     print(f"Running: {' '.join(cmd)}")
     
     try:
@@ -100,7 +100,7 @@ def rerecord_test(test_name):
     os.makedirs(output_dir)
     
     # Run the replay
-    cmd = ["./runpygame.sh", "--replay", replay_file]
+    cmd = ["python", "./runpygame.py", "--replay", replay_file]
     print(f"Running: {' '.join(cmd)}")
     
     try:
@@ -158,7 +158,7 @@ def record_golden_files(test_name):
     os.makedirs(output_dir)
     
     # Run the game to generate output files and replay
-    cmd = ["./runpygame.sh"]
+    cmd = ["python", "./runpygame.py"]
     print(f"Running: {' '.join(cmd)}")
     
     try:

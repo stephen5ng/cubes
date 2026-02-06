@@ -16,7 +16,7 @@ for test in "${tests[@]}"; do
     echo "Running test: $test at $(date)"
     echo "====================================================================="
     start_time=$(date +%s)
-    ./functional_test.py replay "$test"
+    python ./functional_test.py replay "$test"
     end_time=$(date +%s)
     echo "Test $test took $((end_time - start_time)) seconds"
 done
