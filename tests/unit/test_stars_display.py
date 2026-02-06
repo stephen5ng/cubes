@@ -168,6 +168,29 @@ def test_stars_display_baseline_score(stars_display):
     stars_display.set_baseline_score(20)
 
     # With baseline 20, current score 20 should give 0 stars (20 - 20 = 0)
+    assert stars_display.calculate_stars_for_score(20) == 0
+    assert stars_display.get_stars_earned() == 0
+
+    # Earn 10 more points (total 30, effective 10) -> 1 star
+    stars_display.draw(30, now_ms=3000)
+    assert stars_display.get_stars_earned() == 1
+
+def test_null_stars_display_calculate_stars():
+    """Verify NullStarsDisplay.calculate_stars_for_score() returns 0."""
+    null_display = NullStarsDisplay()
+    assert null_display.calculate_stars_for_score(100) == 0
+
+def test_stars_display_baseline_score(stars_display):
+    """Verify that baseline score affects star calculation for level progression."""
+    # Earn 2 stars (20 points)
+    stars_display.draw(20, now_ms=1000)
+    assert stars_display._last_filled_count == 2
+
+    # Reset and set baseline to 20 (simulate starting level 1 with 20 points from level 0)
+    stars_display.reset()
+    stars_display.set_baseline_score(20)
+
+    # With baseline 20, current score 20 should give 0 stars (20 - 20 = 0)
     assert stars_display.draw(20, now_ms=2000) == 0
     assert stars_display._last_filled_count == 0
 

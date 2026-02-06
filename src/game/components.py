@@ -233,6 +233,21 @@ class StarsDisplay:
         self._last_filled_count = num_filled
         self._needs_redraw = True
         return num_filled
+
+    def calculate_stars_for_score(self, current_score: int) -> int:
+        """Calculate the number of stars for a given score without updating state.
+
+        This is used when determining the final star count at game end,
+        accounting for the baseline score.
+
+        Args:
+            current_score: The current total score
+
+        Returns:
+            Number of stars earned (0-3)
+        """
+        effective_score = current_score - self._baseline_score
+        return min(self.num_stars, int(effective_score / (self.min_win_score / 3.0)))
         
     def _apply_per_star_blinking(self, star_surface: pygame.Surface, star_index: int, tada_elapsed_ms: int) -> pygame.Surface:
         """Apply blinking effect to a star surface during tada animation.
@@ -301,6 +316,18 @@ class StarsDisplay:
             score: The baseline score (starting score for this level)
         """
         self._baseline_score = score
+
+    def get_stars_earned(self) -> int:
+        """Get the number of stars earned in the current game.
+
+        Returns the count of stars earned since the last reset, accounting
+        for the baseline score. This is the number of stars that should
+        be displayed in the final score message.
+
+        Returns:
+            Number of stars earned (0-3)
+        """
+        return self._last_filled_count
 
     def _render_surface(self, now_ms: int) -> None:
         """Render stars to the internal surface."""
@@ -412,3 +439,9 @@ class NullStarsDisplay:
 
     def set_baseline_score(self, score: int) -> None:
         pass
+
+    def get_stars_earned(self) -> int:
+        return 0
+
+    def calculate_stars_for_score(self, current_score: int) -> int:
+        return 0
