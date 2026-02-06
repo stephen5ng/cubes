@@ -167,9 +167,64 @@ Ensure both brokers are running before running functional tests:
 - **Test Environment**: `functional_test.py:22-27`
 - **Monitoring Tool**: `tools/monitor_control_broker.py`
 
+## Subscribed Messages
+
+### `game/start`
+
+Restart the game with optional configuration parameters. Publish to this topic to stop any running game and start a new one.
+
+**Payload (optional JSON):**
+
+```json
+{
+  "descent_mode": "timed",
+  "descent_duration": 180,
+  "one_round": false,
+  "min_win_score": 90,
+  "stars": true,
+  "level": 1
+}
+```
+
+**Fields:**
+- `descent_mode`: Descent strategy - "discrete" (classic) or "timed" (default: "discrete")
+- `descent_duration`: Duration in seconds for timed descent speed calculation (default: 120)
+- `one_round`: End game after one round when true (default: false)
+- `min_win_score`: Minimum score required for win condition (default: 0)
+- `stars`: Show progress stars in upper right corner (default: false)
+- `level`: Level number for display at start (default: 0)
+
+**Examples:**
+
+```bash
+# Restart with default settings
+mosquitto_pub -h localhost -p 1884 -t "game/start" -n
+
+# Restart with game_on level 1 settings
+mosquitto_pub -h localhost -p 1884 -t "game/start" -m '{"descent_mode":"timed","descent_duration":180,"min_win_score":90,"stars":true,"level":1}'
+
+# Restart with game_on level 0 settings (one round)
+mosquitto_pub -h localhost -p 1884 -t "game/start" -m '{"descent_mode":"timed","descent_duration":90,"one_round":true,"min_win_score":90,"stars":true,"level":0}'
+```
+
+**Parameter Mappings from runpygame.sh:**
+
+The MQTT parameters map directly to the `runpygame.sh` flags:
+
+| runpygame.sh flag | MQTT JSON field | Example |
+|-------------------|-----------------|---------|
+| `--mode new` | `descent_mode: "timed"` | `{"descent_mode":"timed"}` |
+| `--mode game_on --level 0` | see level 0 example above | `{"descent_mode":"timed","descent_duration":90,"one_round":true,"min_win_score":90,"stars":true,"level":0}` |
+| `--mode game_on --level 1` | `{"descent_mode":"timed","descent_duration":180,"min_win_score":90,"stars":true,"level":1}` | |
+| `--mode game_on --level 2` | `{"descent_mode":"timed","descent_duration":120,"min_win_score":360,"stars":true,"level":2}` | |
+| `--one-round` | `one_round: true` | |
+| `--min-win-score 90` | `min_win_score: 90` | |
+| `--stars` | `stars: true` | |
+| `--level 1` | `level: 1` | |
+
 ## Future Extensions
 
-Potential additional control messages:
+Additional potential control messages:
 - `game/started` - Game initialization
 - `game/player_joined` - Player join events
 - `game/level_completed` - Level progression

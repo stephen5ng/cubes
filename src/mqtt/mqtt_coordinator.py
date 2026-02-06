@@ -1,4 +1,5 @@
 import asyncio
+import json
 import logging
 import aiomqtt
 from core.app import App
@@ -6,16 +7,18 @@ from game.game_state import Game
 from hardware import cubes_to_game
 from utils.pygameasync import events
 from events.game_events import GameAbortEvent
+from config.game_params import GameParams
 
 logger = logging.getLogger(__name__)
 
 class MQTTCoordinator:
     """Handles all MQTT message processing and routing."""
 
-    def __init__(self, game: Game, app: App, publish_queue: asyncio.Queue):
+    def __init__(self, game: Game, app: App, publish_queue: asyncio.Queue, game_coordinator=None):
         self.game = game
         self.app = app
         self.publish_queue = publish_queue
+        self.game_coordinator = game_coordinator
 
     async def handle_message(self, topic_str: str, payload, now_ms: int) -> None:
         """Route MQTT messages to appropriate handlers."""
@@ -26,6 +29,25 @@ class MQTTCoordinator:
 
         elif topic_str == "game/start":
             logger.info("Restarting game due to control broker topic")
+            # Parse payload for game parameters
+            game_params = None
+            if payload:
+                try:
+                    payload_str = payload.decode() if isinstance(payload, bytes) else payload
+                    if payload_str and payload_str.strip():
+                        game_params = GameParams.from_json(payload_str)
+                        logger.info(f"Game params from MQTT: {game_params}")
+                except json.JSONDecodeError as e:
+                    logger.warning(f"Invalid JSON in game/start payload: {e}")
+
+            # Store params in coordinator if provided
+            if game_params and self.game_coordinator:
+                self.game_coordinator.set_pending_game_params(game_params)
+                # Apply params that can be updated without full recreation
+                needs_re_setup = await self.game_coordinator.apply_pending_params()
+                if needs_re_setup:
+                    logger.info("Descent parameters changed, full re-setup would be needed")
+
             # Stop the game if it's running, then restart
             if self.game.running:
                 logger.info("Game is running, stopping before restart")

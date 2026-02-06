@@ -4,8 +4,10 @@ import pygame
 import pygame.freetype
 import aiomqtt
 import logging
+from typing import Optional
 
 from core import app
+from config.game_params import GameParams
 from utils.pygameasync import Clock, events
 from systems.sound_manager import SoundManager
 from rendering.metrics import RackMetrics
@@ -34,6 +36,8 @@ class GameCoordinator:
         self.mqtt_coordinator = None
         self.input_controller = None
         self.keyboard_handler = None
+        self.pending_game_params: Optional[GameParams] = None
+        self.current_setup_params = {}  # Store current params for reconfiguration
 
     def get_mock_mqtt_client(self, input_manager, replay_file, descent_mode, descent_duration_s):
         """Get the mock MQTT client for replay mode."""
@@ -61,13 +65,26 @@ class GameCoordinator:
                          stars: bool,
                          level: int = 0, control_client: aiomqtt.Client = None) -> tuple:
         """Set up all game components.
-        
+
         Returns:
             tuple: (screen, keyboard_input, input_devices, mqtt_message_queue, control_message_queue, clock)
         """
-        
-        # Initialize MQTT coordinator
-        self.mqtt_coordinator = MQTTCoordinator(None, the_app, publish_queue)  # Game injected later
+        # Store current setup parameters for reconfiguration via MQTT
+        self.current_setup_params = {
+            'the_app': the_app,
+            'subscribe_client': subscribe_client,
+            'publish_queue': publish_queue,
+            'game_logger': game_logger,
+            'output_logger': output_logger,
+            'input_manager': input_manager,
+            'letter_font': letter_font,
+            'replay_file': replay_file,
+            'record': record,
+            'control_client': control_client,
+        }
+
+        # Initialize MQTT coordinator with GameCoordinator reference
+        self.mqtt_coordinator = MQTTCoordinator(None, the_app, publish_queue, self)  # Game injected later
 
         screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         clock = Clock()
@@ -168,3 +185,75 @@ class GameCoordinator:
                 control_client, control_message_queue), name="control mqtt processor")
 
         return screen, keyboard_input, input_devices, mqtt_message_queue, control_message_queue, clock, descent_mode, descent_duration_s
+
+    def set_pending_game_params(self, params: GameParams) -> None:
+        """Store pending game parameters from MQTT game/start message.
+
+        Args:
+            params: GameParams instance with new configuration
+        """
+        self.pending_game_params = params
+        logger.info(f"Pending game params set: {params}")
+
+    async def apply_pending_params(self) -> bool:
+        """Apply pending game parameters to the game instance.
+
+        Updates parameters that can be changed without full game recreation.
+        For parameters requiring recreation (descent_mode, descent_duration),
+        returns True to indicate full re-setup is needed.
+
+        Returns:
+            True if full re-setup is needed, False otherwise
+        """
+        if self.pending_game_params is None:
+            return False
+
+        params = self.pending_game_params
+        self.pending_game_params = None  # Clear after applying
+
+        # Check if we need to recreate strategies (descent_mode or duration changed)
+        needs_re_setup = (
+            params.descent_mode != self.current_setup_params.get('descent_mode', 'discrete') or
+            params.descent_duration_s != self.current_setup_params.get('descent_duration_s', 120)
+        )
+
+        # Update params that can be changed without recreation
+        self.game.one_round = params.one_round
+        self.game.min_win_score = params.min_win_score
+        self.game.level = params.level
+        self.game.show_level = params.level > 0 or params.stars
+        self.game.descent_duration_s = params.descent_duration_s
+
+        # Update stars display
+        from game.components import StarsDisplay, NullStarsDisplay
+        if params.stars and not hasattr(self.game.stars_display, 'min_win_score'):
+            # Enable stars
+            self.game.stars_display = StarsDisplay(
+                self.game.rack_metrics,
+                min_win_score=params.min_win_score,
+                sound_manager=self.game.sound_manager
+            )
+            # Update scores with stars_enabled
+            for player in range(len(self.game.scores)):
+                self.game.scores[player].stars_enabled = True
+        elif not params.stars and hasattr(self.game.stars_display, 'min_win_score'):
+            # Disable stars
+            self.game.stars_display = NullStarsDisplay()
+            for player in range(len(self.game.scores)):
+                self.game.scores[player].stars_enabled = False
+        elif params.stars:
+            # Update min_win_score if stars already enabled
+            self.game.stars_display.min_win_score = params.min_win_score
+
+        # Store current params for comparison
+        self.current_setup_params['descent_mode'] = params.descent_mode
+        self.current_setup_params['descent_duration_s'] = params.descent_duration_s
+        self.current_setup_params['one_round'] = params.one_round
+        self.current_setup_params['min_win_score'] = params.min_win_score
+        self.current_setup_params['stars'] = params.stars
+        self.current_setup_params['level'] = params.level
+
+        logger.info(f"Applied game params: one_round={params.one_round}, min_win_score={params.min_win_score}, "
+                   f"stars={params.stars}, level={params.level}, descent_mode={params.descent_mode}")
+
+        return needs_re_setup
