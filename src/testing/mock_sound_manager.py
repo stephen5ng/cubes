@@ -85,6 +85,18 @@ class MockSoundManager:
         """Mock tada sound."""
         self.played_sounds.append("tada_sound")
 
+    def play_sad_trombone(self) -> None:
+        """Mock sad trombone sound."""
+        self.played_sounds.append("sad_trombone_sound")
+
+    def play_starspin(self) -> None:
+        """Mock starspin sound."""
+        self.played_sounds.append("starspin_sound")
+
+    def get_starspin_length(self) -> float:
+        """Mock starspin length."""
+        return 1.0
+
 
     def get_played_sounds(self) -> List[str]:
         """Get list of sounds that were 'played' for test verification."""

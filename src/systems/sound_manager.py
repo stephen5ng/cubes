@@ -32,6 +32,7 @@ class SoundManager:
         self.right_sound = pygame.mixer.Sound("assets/sounds/right.wav")
         self.tada_sound = pygame.mixer.Sound("assets/sounds/tada.wav")
         self.starspin_sound = pygame.mixer.Sound("assets/sounds/starspin.wav")
+        self.sad_trombone_sound = pygame.mixer.Sound("assets/sounds/sad_trombone.wav")
         
         self.left_sound.set_volume(0.5)
         self.right_sound.set_volume(0.5)
@@ -119,3 +120,7 @@ class SoundManager:
     def get_starspin_length(self) -> float:
         """Get the length of the starspin sound in seconds."""
         return self.starspin_sound.get_length()
+
+    def play_sad_trombone(self) -> None:
+        """Play sad trombone sound."""
+        pygame.mixer.Sound.play(self.sad_trombone_sound)

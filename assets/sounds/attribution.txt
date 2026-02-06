@@ -1,0 +1,8 @@
+Sound Assets Attribution
+
+====================
+sad_trombone.wav
+====================
+Source: https://freesound.org/s/175409/
+Author: kirbydx
+License: Creative Commons 0

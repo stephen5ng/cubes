@@ -331,7 +331,7 @@ class Game:
 
         self.exit_code = exit_code
         if exit_code != 10:
-            self.sound_manager.play_game_over()
+            self.sound_manager.play_sad_trombone()
         logger.info(f"GAME OVER (Exit Code: {exit_code})")
         for rack in self.racks:
             rack.stop()
