@@ -453,6 +453,9 @@ class Game:
                  # Draw stars on top of the melt (so they don't melt)
                  self.stars_display.update(window, now_ms)
 
+                 # Draw score on top of the melt (so it doesn't melt)
+                 self._update_all_scores(window)
+
                  self.game_over_display.draw(window, won=False, now_ms=now_ms)
 
                  # Skip normal component updates
