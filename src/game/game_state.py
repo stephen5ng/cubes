@@ -440,8 +440,7 @@ class Game:
                   for shield in self.shields:
                       shield.update(window, now_ms)
 
-                  self._update_all_scores(window)
-
+                  # Capture the screen WITHOUT the score (score will be drawn on top and not melted)
                   self.melt_effect = MeltEffect(window)
              
              # Render Melt (on subsequent frames only)
