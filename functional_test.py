@@ -60,7 +60,7 @@ def run_replay_test(test_name, verbose=False):
                 continue
 
     # Run the replay with optional game config
-    cmd = ["python", "./runpygame.py", "--replay", replay_file]
+    cmd = ["python3", "./runpygame.py", "--replay", replay_file]
     if game_config.get("descent_mode"):
         cmd.extend(["--descent-mode", game_config["descent_mode"]])
     if game_config.get("descent_duration_s"):
@@ -184,7 +184,7 @@ def rerecord_test(test_name):
                 continue
 
     # Run the replay with optional game config
-    cmd = ["python", "./runpygame.py", "--replay", replay_file]
+    cmd = ["python3", "./runpygame.py", "--replay", replay_file]
     if game_config.get("descent_mode"):
         cmd.extend(["--descent-mode", game_config["descent_mode"]])
     if game_config.get("descent_duration_s"):
@@ -247,7 +247,7 @@ def record_golden_files(test_name):
     os.makedirs(output_dir)
     
     # Run the game to generate output files and replay
-    cmd = ["python", "./runpygame.py"]
+    cmd = ["python3", "./runpygame.py"]
     print(f"Running: {' '.join(cmd)}")
     
     try:

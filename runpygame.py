@@ -441,6 +441,68 @@ async def async_main(mode: str, level: int, extra_args: list[str]) -> int:
     return python_exit_code
 
 
+async def run_replay(replay_file: str, extra_args: list[str]) -> int:
+    """Run the game in replay mode with MQTT broker setup.
+
+    Args:
+        replay_file: Path to the replay JSONL file
+        extra_args: Additional arguments to pass to main.py
+
+    Returns:
+        Exit code from the game
+    """
+    print(f"Running replay: {replay_file}")
+    mosquitto_gameplay_proc = None
+    mosquitto_control_proc = None
+
+    def cleanup_mosquitto():
+        """Clean up mosquitto processes."""
+        for proc in [mosquitto_gameplay_proc, mosquitto_control_proc]:
+            if proc and proc.poll() is None:
+                proc.terminate()
+                try:
+                    proc.wait(timeout=2)
+                except subprocess.TimeoutExpired:
+                    proc.kill()
+                    proc.wait()
+
+    # Start gameplay broker (port 1883) if needed
+    if not is_port_open(MQTT_SERVER, 1883):
+        mosquitto_gameplay_proc = subprocess.Popen(
+            [MOSQUITTO_PATH, "-p", "1883"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        await asyncio.sleep(0.5)
+
+    # Start control broker (port 1884) if needed
+    if not is_port_open(MQTT_CONTROL_SERVER, MQTT_CONTROL_PORT):
+        mosquitto_control_proc = subprocess.Popen(
+            [MOSQUITTO_PATH, "-p", str(MQTT_CONTROL_PORT)],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        await asyncio.sleep(0.5)
+
+    # Delete all MQTT messages
+    subprocess.run(
+        ["bash", DELETE_MQTT_SCRIPT],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+    try:
+        # Use 'python3' which will resolve to venv python if PATH is set correctly
+        python_exe = shutil.which("python3") or "python3"
+        proc = subprocess.Popen(
+            [python_exe, "./main.py", "--replay", replay_file] + extra_args,
+            cwd=SCRIPT_DIR,
+        )
+        return proc.wait()
+    finally:
+        cleanup_mosquitto()
+
+
 def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(
@@ -459,6 +521,23 @@ def main():
         help="Level for game_on mode (0+, default: 0)",
     )
     parser.add_argument(
+        "--replay",
+        type=str,
+        help="Replay a game from a log file (skips MQTT broker setup)",
+    )
+    parser.add_argument(
+        "--descent-mode",
+        type=str,
+        default=None,
+        help="Descent mode for replay (discrete or timed)",
+    )
+    parser.add_argument(
+        "--descent-duration",
+        type=int,
+        default=None,
+        help="Descent duration in seconds for replay",
+    )
+    parser.add_argument(
         "extra_args",
         nargs=argparse.REMAINDER,
         help="Extra arguments to pass to main.py",
@@ -469,7 +548,19 @@ def main():
     # Set up environment
     setup_environment()
 
-    # Run the async main
+    # Build extra args from descent-mode/duration if specified
+    replay_extra_args = args.extra_args.copy()
+    if args.descent_mode:
+        replay_extra_args.extend(["--descent-mode", args.descent_mode])
+    if args.descent_duration is not None:
+        replay_extra_args.extend(["--descent-duration", str(args.descent_duration)])
+
+    # Handle replay mode (with MQTT broker setup)
+    if args.replay:
+        exit_code = asyncio.run(run_replay(args.replay, replay_extra_args))
+        sys.exit(exit_code)
+
+    # Run the async main with MQTT broker management
     exit_code = asyncio.run(async_main(args.mode, args.level, args.extra_args))
     sys.exit(exit_code)
 
