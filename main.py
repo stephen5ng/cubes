@@ -151,6 +151,10 @@ if __name__ == "__main__":
                        help="Show progress stars in the upper right corner")
     parser.add_argument("--level", type=int, default=0,
                        help="Level number for display at start (default: 0)")
+    parser.add_argument("--next-column-ms", type=int, default=None,
+                       help="Time to move between columns in milliseconds (default: calculated from level)")
+    parser.add_argument("--letter-linger-ms", type=int, default=0,
+                       help="Time to linger at each column before moving on, in milliseconds (default: 0)")
     args = parser.parse_args()
     
     seed = 1
@@ -192,15 +196,17 @@ if __name__ == "__main__":
     dictionary.read(game_config.DICTIONARY_PATH, game_config.BINGOS_PATH)
     pygame.init()
     block_words = pygamegameasync.BlockWordsPygame(
-        replay_file=args.replay or "", 
-        descent_mode=args.descent_mode, 
-        descent_duration_s=args.descent_duration, 
-        record=args.record, 
+        replay_file=args.replay or "",
+        descent_mode=args.descent_mode,
+        descent_duration_s=args.descent_duration,
+        record=args.record,
         continuous=args.continuous,
         one_round=args.one_round,
         min_win_score=args.min_win_score,
         stars=args.stars,
-        level=args.level
+        level=args.level,
+        next_column_ms=args.next_column_ms,
+        letter_linger_ms=args.letter_linger_ms
     )
     
     game_logger = GameLogger(None if args.replay else "output/game_replay.jsonl")

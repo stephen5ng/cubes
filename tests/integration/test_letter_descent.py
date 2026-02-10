@@ -39,7 +39,7 @@ async def test_letters_horizontal_oscillation():
     game, mqtt, queue = await create_test_game(descent_mode="discrete")
     game.start_time_s = 0
     
-    game.letter.NEXT_COLUMN_MS = 100
+    game.letter.next_column_ms = 100
     game.letter.start(0)
     
     start_ix = 1
@@ -55,7 +55,7 @@ async def test_letter_lock_on_behavior():
     game, mqtt, queue = await create_test_game(descent_mode="discrete")
     game.start_time_s = 0
     
-    game.letter.NEXT_COLUMN_MS = 100
+    game.letter.next_column_ms = 100
     game.letter.start(0)
     
     game.letter.pos[1] = game.letter.height - game.letter.letter_height - 1
@@ -73,7 +73,10 @@ async def test_letter_collides_with_rack_bottom():
     # Use discrete mode where letters are accepted into the rack (timed mode ends game on floor collision)
     game, mqtt, queue = await create_test_game(descent_mode="discrete")
     game.start_time_s = 0
-    
+
+    # Set sweep speed to original 1000ms for this test to maintain consistent letter positioning
+    game.letter.next_column_ms = 1000
+
     game.letter.letter = "A"
     game.letter.DROP_TIME_MS = 100
     game.letter.start(0)
@@ -99,7 +102,7 @@ async def test_letter_column_movement_bounces_at_boundaries():
     """Verify that letter index bounces correctly at column 0 and MAX_LETTERS-1."""
     game, mqtt, queue = await create_test_game(descent_mode="discrete")
     game.start_time_s = 0
-    game.letter.NEXT_COLUMN_MS = 100
+    game.letter.next_column_ms = 100
     game.letter.start(0)
     
     # Right boundary bounce

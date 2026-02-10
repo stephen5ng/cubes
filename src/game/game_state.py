@@ -56,7 +56,9 @@ class Game:
                  one_round: bool,
                  min_win_score: int,
                  stars: bool,
-                 level: int = 0) -> None:
+                 level: int = 0,
+                 next_column_ms: int = None,
+                 letter_linger_ms: int = 0) -> None:
         self._app = the_app
         self.game_logger = game_logger
         self.output_logger = output_logger
@@ -68,6 +70,8 @@ class Game:
             raise ValueError(f"min_win_score must be non-negative, got {min_win_score}")
         self.min_win_score = min_win_score
         self.level = level
+        self.next_column_ms = next_column_ms
+        self.letter_linger_ms = letter_linger_ms
         self.show_level = level > 0 or stars # Only show level if level > 0 or stars enabled (game_on mode)
         self.level_fade_start_ms = -1
         self.level_fade_duration_ms = 1000
@@ -96,7 +100,7 @@ class Game:
             self.stars_display = NullStarsDisplay()
         letter_y = self.scores[0].get_size()[1] + 4
 
-        self.letter = Letter(letter_font, letter_y, self.rack_metrics, self.output_logger, letter_beeps, letter_strategy)
+        self.letter = Letter(letter_font, letter_y, self.rack_metrics, self.output_logger, letter_beeps, letter_strategy, level=level, next_column_ms=next_column_ms, letter_linger_ms=letter_linger_ms)
         self.racks = [
             RackDisplay(the_app, self.rack_metrics, self.letter, configs[player]) 
             for player in range(game_config.MAX_PLAYERS)

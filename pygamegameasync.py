@@ -71,7 +71,7 @@ from mqtt.mqtt_coordinator import MQTTCoordinator
 
 class BlockWordsPygame:
     def __init__(self,
-                 replay_file: str, descent_mode: str, descent_duration_s: int, record: bool, continuous: bool, one_round: bool, min_win_score: int, stars: bool, level: int = 0) -> None:
+                 replay_file: str, descent_mode: str, descent_duration_s: int, record: bool, continuous: bool, one_round: bool, min_win_score: int, stars: bool, level: int = 0, next_column_ms: int = None, letter_linger_ms: int = 0) -> None:
         """
         Args:
             replay_file: Path to replay file, or empty string for live game.
@@ -95,6 +95,8 @@ class BlockWordsPygame:
         self.min_win_score = min_win_score
         self.stars = stars
         self.level = level
+        self.next_column_ms = next_column_ms
+        self.letter_linger_ms = letter_linger_ms
         self._has_auto_started = False
         self.control_client = None  # Set in setup_game
         self.game_awaiting_ready = False  # True when waiting for game/ready to start next game
@@ -145,6 +147,8 @@ class BlockWordsPygame:
             self.input_manager, self.letter_font,
             self.replay_file, self.descent_mode, self.descent_duration_s,
             self.record, self.one_round, self.min_win_score, self.stars, self.level,
+            self.next_column_ms,
+            self.letter_linger_ms,
             control_client
         )
 

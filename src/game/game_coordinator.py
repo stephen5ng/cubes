@@ -63,7 +63,7 @@ class GameCoordinator:
                          replay_file: str, descent_mode: str, descent_duration_s: int,
                          record: bool, one_round: bool, min_win_score: int,
                          stars: bool,
-                         level: int = 0, control_client: aiomqtt.Client = None) -> tuple:
+                         level: int = 0, next_column_ms: int = None, letter_linger_ms: int = 0, control_client: aiomqtt.Client = None) -> tuple:
         """Set up all game components.
 
         Returns:
@@ -125,7 +125,9 @@ class GameCoordinator:
                         one_round=one_round,
                         min_win_score=min_win_score,
                         stars=stars,
-                        level=level)
+                        level=level,
+                        next_column_ms=next_column_ms,
+                        letter_linger_ms=letter_linger_ms if letter_linger_ms is not None else 0)
         self.input_controller = GameInputController(self.game)
         
         # Update coordinator with game instance
@@ -221,6 +223,8 @@ class GameCoordinator:
         self.game.one_round = params.one_round
         self.game.min_win_score = params.min_win_score
         self.game.level = params.level
+        self.game.next_column_ms = params.next_column_ms
+        self.game.letter_linger_ms = params.letter_linger_ms
         self.game.show_level = params.level > 0 or params.stars
         self.game.level_fade_start_ms = -1  # Reset level fade trigger to show level again
         self.game.descent_duration_s = params.descent_duration_s

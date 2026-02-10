@@ -24,7 +24,6 @@ class Letter:
     """Handles falling letter animation with column movement and physics."""
 
     DROP_TIME_MS = 15000
-    NEXT_COLUMN_MS = 1000
     ANTIALIAS = 1
     ROUNDS = 15
     Y_INCREMENT = SCREEN_HEIGHT // ROUNDS
@@ -32,7 +31,10 @@ class Letter:
 
     def __init__(
         self, font: pygame.freetype.Font, initial_y: int, rack_metrics: RackMetrics, output_logger, letter_beeps: list,
-        descent_strategy: Optional[DescentStrategy] = None) -> None:
+        descent_strategy: Optional[DescentStrategy] = None, level: int = 0, next_column_ms: int = None, letter_linger_ms: int = 0) -> None:
+        self.level = level
+        self.next_column_ms = next_column_ms
+        self.letter_linger_ms = letter_linger_ms
         self.rack_metrics = rack_metrics
         self.game_area_offset_y = initial_y  # Offset from screen top to game area
         self.font = font
@@ -86,7 +88,9 @@ class Letter:
         self.start_fall_y = 0
         self.current_fall_start_y = 0
         self.column_move_direction = 1
-        self.next_column_move_time_ms = now_ms + self.NEXT_COLUMN_MS
+        # Use default 1000ms if next_column_ms is None (level 0, which uses "!!!!!!")
+        sweep_ms = self.next_column_ms if self.next_column_ms is not None else 1000
+        self.next_column_move_time_ms = now_ms + sweep_ms + self.letter_linger_ms
         self.start_fall_time_ms = now_ms
         self.rect = pygame.Rect(0, 0, 0, 0)
         self.pos = [0, 0]
@@ -161,7 +165,9 @@ class Letter:
                     self.column_move_direction *= -1
                     self.letter_ix = self.letter_ix + self.column_move_direction*2
 
-                self.next_column_move_time_ms = now_ms + self.NEXT_COLUMN_MS
+                # Use default 1000ms if next_column_ms is None (level 0, which uses "!!!!!!")
+                sweep_ms = self.next_column_ms if self.next_column_ms is not None else 1000
+                self.next_column_move_time_ms = now_ms + sweep_ms + self.letter_linger_ms
                 pygame.mixer.Sound.play(self.bounce_sound)
 
             self.output_logger.log_letter_position_change(self.pos[0], self.pos[1], now_ms)
@@ -177,8 +183,10 @@ class Letter:
             self.fraction_complete_eased = 1.0
             return
 
-        remaining_ms = min(max(0, self.next_column_move_time_ms - now_ms), self.NEXT_COLUMN_MS)
-        self.fraction_complete = 1.0 - remaining_ms/self.NEXT_COLUMN_MS
+        # Use default 1000ms if next_column_ms is None (level 0, which uses "!!!!!!")
+        sweep_ms = self.next_column_ms if self.next_column_ms is not None else 1000
+        remaining_ms = min(max(0, self.next_column_move_time_ms - now_ms), sweep_ms)
+        self.fraction_complete = 1.0 - remaining_ms/sweep_ms
         self.fraction_complete_eased = self.next_letter_easing(self.fraction_complete)
         boost_x = 0 if self.locked_on else int(self.column_move_direction*(self.width*(self.fraction_complete_eased - 1)))
         self.pos[0] = self.rack_metrics.get_rect().x + self.rack_metrics.get_letter_rect(self.letter_ix, self.letter).x + boost_x

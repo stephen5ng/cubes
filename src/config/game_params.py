@@ -17,6 +17,8 @@ class GameParams:
     min_win_score: int = 0
     stars: bool = False
     level: int = 0
+    next_column_ms: Optional[int] = None  # Time to move between columns (ms), None for level 0
+    letter_linger_ms: int = 0  # Time to linger at each column before moving (ms)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional['GameParams']:
@@ -42,7 +44,9 @@ class GameParams:
             one_round=data.get('one_round', False),
             min_win_score=data.get('min_win_score', 0),
             stars=data.get('stars', False),
-            level=data.get('level', 0)
+            level=data.get('level', 0),
+            next_column_ms=data.get('next_column_ms'),
+            letter_linger_ms=data.get('letter_linger_ms', 0)
         )
 
     @classmethod
@@ -61,7 +65,9 @@ class GameParams:
             one_round=args.one_round,
             min_win_score=args.min_win_score,
             stars=args.stars,
-            level=args.level
+            level=args.level,
+            next_column_ms=getattr(args, 'next_column_ms', None),
+            letter_linger_ms=getattr(args, 'letter_linger_ms', 0)
         )
 
     def __str__(self) -> str:
