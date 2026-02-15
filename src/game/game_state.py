@@ -298,6 +298,7 @@ class Game:
 
     async def stage_guess(self, score: int, last_guess: str, player: int, now_ms: int) -> None:
         """Stage a good guess with shield animation."""
+        print(f"[DEBUG] stage_guess called with word='{last_guess}', player={player}")
         await self.sound_manager.queue_word_sound(last_guess, player)
         self.racks[player].guess_type = GuessType.GOOD
         self.shields.append(Shield(

@@ -53,6 +53,9 @@ class SoundManager:
         while True:
             try:
                 soundfile = await self.sound_queue.get()
+                # Prepend 'assets/' if it's a word sound
+                if soundfile.startswith('word_sounds_'):
+                    soundfile = f"assets/{soundfile}"
                 s = pygame.mixer.Sound(soundfile)
                 now = datetime.now()
                 time_since_last_sound_s = (now - last_sound_time).total_seconds()
@@ -67,7 +70,10 @@ class SoundManager:
 
     async def queue_word_sound(self, word: str, player: int) -> None:
         """Queue a word pronunciation sound for playback."""
-        await self.sound_queue.put(f"word_sounds_{player}/{word.lower()}.wav")
+        soundfile = f"word_sounds_{player}/{word.lower()}.wav"
+        print(f"[DEBUG] Attempting to queue word sound: {soundfile}")
+        print(f"[DEBUG] Word exists: {os.path.exists(soundfile)}")
+        await self.sound_queue.put(soundfile)
 
     def play_start(self) -> None:
         """Play game start sound."""
