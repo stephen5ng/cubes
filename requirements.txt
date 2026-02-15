@@ -10,4 +10,5 @@ requests
 RGBMatrixEmulator
 types-aiofiles
 types-psutil
-types-requestspytest-asyncio
+types-requests
+pytest-asyncio
