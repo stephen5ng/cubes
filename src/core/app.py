@@ -278,6 +278,13 @@ class App:
         guess = rack.ids_to_letters(word_tile_ids)
         guess_tiles = rack.ids_to_tiles(word_tile_ids)
 
+        print(f"[DEBUG] guess_tiles called:")
+        print(f"[DEBUG]   word_tile_ids: {word_tile_ids}")
+        print(f"[DEBUG]   player: {player}")
+        print(f"[DEBUG]   rack letters: {rack.letters}")
+        print(f"[DEBUG]   constructed guess: '{guess}'")
+        print(f"[DEBUG]   guess_tiles: {guess_tiles}")
+
         tiles_dirty = False
         good_guess_highlight = 0
         if move_tiles:
@@ -294,11 +301,17 @@ class App:
             tiles_dirty = True
 
         cube_set_id = self._player_to_cube_set[player]
+        print(f"[DEBUG] Checking word validation:")
+        print(f"[DEBUG]   is_old_guess('{guess}'): {self._score_card.is_old_guess(guess)}")
+        print(f"[DEBUG]   is_good_guess('{guess}'): {self._score_card.is_good_guess(guess)}")
+
         if self._score_card.is_old_guess(guess):
+            print(f"[DEBUG]   Triggering OLD_GUESS event for '{guess}'")
             events.trigger(GameOldGuessEvent(guess, player, self._time.get_ticks()))
             await self.hardware.old_guess(self._publish_queue, word_tile_ids, cube_set_id, player)
             tiles_dirty = True
         elif self._score_card.is_good_guess(guess):
+            print(f"[DEBUG]   Triggering STAGE_GUESS event for '{guess}'")
             await self.hardware.good_guess(self._publish_queue, word_tile_ids, cube_set_id, player, now_ms)
             self._score_card.add_staged_guess(guess)
             score = self._score_card.calculate_score(guess)
@@ -307,6 +320,7 @@ class App:
             good_guess_highlight = len(guess_tiles)
             tiles_dirty = True
         else:
+            print(f"[DEBUG]   Triggering BAD_GUESS event for '{guess}' (not in dictionary)")
             events.trigger(GameBadGuessEvent(player))
             await self.hardware.bad_guess(self._publish_queue, word_tile_ids, cube_set_id, player)
 

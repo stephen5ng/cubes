@@ -91,6 +91,7 @@ class MQTTCoordinator:
                 payload_str = payload.decode()
             else:
                 payload_str = payload if payload else ""
+            print(f"[DEBUG] Keyboard guess: '{payload_str}' for player 1")
             await self.app.guess_word_keyboard(payload_str, 1, now_ms)
 
         elif topic_str.startswith("cube/right/"):
@@ -103,6 +104,11 @@ class MQTTCoordinator:
                     payload_bytes = payload.encode()
                 elif isinstance(payload, bytes):
                     payload_bytes = payload
+
+            # Log cube neighbor connections (word formation)
+            sender_id = topic_str.split('/')[-1]
+            neighbor_id = payload_bytes.decode() if payload_bytes else ''
+            print(f"[DEBUG] Cube neighbor connection: cube {sender_id} -> cube {neighbor_id}")
 
             # Create a simple message-like object for cubes_to_game
             message = type('Message', (), {
