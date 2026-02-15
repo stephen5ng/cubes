@@ -1,38 +1,140 @@
 #!/bin/bash -e
 # Download and extract word sounds from GitHub release
 
+# Configuration
 RELEASE_TAG="${1:-audio-assets}"
 REPO="stephen5ng/cubes"
+DOWNLOAD_DIR="${PROJECT_DIR}/audio_download"
+PROJECT_DIR="$(pwd)"
+ASSETS_DIR="${PROJECT_DIR}/assets"
 
-echo "Checking if audio files already exist..."
-if [ -d "word_sounds_0" ] && [ -d "word_sounds_1" ]; then
-    read -p "Audio files exist. Re-download? (y/N) " -n 1 -r
+# Function to cleanup on exit
+cleanup() {
+    if [ -d "${DOWNLOAD_DIR}" ]; then
+        echo "Cleaning up temporary files..."
+        rm -rf "${DOWNLOAD_DIR}"
+    fi
+}
+
+# Set trap for cleanup
+trap cleanup EXIT
+
+echo "LexaCube Audio Download Script"
+echo "=============================="
+
+# Check if gh is installed
+if ! command -v gh >/dev/null 2>&1; then
+    echo "Error: GitHub CLI (gh) is not installed."
+    echo "Please install it with: sudo apt install gh"
+    echo "Then authenticate with: gh auth login"
+    exit 1
+fi
+
+# Check gh authentication
+if ! gh auth status >/dev/null 2>&1; then
+    echo "Error: Not authenticated with GitHub."
+    echo "Please run: gh auth login"
+    exit 1
+fi
+
+# Check if audio files already exist
+if [ -d "${ASSETS_DIR}/word_sounds_0" ] && [ -d "${ASSETS_DIR}/word_sounds_1" ]; then
+    echo "Audio files already exist in assets/"
+    read -p "Re-download and overwrite? (y/N) " -n 1 -r
     echo
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
         echo "Skipping download."
         exit 0
     fi
-    echo "Removing existing files..."
-    rm -rf word_sounds_0 word_sounds_1
+    echo "Removing existing audio files..."
+    rm -rf "${ASSETS_DIR}/word_sounds_0" "${ASSETS_DIR}/word_sounds_1" "${ASSETS_DIR}/word_sounds_2"
 fi
 
-echo "Downloading audio assets from release ${RELEASE_TAG}..."
-mkdir -p /tmp/audio_download
-cd /tmp/audio_download
+# Create download directory
+echo "Creating download directory..."
+mkdir -p "${DOWNLOAD_DIR}"
+cd "${DOWNLOAD_DIR}"
 
-# Download all parts with explicit repo
-gh release download ${RELEASE_TAG} --repo ${REPO} --pattern "word_sounds.tar.gz.part.*"
+# Check available disk space
+DISK_AVAILABLE=$(df -k "${PROJECT_DIR}" | tail -1 | awk '{print $4}')
+DOWNLOAD_SIZE_GB=3.1  # Approximate size in GB
+REQUIRED_SPACE_KB=$((1024 * 1024 * DOWNLOAD_SIZE_GB))
 
+if [ "${DISK_AVAILABLE}" -lt "${REQUIRED_SPACE_KB}" ]; then
+    echo "Error: Not enough disk space."
+    echo "Available: ${DISK_AVAILABLE}KB"
+    echo "Required: ~${REQUIRED_SPACE_KB}KB (${DOWNLOAD_SIZE_GB}GB)"
+    exit 1
+fi
+
+# Check release exists and get asset info
+echo "Checking release ${RELEASE_TAG}..."
+if ! gh release view "${RELEASE_TAG}" --repo "${REPO}" >/dev/null 2>&1; then
+    echo "Error: Release '${RELEASE_TAG}' not found in ${REPO}"
+    echo "Available releases:"
+    gh release list --repo "${REPO}" --limit 10
+    exit 1
+fi
+
+# Download parts
+echo "Downloading audio assets..."
+PARTS=$(gh release list --repo "${REPO}" --json assets --jq ".[] | select(.name == \"${RELEASE_TAG}\") | .assets[] | select(.name | contains(\"word_sounds\")) | .name")
+PART_COUNT=$(echo "${PARTS}" | grep -c "word_sounds.tar.gz.part" || echo "0")
+
+if [ "${PART_COUNT}" -eq 0 ]; then
+    echo "Error: No word_sounds parts found in release"
+    exit 1
+fi
+
+echo "Found ${PART_COUNT} parts to download..."
+
+# Download each part
+for part in $(echo "${PARTS}" | grep "word_sounds.tar.gz.part"); do
+    echo "Downloading ${part}..."
+    if ! gh release download "${RELEASE_TAG}" --repo "${REPO}" --pattern "${part}"; then
+        echo "Error: Failed to download ${part}"
+        exit 1
+    done
+done
+
+# Check all parts exist
+EXPECTED_PARTS=$(echo "${PARTS}" | grep -c "word_sounds.tar.gz.part" || echo "0")
+DOWNLOADED_PARTS=$(ls word_sounds.tar.gz.part.* 2>/dev/null | wc -l)
+
+if [ "${DOWNLOADED_PARTS}" -ne "${EXPECTED_PARTS}" ]; then
+    echo "Error: Expected ${EXPECTED_PARTS} parts, downloaded ${DOWNLOADED_PARTS}"
+    exit 1
+fi
+
+# Reassemble archive
 echo "Reassembling archive..."
 cat word_sounds.tar.gz.part.* > word_sounds.tar.gz
+COMBINED_SIZE=$(ls -lh word_sounds.tar.gz | awk '{print $5}')
 
-echo "Extracting to project directory..."
-tar xzf word_sounds.tar.gz -C "${OLDPWD}"
+# Extract to assets directory
+echo "Extracting to assets directory..."
+mkdir -p "${ASSETS_DIR}"
+tar xzf word_sounds.tar.gz -C "${ASSETS_DIR}"
 
-echo "Cleaning up temporary files..."
-cd "${OLDPWD}"
-rm -rf /tmp/audio_download
+# Fix directory structure for the game
+# The game expects: word_sounds_1 (player 1) and word_sounds_2 (player 2)
+# Download provides: word_sounds_0 and word_sounds_1
+if [ -d "${ASSETS_DIR}/word_sounds_0" ]; then
+    echo "Setting up player directories..."
+    # Copy word_sounds_0 to word_sounds_2 for player 2
+    cp -r "${ASSETS_DIR}/word_sounds_0" "${ASSETS_DIR}/word_sounds_2"
+fi
 
+# Count files
+COUNT_0=$(find "${ASSETS_DIR}/word_sounds_0" -name '*.wav' 2>/dev/null | wc -l | tr -d ' ')
+COUNT_1=$(find "${ASSETS_DIR}/word_sounds_1" -name '*.wav' 2>/dev/null | wc -l | tr -d ' ')
+COUNT_2=$(find "${ASSETS_DIR}/word_sounds_2" -name '*.wav' 2>/dev/null | wc -l | tr -d ' ')
+
+echo ""
 echo "✓ Audio files downloaded and extracted successfully!"
-echo "  - word_sounds_0/: $(find word_sounds_0 -name '*.wav' 2>/dev/null | wc -l | tr -d ' ') files"
-echo "  - word_sounds_1/: $(find word_sounds_1 -name '*.wav' 2>/dev/null | wc -l | tr -d ' ') files"
+echo "  - word_sounds_0/: ${COUNT_0} files"
+echo "  - word_sounds_1/: ${COUNT_1} files (Player 1)"
+echo "  - word_sounds_2/: ${COUNT_2} files (Player 2)"
+echo "  - Combined size: ${COMBINED_SIZE}"
+echo ""
+echo "The game will now pronounce words when you make correct guesses!"

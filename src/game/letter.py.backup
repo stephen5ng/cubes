@@ -23,7 +23,7 @@ class GuessType(Enum):
 class Letter:
     """Handles falling letter animation with column movement and physics."""
 
-    DROP_TIME_MS = 150000  # 10x slower for level 0 testing
+    DROP_TIME_MS = 15000
     ANTIALIAS = 1
     ROUNDS = 15
     Y_INCREMENT = SCREEN_HEIGHT // ROUNDS

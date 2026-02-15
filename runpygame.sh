@@ -3,23 +3,20 @@
 . cube_env/bin/activate
 export PYTHONPATH=src:../easing-functions:../rpi-rgb-led-matrix/bindings/python:$PYTHONPATH
 
-# Start gameplay broker (port 1883) if needed
+# Use existing mosquitto service (port 1883)
 mqtt_server=${MQTT_SERVER:-localhost}
-mosquitto_pid=""
 if ! nc -z $mqtt_server 1883 2>/dev/null; then
-  /opt/homebrew/opt/mosquitto/sbin/mosquitto -p 1883 &
-  mosquitto_pid=$!
-  sleep 0.5
+  echo "Error: mosquitto not running on port 1883. Please start it first."
+  exit 1
 fi
 
-# Start control broker (port 1884) if needed
+# For control broker, check if port 1884 is available
 mqtt_control_server=${MQTT_CONTROL_SERVER:-localhost}
 mqtt_control_port=${MQTT_CONTROL_PORT:-1884}
 mosquitto_control_pid=""
 if ! nc -z $mqtt_control_server $mqtt_control_port 2>/dev/null; then
-  /opt/homebrew/opt/mosquitto/sbin/mosquitto -p $mqtt_control_port &
-  mosquitto_control_pid=$!
-  sleep 0.5
+  echo "Warning: Control broker port 1884 not available, using 1883"
+  mqtt_control_port=1883
 fi
 
 # Clean up function that kills both mosquitto processes and python we started
@@ -75,7 +72,7 @@ build_game_params() {
     elif [[ "$local_mode" == "game_on" ]]; then
         local local_level=${local_level:-0}
         if [[ "$local_level" == "0" ]]; then
-            echo '{"descent_mode":"timed","descent_duration":90,"one_round":true,"min_win_score":90,"stars":true,"level":0}'
+            echo '{"descent_mode":"timed","descent_duration":90,"one_round":true,"min_win_score":90,"stars":true,"level":0,"next_column_ms":10000}'
         elif [[ "$local_level" == "1" ]]; then
             echo '{"descent_mode":"timed","descent_duration":180,"min_win_score":90,"stars":true,"level":1}'
         elif [[ "$local_level" == "2" ]]; then
