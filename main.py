@@ -190,7 +190,10 @@ if __name__ == "__main__":
             root.addHandler(handler)
     else:
         logging.basicConfig(level=logging.INFO)
-    pygame.mixer.init(frequency=24000, size=-16, channels=2)
+    try:
+        pygame.mixer.init(frequency=24000, size=-16, channels=2)
+    except pygame.error as e:
+        print(f"Audio initialization failed (running without audio): {e}")
     hub75.init()
     dictionary = Dictionary(game_config.MIN_LETTERS, game_config.MAX_LETTERS, open=my_open)
     dictionary.read(game_config.DICTIONARY_PATH, game_config.BINGOS_PATH)
