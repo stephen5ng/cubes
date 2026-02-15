@@ -325,16 +325,66 @@ class TestABCManagementAsync(unittest.IsolatedAsyncioTestCase):
     async def test_activate_abc_start_if_ready_success(self):
         """Should activate when conditions are met."""
         queue = asyncio.Queue()
-        
+
         # Set up conditions
         coordination.cube_set_managers[0].cubes_to_neighbors = {"1": "2"}
-        
+
         with patch.object(state, 'get_game_running', return_value=False):
             with patch.object(state.abc_manager, 'assign_abc_letters_to_available_players', new_callable=AsyncMock) as mock_assign:
                 await coordination.activate_abc_start_if_ready(queue, 1000)
-                
+
                 # Should have called assign
                 mock_assign.assert_called_once()
+
+    async def test_set_game_end_time_resets_abc_in_game_on_mode(self):
+        """ABC manager should be reset when game ends in game_on mode (min_win_score > 0)."""
+        # Set up ABC manager with active state
+        state.abc_manager.abc_start_active = True
+        state.abc_manager.player_abc_cubes = {0: {"A": "1", "B": "2", "C": "3"}}
+
+        # Call set_game_end_time with min_win_score > 0 (game_on mode)
+        state.set_game_end_time(1000, min_win_score=90)
+
+        # Verify ABC manager was reset
+        self.assertFalse(state.abc_manager.abc_start_active)
+        self.assertEqual(state.abc_manager.player_abc_cubes, {})
+
+    async def test_set_game_end_time_preserves_abc_in_normal_mode(self):
+        """ABC manager should NOT be reset in normal mode (min_win_score = 0)."""
+        # Set up ABC manager with active state
+        state.abc_manager.abc_start_active = True
+        state.abc_manager.player_abc_cubes = {0: {"A": "1", "B": "2", "C": "3"}}
+
+        # Call set_game_end_time with min_win_score = 0 (normal mode)
+        state.set_game_end_time(1000, min_win_score=0)
+
+        # Verify ABC manager was NOT reset
+        self.assertTrue(state.abc_manager.abc_start_active)
+        self.assertEqual(state.abc_manager.player_abc_cubes, {0: {"A": "1", "B": "2", "C": "3"}})
+
+    async def test_activate_abc_start_blocked_after_game_on_ends(self):
+        """ABC should not be activated after game_on mode ends, even if conditions are met."""
+        queue = asyncio.Queue()
+
+        # Set up conditions: game not running, has neighbor reports
+        state._game_running = False
+        coordination.cube_set_managers[0].cubes_to_neighbors = {"1": "2"}
+
+        # Set game_on_mode_ended flag (simulating game_on mode game end)
+        state.game_on_mode_ended = True
+
+        with patch.object(state.abc_manager, 'assign_abc_letters_to_available_players', new_callable=AsyncMock) as mock_assign:
+            await coordination.activate_abc_start_if_ready(queue, 1000)
+
+            # Should NOT have called assign because game_on_mode_ended is True
+            mock_assign.assert_not_called()
+
+        # Verify flag is set
+        self.assertTrue(state.game_on_mode_ended)
+
+    def tearDown(self):
+        """Clean up global state after tests."""
+        state.reset_game_on_mode_ended()
 
 
 class TestMQTTMessageHandler(unittest.IsolatedAsyncioTestCase):
@@ -345,6 +395,7 @@ class TestMQTTMessageHandler(unittest.IsolatedAsyncioTestCase):
         state._started_players.clear()
         state._started_cube_sets.clear()
         state.cube_to_cube_set.clear()
+        state.reset_game_on_mode_ended()
 
     async def test_handle_mqtt_message_right_edge(self):
         """Should handle right-edge neighbor messages."""

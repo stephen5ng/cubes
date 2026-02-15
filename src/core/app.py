@@ -186,14 +186,14 @@ class App:
             await self.hardware.guess_last_tiles(self._publish_queue, cube_set_id, player, now_ms)
         print(">>>>>>>> app.STARTED")
 
-    async def stop(self, now_ms: int) -> None:
-        # Clear hardware cubes - we do this directly without clearing our logical RackManager, 
+    async def stop(self, now_ms: int, min_win_score: int) -> None:
+        # Clear hardware cubes - we do this directly without clearing our logical RackManager,
         # so that post-game UI effects (like melting) can still access the final game state.
         await self.hardware.clear_all_letters(self._publish_queue, now_ms)
 
         self._running = False
         # Set game ended state
-        self.hardware.set_game_end_time(now_ms)
+        self.hardware.set_game_end_time(now_ms, min_win_score)
         # Unlock all letters when game ends
         await self.hardware.unlock_all_letters(self._publish_queue, now_ms)
         # Ensure all borders are cleared on every cube at game end

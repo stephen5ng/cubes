@@ -356,7 +356,7 @@ class Game:
         except IOError as e:
             logger.error(f"Failed to write duration log: {e}")
 
-        await self._app.stop(now_ms)
+        await self._app.stop(now_ms, self.min_win_score)
 
         # Publish final score to control broker
         await self._publish_final_score(exit_code, num_stars)

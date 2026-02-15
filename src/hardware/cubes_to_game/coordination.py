@@ -159,6 +159,10 @@ async def clear_remaining_abc_cubes(publish_queue, now_ms: int) -> None:
 
 async def activate_abc_start_if_ready(publish_queue, now_ms: int) -> None:
     """Activate ABC start sequence if conditions are met and assign letters to new players."""
+    # Don't activate ABC if game_on mode has ended (waiting for next game via MQTT)
+    if state.game_on_mode_ended:
+        return
+
     if not state.get_game_running() and _has_received_initial_neighbor_reports():
         await state.abc_manager.assign_abc_letters_to_available_players(publish_queue, now_ms, state.cube_set_managers)
 
@@ -220,6 +224,7 @@ async def init(subscribe_client):
     # Initialize player game states
     state.reset_player_started_state()
     state.reset_started_cube_sets()
+    state.reset_game_on_mode_ended()
 
     # Reset ABC manager state
     state.abc_manager.reset()

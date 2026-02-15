@@ -64,6 +64,9 @@ def set_abc_countdown_delay(delay_ms: int):
 # Game state tracking
 _game_running = False
 
+# Flag to track if game_on mode game has ended (should not re-activate ABC)
+game_on_mode_ended = False
+
 # ABC countdown tracking - which cube sets (0, 1) completed the ABC sequence
 _started_cube_sets = set()
 
@@ -72,9 +75,19 @@ _started_players = set()
 
 
 def set_game_running(running: bool) -> None:
-    """Set the current game running state."""
-    global _game_running
+    """Set the current game running state.
+
+    Args:
+        running: True if a game is active, False otherwise
+
+    Note:
+        Clears the game_on_mode_ended flag when a new game starts.
+    """
+    global _game_running, game_on_mode_ended
     _game_running = running
+    # Clear game_on_ended flag when a new game starts
+    if running:
+        game_on_mode_ended = False
     logging.info(f"Game running state set to: {running}")
 
 
@@ -83,11 +96,34 @@ def get_game_running() -> bool:
     return _game_running
 
 
-def set_game_end_time(now_ms: int) -> None:
-    """Set game running state to false when game ends."""
-    global _game_running
+def set_game_end_time(now_ms: int, min_win_score: int) -> None:
+    """Set game running state to false when game ends.
+
+    Args:
+        now_ms: Current timestamp in milliseconds
+        min_win_score: Minimum score to win (0 for normal mode, >0 for game_on mode)
+
+    Behavior:
+        - In game_on mode (min_win_score > 0): Sets flag to prevent ABC re-activation
+        - In normal mode (min_win_score = 0): ABC remains available for next game
+    """
+    global _game_running, game_on_mode_ended
     _game_running = False
-    logging.info(f"Game ended at {now_ms}")
+    # In game_on mode (min_win_score > 0), set flag to prevent ABC from being re-activated
+    # In normal mode, ABC should remain available so players can start a new game
+    if min_win_score > 0:
+        game_on_mode_ended = True
+        if abc_manager:
+            abc_manager.reset()
+        logging.info(f"Game ended in game_on mode at {now_ms} - ABC disabled")
+    else:
+        logging.info(f"Game ended at {now_ms} - ABC enabled for next game")
+
+
+def reset_game_on_mode_ended() -> None:
+    """Reset the game_on mode ended flag (for testing and initialization)."""
+    global game_on_mode_ended
+    game_on_mode_ended = False
 
 
 def has_player_started_game(player: int) -> bool:

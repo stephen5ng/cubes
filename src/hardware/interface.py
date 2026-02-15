@@ -47,7 +47,7 @@ class HardwareInterface(ABC):
         pass
         
     @abstractmethod
-    def set_game_end_time(self, now_ms: int) -> None:
+    def set_game_end_time(self, now_ms: int, min_win_score: int) -> None:
         pass
         
     @abstractmethod

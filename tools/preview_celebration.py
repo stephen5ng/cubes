@@ -25,7 +25,7 @@ class MockHardware(HardwareInterface):
     async def clear_remaining_abc_cubes(self, q, now): pass
     async def guess_last_tiles(self, q, cid, p, now): pass
     async def load_rack(self, q, tiles, cid, p, now): pass
-    def set_game_end_time(self, now): pass
+    def set_game_end_time(self, now, min_win_score): pass
     async def unlock_all_letters(self, q, now): pass
     async def clear_all_letters(self, q, now): pass
     async def clear_all_borders(self, q, now): pass

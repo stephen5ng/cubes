@@ -38,8 +38,8 @@ class CubesHardwareInterface(HardwareInterface):
     async def load_rack(self, publish_queue: asyncio.Queue, tiles_with_letters: list[tiles.Tile], cube_set_id: int, player: int, now_ms: int) -> None:
         await cubes_to_game.load_rack(publish_queue, tiles_with_letters, cube_set_id, player, now_ms)
         
-    def set_game_end_time(self, now_ms: int) -> None:
-        cubes_to_game.set_game_end_time(now_ms)
+    def set_game_end_time(self, now_ms: int, min_win_score: int) -> None:
+        cubes_to_game.set_game_end_time(now_ms, min_win_score)
         
     async def unlock_all_letters(self, publish_queue: asyncio.Queue, now_ms: int) -> None:
         await cubes_to_game.unlock_all_letters(publish_queue, now_ms)
