@@ -77,7 +77,7 @@ class CubeSetManager:
             logging.info(log_str)
         logging.info("")
 
-    def _traverse_chain_from_cube(self, start_cube: str) -> str | None:
+    def _traverse_chain_from_cube(self, start_cube: str) -> list[str] | None:
         """
         Follow chain from start_cube, building word. Returns None if invalid.
 
@@ -101,9 +101,9 @@ class CubeSetManager:
 
             current_cube = self.cube_chain.get(current_cube)
 
-        return "".join(word_tiles)
+        return word_tiles
 
-    def _build_words_from_sources(self, source_cubes: List[str]) -> List[str]:
+    def _build_words_from_sources(self, source_cubes: List[str]) -> List[List[str]]:
         """
         Build words by traversing chains from each source cube.
 
@@ -117,12 +117,12 @@ class CubeSetManager:
             all_words.append(word)
         return all_words
 
-    def _has_duplicate_tiles(self, words: List[str]) -> bool:
+    def _has_duplicate_tiles(self, words: List[List[str]]) -> bool:
         """Check if any tile ID appears in multiple words."""
         all_tile_ids = [tile_id for word in words for tile_id in word]
         return len(all_tile_ids) != len(set(all_tile_ids))
 
-    def _form_words_from_chain(self) -> List[str]:
+    def _form_words_from_chain(self) -> List[List[str]]:
         """Forms words from the current cube chain. Returns empty list if invalid."""
         if not self.cube_chain:
             return []
@@ -161,7 +161,7 @@ class CubeSetManager:
             return False
         return True
 
-    def process_neighbor_cube(self, sender_cube: str, neighbor_cube: str) -> List[str]:
+    def process_neighbor_cube(self, sender_cube: str, neighbor_cube: str) -> List[List[str]]:
         # Update neighbor tracking with direct cube id
         self.cubes_to_neighbors[sender_cube] = neighbor_cube
         self._dump_cubes_to_neighbors()
