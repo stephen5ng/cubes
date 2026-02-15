@@ -57,13 +57,12 @@ cd "${DOWNLOAD_DIR}"
 
 # Check available disk space
 DISK_AVAILABLE=$(df -k "${PROJECT_DIR}" | tail -1 | awk '{print $4}')
-DOWNLOAD_SIZE_GB=3.1  # Approximate size in GB
-REQUIRED_SPACE_KB=$((1024 * 1024 * DOWNLOAD_SIZE_GB))
+REQUIRED_SPACE_KB=$((3 * 1024 * 1024))  # 3GB minimum
 
 if [ "${DISK_AVAILABLE}" -lt "${REQUIRED_SPACE_KB}" ]; then
     echo "Error: Not enough disk space."
     echo "Available: ${DISK_AVAILABLE}KB"
-    echo "Required: ~${REQUIRED_SPACE_KB}KB (${DOWNLOAD_SIZE_GB}GB)"
+    echo "Required: ~${REQUIRED_SPACE_KB}KB (3GB minimum)"
     exit 1
 fi
 
@@ -76,10 +75,10 @@ if ! gh release view "${RELEASE_TAG}" --repo "${REPO}" >/dev/null 2>&1; then
     exit 1
 fi
 
-# Download parts
-echo "Downloading audio assets..."
-PARTS=$(gh release list --repo "${REPO}" --json assets --jq ".[] | select(.name == \"${RELEASE_TAG}\") | .assets[] | select(.name | contains(\"word_sounds\")) | .name")
-PART_COUNT=$(echo "${PARTS}" | grep -c "word_sounds.tar.gz.part" || echo "0")
+# Get release assets
+echo "Getting release assets..."
+ASSET_URLS=$(gh release view "${RELEASE_TAG}" --repo "${REPO}" --json assets -q '.assets[].url')
+PART_COUNT=$(echo "${ASSET_URLS}" | grep -c "word_sounds.tar.gz.part" || echo "0")
 
 if [ "${PART_COUNT}" -eq 0 ]; then
     echo "Error: No word_sounds parts found in release"
@@ -89,16 +88,17 @@ fi
 echo "Found ${PART_COUNT} parts to download..."
 
 # Download each part
-for part in $(echo "${PARTS}" | grep "word_sounds.tar.gz.part"); do
-    echo "Downloading ${part}..."
-    if ! gh release download "${RELEASE_TAG}" --repo "${REPO}" --pattern "${part}"; then
-        echo "Error: Failed to download ${part}"
+echo "${ASSET_URLS}" | grep "word_sounds.tar.gz.part" | while read -r url; do
+    filename=$(basename "${url}")
+    echo "Downloading ${filename}..."
+    if ! curl -L -H "Accept: application/octet-stream" "${url}" -o "${filename}"; then
+        echo "Error: Failed to download ${filename}"
         exit 1
-    done
+    fi
 done
 
 # Check all parts exist
-EXPECTED_PARTS=$(echo "${PARTS}" | grep -c "word_sounds.tar.gz.part" || echo "0")
+EXPECTED_PARTS=${PART_COUNT}
 DOWNLOADED_PARTS=$(ls word_sounds.tar.gz.part.* 2>/dev/null | wc -l)
 
 if [ "${DOWNLOADED_PARTS}" -ne "${EXPECTED_PARTS}" ]; then
