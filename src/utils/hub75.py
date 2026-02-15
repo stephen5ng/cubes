@@ -17,42 +17,56 @@ matrix: RGBMatrix = None
 offscreen_canvas: Union["RGBMatrixEmulator.emulation.canvas.Canvas","RGBMatrix.Canvas"] = None
 
 
-def create_rgbmatrix() -> Union["RGBMatrixEmulator.RGBMatrix", "rgbmatrix.RGBMatrix"]:
+def create_rgbmatrix(display_type: str = "mini") -> Union["RGBMatrixEmulator.RGBMatrix", "rgbmatrix.RGBMatrix"]:
     options = RGBMatrixOptions()
 
     options.brightness = 100
     options.disable_hardware_pulsing = True
     options.drop_privileges = True
-    options.gpio_slowdown = 5
     options.hardware_mapping = "regular"
     options.led_rgb_sequence = "RGB"
-    options.multiplexing = 1
-    options.panel_type = ""
-    options.pixel_mapper_config = "U-mapper"
     options.pwm_bits = 11
     options.pwm_lsb_nanoseconds = 130
-    options.row_address_type = 0
 
     if platform.system() == "Darwin":
         options.rows = 256
         options.cols = 192
         options.chain_length = 1
         options.parallel = 1
-    else:
+        options.gpio_slowdown = 5
+        options.multiplexing = 1
+        options.pixel_mapper_config = "U-mapper"
+        options.row_address_type = 0
+    elif display_type == "large":
+        # Large display configuration (original)
         options.rows = 32
         options.cols = 64
         options.chain_length = 8
         options.parallel = 3
-
-    #sudo examples-api-use/demo -D0 --led-no-hardware-pulse --led-cols=64 --led-rows=32 --led-slowdown-gpio=5 --led-multiplexing=1 --led-pixel-mapper=U-mapper --led-chain 8 --led-parallel=3 
+        options.gpio_slowdown = 5
+        options.multiplexing = 1
+        options.panel_type = ""
+        options.pixel_mapper_config = "U-mapper"
+        options.row_address_type = 0
+    else:  # mini (default)
+        # Mini display configuration (6 panels: 3 chains of 2)
+        options.rows = 64
+        options.cols = 128
+        options.chain_length = 2
+        options.parallel = 3
+        options.gpio_slowdown = 5
+        options.multiplexing = 0
+        options.panel_type = ""
+        options.pixel_mapper_config = ""
+        options.row_address_type = 3
 
     return RGBMatrix(options=options)
 
 
-def init() -> None:
+def init(display_type: str = "mini") -> None:
     global matrix, offscreen_canvas
 
-    matrix = create_rgbmatrix()
+    matrix = create_rgbmatrix(display_type)
     offscreen_canvas = matrix.CreateFrameCanvas()
     font = graphics.Font()
     font.LoadFont("7x13.bdf")
