@@ -135,6 +135,7 @@ if __name__ == "__main__":
     parser.add_argument('--start', action=argparse.BooleanOptionalAction)
     parser.add_argument("--keyboard-player-number", default=1, type=int, help="Player number (1 or 2) that uses keyboard input")
     parser.add_argument("--replay", type=str, help="Replay a game from a log file")
+    parser.add_argument("--display", default="mini", choices=["mini", "large"], help="Display configuration (mini or large)")
     parser.add_argument("--descent-mode", type=str, default="discrete", choices=["discrete", "timed"],
                        help="Descent strategy: discrete (classic) or timed")
     parser.add_argument("--descent-duration", type=int, default=120,
@@ -194,7 +195,7 @@ if __name__ == "__main__":
         pygame.mixer.init(frequency=24000, size=-16, channels=2)
     except pygame.error as e:
         print(f"Audio initialization failed (running without audio): {e}")
-    hub75.init()
+    hub75.init(args.display)
     dictionary = Dictionary(game_config.MIN_LETTERS, game_config.MAX_LETTERS, open=my_open)
     dictionary.read(game_config.DICTIONARY_PATH, game_config.BINGOS_PATH)
     pygame.init()
