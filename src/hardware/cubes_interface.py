@@ -11,6 +11,9 @@ class CubesHardwareInterface(HardwareInterface):
     def set_guess_tiles_callback(self, callback: Callable[[list[str], bool, int, int], Coroutine[Any, Any, None]]) -> None:
         cubes_to_game.set_guess_tiles_callback(callback)
 
+    def set_remove_highlight_callback(self, callback: Callable[[list[str], int], Coroutine[Any, Any, None]]) -> None:
+        cubes_to_game.set_remove_highlight_callback(callback)
+
     def set_start_game_callback(self, callback: Callable[[bool, int, int], Coroutine[Any, Any, None]]) -> None:
         cubes_to_game.set_start_game_callback(callback)
 

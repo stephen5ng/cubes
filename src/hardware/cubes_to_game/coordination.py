@@ -73,9 +73,36 @@ async def load_rack(publish_queue, tiles_with_letters: list[tiles.Tile], cube_se
 
 
 async def guess_tiles(publish_queue, word_tiles_list, cube_set_id: int, player: int, now_ms: int):
-    """Submit a guess for tiles."""
+    """
+    Submit a guess for tiles.
+
+    IMPORTANT: state.last_guess_tiles is a LIST OF GUESSES (list of lists), where each inner
+    list is a guess containing tile IDs. This is because multiple cube chains can form
+    multiple words simultaneously.
+
+    Example: [['1', '2', '3'], ['4', '5']] means two guesses: one with tiles 1-2-3, another with tiles 4-5.
+
+    When iterating over state.last_guess_tiles, each iteration gives you one guess (a list of tile IDs).
+    """
+    previous_tiles = state.last_guess_tiles
     state.last_guess_tiles = word_tiles_list
-    await guess_last_tiles(publish_queue, cube_set_id, player, now_ms)
+
+    # Detect which chains were removed by comparing previous and current tile sets
+    # Convert each chain to a sorted tuple for set comparison (order-independent)
+    # Only check for removals if we had previous tiles
+    if state.remove_highlight_callback and previous_tiles:
+        previous_chains = {tuple(sorted(chain)) for chain in previous_tiles}
+        current_chains = {tuple(sorted(chain)) for chain in word_tiles_list}
+        removed_chains = previous_chains - current_chains
+
+        # Remove highlights for chains that disappeared (if any)
+        if removed_chains:
+            for chain in removed_chains:
+                await state.remove_highlight_callback(list(chain), player)
+
+    # If there are any remaining chains, process them
+    if word_tiles_list:
+        await guess_last_tiles(publish_queue, cube_set_id, player, now_ms)
 
 
 async def guess_last_tiles(publish_queue, cube_set_id: int, player: int, now_ms: int) -> None:

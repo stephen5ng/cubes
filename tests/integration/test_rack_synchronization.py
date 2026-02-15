@@ -14,7 +14,7 @@ async def test_rack_tile_consistency():
     # Initialize racks (factory might skip App.start which does this)
     app.rack_manager.initialize_racks_for_fair_play()
     # Trigger visual update (App.start usually does this)
-    app._update_rack_display(0, 0, 0)
+    app._update_rack_display(0, 0, 0, None)
     await asyncio.sleep(0.1) # Allow events to process
     
     # 1. Initial State (should be empty depending on factory, but assuming empty for now or checking sync)
@@ -82,7 +82,7 @@ async def test_rack_overflow_handling():
     
     # Initialize implementation details
     app.rack_manager.initialize_racks_for_fair_play()
-    app._update_rack_display(0, 0, 0)
+    app._update_rack_display(0, 0, 0, None)
     await asyncio.sleep(0.1)
     
     visual_rack = game.racks[0]
@@ -117,7 +117,7 @@ async def test_tile_movement_updates():
     
     # Initialize implementation details
     app.rack_manager.initialize_racks_for_fair_play()
-    app._update_rack_display(0, 0, 0)
+    app._update_rack_display(0, 0, 0, None)
     await asyncio.sleep(0.1)
     
     # Add a letter so we have a tile to move

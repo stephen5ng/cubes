@@ -186,6 +186,7 @@ last_tiles_with_letters = []  # List of tiles last loaded to rack
 
 # Callback functions (injected by game logic)
 guess_tiles_callback: Callable[[str, bool], Coroutine[None, None, None]] = None
+remove_highlight_callback: Callable[[list[str], int], Coroutine[None, None, None]] = None
 start_game_callback: Callable = None
 
 
@@ -193,6 +194,12 @@ def set_guess_tiles_callback(f):
     """Register the callback for when tiles are guessed."""
     global guess_tiles_callback
     guess_tiles_callback = f
+
+
+def set_remove_highlight_callback(f):
+    """Register the callback for when highlights should be removed."""
+    global remove_highlight_callback
+    remove_highlight_callback = f
 
 
 def set_start_game_callback(f):

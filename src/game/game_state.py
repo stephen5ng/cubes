@@ -194,9 +194,9 @@ class Game:
                 self.racks[player].update(window, now_ms, flash=False)
                 self.racks[player].running = original_running
 
-    async def update_rack(self, tiles: list[tiles.Tile], highlight_length: int, guess_length: int, player: int, now_ms: int) -> None:
+    async def update_rack(self, tiles: list[tiles.Tile], highlight_length: int, guess_length: int, player: int, now_ms: int, guessed_tile_ids: list[str] | None) -> None:
         """Update rack display for a player."""
-        await self.racks[player].update_rack(tiles, highlight_length, guess_length, now_ms)
+        await self.racks[player].update_rack(tiles, highlight_length, guess_length, now_ms, guessed_tile_ids)
 
     async def update_letter(self, changed_tile: tiles.Tile, player: int, now_ms: int) -> None:
         """Update a single letter tile with animation."""

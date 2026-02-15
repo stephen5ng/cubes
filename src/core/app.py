@@ -47,6 +47,11 @@ class App:
                     events.trigger(GameStartPlayerEvent(now_ms, player))
             return start_game_callback
 
+        def make_remove_highlight_callback(the_app: App) -> Callable[[list[str], int],  Coroutine[Any, Any, None]]:
+            async def remove_highlight_callback(word_tile_ids: list[str], player: int) -> None:
+                await the_app.remove_highlight(word_tile_ids, player)
+            return remove_highlight_callback
+
         self._dictionary = dictionary
         self._publish_queue = publish_queue
         self.hardware = hardware_interface
@@ -64,6 +69,7 @@ class App:
         self._word_logger = OutputLogger(None)  # No-op logger until set by the game
         
         self.hardware.set_guess_tiles_callback(make_guess_tiles_callback(self))
+        self.hardware.set_remove_highlight_callback(make_remove_highlight_callback(self))
         self.hardware.set_start_game_callback(make_start_game_callback(self))
         self._running = False
 
@@ -178,7 +184,7 @@ class App:
 
         await self.load_rack(now_ms)
         for player in range(game_config.MAX_PLAYERS):
-            self._update_rack_display(0, 0, player)
+            self._update_rack_display(0, 0, player, None)
         self._update_previous_guesses()
         self._update_remaining_previous_guesses()
         for player in range(self._player_count):
@@ -271,9 +277,21 @@ class App:
         self._score_card.add_guess(guess, player)
         events.trigger(InputAddGuessEvent(self._score_card.get_previous_guesses(), guess, player, self._time.get_ticks()))
 
+    async def remove_highlight(self, word_tile_ids: list[str], player: int) -> None:
+        """Remove highlight when cube chain is physically disconnected."""
+        logger.info(f"remove_highlight: word_tile_ids {word_tile_ids}")
+        self._update_rack_display(0, 0, player, word_tile_ids)
+        self._last_guess = []
+
     async def guess_tiles(self, word_tile_ids: list[str], move_tiles: bool, player: int, now_ms: int) -> None:
-        self._last_guess = word_tile_ids
         logger.info(f"guess_tiles: word_tile_ids {word_tile_ids}")
+
+        # Empty guess - ignore
+        if not word_tile_ids:
+            return
+
+        self._last_guess = word_tile_ids
+
         rack = self.rack_manager.get_rack(player)
         guess = rack.ids_to_letters(word_tile_ids)
         guess_tiles = rack.ids_to_tiles(word_tile_ids)
@@ -324,8 +342,13 @@ class App:
             events.trigger(GameBadGuessEvent(player))
             await self.hardware.bad_guess(self._publish_queue, word_tile_ids, cube_set_id, player)
 
+        # Always update rack display to refresh tile positions from physical cube arrangement
+        # For bad guesses, pass highlight_length=0 to avoid creating a highlight
         if tiles_dirty:
-            self._update_rack_display(good_guess_highlight, len(guess), player)
+            self._update_rack_display(good_guess_highlight, len(guess), player, word_tile_ids)
+        else:
+            # Bad guess: update tile positions but don't create a highlight
+            self._update_rack_display(0, 0, player, None)
 
     async def guess_word_keyboard(self, guess: str, player: int, now_ms: int) -> None:
         cube_set_id = self._player_to_cube_set[player]
@@ -344,10 +367,11 @@ class App:
             self._score_card.get_remaining_previous_guesses(),
             self._time.get_ticks()))
 
-    def _update_rack_display(self, highlight_length: int, guess_length: int, player: int):
+    def _update_rack_display(self, highlight_length: int, guess_length: int, player: int, guessed_tile_ids: list[str] | None):
         events.trigger(RackUpdateRackEvent(
                        self.rack_manager.get_rack(player).get_tiles(),
                        highlight_length,
                        guess_length,
                        player,
-                       self._time.get_ticks()))
+                       self._time.get_ticks(),
+                       guessed_tile_ids))

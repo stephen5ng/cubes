@@ -197,7 +197,7 @@ async def test_score_persistence():
     score_component.score = 100
     
     # Simulate a rack update or other event
-    await game.update_rack([], 0, 0, 0, 1000)
+    await game.update_rack([], 0, 0, 0, 1000, None)
     
     assert score_component.score == 100
 

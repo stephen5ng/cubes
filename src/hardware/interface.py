@@ -11,6 +11,10 @@ class HardwareInterface(ABC):
         pass
 
     @abstractmethod
+    def set_remove_highlight_callback(self, callback: Callable[[list[str], int], Coroutine[Any, Any, None]]) -> None:
+        pass
+
+    @abstractmethod
     def set_start_game_callback(self, callback: Callable[[bool, int, int], Coroutine[Any, Any, None]]) -> None:
         pass
 

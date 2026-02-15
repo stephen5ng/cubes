@@ -126,15 +126,17 @@ class RackUpdateRackEvent(GameEvent):
     guess_length: int
     player: int
     now_ms: int
+    guessed_tile_ids: list[str] = ()  # IDs of tiles that were guessed
 
     def __init__(self, tiles: list[Any], highlight_length: int, guess_length: int,
-                 player: int, now_ms: int):
+                 player: int, now_ms: int, guessed_tile_ids: list[str] | None):
         super().__init__(EventType.RACK_UPDATE_RACK)
         self.tiles = tiles
         self.highlight_length = highlight_length
         self.guess_length = guess_length
         self.player = player
         self.now_ms = now_ms
+        self.guessed_tile_ids = guessed_tile_ids or ()
 
 
 @dataclass

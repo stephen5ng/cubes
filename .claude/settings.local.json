@@ -96,7 +96,24 @@
       "Bash(git merge:*)",
       "Bash(python -m pytest:*)",
       "Bash(afplay:*)",
-      "Bash(sox:*)"
+      "Bash(sox:*)",
+      "Bash(sudo find:*)",
+      "Bash(sudo systemctl restart:*)",
+      "Bash(sudo systemctl status:*)",
+      "Bash(sudo git log:*)",
+      "Bash(sudo git remote:*)",
+      "Bash(sudo git fetch:*)",
+      "Bash(sudo git pull:*)",
+      "Bash(sudo git status:*)",
+      "Bash(sudo git stash:*)",
+      "Bash(sudo rm:*)",
+      "Bash(sudo journalctl:*)",
+      "Bash(./cube_env/bin/pytest tests/integration/ -v --tb=short)",
+      "Bash(./cube_env/bin/pytest:*)",
+      "Bash(cube_env/bin/pytest:*)",
+      "Bash(./cube_env/bin/python:*)",
+      "Bash(python:*)",
+      "Bash(source:*)"
     ],
     "deny": []
   }

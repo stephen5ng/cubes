@@ -47,6 +47,7 @@ from .state import (
     add_started_cube_set,
     get_started_cube_sets,
     set_guess_tiles_callback,
+    set_remove_highlight_callback,
     set_start_game_callback,
     # Global state variables (for direct access)
     ABC_COUNTDOWN_DELAY_MS,
@@ -115,6 +116,7 @@ __all__ = [
     'add_started_cube_set',
     'get_started_cube_sets',
     'set_guess_tiles_callback',
+    'set_remove_highlight_callback',
     'set_start_game_callback',
     'ABC_COUNTDOWN_DELAY_MS',
     'cube_to_cube_set',

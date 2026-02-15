@@ -92,7 +92,7 @@ async def test_keyboard_fallback():
     # Modify the first tile to be 'A'
     if current_tiles:
         current_tiles[0].letter = "A"
-        await game.update_rack(current_tiles, 0, 0, 0, 0)
+        await game.update_rack(current_tiles, 0, 0, 0, 0, None)
     
     key = "A"
     

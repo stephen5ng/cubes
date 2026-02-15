@@ -19,8 +19,8 @@ async def test_letter_lock_routing():
     # Initialize racks
     app.rack_manager.initialize_racks_for_fair_play()
     
-    app._update_rack_display(0, 0, 0)
-    app._update_rack_display(0, 0, 1)
+    app._update_rack_display(0, 0, 0, None)
+    app._update_rack_display(0, 0, 1, None)
     await asyncio.sleep(0.1)
     
     mqtt.clear_published()
