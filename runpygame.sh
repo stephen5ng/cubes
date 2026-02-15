@@ -88,7 +88,7 @@ build_game_params() {
 }
 
 # Build initial python arguments
-python_args=("${user_args[@]}")
+python_args=("--start" "${user_args[@]}")
 if [[ "$mode" == "new" ]]; then
     python_args+=("--descent-mode" "timed")
 elif [[ "$mode" == "classic" ]]; then
