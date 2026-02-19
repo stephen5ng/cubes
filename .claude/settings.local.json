@@ -113,7 +113,10 @@
       "Bash(cube_env/bin/pytest:*)",
       "Bash(./cube_env/bin/python:*)",
       "Bash(python:*)",
-      "Bash(source:*)"
+      "Bash(source:*)",
+      "Bash(journalctl:*)",
+      "Bash(sudo:*)",
+      "Bash(xargs:*)"
     ],
     "deny": []
   }
