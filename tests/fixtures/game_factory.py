@@ -263,6 +263,9 @@ async def create_game_with_started_players(
         game.racks[player].running = True
         game._app.hardware.add_player_started(player)
 
+    # Mark game as running so cube border logic responds to neighbor messages
+    game._app.hardware.set_game_running(True)
+
     return game, mqtt, queue
 
 

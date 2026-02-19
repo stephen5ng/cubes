@@ -283,11 +283,20 @@ async def handle_mqtt_message(publish_queue, message, now_ms: int, sound_manager
         cube_set_id = state.cube_to_cube_set.get(sender_cube)
         if cube_set_id is not None:
             logging.info(f"RIGHT msg: sender={sender_cube} neighbor={neighbor_cube} cube_set={cube_set_id}")
-            word_tiles_list = state.cube_set_managers[cube_set_id].process_neighbor_cube(sender_cube, neighbor_cube)
-            logging.info(f"WORD_TILES (right): {word_tiles_list}")
-            # In single player mode, player_id is always 0; in multi-player, cube_set_id maps to player_id
-            player_id = 0 if len(state._started_players) <= 1 else cube_set_id
-            await guess_tiles(publish_queue, word_tiles_list, cube_set_id, player_id, now_ms)
+            # Only process game-related neighbor messages if game is running
+            # After game over, cubes should not be responsive to word formation
+            is_running = state.get_game_running()
+            logging.info(f"CHECK GAME STATE: running={is_running}, started_players={state._started_players}")
+            if is_running:
+                word_tiles_list = state.cube_set_managers[cube_set_id].process_neighbor_cube(sender_cube, neighbor_cube)
+                logging.info(f"WORD_TILES (right): {word_tiles_list}")
+                # In single player mode, player_id is always 0; in multi-player, cube_set_id maps to player_id
+                player_id = 0 if len(state._started_players) <= 1 else cube_set_id
+                await guess_tiles(publish_queue, word_tiles_list, cube_set_id, player_id, now_ms)
+            else:
+                # Game not running - still track neighbors for ABC start detection
+                state.cube_set_managers[cube_set_id].process_neighbor_cube(sender_cube, neighbor_cube)
+                logging.info(f"Game not running - tracking neighbors only")
 
             # Check ABC completion after processing right-edge updates
             if state.abc_manager.abc_start_active:

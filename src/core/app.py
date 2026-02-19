@@ -204,6 +204,8 @@ class App:
         await self.hardware.unlock_all_letters(self._publish_queue, now_ms)
         # Ensure all borders are cleared on every cube at game end
         await self.hardware.clear_all_borders(self._publish_queue, now_ms)
+        # Clear player started state so borders won't be re-applied after game over
+        self.hardware.reset_player_started_state()
         # Note: ABC sequence will be activated automatically
 
     async def load_rack(self, now_ms: int) -> None:
