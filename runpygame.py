@@ -16,6 +16,14 @@ import subprocess
 import sys
 from typing import Optional
 
+# Setup environment BEFORE importing aiomqtt
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Add virtualenv site-packages to sys.path before importing dependencies
+venv_site_packages = os.path.join(SCRIPT_DIR, f"cube_env/lib/python{sys.version_info.major}.{sys.version_info.minor}/site-packages")
+if os.path.isdir(venv_site_packages):
+    sys.path.insert(0, venv_site_packages)
+
 import aiomqtt
 
 # Environment configuration
@@ -25,8 +33,13 @@ MQTT_CONTROL_PORT = int(os.environ.get("MQTT_CONTROL_PORT", "1884"))
 
 # Paths
 VENV_PATH = "cube_env/bin/activate"
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-MOSQUITTO_PATH = "/opt/homebrew/opt/mosquitto/sbin/mosquitto"
+# Find mosquitto in common locations
+MOSQUITTO_CANDIDATES = [
+    "/opt/homebrew/opt/mosquitto/sbin/mosquitto",  # macOS Homebrew
+    "/usr/sbin/mosquitto",  # Linux system
+    "/usr/bin/mosquitto",   # Some Linux distros
+]
+MOSQUITTO_PATH = next((p for p in MOSQUITTO_CANDIDATES if os.path.exists(p)), "mosquitto")
 DELETE_MQTT_SCRIPT = os.path.join(SCRIPT_DIR, "tools/delete_all_mqtt.sh")
 
 
@@ -377,7 +390,7 @@ def setup_environment():
     new_path = ":".join(pythonpath_parts)
     os.environ["PYTHONPATH"] = f"{new_path}:{current_path}" if current_path else new_path
 
-    # Activate virtual environment (by modifying PATH)
+    # Activate virtual environment (by modifying PATH and VIRTUAL_ENV)
     venv_bin = os.path.join(SCRIPT_DIR, "cube_env/bin")
     if os.path.isdir(venv_bin):
         os.environ["PATH"] = f"{venv_bin}:{os.environ.get('PATH', '')}"
