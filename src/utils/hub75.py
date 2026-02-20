@@ -21,8 +21,8 @@ def create_rgbmatrix(display_type: str = "mini") -> Union["RGBMatrixEmulator.RGB
     options = RGBMatrixOptions()
 
     options.brightness = 100
-    options.disable_hardware_pulsing = True
-    options.drop_privileges = True
+    options.disable_hardware_pulsing = False
+    options.drop_privileges = False
     options.hardware_mapping = "regular"
     options.led_rgb_sequence = "RGB"
     options.pwm_bits = 11
@@ -80,7 +80,7 @@ last_image: bytes = b''
 update_count = 0
 total_time = 1
 def update(screen: pygame.Surface) -> None:
-    global last_image, total_time, update_count
+    global last_image, total_time, update_count, offscreen_canvas
 
     # Skip update if hub75 not initialized (e.g., in tests)
     if matrix is None:
@@ -93,12 +93,12 @@ def update(screen: pygame.Surface) -> None:
     img = Image.frombytes("RGB", (screen.get_width(), screen.get_height()), pixels)
 
     if platform.system() != "Darwin":
+        # Transpose (rotate 90) is faster than rotate(270) and avoids reallocation
 # mypy: disable-error-code=attr-defined
-        img = img.rotate(270, Image.NEAREST, expand=1)
+        img = img.transpose(Image.ROTATE_270)
 
     start = get_ticks()
-    offscreen_canvas.SetImage(img)
-    matrix.SwapOnVSync(offscreen_canvas)
+    offscreen_canvas.SetImage(img, 0, 0)
+    offscreen_canvas = matrix.SwapOnVSync(offscreen_canvas)
     total_time += get_ticks() - start
     update_count += 1
-    # print(f"fps: {1000*update_count/total_time}")

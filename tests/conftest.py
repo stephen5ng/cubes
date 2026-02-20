@@ -1,12 +1,21 @@
 import sys
 import os
 import pytest
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 from types import SimpleNamespace
 
 # Ensure src and project root are in the python path for all tests
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+# Mock rgbmatrix if not available (hardware-only module)
+if 'rgbmatrix' not in sys.modules:
+    try:
+        import rgbmatrix  # noqa: F401
+    except ImportError:
+        _mock_rgbmatrix = MagicMock()
+        sys.modules['rgbmatrix'] = _mock_rgbmatrix
+        sys.modules['rgbmatrix.graphics'] = _mock_rgbmatrix.graphics
 
 def pytest_addoption(parser):
     parser.addoption("--visual", action="store_true", default=False, help="Run tests with visual feedback")
