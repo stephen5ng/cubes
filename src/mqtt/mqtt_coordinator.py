@@ -19,6 +19,9 @@ class MQTTCoordinator:
         self.app = app
         self.publish_queue = publish_queue
         self.game_coordinator = game_coordinator
+        # Track level progression: last level and whether it was a win
+        self._last_level = 0
+        self._last_exit_code = None  # 10=win (advance), 11=loss (reset), None=first game
 
     async def handle_message(self, topic_str: str, payload, now_ms: int) -> None:
         """Route MQTT messages to appropriate handlers."""
@@ -48,6 +51,20 @@ class MQTTCoordinator:
                 if needs_re_setup:
                     logger.info("Descent parameters changed, full re-setup would be needed")
 
+            # Determine the level for this game
+            # If level not specified in params, auto-determine based on previous game result
+            if game_params and game_params.level is not None:
+                current_level = game_params.level
+                logger.info(f"Level specified in params: {current_level}")
+            else:
+                # Auto-determine level: advance on win, reset on loss
+                if self._last_exit_code == 10:  # Previous win
+                    current_level = self._last_level + 1
+                    logger.info(f"Previous win (level {self._last_level}), advancing to level {current_level}")
+                else:  # Loss or first game
+                    current_level = 0
+                    logger.info(f"Resetting to level 0 (previous exit_code: {self._last_exit_code})")
+
             # Save current scores before stopping (for level progression)
             saved_scores = [score.score for score in self.game.scores] if self.game.scores else []
 
@@ -58,9 +75,6 @@ class MQTTCoordinator:
 
             # Reset stars display for new game
             self.game.stars_display.reset()
-
-            # Determine the level for this game
-            current_level = game_params.level if game_params else 0
 
             # Set baseline score BEFORE start_cubes so stars are calculated correctly
             # For level 0: baseline is 0 (fresh start)
@@ -82,8 +96,23 @@ class MQTTCoordinator:
                         self.game.scores[i].draw()
                 logger.info(f"Restored scores for level {current_level}: {saved_scores}")
 
+            # Track the level we just started
+            self._last_level = current_level
+
         elif topic_str == "app/abort":
             events.trigger(GameAbortEvent())
+
+        elif topic_str == "game/final_score":
+            # Track exit code for level progression
+            try:
+                payload_str = payload.decode() if isinstance(payload, bytes) else payload
+                if payload_str:
+                    score_data = json.loads(payload_str)
+                    exit_code = score_data.get("exit_code", 0)
+                    self._last_exit_code = exit_code
+                    logger.info(f"Recorded exit_code {exit_code} for level progression (last_level={self._last_level})")
+            except (json.JSONDecodeError, UnicodeDecodeError) as e:
+                logger.warning(f"Failed to parse final_score payload: {e}")
 
         elif topic_str == "game/guess":
             # Payload is likely string from InputManager, but let's be safe

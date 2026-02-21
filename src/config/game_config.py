@@ -68,14 +68,10 @@ SCRABBLE_LETTER_SCORES = {
 # ============================================================================
 # MQTT SETTINGS
 # ============================================================================
-# Gameplay broker (for cube control and game messages)
+# MQTT broker (for cube control, game messages, and control topics)
 MQTT_SERVER = os.environ.get("MQTT_SERVER", "localhost")
 MQTT_CLIENT_ID = 'game-server'
 MQTT_CLIENT_PORT = 1883
-
-# Control broker (for overall game control and metrics)
-MQTT_CONTROL_SERVER = os.environ.get("MQTT_CONTROL_SERVER", "localhost")
-MQTT_CONTROL_PORT = int(os.environ.get("MQTT_CONTROL_PORT", "1884"))
 # ============================================================================
 # PATH SETTINGS
 # ============================================================================

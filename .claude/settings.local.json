@@ -116,7 +116,8 @@
       "Bash(source:*)",
       "Bash(journalctl:*)",
       "Bash(sudo:*)",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "Bash(MQTT_CONTROL_PORT=1883 ./start_new_game.sh:*)"
     ],
     "deny": []
   }

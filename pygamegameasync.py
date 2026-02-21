@@ -98,7 +98,7 @@ class BlockWordsPygame:
         self.next_column_ms = next_column_ms
         self.letter_linger_ms = letter_linger_ms
         self._has_auto_started = False
-        self.control_client = None  # Set in setup_game
+        self.publish_queue = None  # Set in setup_game, used for game/ready messages
         self.game_awaiting_ready = False  # True when waiting for game/ready to start next game
         
         self.input_manager = InputManager(replay_file)
@@ -120,10 +120,10 @@ class BlockWordsPygame:
                 if (self.min_win_score > 0) and pygame_event['key'] == "ESCAPE":
                     # When min_win_score is set (game_on mode), ESC publishes game/ready
                     # instead of quitting, allowing the script to control game restarts
-                    if self.control_client and not self.game.running:
+                    if self.publish_queue and not self.game.running:
                         # Game has ended, signal ready for next game
                         try:
-                            await self.control_client.publish("game/ready", "")
+                            await self.publish_queue.put(("game/ready", "", False, None))
                             logger.info("Published game/ready after ESC (game ended)")
                         except Exception as e:
                             logger.warning(f"Failed to publish game/ready: {e}")
@@ -140,7 +140,7 @@ class BlockWordsPygame:
         return False
 
     async def setup_game(self, the_app: app.App, subscribe_client: aiomqtt.Client,
-                         publish_queue: asyncio.Queue, game_logger, output_logger, control_client: aiomqtt.Client = None):
+                         publish_queue: asyncio.Queue, game_logger, output_logger):
         """Set up all game components. Returns (screen, keyboard_input, input_devices, mqtt_message_queue, control_message_queue, clock)."""
         screen, keyboard_input, input_devices, mqtt_message_queue, control_message_queue, clock, self.descent_mode, self.descent_duration_s = await self.game_coordinator.setup_game(
             the_app, subscribe_client, publish_queue, game_logger, output_logger,
@@ -148,8 +148,7 @@ class BlockWordsPygame:
             self.replay_file, self.descent_mode, self.descent_duration_s,
             self.record, self.one_round, self.min_win_score, self.stars, self.level,
             self.next_column_ms,
-            self.letter_linger_ms,
-            control_client
+            self.letter_linger_ms
         )
 
         # Hydrate local references
@@ -157,7 +156,7 @@ class BlockWordsPygame:
         self.mqtt_coordinator = self.game_coordinator.mqtt_coordinator
         self.input_controller = self.game_coordinator.input_controller
         self.keyboard_handler = self.game_coordinator.keyboard_handler
-        self.control_client = control_client
+        self.publish_queue = publish_queue
 
         return screen, keyboard_input, input_devices, mqtt_message_queue, control_message_queue, clock
 
@@ -243,10 +242,10 @@ class BlockWordsPygame:
 
     async def main(self, the_app: app.App, subscribe_client: aiomqtt.Client, start: bool,
                    keyboard_player_number: int, publish_queue: asyncio.Queue,
-                   game_logger, output_logger, control_client: aiomqtt.Client = None) -> int:
+                   game_logger, output_logger) -> int:
         """Main game loop using production setup."""
         screen, keyboard_input, input_devices, mqtt_message_queue, control_message_queue, clock = await self.setup_game(
-            the_app, subscribe_client, publish_queue, game_logger, output_logger, control_client
+            the_app, subscribe_client, publish_queue, game_logger, output_logger
         )
 
         time_offset = 0  # so that time doesn't go backwards after playing a replay file

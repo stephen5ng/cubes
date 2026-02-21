@@ -375,15 +375,15 @@ class Game:
             }
 
             async with aiomqtt.Client(
-                hostname=game_config.MQTT_CONTROL_SERVER,
-                port=game_config.MQTT_CONTROL_PORT
+                hostname=game_config.MQTT_SERVER,
+                port=game_config.MQTT_CLIENT_PORT
             ) as client:
                 await client.publish(
                     "game/final_score",
                     json.dumps(score_data),
                     retain=True
                 )
-                logger.info(f"Published final score to control broker: {score_data}")
+                logger.info(f"Published final score: {score_data}")
         except Exception as e:
             logger.error(f"Failed to publish final score to control broker: {e}")
 

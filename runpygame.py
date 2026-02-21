@@ -28,8 +28,7 @@ import aiomqtt
 
 # Environment configuration
 MQTT_SERVER = os.environ.get("MQTT_SERVER", "localhost")
-MQTT_CONTROL_SERVER = os.environ.get("MQTT_CONTROL_SERVER", "localhost")
-MQTT_CONTROL_PORT = int(os.environ.get("MQTT_CONTROL_PORT", "1884"))
+MQTT_PORT = int(os.environ.get("MQTT_PORT", "1883"))
 
 # Paths
 VENV_PATH = "cube_env/bin/activate"
@@ -69,7 +68,7 @@ def _calculate_level_params(level: int) -> tuple[int, int, int, int]:
     """
     # Base level configurations (min_win_score, descent_duration, next_column_ms, letter_linger_ms)
     level_configs = {
-        0: (90, 90, None, 0),
+        0: (50, 90, None, 0),
         1: (90, 180, 1000, 500),
         2: (360, 120, 500, 0),
     }
@@ -340,8 +339,8 @@ async def run_game_on(level: int, python_args: list[str]) -> int:
     try:
         # Monitor MQTT and wait for game completion
         exit_code = await monitor_game_on(
-            MQTT_CONTROL_SERVER,
-            MQTT_CONTROL_PORT,
+            MQTT_SERVER,
+            MQTT_PORT,
             python_proc,
             level,
         )
@@ -432,15 +431,6 @@ async def async_main(mode: str, level: int, extra_args: list[str]) -> int:
         )
         await asyncio.sleep(0.5)
 
-    # Start control broker (port 1884) if needed
-    if not is_port_open(MQTT_CONTROL_SERVER, MQTT_CONTROL_PORT):
-        mosquitto_control_proc = subprocess.Popen(
-            [MOSQUITTO_PATH, "-p", str(MQTT_CONTROL_PORT)],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
-        await asyncio.sleep(0.5)
-
     # Delete all MQTT messages
     subprocess.run(
         ["bash", DELETE_MQTT_SCRIPT],
@@ -491,15 +481,6 @@ async def run_replay(replay_file: str, extra_args: list[str]) -> int:
     if not is_port_open(MQTT_SERVER, 1883):
         mosquitto_gameplay_proc = subprocess.Popen(
             [MOSQUITTO_PATH, "-p", "1883"],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
-        await asyncio.sleep(0.5)
-
-    # Start control broker (port 1884) if needed
-    if not is_port_open(MQTT_CONTROL_SERVER, MQTT_CONTROL_PORT):
-        mosquitto_control_proc = subprocess.Popen(
-            [MOSQUITTO_PATH, "-p", str(MQTT_CONTROL_PORT)],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )

@@ -1,4 +1,4 @@
-"""Tests for control broker final score publishing."""
+"""Tests for final score publishing via MQTT."""
 
 import json
 import pytest
@@ -141,7 +141,7 @@ async def test_final_score_uses_retain():
 
 @async_test
 async def test_final_score_graceful_broker_failure():
-    """Verify game continues even if control broker is unavailable."""
+    """Verify game continues even if MQTT broker is unavailable."""
     game, mqtt, queue = await create_test_game(player_count=1, min_win_score=50, stars=True)
 
     game.scores[0].score = 60
@@ -185,4 +185,4 @@ async def test_final_score_connection_params():
     # Verify correct broker connection
     assert len(client_calls) > 0
     assert client_calls[0]["hostname"] == "localhost"  # Default
-    assert client_calls[0]["port"] == 1884  # Default control port
+    assert client_calls[0]["port"] == 1883  # Main MQTT port
