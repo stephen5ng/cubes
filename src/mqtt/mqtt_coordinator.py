@@ -68,10 +68,15 @@ class MQTTCoordinator:
             # Save current scores before stopping (for level progression)
             saved_scores = [score.score for score in self.game.scores] if self.game.scores else []
 
-            # Stop the game if it's running, then restart
+            # Silently reset the game if it's running (no sad trombone, no game-over effects)
             if self.game.running:
-                logger.info("Game is running, stopping before restart")
-                await self.game.stop(now_ms, 0)
+                logger.info("Game is running, resetting for restart")
+                self.game.running = False
+                self.game.melt_effect = None
+                self.game.balloon_effects = []
+                self.game.input_devices = []
+                for rack in self.game.racks:
+                    rack.stop()
 
             # Reset stars display for new game
             self.game.stars_display.reset()
