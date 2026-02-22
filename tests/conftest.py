@@ -30,6 +30,8 @@ def pytest_configure(config):
         os.environ["VISUAL_MODE"] = "0"
         if "SDL_VIDEODRIVER" not in os.environ:
             os.environ["SDL_VIDEODRIVER"] = "dummy"
+        if "SDL_AUDIODRIVER" not in os.environ:
+            os.environ["SDL_AUDIODRIVER"] = "dummy"
             
     # Suppress specific deprecation warnings that are out of our control
     config.addinivalue_line("filterwarnings", "ignore:pkg_resources is deprecated as an API:DeprecationWarning")

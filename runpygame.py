@@ -395,6 +395,11 @@ def setup_environment():
         os.environ["PATH"] = f"{venv_bin}:{os.environ.get('PATH', '')}"
         os.environ["VIRTUAL_ENV"] = os.path.join(SCRIPT_DIR, "cube_env")
 
+    # Set SDL video driver for HDMI output on headless Raspberry Pi/DietPi systems
+    # kmsdrm requires vc4-kms-v3d overlay in /boot/firmware/config.txt
+    # and pygame's bundled SDL2 replaced with a kmsdrm-enabled build
+    os.environ["SDL_VIDEODRIVER"] = "kmsdrm"
+
 
 async def async_main(mode: str, level: int, extra_args: list[str]) -> int:
     """Async main function that manages mosquitto processes and runs the game.

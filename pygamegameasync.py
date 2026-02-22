@@ -11,6 +11,7 @@ from enum import Enum
 import json
 import logging
 import math
+import os
 import pygame
 import pygame.freetype
 from pygame import Color
@@ -65,6 +66,44 @@ from game.game_coordinator import GameCoordinator
 logger = logging.getLogger(__name__)
 
 
+def _initialize_pygame_display(width: int, height: int) -> pygame.Surface:
+    """Initialize pygame display with error handling.
+
+    Sets the display mode. If the configured SDL_VIDEODRIVER is not available,
+    logs a warning but allows pygame's fallback mechanism to handle it.
+
+    The SDL_VIDEODRIVER is pre-configured in runpygame.py's setup_environment().
+    Tests override it via conftest.py pytest_configure with SDL_VIDEODRIVER=dummy.
+
+    Args:
+        width: Display width in pixels
+        height: Display height in pixels
+
+    Returns:
+        pygame Surface object for the display
+
+    Raises:
+        pygame.error: If display initialization fails
+    """
+    current_driver = os.environ.get("SDL_VIDEODRIVER")
+    # Use SCALED|FULLSCREEN for kmsdrm so the game renders at (width, height)
+    # and SDL scales it to fit the physical display with correct aspect ratio (black bars)
+    flags = pygame.SCALED | pygame.FULLSCREEN if current_driver == "kmsdrm" else 0
+    try:
+        surface = pygame.display.set_mode((width, height), flags)
+        logger.info(f"Display initialized with SDL_VIDEODRIVER={current_driver or 'auto'}")
+        return surface
+    except pygame.error as e:
+        if current_driver:
+            # Preferred driver not available (e.g. kmsdrm on macOS or headless) — let SDL auto-detect
+            logger.warning(f"SDL_VIDEODRIVER={current_driver} not available: {e}. Falling back to auto-detect.")
+            del os.environ["SDL_VIDEODRIVER"]
+            surface = pygame.display.set_mode((width, height))
+            logger.info(f"Display initialized with auto-detected driver: {pygame.display.get_driver()}")
+            return surface
+        raise
+
+
 from input.input_manager import InputManager
 from input.keyboard_handler import KeyboardHandler
 from mqtt.mqtt_coordinator import MQTTCoordinator
@@ -79,8 +118,8 @@ class BlockWordsPygame:
             descent_duration_s: Duration in seconds for descent speed calculation.
             record: Whether to record the game.
         """
-        self._window = pygame.display.set_mode(
-            (SCREEN_WIDTH*SCALING_FACTOR, SCREEN_HEIGHT*SCALING_FACTOR))
+        self._window = _initialize_pygame_display(
+            SCREEN_WIDTH*SCALING_FACTOR, SCREEN_HEIGHT*SCALING_FACTOR)
         self.letter_font = pygame.freetype.SysFont(FONT, RackMetrics.LETTER_SIZE)
         self.the_app = None
         self.game = None
