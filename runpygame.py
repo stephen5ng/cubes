@@ -68,9 +68,9 @@ def _calculate_level_params(level: int) -> tuple[int, int, int, int]:
     """
     # Base level configurations (min_win_score, descent_duration, next_column_ms, letter_linger_ms)
     level_configs = {
-        0: (50, 90, None, 0),
-        1: (90, 180, 1000, 500),
-        2: (360, 120, 500, 0),
+        0: (50, 45, None, 0),
+        1: (90, 90, 1000, 500),
+        2: (360, 70, 500, 0),
     }
 
     if level in level_configs:
