@@ -9,6 +9,7 @@ import argparse
 import asyncio
 import json
 import os
+import platform
 import shutil
 import signal
 import socket
@@ -399,6 +400,12 @@ def setup_environment():
     # kmsdrm requires vc4-kms-v3d overlay in /boot/firmware/config.txt
     # and pygame's bundled SDL2 replaced with a kmsdrm-enabled build
     os.environ["SDL_VIDEODRIVER"] = "kmsdrm"
+
+    # Set SDL audio driver and device for USB audio output (Linux only)
+    # macOS uses CoreAudio and doesn't support ALSA
+    if platform.system() == "Linux":
+        os.environ["SDL_AUDIODRIVER"] = "alsa"
+        os.environ["AUDIODEV"] = "hw:1,0"
 
 
 async def async_main(mode: str, level: int, extra_args: list[str]) -> int:
