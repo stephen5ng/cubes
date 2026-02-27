@@ -31,7 +31,8 @@ class Letter:
 
     def __init__(
         self, font: pygame.freetype.Font, initial_y: int, rack_metrics: RackMetrics, output_logger, letter_beeps: list,
-        descent_strategy: Optional[DescentStrategy] = None, level: int = 0, next_column_ms: int = None, letter_linger_ms: int = 0) -> None:
+        descent_strategy: Optional[DescentStrategy] = None, level: int = 0, next_column_ms: int = None, letter_linger_ms: int = 0,
+        drop_time_ms: int = None) -> None:
         self.level = level
         self.next_column_ms = next_column_ms
         self.letter_linger_ms = letter_linger_ms
@@ -58,19 +59,22 @@ class Letter:
             descent_strategy = DescentStrategy(game_duration_ms=None, event_descent_amount=Letter.Y_INCREMENT)
         self.descent_strategy = descent_strategy
 
+        # Use configurable drop time, or fall back to constant
+        self.drop_time_ms = drop_time_ms if drop_time_ms is not None else Letter.DROP_TIME_MS
+
         self.start(0)
         self.draw(0)
 
     def _get_fall_percent(self, now_ms: int) -> float:
         """Calculate the current fall completion percentage (0.0 to 1.0)."""
         remaining_height = self.height - self.start_fall_y
-        
+
         if remaining_height <= 0:
             return 1.0
 
         # Calculate duration dynamically based on current line position
         # self.height > 0 invariant enforced in __init__
-        current_duration_ms = self.DROP_TIME_MS * remaining_height / self.height
+        current_duration_ms = self.drop_time_ms * remaining_height / self.height
 
         return (now_ms - self.start_fall_time_ms) / current_duration_ms
 

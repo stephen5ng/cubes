@@ -19,6 +19,7 @@ class GameParams:
     level: int = 0
     next_column_ms: Optional[int] = None  # Time to move between columns (ms), None for level 0
     letter_linger_ms: int = 0  # Time to linger at each column before moving (ms)
+    letter_drop_time_ms: int = 150000  # Time for letter to fall full screen height (ms)
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional['GameParams']:
@@ -46,7 +47,8 @@ class GameParams:
             stars=data.get('stars', False),
             level=data.get('level', 0),
             next_column_ms=data.get('next_column_ms'),
-            letter_linger_ms=data.get('letter_linger_ms', 0)
+            letter_linger_ms=data.get('letter_linger_ms', 0),
+            letter_drop_time_ms=data.get('letter_drop_time_ms', 150000)
         )
 
     @classmethod
@@ -67,7 +69,8 @@ class GameParams:
             stars=args.stars,
             level=args.level,
             next_column_ms=getattr(args, 'next_column_ms', None),
-            letter_linger_ms=getattr(args, 'letter_linger_ms', 0)
+            letter_linger_ms=getattr(args, 'letter_linger_ms', 0),
+            letter_drop_time_ms=getattr(args, 'letter_drop_time_ms', 150000)
         )
 
     def __str__(self) -> str:

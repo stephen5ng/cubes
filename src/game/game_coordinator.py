@@ -220,6 +220,7 @@ class GameCoordinator:
         self.game.level = params.level
         self.game.next_column_ms = params.next_column_ms
         self.game.letter_linger_ms = params.letter_linger_ms
+        self.game.letter_drop_time_ms = params.letter_drop_time_ms
         self.game.show_level = params.level > 0 or params.stars
         self.game.level_fade_start_ms = -1  # Reset level fade trigger to show level again
         self.game.descent_duration_s = params.descent_duration_s
@@ -252,8 +253,9 @@ class GameCoordinator:
         self.current_setup_params['min_win_score'] = params.min_win_score
         self.current_setup_params['stars'] = params.stars
         self.current_setup_params['level'] = params.level
+        self.current_setup_params['letter_drop_time_ms'] = params.letter_drop_time_ms
 
         logger.info(f"Applied game params: one_round={params.one_round}, min_win_score={params.min_win_score}, "
-                   f"stars={params.stars}, level={params.level}, descent_mode={params.descent_mode}")
+                   f"stars={params.stars}, level={params.level}, descent_mode={params.descent_mode}, letter_drop_time_ms={params.letter_drop_time_ms}")
 
         return needs_re_setup

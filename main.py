@@ -138,6 +138,8 @@ if __name__ == "__main__":
                        help="Time to move between columns in milliseconds (default: calculated from level)")
     parser.add_argument("--letter-linger-ms", type=int, default=0,
                        help="Time to linger at each column before moving on, in milliseconds (default: 0)")
+    parser.add_argument("--letter-drop-time-ms", type=int, default=150000,
+                       help="Time in milliseconds for letter to fall full screen height (default: 150000)")
     args = parser.parse_args()
     
     seed = 1

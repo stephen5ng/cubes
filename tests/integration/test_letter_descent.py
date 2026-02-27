@@ -78,7 +78,7 @@ async def test_letter_collides_with_rack_bottom():
     game.letter.next_column_ms = 1000
 
     game.letter.letter = "A"
-    game.letter.DROP_TIME_MS = 100
+    game.letter.drop_time_ms = 100
     game.letter.start(0)
     game.letter.letter = "A"
     
@@ -131,7 +131,7 @@ async def test_letter_position_resets_after_word_accepted():
     game, mqtt, queue = await create_test_game(descent_mode="discrete")
     game.start_time_s = 0
     
-    game.letter.DROP_TIME_MS = 100
+    game.letter.drop_time_ms = 100
     game.letter.start(0)
     game.letter.letter = "A"
     
@@ -139,7 +139,7 @@ async def test_letter_position_resets_after_word_accepted():
     from tests.fixtures.game_factory import run_until_condition
     
     # 1. Wait for collision/acceptance (letter becomes empty)
-    # DROP_TIME_MS is 100, so it should happen quickly
+    # drop_time_ms is 100, so it should happen quickly
     success = await run_until_condition(game, queue, lambda: game.letter.letter == "", max_frames=20)
     assert success, f"Letter failed to fall/accept within time. Pos: {game.letter.pos[1]}"
     assert game.letter.letter == "", "Letter should be cleared after acceptance"
