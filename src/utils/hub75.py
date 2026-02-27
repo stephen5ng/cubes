@@ -1,3 +1,4 @@
+import os
 import platform
 
 from PIL import Image
@@ -17,7 +18,7 @@ matrix: RGBMatrix = None
 offscreen_canvas: Union["RGBMatrixEmulator.emulation.canvas.Canvas","RGBMatrix.Canvas"] = None
 
 
-def create_rgbmatrix(display_type: str = "mini") -> Union["RGBMatrixEmulator.RGBMatrix", "rgbmatrix.RGBMatrix"]:
+def create_rgbmatrix(display_type: str = None) -> Union["RGBMatrixEmulator.RGBMatrix", "rgbmatrix.RGBMatrix"]:
     options = RGBMatrixOptions()
 
     options.brightness = 100
@@ -28,6 +29,9 @@ def create_rgbmatrix(display_type: str = "mini") -> Union["RGBMatrixEmulator.RGB
     options.pwm_bits = 11
     options.pwm_lsb_nanoseconds = 130
 
+    if display_type is None:
+        display_type = os.environ.get("LED_DISPLAY_TYPE", "large")
+
     if platform.system() == "Darwin":
         options.rows = 256
         options.cols = 192
@@ -35,10 +39,9 @@ def create_rgbmatrix(display_type: str = "mini") -> Union["RGBMatrixEmulator.RGB
         options.parallel = 1
         options.gpio_slowdown = 5
         options.multiplexing = 1
-        options.pixel_mapper_config = "U-mapper"
+        options.pixel_mapper_config = ""
         options.row_address_type = 0
     elif display_type == "large":
-        # Large display configuration (original)
         options.rows = 32
         options.cols = 64
         options.chain_length = 8
@@ -48,8 +51,7 @@ def create_rgbmatrix(display_type: str = "mini") -> Union["RGBMatrixEmulator.RGB
         options.panel_type = ""
         options.pixel_mapper_config = "U-mapper"
         options.row_address_type = 0
-    else:  # mini (default)
-        # Mini display configuration (6 panels: 3 chains of 2)
+    else:  # mini
         options.rows = 64
         options.cols = 128
         options.chain_length = 2
@@ -63,8 +65,11 @@ def create_rgbmatrix(display_type: str = "mini") -> Union["RGBMatrixEmulator.RGB
     return RGBMatrix(options=options)
 
 
-def init(display_type: str = "mini") -> None:
+def init(display_type: str = None) -> None:
     global matrix, offscreen_canvas
+
+    if display_type is None:
+        display_type = os.environ.get("LED_DISPLAY_TYPE", "large")
 
     matrix = create_rgbmatrix(display_type)
     offscreen_canvas = matrix.CreateFrameCanvas()
@@ -79,8 +84,9 @@ def init(display_type: str = "mini") -> None:
 last_image: bytes = b''
 update_count = 0
 total_time = 1
+display_type_cache: str = None
 def update(screen: pygame.Surface) -> None:
-    global last_image, total_time, update_count, offscreen_canvas
+    global last_image, total_time, update_count, offscreen_canvas, display_type_cache
 
     # Skip update if hub75 not initialized (e.g., in tests)
     if matrix is None:
@@ -96,6 +102,29 @@ def update(screen: pygame.Surface) -> None:
         # Transpose (rotate 90) is faster than rotate(270) and avoids reallocation
 # mypy: disable-error-code=attr-defined
         img = img.transpose(Image.ROTATE_270)
+
+        # For mini display, apply panel row/column swap in software
+        if display_type_cache is None:
+            display_type_cache = os.environ.get("LED_DISPLAY_TYPE", "large")
+
+        if display_type_cache == "mini":
+            # Swap top and bottom rows, then rotate 180 degrees
+            w, h = img.size
+            band_height = h // 3
+
+            # Split into 3 bands
+            top = img.crop((0, 0, w, band_height))
+            middle = img.crop((0, band_height, w, 2 * band_height))
+            bottom = img.crop((0, 2 * band_height, w, h))
+
+            # Swap top and bottom
+            img = Image.new(img.mode, (w, h))
+            img.paste(bottom, (0, 0))
+            img.paste(middle, (0, band_height))
+            img.paste(top, (0, 2 * band_height))
+
+            # Rotate 180 degrees
+            img = img.rotate(180, Image.NEAREST)
 
     start = get_ticks()
     offscreen_canvas.SetImage(img, 0, 0)

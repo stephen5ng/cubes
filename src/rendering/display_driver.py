@@ -1,3 +1,4 @@
+import os
 import platform
 
 from PIL import Image
@@ -28,23 +29,35 @@ def create_rgbmatrix() -> Union["RGBMatrixEmulator.RGBMatrix", "rgbmatrix.RGBMat
     options.led_rgb_sequence = "RGB"
     options.multiplexing = 1
     options.panel_type = ""
-    options.pixel_mapper_config = "U-mapper"
     options.pwm_bits = 11
     options.pwm_lsb_nanoseconds = 130
     options.row_address_type = 0
+
+    display_type = os.environ.get("LED_DISPLAY_TYPE", "large")
 
     if platform.system() == "Darwin":
         options.rows = 256
         options.cols = 192
         options.chain_length = 1
         options.parallel = 1
+        options.pixel_mapper_config = ""
+    elif display_type == "mini":
+        options.rows = 64
+        options.cols = 128
+        options.chain_length = 2
+        options.parallel = 3
+        options.pixel_mapper_config = ""
     else:
         options.rows = 32
         options.cols = 64
         options.chain_length = 8
         options.parallel = 3
+        options.pixel_mapper_config = "U-mapper"
 
-    #sudo examples-api-use/demo -D0 --led-no-hardware-pulse --led-cols=64 --led-rows=32 --led-slowdown-gpio=5 --led-multiplexing=1 --led-pixel-mapper=U-mapper --led-chain 8 --led-parallel=3 
+    # Display types (set via LED_DISPLAY_TYPE env var):
+    # - Large (default): 8x3 panels (512x96 total)
+    # - Mini: 2x3 panels (256x192 total)
+    #sudo examples-api-use/demo -D0 --led-no-hardware-pulse --led-cols=64 --led-rows=32 --led-slowdown-gpio=5 --led-multiplexing=1 --led-pixel-mapper=U-mapper --led-chain 8 --led-parallel 3 
 
     return RGBMatrix(options=options)
 
@@ -65,8 +78,10 @@ def init() -> None:
 last_image: bytes = b''
 update_count = 0
 total_time = 1
+display_type_cache: str = None
+
 def update(screen: pygame.Surface) -> None:
-    global last_image, total_time,update_count
+    global last_image, total_time, update_count, display_type_cache
     pixels = tobytes(screen, "RGB")
     if pixels == last_image:
         return
@@ -76,6 +91,29 @@ def update(screen: pygame.Surface) -> None:
     if platform.system() != "Darwin":
 # mypy: disable-error-code=attr-defined
         img = img.rotate(270, Image.NEAREST, expand=1)
+
+        # For mini display, apply panel row/column swap in software
+        if display_type_cache is None:
+            display_type_cache = os.environ.get("LED_DISPLAY_TYPE", "large")
+
+        if display_type_cache == "mini":
+            # Swap top and bottom rows, then rotate 180 degrees
+            w, h = img.size
+            band_height = h // 3
+
+            # Split into 3 bands
+            top = img.crop((0, 0, w, band_height))
+            middle = img.crop((0, band_height, w, 2 * band_height))
+            bottom = img.crop((0, 2 * band_height, w, h))
+
+            # Swap top and bottom
+            img = Image.new(img.mode, (w, h))
+            img.paste(bottom, (0, 0))
+            img.paste(middle, (0, band_height))
+            img.paste(top, (0, 2 * band_height))
+
+            # Rotate 180 degrees
+            img = img.rotate(180, Image.NEAREST)
 
     start = get_ticks()
     offscreen_canvas.SetImage(img)
