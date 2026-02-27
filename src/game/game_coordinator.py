@@ -127,6 +127,11 @@ class GameCoordinator:
                         level=level,
                         next_column_ms=next_column_ms,
                         letter_linger_ms=letter_linger_ms if letter_linger_ms is not None else 0)
+
+        # For game_on mode (stars=True), use faster 80s drop time
+        if stars:
+            self.game.letter_drop_time_ms = 80000
+
         self.input_controller = GameInputController(self.game)
         
         # Update coordinator with game instance
@@ -220,7 +225,16 @@ class GameCoordinator:
         self.game.level = params.level
         self.game.next_column_ms = params.next_column_ms
         self.game.letter_linger_ms = params.letter_linger_ms
-        self.game.letter_drop_time_ms = params.letter_drop_time_ms
+
+        # For game_on mode (stars=True), use faster 80s drop time
+        if params.stars:
+            self.game.letter_drop_time_ms = 80000
+        else:
+            self.game.letter_drop_time_ms = params.letter_drop_time_ms
+
+        # Update the letter's drop time as well
+        self.game.letter.drop_time_ms = self.game.letter_drop_time_ms
+
         self.game.show_level = params.level > 0 or params.stars
         self.game.level_fade_start_ms = -1  # Reset level fade trigger to show level again
         self.game.descent_duration_s = params.descent_duration_s
