@@ -382,6 +382,38 @@ def run_simple(python_args: list[str]) -> int:
     return proc.wait()
 
 
+def find_usb_audio_device() -> str:
+    """Find the USB audio device by name (not by number, which can change on reboot).
+
+    Returns:
+        ALSA device string like "hw:0,0" for the USB audio device, or "hw:0,0" as fallback
+    """
+    try:
+        result = subprocess.run(
+            ["aplay", "-l"],
+            capture_output=True,
+            text=True,
+            timeout=2,
+        )
+        for line in result.stdout.splitlines():
+            # Look for USB audio cards (they contain "USB" in the name)
+            # Format: "card 0: ICUSBAUDIO7D [ICUSBAUDIO7D], device 0: USB Audio [USB Audio]"
+            if "USB" in line and "card" in line:
+                import re
+                match = re.search(r"card (\d+):.*?, device (\d+):", line)
+                if match:
+                    card_num = match.group(1)
+                    device_num = match.group(2)
+                    print(f"Found USB audio device: hw:{card_num},{device_num}")
+                    return f"hw:{card_num},{device_num}"
+    except (FileNotFoundError, subprocess.TimeoutExpired, subprocess.SubprocessError) as e:
+        print(f"Warning: Could not detect USB audio device: {e}")
+
+    # Fallback to default device
+    print("Warning: Using default audio device hw:0,0")
+    return "hw:0,0"
+
+
 def setup_environment():
     """Set up the Python environment."""
     # Add to PYTHONPATH
@@ -409,7 +441,8 @@ def setup_environment():
     # macOS uses CoreAudio and doesn't support ALSA
     if platform.system() == "Linux":
         os.environ["SDL_AUDIODRIVER"] = "alsa"
-        os.environ["AUDIODEV"] = "hw:1,0"
+        # Find USB audio device by name (not number) since device numbers can change on reboot
+        os.environ["AUDIODEV"] = find_usb_audio_device()
 
 
 async def async_main(mode: str, level: int, extra_args: list[str]) -> int:
