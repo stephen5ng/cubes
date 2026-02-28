@@ -132,7 +132,7 @@ if __name__ == "__main__":
                        help="Minimum score required to treat exit code as Win (10) (default: 0)")
     parser.add_argument("--stars", action="store_true", default=False,
                        help="Show progress stars in the upper right corner")
-    parser.add_argument("--level", type=int, default=0,
+    parser.add_argument("--level", type=int, default=1,
                        help="Level number for display at start (default: 0)")
     parser.add_argument("--next-column-ms", type=int, default=None,
                        help="Time to move between columns in milliseconds (default: calculated from level)")

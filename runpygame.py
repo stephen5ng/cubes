@@ -55,34 +55,34 @@ def is_port_open(host: str, port: int) -> bool:
 def _calculate_level_params(level: int) -> tuple[int, int, int, int, int]:
     """Calculate min_win_score, descent_duration, next_column_ms, letter_linger_ms, and letter_drop_time_ms for a given level.
 
-    For levels 0-2, values are predefined. For levels 3+:
+    For levels 1-3, values are predefined. For levels 4+:
     - min_win_score increases by 50% each level
     - descent_duration decreases by 1/3 each level
-    - next_column_ms decreases by 0.75 each level (from level 2's 1000ms)
+    - next_column_ms decreases by 0.75 each level (from level 3's 500ms)
     - letter_linger_ms is 0 for all levels (configurable by you)
     - letter_drop_time_ms decreases by 0.8 each level (faster falling letters)
 
     Args:
-        level: The level number
+        level: The level number (1-based)
 
     Returns:
         Tuple of (min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms)
     """
     # Base level configurations (min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms)
     level_configs = {
-        0: (50, 45, None, 0, 90000),    # Practice: 90s drop time
-        1: (90, 90, 1000, 500, 15000),   # Medium: 15s drop time
-        2: (360, 70, 500, 0, 10000),     # Hard: 10s drop time
+        1: (50, 45, None, 0, 90000),    # Practice: 90s drop time
+        2: (90, 90, 1000, 500, 15000),   # Medium: 15s drop time
+        3: (360, 70, 500, 0, 10000),     # Hard: 10s drop time
     }
 
     if level in level_configs:
         return level_configs[level]
 
-    # For levels > 2, calculate from level 2
-    min_win_score, descent_duration, next_column_ms, _, letter_drop_time_ms = level_configs[2]
+    # For levels > 3, calculate from level 3
+    min_win_score, descent_duration, next_column_ms, _, letter_drop_time_ms = level_configs[3]
 
-    # Level 3 and above: progressive difficulty
-    for _ in range(3, level + 1):
+    # Level 4 and above: progressive difficulty
+    for _ in range(4, level + 1):
         min_win_score = int(min_win_score * 1.5)  # +50%
         descent_duration = int(descent_duration * 2 / 3)  # -1/3
         next_column_ms = int(next_column_ms * 0.75)  # -0.25
@@ -96,7 +96,7 @@ def build_game_params(mode: str, level: int) -> str:
 
     Args:
         mode: Game mode ("new", "game_on", or "classic")
-        level: Level number (0+)
+        level: Level number (1+)
 
     Returns:
         JSON string with game parameters
@@ -120,8 +120,8 @@ def build_game_params(mode: str, level: int) -> str:
             "letter_drop_time_ms": letter_drop_time_ms
         }
 
-        # Level 0 is one-round mode
-        if level == 0:
+        # Level 1 is one-round mode
+        if level == 1:
             params["one_round"] = True
 
         return json.dumps(params)
@@ -161,7 +161,7 @@ def build_python_args(mode: str, level: int, extra_args: list[str]) -> list[str]
         args.extend(["--letter-linger-ms", str(letter_linger_ms)])
         args.extend(["--letter-drop-time-ms", str(letter_drop_time_ms)])
 
-        if level == 0:
+        if level == 1:
             args.append("--one-round")
 
     return args
@@ -276,9 +276,9 @@ async def monitor_game_on(
                     print(f"Current Level: {level} (target: {min_win_score}, duration: {descent_duration}s)")
                     print("Press ESC to continue...")
                 elif exit_code == 11:
-                    # Loss - Reset to Level 0
-                    print("Sorry! Back to Level 0...")
-                    level = 0
+                    # Loss - Reset to Level 1
+                    print("Sorry! Back to Level 1...")
+                    level = 1
                     min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms = _calculate_level_params(level)
                     print(f"Reset to Level {level} (target: {min_win_score}, duration: {descent_duration}s)")
                     print("Press ESC to try again...")
@@ -535,8 +535,8 @@ def main():
     parser.add_argument(
         "--level",
         type=int,
-        default=0,
-        help="Level for game_on mode (0+, default: 0)",
+        default=1,
+        help="Level for game_on mode (1+, default: 1)",
     )
     parser.add_argument(
         "--replay",
