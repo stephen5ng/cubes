@@ -128,10 +128,6 @@ class GameCoordinator:
                         next_column_ms=next_column_ms,
                         letter_linger_ms=letter_linger_ms if letter_linger_ms is not None else 0)
 
-        # For game_on mode (stars=True), use faster 80s drop time
-        if stars:
-            self.game.letter_drop_time_ms = 80000
-
         self.input_controller = GameInputController(self.game)
         
         # Update coordinator with game instance
@@ -226,14 +222,9 @@ class GameCoordinator:
         self.game.next_column_ms = params.next_column_ms
         self.game.letter_linger_ms = params.letter_linger_ms
 
-        # For game_on mode (stars=True), use faster 80s drop time
-        if params.stars:
-            self.game.letter_drop_time_ms = 80000
-        else:
-            self.game.letter_drop_time_ms = params.letter_drop_time_ms
-
-        # Update the letter's drop time as well
-        self.game.letter.drop_time_ms = self.game.letter_drop_time_ms
+        # Update letter drop time from params (now level-configured)
+        if params.letter_drop_time_ms is not None:
+            self.game.letter.drop_time_ms = params.letter_drop_time_ms
 
         self.game.show_level = params.level > 0 or params.stars
         self.game.level_fade_start_ms = -1  # Reset level fade trigger to show level again
@@ -267,9 +258,8 @@ class GameCoordinator:
         self.current_setup_params['min_win_score'] = params.min_win_score
         self.current_setup_params['stars'] = params.stars
         self.current_setup_params['level'] = params.level
-        self.current_setup_params['letter_drop_time_ms'] = params.letter_drop_time_ms
 
         logger.info(f"Applied game params: one_round={params.one_round}, min_win_score={params.min_win_score}, "
-                   f"stars={params.stars}, level={params.level}, descent_mode={params.descent_mode}, letter_drop_time_ms={params.letter_drop_time_ms}")
+                   f"stars={params.stars}, level={params.level}, descent_mode={params.descent_mode}, letter_drop_time_ms={self.game.letter.drop_time_ms}")
 
         return needs_re_setup

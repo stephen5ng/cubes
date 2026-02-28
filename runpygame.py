@@ -52,41 +52,43 @@ def is_port_open(host: str, port: int) -> bool:
         return False
 
 
-def _calculate_level_params(level: int) -> tuple[int, int, int, int]:
-    """Calculate min_win_score, descent_duration, next_column_ms, and letter_linger_ms for a given level.
+def _calculate_level_params(level: int) -> tuple[int, int, int, int, int]:
+    """Calculate min_win_score, descent_duration, next_column_ms, letter_linger_ms, and letter_drop_time_ms for a given level.
 
     For levels 0-2, values are predefined. For levels 3+:
     - min_win_score increases by 50% each level
     - descent_duration decreases by 1/3 each level
     - next_column_ms decreases by 0.75 each level (from level 2's 1000ms)
     - letter_linger_ms is 0 for all levels (configurable by you)
+    - letter_drop_time_ms decreases by 0.8 each level (faster falling letters)
 
     Args:
         level: The level number
 
     Returns:
-        Tuple of (min_win_score, descent_duration, next_column_ms, letter_linger_ms)
+        Tuple of (min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms)
     """
-    # Base level configurations (min_win_score, descent_duration, next_column_ms, letter_linger_ms)
+    # Base level configurations (min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms)
     level_configs = {
-        0: (50, 45, None, 0),
-        1: (90, 90, 1000, 500),
-        2: (360, 70, 500, 0),
+        0: (50, 45, None, 0, 90000),    # Practice: 90s drop time
+        1: (90, 90, 1000, 500, 15000),   # Medium: 15s drop time
+        2: (360, 70, 500, 0, 10000),     # Hard: 10s drop time
     }
 
     if level in level_configs:
         return level_configs[level]
 
     # For levels > 2, calculate from level 2
-    min_win_score, descent_duration, next_column_ms, _ = level_configs[2]
+    min_win_score, descent_duration, next_column_ms, _, letter_drop_time_ms = level_configs[2]
 
     # Level 3 and above: progressive difficulty
     for _ in range(3, level + 1):
         min_win_score = int(min_win_score * 1.5)  # +50%
         descent_duration = int(descent_duration * 2 / 3)  # -1/3
         next_column_ms = int(next_column_ms * 0.75)  # -0.25
+        letter_drop_time_ms = int(letter_drop_time_ms * 0.8)  # -20% faster
 
-    return min_win_score, descent_duration, max(next_column_ms, 100), 0
+    return min_win_score, descent_duration, max(next_column_ms, 100), 0, max(letter_drop_time_ms, 5000)
 
 
 def build_game_params(mode: str, level: int) -> str:
@@ -105,7 +107,7 @@ def build_game_params(mode: str, level: int) -> str:
             "descent_duration": 120
         })
     elif mode == "game_on":
-        min_win_score, descent_duration, next_column_ms, letter_linger_ms = _calculate_level_params(level)
+        min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms = _calculate_level_params(level)
 
         params = {
             "descent_mode": "timed",
@@ -114,7 +116,8 @@ def build_game_params(mode: str, level: int) -> str:
             "stars": True,
             "level": level,
             "next_column_ms": next_column_ms,
-            "letter_linger_ms": letter_linger_ms
+            "letter_linger_ms": letter_linger_ms,
+            "letter_drop_time_ms": letter_drop_time_ms
         }
 
         # Level 0 is one-round mode
@@ -145,7 +148,7 @@ def build_python_args(mode: str, level: int, extra_args: list[str]) -> list[str]
     elif mode == "classic":
         args.append("--continuous")
     elif mode == "game_on":
-        min_win_score, descent_duration, next_column_ms, letter_linger_ms = _calculate_level_params(level)
+        min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms = _calculate_level_params(level)
         args.extend([
             "--descent-mode", "timed",
             "--stars",
@@ -156,6 +159,7 @@ def build_python_args(mode: str, level: int, extra_args: list[str]) -> list[str]
         if next_column_ms is not None:
             args.extend(["--next-column-ms", str(next_column_ms)])
         args.extend(["--letter-linger-ms", str(letter_linger_ms)])
+        args.extend(["--letter-drop-time-ms", str(letter_drop_time_ms)])
 
         if level == 0:
             args.append("--one-round")
@@ -268,14 +272,14 @@ async def monitor_game_on(
                     # Win - Advance Level
                     print("Win! Advancing level...")
                     level += 1
-                    min_win_score, descent_duration, next_column_ms, letter_linger_ms = _calculate_level_params(level)
+                    min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms = _calculate_level_params(level)
                     print(f"Current Level: {level} (target: {min_win_score}, duration: {descent_duration}s)")
                     print("Press ESC to continue...")
                 elif exit_code == 11:
                     # Loss - Reset to Level 0
                     print("Sorry! Back to Level 0...")
                     level = 0
-                    min_win_score, descent_duration, next_column_ms, letter_linger_ms = _calculate_level_params(level)
+                    min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms = _calculate_level_params(level)
                     print(f"Reset to Level {level} (target: {min_win_score}, duration: {descent_duration}s)")
                     print("Press ESC to try again...")
                 elif exit_code == 0:
@@ -314,9 +318,9 @@ async def run_game_on(level: int, python_args: list[str]) -> int:
     Returns:
         Exit code from the game
     """
-    min_win_score, descent_duration, next_column_ms, letter_linger_ms = _calculate_level_params(level)
+    min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms = _calculate_level_params(level)
     print(f"Starting game_on mode at level: {level}")
-    print(f"Level parameters: min_win_score={min_win_score}, descent_duration={descent_duration}s")
+    print(f"Level parameters: min_win_score={min_win_score}, descent_duration={descent_duration}s, letter_drop_time={letter_drop_time_ms}ms")
     print(f"Running game with arguments: {' '.join(python_args)}")
 
     # Start the Python game process
@@ -540,6 +544,12 @@ def main():
         help="Replay a game from a log file (skips MQTT broker setup)",
     )
     parser.add_argument(
+        "--letter-drop-time-ms",
+        type=int,
+        default=None,
+        help="Time in milliseconds for letter to fall full screen height (default: 150000)",
+    )
+    parser.add_argument(
         "--descent-mode",
         type=str,
         default=None,
@@ -568,6 +578,13 @@ def main():
         replay_extra_args.extend(["--descent-mode", args.descent_mode])
     if args.descent_duration is not None:
         replay_extra_args.extend(["--descent-duration", str(args.descent_duration)])
+    if args.letter_drop_time_ms is not None:
+        replay_extra_args.extend(["--letter-drop-time-ms", str(args.letter_drop_time_ms)])
+
+    # Also add letter_drop_time_ms to main game args
+    main_extra_args = args.extra_args.copy()
+    if args.letter_drop_time_ms is not None:
+        main_extra_args.extend(["--letter-drop-time-ms", str(args.letter_drop_time_ms)])
 
     # Handle replay mode (with MQTT broker setup)
     if args.replay:
@@ -575,7 +592,7 @@ def main():
         sys.exit(exit_code)
 
     # Run the async main with MQTT broker management
-    exit_code = asyncio.run(async_main(args.mode, args.level, args.extra_args))
+    exit_code = asyncio.run(async_main(args.mode, args.level, main_extra_args))
     sys.exit(exit_code)
 
 
