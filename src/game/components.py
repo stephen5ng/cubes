@@ -12,12 +12,15 @@ from config.game_config import (
     SCREEN_HEIGHT,
     FONT,
     SCORE_COLOR,
-    TICKS_PER_SECOND,
     SHIELD_ACCELERATION_RATE,
     SHIELD_INITIAL_SPEED_MULTIPLIER,
     STAR_COLOR,
     EMPTY_STAR_COLOR
 )
+
+# Shield animation was calibrated at 45fps; use a fixed rate so animation
+# speed is independent of the game tick rate (TICKS_PER_SECOND).
+_SHIELD_ANIMATION_TICKS_PER_SECOND = 45
 from config.player_config import PlayerConfig
 
 
@@ -102,7 +105,7 @@ class Shield:
     def update(self, window: pygame.Surface, now_ms: int) -> None:
         """Update and render the shield animation."""
         if self.active:
-            update_count = (now_ms - self.start_time_ms) / (1000.0/TICKS_PER_SECOND)
+            update_count = (now_ms - self.start_time_ms) / (1000.0 / _SHIELD_ANIMATION_TICKS_PER_SECOND)
 
             # Calculate position by summing up all previous speed contributions
             # This is a geometric series: initial_speed * (1 - (1.05)^update_count) / (1 - 1.05)

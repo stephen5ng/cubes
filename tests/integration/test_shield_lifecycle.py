@@ -16,10 +16,10 @@ from game.components import Shield
 from game.game_state import Game
 from config import game_config
 from config.game_config import (
-    TICKS_PER_SECOND,
     SHIELD_ACCELERATION_RATE,
     SHIELD_INITIAL_SPEED_MULTIPLIER
 )
+from game.components import _SHIELD_ANIMATION_TICKS_PER_SECOND
 from tests.fixtures.game_factory import (
     create_test_game,
     run_until_condition,
@@ -58,7 +58,7 @@ def calculate_expected_displacement(score: int, now_ms: int) -> float:
     Where:
         initial_speed = -log(1+score) * SHIELD_INITIAL_SPEED_MULTIPLIER
         acceleration_rate = SHIELD_ACCELERATION_RATE
-        update_count = (now_ms) / (1000.0 / TICKS_PER_SECOND)
+        update_count = (now_ms) / (1000.0 / _SHIELD_ANIMATION_TICKS_PER_SECOND)
 
     Args:
         score: Shield score value
@@ -69,7 +69,7 @@ def calculate_expected_displacement(score: int, now_ms: int) -> float:
     """
     initial_speed = -math.log(1 + score) * SHIELD_INITIAL_SPEED_MULTIPLIER
     # Convert now_ms to update_count using game's timing formula
-    update_count = now_ms / (1000.0 / TICKS_PER_SECOND)
+    update_count = now_ms / (1000.0 / _SHIELD_ANIMATION_TICKS_PER_SECOND)
     return initial_speed * (1 - (SHIELD_ACCELERATION_RATE ** update_count)) / (1 - SHIELD_ACCELERATION_RATE)
 
 

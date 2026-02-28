@@ -9,7 +9,7 @@ from pygame import Color
 SCREEN_WIDTH = 192
 SCREEN_HEIGHT = 256
 SCALING_FACTOR = 3
-TICKS_PER_SECOND = 45
+TICKS_PER_SECOND = 30
 
 # Font settings
 FONT = "Courier"
