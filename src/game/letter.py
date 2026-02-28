@@ -23,7 +23,7 @@ class GuessType(Enum):
 class Letter:
     """Handles falling letter animation with column movement and physics."""
 
-    DROP_TIME_MS = 150000  # 10x slower for level 0 testing
+    DROP_TIME_MS = 150000  # 10x slower for level 1 practice mode testing
     ANTIALIAS = 1
     ROUNDS = 15
     Y_INCREMENT = SCREEN_HEIGHT // ROUNDS
@@ -31,7 +31,7 @@ class Letter:
 
     def __init__(
         self, font: pygame.freetype.Font, initial_y: int, rack_metrics: RackMetrics, output_logger, letter_beeps: list,
-        descent_strategy: Optional[DescentStrategy] = None, level: int = 0, next_column_ms: int = None, letter_linger_ms: int = 0,
+        descent_strategy: Optional[DescentStrategy] = None, level: int = 1, next_column_ms: int = None, letter_linger_ms: int = 0,
         drop_time_ms: int = None) -> None:
         self.level = level
         self.next_column_ms = next_column_ms
@@ -92,7 +92,7 @@ class Letter:
         self.start_fall_y = 0
         self.current_fall_start_y = 0
         self.column_move_direction = 1
-        # Use default 1000ms if next_column_ms is None (level 0, which uses "!!!!!!")
+        # Use default 1000ms if next_column_ms is None (level 1 practice mode, which uses "!!!!!!")
         sweep_ms = self.next_column_ms if self.next_column_ms is not None else 1000
         self.next_column_move_time_ms = now_ms + sweep_ms + self.letter_linger_ms
         self.start_fall_time_ms = now_ms
@@ -169,7 +169,7 @@ class Letter:
                     self.column_move_direction *= -1
                     self.letter_ix = self.letter_ix + self.column_move_direction*2
 
-                # Use default 1000ms if next_column_ms is None (level 0, which uses "!!!!!!")
+                # Use default 1000ms if next_column_ms is None (level 1 practice mode, which uses "!!!!!!")
                 sweep_ms = self.next_column_ms if self.next_column_ms is not None else 1000
                 self.next_column_move_time_ms = now_ms + sweep_ms + self.letter_linger_ms
                 pygame.mixer.Sound.play(self.bounce_sound)
@@ -187,7 +187,7 @@ class Letter:
             self.fraction_complete_eased = 1.0
             return
 
-        # Use default 1000ms if next_column_ms is None (level 0, which uses "!!!!!!")
+        # Use default 1000ms if next_column_ms is None (level 1 practice mode, which uses "!!!!!!")
         sweep_ms = self.next_column_ms if self.next_column_ms is not None else 1000
         remaining_ms = min(max(0, self.next_column_move_time_ms - now_ms), sweep_ms)
         self.fraction_complete = 1.0 - remaining_ms/sweep_ms

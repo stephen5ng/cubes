@@ -56,7 +56,7 @@ class Game:
                  one_round: bool,
                  min_win_score: int,
                  stars: bool,
-                 level: int = 0,
+                 level: int = 1,
                  next_column_ms: int = None,
                  letter_linger_ms: int = 0) -> None:
         self._app = the_app

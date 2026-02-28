@@ -20,7 +20,7 @@ class MQTTCoordinator:
         self.publish_queue = publish_queue
         self.game_coordinator = game_coordinator
         # Track level progression: last level and whether it was a win
-        self._last_level = 0
+        self._last_level = 1
         self._last_exit_code = None  # 10=win (advance), 11=loss (reset), None=first game
 
     async def handle_message(self, topic_str: str, payload, now_ms: int) -> None:
@@ -62,8 +62,8 @@ class MQTTCoordinator:
                     current_level = self._last_level + 1
                     logger.info(f"Previous win (level {self._last_level}), advancing to level {current_level}")
                 else:  # Loss or first game
-                    current_level = 0
-                    logger.info(f"Resetting to level 0 (previous exit_code: {self._last_exit_code})")
+                    current_level = 1
+                    logger.info(f"Resetting to level 1 (previous exit_code: {self._last_exit_code})")
 
             # Save current scores before stopping (for level progression)
             saved_scores = [score.score for score in self.game.scores] if self.game.scores else []
@@ -82,19 +82,19 @@ class MQTTCoordinator:
             self.game.stars_display.reset()
 
             # Set baseline score BEFORE start_cubes so stars are calculated correctly
-            # For level 0: baseline is 0 (fresh start)
-            # For level > 0: baseline is the saved score (carry over)
-            if current_level > 0 and saved_scores:
+            # For level 1: baseline is 0 (fresh start)
+            # For level > 1: baseline is the saved score (carry over)
+            if current_level > 1 and saved_scores:
                 self.game.stars_display.set_baseline_score(saved_scores[0])
                 logger.info(f"Set baseline for level {current_level}: {saved_scores[0]}")
             else:
-                # Level 0: baseline stays at 0 (set by reset())
+                # Level 1: baseline stays at 0 (set by reset())
                 logger.info(f"Level {current_level}: baseline is 0")
 
             await self.game.start_cubes(now_ms)
 
-            # Restore scores if level > 0 (preserve score across levels)
-            if current_level > 0 and saved_scores:
+            # Restore scores if level > 1 (preserve score across levels)
+            if current_level > 1 and saved_scores:
                 for i, saved_score in enumerate(saved_scores):
                     if i < len(self.game.scores):
                         self.game.scores[i].score = saved_score

@@ -63,7 +63,7 @@ class GameCoordinator:
                          replay_file: str, descent_mode: str, descent_duration_s: int,
                          record: bool, one_round: bool, min_win_score: int,
                          stars: bool,
-                         level: int = 0, next_column_ms: int = None, letter_linger_ms: int = 0) -> tuple:
+                         level: int = 1, next_column_ms: int = None, letter_linger_ms: int = 0) -> tuple:
         """Set up all game components.
 
         Returns:

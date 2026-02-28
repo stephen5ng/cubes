@@ -16,8 +16,8 @@ class GameParams:
     one_round: bool = False
     min_win_score: int = 0
     stars: bool = False
-    level: int = 0
-    next_column_ms: Optional[int] = None  # Time to move between columns (ms), None for level 0
+    level: int = 1
+    next_column_ms: Optional[int] = None  # Time to move between columns (ms), None for level 1 practice mode
     letter_linger_ms: int = 0  # Time to linger at each column before moving (ms)
     letter_drop_time_ms: int = 150000  # Time for letter to fall full screen height (ms)
 
@@ -45,7 +45,7 @@ class GameParams:
             one_round=data.get('one_round', False),
             min_win_score=data.get('min_win_score', 0),
             stars=data.get('stars', False),
-            level=data.get('level', 0),
+            level=data.get('level', 1),
             next_column_ms=data.get('next_column_ms'),
             letter_linger_ms=data.get('letter_linger_ms', 0),
             letter_drop_time_ms=data.get('letter_drop_time_ms', 150000)
