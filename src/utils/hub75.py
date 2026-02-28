@@ -26,7 +26,7 @@ def create_rgbmatrix(display_type: str = None) -> Union["RGBMatrixEmulator.RGBMa
     options.drop_privileges = False
     options.hardware_mapping = "regular"
     options.led_rgb_sequence = "RGB"
-    options.pwm_bits = 11
+    options.pwm_bits = 7
     options.pwm_lsb_nanoseconds = 130
 
     if display_type is None:
