@@ -412,7 +412,7 @@ class Game:
         """Update the remaining/unused guesses display."""
         self.guesses_manager.update_remaining_guesses(previous_guesses, now_ms)
 
-    async def update(self, window: pygame.Surface, now_ms: int) -> None:
+    async def update(self, window: pygame.Surface, now_ms: int) -> list:
         """Update all game components and handle collisions."""
         incidents = []
         window.set_alpha(255)
@@ -605,8 +605,13 @@ class Game:
 
                 self.scores[shield.player].update_score(shield.score)
                 num_stars = self.stars_display.draw(self.scores[0].score, now_ms)
-                # Stars are just visual feedback during the game; winning status is evaluated at game end.
-                
+
+                # End game immediately if player earns 3 stars
+                if self.min_win_score > 0 and num_stars >= 3:
+                    logger.info(f"Player earned {num_stars} stars! Ending game with win.")
+                    await self.stop(now_ms, exit_code=10)
+                    return incidents
+
                 self._app.add_guess(shield.letters, shield.player)
                 self.sound_manager.play_crash()
 
