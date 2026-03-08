@@ -58,11 +58,13 @@ class Game:
                  stars: bool,
                  level: int = 1,
                  next_column_ms: int = None,
-                 letter_linger_ms: int = 0) -> None:
+                 letter_linger_ms: int = 0,
+                 game_coordinator=None) -> None:
         self._app = the_app
         self.game_logger = game_logger
         self.output_logger = output_logger
         self.descent_duration_s = descent_duration_s
+        self.game_coordinator = game_coordinator  # Optional Game On MQTT broker coordinator
         self.recorder = recorder if recorder else NullRecorder()
         self.replay_mode = replay_mode
         self.one_round = one_round
@@ -293,6 +295,11 @@ class Game:
         self.start_time_s = now_s
         await self._app.start(now_ms)
         self.sound_manager.play_start()
+
+        # Publish to Game On broker
+        if self.game_coordinator:
+            await self.game_coordinator.publish_to_game_on("house")
+
         print("start done")
         return 0
 
@@ -335,6 +342,14 @@ class Game:
         # Otherwise, keep the original exit_code (for games without stars enabled)
 
         self.exit_code = exit_code
+
+        # Publish to Game On broker
+        if self.game_coordinator:
+            if exit_code == 10:
+                await self.game_coordinator.publish_to_game_on("success")
+            else:
+                await self.game_coordinator.publish_to_game_on("failure")
+
         if exit_code != 10:
             self.sound_manager.play_sad_trombone()
         logger.info(f"GAME OVER (Exit Code: {exit_code})")

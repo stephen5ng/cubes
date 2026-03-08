@@ -23,9 +23,44 @@ from utils import hub75
 from game_logging.game_loggers import OutputLogger, GameLogger, PublishLogger
 
 MQTT_SERVER = game_config.MQTT_SERVER
+GAME_ON_MQTT_SERVER = game_config.GAME_ON_MQTT_SERVER
+GAME_ON_MQTT_PORT = game_config.GAME_ON_MQTT_PORT
 my_open = open
 
 logger = logging.getLogger(__name__)
+
+
+async def try_connect_game_on_broker() -> aiomqtt.Client | None:
+    """Try to connect to the optional Game On MQTT broker.
+
+    Returns:
+        Client if connection successful, None otherwise.
+    """
+    if not GAME_ON_MQTT_SERVER:
+        logger.info("Game On MQTT broker not configured")
+        return None
+
+    try:
+        logger.info(f"Attempting to connect to Game On broker at {GAME_ON_MQTT_SERVER}:{GAME_ON_MQTT_PORT}...")
+
+        # Try to connect with a timeout
+        client = aiomqtt.Client(
+            hostname=GAME_ON_MQTT_SERVER,
+            port=GAME_ON_MQTT_PORT,
+            timeout=5  # 5 second connection timeout
+        )
+
+        await client.__aenter__()
+        logger.info(f"Successfully connected to Game On broker at {GAME_ON_MQTT_SERVER}:{GAME_ON_MQTT_PORT}")
+        return client
+
+    except (OSError, asyncio.TimeoutError, aiomqtt.exceptions.MqttError) as e:
+        logger.warning(f"Failed to connect to Game On broker at {GAME_ON_MQTT_SERVER}:{GAME_ON_MQTT_PORT}: {e}")
+        logger.info("Continuing without Game On broker connection")
+        return None
+    except Exception as e:
+        logger.warning(f"Unexpected error connecting to Game On broker: {e}")
+        return None
 
 async def publish_tasks_in_queue(publish_client: aiomqtt.Client, queue: asyncio.Queue, publish_logger: PublishLogger, last_messages: dict[str, str] | None = None) -> None:
     if last_messages is None:
@@ -69,6 +104,11 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
             # Log the ABC countdown delay used in cubes_to_game.py
             game_logger.log_delay_ms(cubes_to_game.ABC_COUNTDOWN_DELAY_MS)
 
+        # Try to connect to optional Game On broker
+        game_on_client = await try_connect_game_on_broker()
+        if game_on_client:
+            block_words.set_game_on_client(game_on_client)
+
         async with aiomqtt.Client(MQTT_SERVER) as subscribe_client:
             async with aiomqtt.Client(MQTT_SERVER) as publish_client:
                 publish_queue: asyncio.Queue = asyncio.Queue()
@@ -105,6 +145,15 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
                     await publish_task
                 except asyncio.CancelledError:
                     pass
+
+                # Clean up Game On broker connection
+                if game_on_client:
+                    try:
+                        await game_on_client.__aexit__(None, None, None)
+                        logger.info("Disconnected from Game On broker")
+                    except Exception as e:
+                        logger.warning(f"Error disconnecting from Game On broker: {e}")
+
                 return exit_code
     finally:
         publish_logger.stop_logging()

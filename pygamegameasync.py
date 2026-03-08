@@ -144,7 +144,13 @@ class BlockWordsPygame:
         
         self.input_manager = InputManager(replay_file)
         self.game_coordinator = GameCoordinator()
+        self.game_on_client = None  # Optional Game On MQTT broker client
         self.keyboard_handler = None  # Initialized in setup_game
+
+    def set_game_on_client(self, client):
+        """Set the optional Game On MQTT broker client."""
+        self.game_on_client = client
+        self.game_coordinator.set_game_on_client(client)
 
     async def _handle_pygame_events(self, pygame_events, keyboard_input, input_devices, now_ms, events_to_log):
         for pygame_event in pygame_events:

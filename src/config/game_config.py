@@ -72,6 +72,12 @@ SCRABBLE_LETTER_SCORES = {
 MQTT_SERVER = os.environ.get("MQTT_SERVER", "localhost")
 MQTT_CLIENT_ID = 'game-server'
 MQTT_CLIENT_PORT = 1883
+
+# Optional Game On MQTT broker (for remote control/monitoring)
+# If set, the game will attempt to connect to this broker at startup
+# Set to empty string to disable: GAME_ON_MQTT_SERVER=""
+GAME_ON_MQTT_SERVER = os.environ.get("GAME_ON_MQTT_SERVER", "10.0.3.56")
+GAME_ON_MQTT_PORT = int(os.environ.get("GAME_ON_MQTT_PORT", "1883"))
 # ============================================================================
 # PATH SETTINGS
 # ============================================================================

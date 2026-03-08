@@ -38,6 +38,20 @@ class GameCoordinator:
         self.keyboard_handler = None
         self.pending_game_params: Optional[GameParams] = None
         self.current_setup_params = {}  # Store current params for reconfiguration
+        self.game_on_client = None  # Optional Game On MQTT broker client
+
+    def set_game_on_client(self, client):
+        """Set the optional Game On MQTT broker client."""
+        self.game_on_client = client
+
+    async def publish_to_game_on(self, message: str) -> None:
+        """Publish a message to the Game On broker if connected."""
+        if self.game_on_client:
+            try:
+                await self.game_on_client.publish("Rooms/12/DoorAndCrownMoldingLEDs", payload=message)
+                logger.info(f"Published to Game On broker: {message}")
+            except Exception as e:
+                logger.warning(f"Failed to publish to Game On broker: {e}")
 
     def get_mock_mqtt_client(self, input_manager, replay_file, descent_mode, descent_duration_s):
         """Get the mock MQTT client for replay mode."""
@@ -128,7 +142,8 @@ class GameCoordinator:
                         stars=stars,
                         level=level,
                         next_column_ms=next_column_ms,
-                        letter_linger_ms=letter_linger_ms if letter_linger_ms is not None else 0)
+                        letter_linger_ms=letter_linger_ms if letter_linger_ms is not None else 0,
+                        game_coordinator=self)
 
         self.input_controller = GameInputController(self.game)
         
