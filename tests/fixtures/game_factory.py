@@ -111,7 +111,7 @@ def ensure_pygame_initialized(visual: bool) -> None:
         if not pygame.font.get_init():
             pygame.font.init()
 
-async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool] = None, player_count: int = 1, descent_duration_s: int = game_config.DESCENT_DURATION_S, min_win_score: int = 0, stars: bool = False) -> Tuple[Game, FakeMqttClient, asyncio.Queue]:
+async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool] = None, player_count: int = 1, descent_duration_s: int = game_config.DESCENT_DURATION_S, recovery_duration_multiplier: float = 3.0, min_win_score: int = 0, stars: bool = False) -> Tuple[Game, FakeMqttClient, asyncio.Queue]:
     """Factory for common test game setup."""
     if visual is None:
         visual = is_visual_mode()
@@ -160,7 +160,7 @@ async def create_test_game(descent_mode: str = "discrete", visual: Optional[bool
     event_descent_amount = Letter.Y_INCREMENT if descent_mode == "discrete" else 0
     descent_strategy = DescentStrategy(game_duration_ms=duration_ms, event_descent_amount=event_descent_amount)
 
-    recovery_duration_ms = descent_duration_s * 3 * 1000
+    recovery_duration_ms = descent_duration_s * recovery_duration_multiplier * 1000
     recovery_strategy = DescentStrategy(game_duration_ms=recovery_duration_ms, event_descent_amount=0)
 
     game = Game(
@@ -233,7 +233,8 @@ def create_shield(
 async def create_game_with_started_players(
     players: list[int],
     descent_mode: str = "discrete",
-    descent_duration_s: int = game_config.DESCENT_DURATION_S
+    descent_duration_s: int = game_config.DESCENT_DURATION_S,
+    recovery_duration_multiplier: float = 3.0
 ) -> Tuple[Game, FakeMqttClient, asyncio.Queue]:
     """Create game with specified players already started.
 
@@ -244,6 +245,7 @@ async def create_game_with_started_players(
         players: List of player IDs to mark as started (e.g., [0, 1])
         descent_mode: Game descent mode ("discrete" or "timed")
         descent_duration_s: Duration for descent speed calculation
+        recovery_duration_multiplier: Recovery line descends this many times slower than letters
 
     Returns:
         Tuple of (game, mqtt_client, publish_queue)
@@ -256,7 +258,8 @@ async def create_game_with_started_players(
     game, mqtt, queue = await create_test_game(
         descent_mode=descent_mode,
         player_count=len(players),
-        descent_duration_s=descent_duration_s
+        descent_duration_s=descent_duration_s,
+        recovery_duration_multiplier=recovery_duration_multiplier
     )
 
     for player in players:

@@ -81,6 +81,7 @@ async def test_integration():
             replay_file="",
             descent_mode="discrete",
             descent_duration_s=120,
+            recovery_duration_multiplier=3.0,
             record=False,
             continuous=False,
             one_round=False,

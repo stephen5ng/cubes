@@ -61,6 +61,7 @@ class GameCoordinator:
                          publish_queue: asyncio.Queue, game_logger, output_logger,
                          input_manager, letter_font,
                          replay_file: str, descent_mode: str, descent_duration_s: int,
+                         recovery_duration_multiplier: float,
                          record: bool, one_round: bool, min_win_score: int,
                          stars: bool,
                          level: int = 1, next_column_ms: int = None, letter_linger_ms: int = 0) -> tuple:
@@ -80,6 +81,7 @@ class GameCoordinator:
             'letter_font': letter_font,
             'replay_file': replay_file,
             'record': record,
+            'recovery_duration_multiplier': recovery_duration_multiplier,
         }
 
         # Initialize MQTT coordinator with GameCoordinator reference
@@ -112,7 +114,7 @@ class GameCoordinator:
         event_descent_amount = Letter.Y_INCREMENT if descent_mode == "discrete" else 0
         descent_strategy = DescentStrategy(game_duration_ms=duration_ms, event_descent_amount=event_descent_amount)
 
-        recovery_duration_ms = descent_duration_s * 3 * 1000
+        recovery_duration_ms = descent_duration_s * recovery_duration_multiplier * 1000
         recovery_strategy = DescentStrategy(game_duration_ms=recovery_duration_ms, event_descent_amount=0)
 
         self.game = Game(the_app, letter_font, game_logger, output_logger, sound_manager,
@@ -210,6 +212,7 @@ class GameCoordinator:
         self.pending_game_params = None  # Clear after applying
 
         # Check if we need to recreate strategies (descent_mode or duration changed)
+        # Note: recovery_duration_multiplier no longer requires full re-setup
         needs_re_setup = (
             params.descent_mode != self.current_setup_params.get('descent_mode', 'discrete') or
             params.descent_duration_s != self.current_setup_params.get('descent_duration_s', 120)
@@ -225,6 +228,19 @@ class GameCoordinator:
         # Update letter drop time from params (now level-configured)
         if params.letter_drop_time_ms is not None:
             self.game.letter.drop_time_ms = params.letter_drop_time_ms
+
+        # Update recovery strategy if multiplier changed
+        if params.recovery_duration_multiplier != self.current_setup_params.get('recovery_duration_multiplier', 3.0):
+            from game.descent_strategy import DescentStrategy
+            recovery_duration_ms = params.descent_duration_s * params.recovery_duration_multiplier * 1000
+            new_recovery_strategy = DescentStrategy(game_duration_ms=recovery_duration_ms, event_descent_amount=0)
+            # Update both the strategy and the tracker
+            self.game.recovery_tracker.descent_strategy = new_recovery_strategy
+            # Reset to apply new strategy
+            self.game.recovery_tracker.reset(0)
+            # Update current params to prevent unnecessary re-updates
+            self.current_setup_params['recovery_duration_multiplier'] = params.recovery_duration_multiplier
+            logger.info(f"Updated recovery_duration_multiplier to {params.recovery_duration_multiplier} (duration_ms={recovery_duration_ms})")
 
         self.game.show_level = params.level > 0 or params.stars
         self.game.level_fade_start_ms = -1  # Reset level fade trigger to show level again

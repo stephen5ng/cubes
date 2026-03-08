@@ -21,6 +21,7 @@ def test_auto_start_assigns_player_number():
             replay_file="",
             descent_mode="discrete",
             descent_duration_s=120,
+            recovery_duration_multiplier=3.0,
             record=False,
             one_round=False,
             min_win_score=0,

@@ -52,8 +52,8 @@ def is_port_open(host: str, port: int) -> bool:
         return False
 
 
-def _calculate_level_params(level: int) -> tuple[int, int, int, int, int]:
-    """Calculate min_win_score, descent_duration, next_column_ms, letter_linger_ms, and letter_drop_time_ms for a given level.
+def _calculate_level_params(level: int) -> tuple[int, int, int, int, int, float]:
+    """Calculate min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms, and recovery_duration_multiplier for a given level.
 
     For levels 1-3, values are predefined. For levels 4+:
     - min_win_score increases by 50% each level
@@ -61,25 +61,26 @@ def _calculate_level_params(level: int) -> tuple[int, int, int, int, int]:
     - next_column_ms decreases by 0.75 each level (from level 3's 500ms)
     - letter_linger_ms is 0 for all levels (configurable by you)
     - letter_drop_time_ms decreases by 0.8 each level (faster falling letters)
+    - recovery_duration_multiplier stays constant at 3.0 (configurable by you)
 
     Args:
         level: The level number (1-based)
 
     Returns:
-        Tuple of (min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms)
+        Tuple of (min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms, recovery_duration_multiplier)
     """
-    # Base level configurations (min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms)
+    # Base level configurations (min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms, recovery_duration_multiplier)
     level_configs = {
-        1: (50, 45, None, 0, 90000),    # Practice: 90s drop time
-        2: (90, 90, 1000, 500, 15000),   # Medium: 15s drop time
-        3: (360, 70, 500, 0, 10000),     # Hard: 10s drop time
+        1: (50, 45, None, 0, 90000, 3.0),     # Practice: 90s drop time
+        2: (90, 90, 1000, 500, 15000, 10.0),   # Medium: 15s drop time
+        3: (360, 70, 500, 0, 10000, 3.0),     # Hard: 10s drop time
     }
 
     if level in level_configs:
         return level_configs[level]
 
     # For levels > 3, calculate from level 3
-    min_win_score, descent_duration, next_column_ms, _, letter_drop_time_ms = level_configs[3]
+    min_win_score, descent_duration, next_column_ms, _, letter_drop_time_ms, recovery_duration_multiplier = level_configs[3]
 
     # Level 4 and above: progressive difficulty
     for _ in range(4, level + 1):
@@ -87,8 +88,9 @@ def _calculate_level_params(level: int) -> tuple[int, int, int, int, int]:
         descent_duration = int(descent_duration * 2 / 3)  # -1/3
         next_column_ms = int(next_column_ms * 0.75)  # -0.25
         letter_drop_time_ms = int(letter_drop_time_ms * 0.8)  # -20% faster
+        # recovery_duration_multiplier stays constant
 
-    return min_win_score, descent_duration, max(next_column_ms, 100), 0, max(letter_drop_time_ms, 5000)
+    return min_win_score, descent_duration, max(next_column_ms, 100), 0, max(letter_drop_time_ms, 5000), recovery_duration_multiplier
 
 
 def build_game_params(mode: str, level: int) -> str:
@@ -107,7 +109,7 @@ def build_game_params(mode: str, level: int) -> str:
             "descent_duration": 120
         })
     elif mode == "game_on":
-        min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms = _calculate_level_params(level)
+        min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms, recovery_duration_multiplier = _calculate_level_params(level)
 
         params = {
             "descent_mode": "timed",
@@ -117,7 +119,8 @@ def build_game_params(mode: str, level: int) -> str:
             "level": level,
             "next_column_ms": next_column_ms,
             "letter_linger_ms": letter_linger_ms,
-            "letter_drop_time_ms": letter_drop_time_ms
+            "letter_drop_time_ms": letter_drop_time_ms,
+            "recovery_duration_multiplier": recovery_duration_multiplier
         }
 
         # Level 1 is one-round mode
@@ -148,10 +151,11 @@ def build_python_args(mode: str, level: int, extra_args: list[str]) -> list[str]
     elif mode == "classic":
         args.append("--continuous")
     elif mode == "game_on":
-        min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms = _calculate_level_params(level)
+        min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms, recovery_duration_multiplier = _calculate_level_params(level)
         args.extend([
             "--descent-mode", "timed",
             "--stars",
+            "--recovery-duration-multiplier", str(recovery_duration_multiplier),
             "--level", str(level),
             "--min-win-score", str(min_win_score),
             "--descent-duration", str(descent_duration),
@@ -272,14 +276,14 @@ async def monitor_game_on(
                     # Win - Advance Level
                     print("Win! Advancing level...")
                     level += 1
-                    min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms = _calculate_level_params(level)
+                    min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms, recovery_duration_multiplier = _calculate_level_params(level)
                     print(f"Current Level: {level} (target: {min_win_score}, duration: {descent_duration}s)")
                     print("Press ESC to continue...")
                 elif exit_code == 11:
                     # Loss - Reset to Level 1
                     print("Sorry! Back to Level 1...")
                     level = 1
-                    min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms = _calculate_level_params(level)
+                    min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms, recovery_duration_multiplier = _calculate_level_params(level)
                     print(f"Reset to Level {level} (target: {min_win_score}, duration: {descent_duration}s)")
                     print("Press ESC to try again...")
                 elif exit_code == 0:
@@ -318,7 +322,7 @@ async def run_game_on(level: int, python_args: list[str]) -> int:
     Returns:
         Exit code from the game
     """
-    min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms = _calculate_level_params(level)
+    min_win_score, descent_duration, next_column_ms, letter_linger_ms, letter_drop_time_ms, recovery_duration_multiplier = _calculate_level_params(level)
     print(f"Starting game_on mode at level: {level}")
     print(f"Level parameters: min_win_score={min_win_score}, descent_duration={descent_duration}s, letter_drop_time={letter_drop_time_ms}ms")
     print(f"Running game with arguments: {' '.join(python_args)}")

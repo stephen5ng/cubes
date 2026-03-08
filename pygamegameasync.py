@@ -110,12 +110,13 @@ from mqtt.mqtt_coordinator import MQTTCoordinator
 
 class BlockWordsPygame:
     def __init__(self,
-                 replay_file: str, descent_mode: str, descent_duration_s: int, record: bool, continuous: bool, one_round: bool, min_win_score: int, stars: bool, level: int = 0, next_column_ms: int = None, letter_linger_ms: int = 0) -> None:
+                 replay_file: str, descent_mode: str, descent_duration_s: int, recovery_duration_multiplier: float, record: bool, continuous: bool, one_round: bool, min_win_score: int, stars: bool, level: int = 0, next_column_ms: int = None, letter_linger_ms: int = 0) -> None:
         """
         Args:
             replay_file: Path to replay file, or empty string for live game.
             descent_mode: Mode for letter descent ("discrete" or "timed").
             descent_duration_s: Duration in seconds for descent speed calculation.
+            recovery_duration_multiplier: Recovery line descends this many times slower than letters.
             record: Whether to record the game.
         """
         self._window = _initialize_pygame_display(
@@ -127,6 +128,7 @@ class BlockWordsPygame:
         self.replay_file = replay_file
         self.descent_mode = descent_mode
         self.descent_duration_s = descent_duration_s
+        self.recovery_duration_multiplier = recovery_duration_multiplier
         self.record = record
         self.replayer = None
         self.continuous = continuous
@@ -185,6 +187,7 @@ class BlockWordsPygame:
             the_app, subscribe_client, publish_queue, game_logger, output_logger,
             self.input_manager, self.letter_font,
             self.replay_file, self.descent_mode, self.descent_duration_s,
+            self.recovery_duration_multiplier,
             self.record, self.one_round, self.min_win_score, self.stars, self.level,
             self.next_column_ms,
             self.letter_linger_ms

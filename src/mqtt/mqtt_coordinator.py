@@ -38,10 +38,28 @@ class MQTTCoordinator:
                 try:
                     payload_str = payload.decode() if isinstance(payload, bytes) else payload
                     if payload_str and payload_str.strip():
-                        game_params = GameParams.from_json(payload_str)
-                        logger.info(f"Game params from MQTT: {game_params}")
-                except json.JSONDecodeError as e:
-                    logger.warning(f"Invalid JSON in game/start payload: {e}")
+                        data = json.loads(payload_str)
+
+                        # If simplified message with mode="game_on", look up full params from runpygame.py
+                        if data.get("mode") == "game_on" and "level" in data:
+                            level = data["level"]
+                            logger.info(f"game_on mode with level {level}, looking up params from runpygame.py")
+
+                            # Import and get params from runpygame.py
+                            import sys
+                            import os
+                            sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+                            import runpygame
+
+                            params_json = runpygame.build_game_params("game_on", level)
+                            game_params = GameParams.from_json(params_json)
+                            logger.info(f"Looked up params for level {level}: {game_params}")
+                        else:
+                            # Use params directly from MQTT message
+                            game_params = GameParams.from_json(payload_str)
+                            logger.info(f"Game params from MQTT: {game_params}")
+                except (json.JSONDecodeError, Exception) as e:
+                    logger.warning(f"Error processing game/start payload: {e}")
 
             # Store params in coordinator if provided
             if game_params and self.game_coordinator:

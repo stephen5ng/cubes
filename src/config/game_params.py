@@ -13,6 +13,7 @@ class GameParams:
     """
     descent_mode: str = "discrete"
     descent_duration_s: int = 120
+    recovery_duration_multiplier: float = 3.0  # For internal use by runpygame.py level configs
     one_round: bool = False
     min_win_score: int = 0
     stars: bool = False
@@ -42,6 +43,7 @@ class GameParams:
         return cls(
             descent_mode=data.get('descent_mode', 'discrete'),
             descent_duration_s=data.get('descent_duration', 120),
+            recovery_duration_multiplier=data.get('recovery_duration_multiplier', 3.0),
             one_round=data.get('one_round', False),
             min_win_score=data.get('min_win_score', 0),
             stars=data.get('stars', False),
@@ -64,6 +66,7 @@ class GameParams:
         return cls(
             descent_mode=args.descent_mode,
             descent_duration_s=args.descent_duration,
+            recovery_duration_multiplier=getattr(args, 'recovery_duration_multiplier', 3.0),
             one_round=args.one_round,
             min_win_score=args.min_win_score,
             stars=args.stars,

@@ -20,16 +20,10 @@ case "$MODE" in
   game_on)
     if [[ -z "$LEVEL" ]]; then
       # No level specified - let game continue from previous level (or 1 if GAME OVER)
-      PAYLOAD='{"descent_mode":"timed","stars":true}'
-    elif [[ "$LEVEL" == "1" ]]; then
-      PAYLOAD='{"descent_mode":"timed","descent_duration":45,"one_round":true,"min_win_score":50,"stars":true,"level":1,"next_column_ms":null,"letter_linger_ms":0,"letter_drop_time_ms":90000}'
-    elif [[ "$LEVEL" == "2" ]]; then
-      PAYLOAD='{"descent_mode":"timed","descent_duration":90,"min_win_score":90,"stars":true,"level":2,"next_column_ms":1000,"letter_linger_ms":500,"letter_drop_time_ms":15000}'
-    elif [[ "$LEVEL" == "3" ]]; then
-      PAYLOAD='{"descent_mode":"timed","descent_duration":70,"min_win_score":360,"stars":true,"level":3,"next_column_ms":500,"letter_linger_ms":0,"letter_drop_time_ms":10000}'
+      PAYLOAD='{"mode":"game_on"}'
     else
-      echo "Error: level must be 1, 2, or 3 for game_on mode"
-      exit 1
+      # Just specify the level - game code looks up all other params from runpygame.py
+      PAYLOAD="{\"mode\":\"game_on\",\"level\":$LEVEL}"
     fi
     ;;
   *)

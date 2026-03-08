@@ -122,6 +122,8 @@ if __name__ == "__main__":
                        help="Descent strategy: discrete (classic) or timed")
     parser.add_argument("--descent-duration", type=int, default=120,
                        help="Duration in seconds for descent speed calculation (default: 120 seconds)")
+    parser.add_argument("--recovery-duration-multiplier", type=float, default=3.0,
+                       help=argparse.SUPPRESS)  # Internal use by runpygame.py level configs
     parser.add_argument("--record", action=argparse.BooleanOptionalAction, default=False,
                        help="Enable screen recording of game events")
     parser.add_argument("--continuous", action="store_true",
@@ -187,6 +189,7 @@ if __name__ == "__main__":
         replay_file=args.replay or "",
         descent_mode=args.descent_mode,
         descent_duration_s=args.descent_duration,
+        recovery_duration_multiplier=args.recovery_duration_multiplier,
         record=args.record,
         continuous=args.continuous,
         one_round=args.one_round,
