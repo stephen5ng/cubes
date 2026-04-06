@@ -73,7 +73,7 @@ def _calculate_level_params(level: int) -> tuple[int, int, int, int, int, float]
     level_configs = {
         1: (50, 45, None, 0, 90000, 3.0),     # Practice: 90s drop time
         2: (90, 90, 1000, 500, 15000, 10.0),   # Medium: 15s drop time
-        3: (360, 70, 500, 0, 10000, 3.0),     # Hard: 10s drop time
+        3: (180, 90, 750, 0, 10000, 3.0),     # Hard: 10s drop time
     }
 
     if level in level_configs:
