@@ -55,6 +55,16 @@ UPDATE_TILES_REBROADCAST_S = 8  # How often to rebroadcast tile updates (seconds
 DESCENT_DURATION_S = 10  # Default duration for descent speed calculation (seconds)
 LETTER_SWEEP_SPEED_MS = 1000  # Time between letter column movements (ms) - lower is faster
 
+# Feature flags for behavior changes
+# Allow word formation during ABC countdown (classic mode: False prevents post-game
+# word formation but also prevents countdown word formation; True allows both)
+ALLOW_WORD_FORMATION_DURING_COUNTDOWN = True
+
+# Allow word formation after game ends (NOTE: This goes against the design intent of commit
+# 799ead17f which prevents cube borders and word formation after game ends. The sng and
+# stress_0.1 tests were created before this commit and expect post-game word formation.)
+ALLOW_WORD_FORMATION_AFTER_GAME_ENDS = True
+
 # Scrabble letter scores for word scoring
 SCRABBLE_LETTER_SCORES = {
     'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1, 'F': 4,

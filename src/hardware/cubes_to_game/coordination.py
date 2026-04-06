@@ -107,6 +107,13 @@ async def guess_tiles(publish_queue, word_tiles_list, cube_set_id: int, player: 
 
 async def guess_last_tiles(publish_queue, cube_set_id: int, player: int, now_ms: int) -> None:
     """Process the last guess for a player."""
+    manager = state.cube_set_managers[cube_set_id]
+    # If no explicit guess but we have a cube chain, try to form words from it
+    if not state.last_guess_tiles and manager.cube_chain:
+        word_tiles_list = manager._form_words_from_chain()
+        if word_tiles_list:
+            state.last_guess_tiles = word_tiles_list
+
     logging.info(f"guess_last_tiles last_guess_tiles {state.last_guess_tiles}")
     for guess in state.last_guess_tiles:
         await state.guess_tiles_callback(guess, True, player, now_ms)
