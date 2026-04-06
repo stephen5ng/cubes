@@ -50,8 +50,15 @@ class GameCoordinator:
             try:
                 await self.game_on_client.publish("Rooms/12/DoorAndCrownMoldingLEDs", payload=message)
                 logger.info(f"Published to Game On broker: {message}")
+                # Also log to a dedicated file for debugging
+                with open("game_on_mqtt.log", "a") as f:
+                    import time
+                    f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - PUBLISHED: {message}\n")
             except Exception as e:
                 logger.warning(f"Failed to publish to Game On broker: {e}")
+                with open("game_on_mqtt.log", "a") as f:
+                    import time
+                    f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - ERROR: {e}\n")
 
     def get_mock_mqtt_client(self, input_manager, replay_file, descent_mode, descent_duration_s):
         """Get the mock MQTT client for replay mode."""
