@@ -257,7 +257,7 @@ class GameCoordinator:
             self.current_setup_params['recovery_duration_multiplier'] = params.recovery_duration_multiplier
             logger.info(f"Updated recovery_duration_multiplier to {params.recovery_duration_multiplier} (duration_ms={recovery_duration_ms})")
 
-        self.game.show_level = params.level > 0 or params.stars
+        self.game.show_level = params.stars
         self.game.level_fade_start_ms = -1  # Reset level fade trigger to show level again
         self.game.descent_duration_s = params.descent_duration_s
 

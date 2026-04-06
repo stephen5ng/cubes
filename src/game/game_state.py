@@ -74,7 +74,7 @@ class Game:
         self.level = level
         self.next_column_ms = next_column_ms
         self.letter_linger_ms = letter_linger_ms
-        self.show_level = level > 0 or stars # Only show level if level > 0 or stars enabled (game_on mode)
+        self.show_level = stars  # Only show level in game_on mode (stars enabled)
         self.level_fade_start_ms = -1
         self.level_fade_duration_ms = 1000
         self.level_fade_easing = easing_functions.CubicEaseInOut(start=255, end=0, duration=self.level_fade_duration_ms)
