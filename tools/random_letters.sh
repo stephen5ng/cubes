@@ -1,29 +1,31 @@
 #!/bin/bash -e
 
 HOST=192.168.8.247
-#HOST=$(ipconfig getifaddr en0)
-while true
-do
-    # frame_chars="[ ] "
-    # for (( i=0; i<${#frame_chars}; i++ )); do
-    #   for cube_id in 1 2 3 4 5 6 11 12 13 14 15 16; do
-    #     char=${frame_chars:$i:1}
-    #     echo "Character at index $i: $char"
-    #     mosquitto_pub -h localhost -t "cube/$cube_id/border" -m "$char"
-    #   done
-    #   sleep .2
-    # done
+CUBE_IDS="1 2 3 4 5 6 11 12 13 14 15 16"
 
-    for letter in {A..Z}; do
-#      echo -n "$letter" | socat -u - UDP:192.168.0.26:1234
-      for cube_id in 1 2 3 4 5 6 11 12 13 14 15 16; do
-        mosquitto_pub -c -i "$cube_id"_random_letters -h $HOST -t "cube/$cube_id/letter" -m "$letter" &
-#        mosquitto_pub -h localhost -t "cube/$cube_id/letter" -m "$letter" &
-      done
-      echo mosquitto_pub -h $HOST -t "cube/XXX/letter" -m "$letter"
-      sleep .25
-    done
-done
-    mosquitto_pub -h $HOST -t "cube/$(shuf -n 1 -e 1 2 3 4 5 6 11 12 13 14 15 16)/letter" -m "$(LC_ALL=C tr -dc 'A-Z' </dev/urandom | head -c1)"
-    sleep .5
-done
+# Use mosquitto_rr or persistent pub. Since mosquitto_pub -l only supports
+# a single topic, we use python's paho-mqtt for a single persistent connection.
+command -v python3 >/dev/null || { echo "python3 required"; exit 1; }
+
+python3 -c "
+import time, sys
+try:
+    import paho.mqtt.client as mqtt
+except ImportError:
+    sys.exit('pip install paho-mqtt')
+
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+client.connect('$HOST', 1883, 60)
+client.loop_start()
+
+cube_ids = [int(x) for x in '$CUBE_IDS'.split()]
+try:
+    while True:
+        for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+            for cube_id in cube_ids:
+                client.publish(f'cube/{cube_id}/letter', letter)
+            print(f'letter {letter}', file=sys.stderr)
+            time.sleep(0.25)
+except KeyboardInterrupt:
+    client.disconnect()
+"
