@@ -122,6 +122,22 @@ class MQTTCoordinator:
             # Track the level we just started
             self._last_level = current_level
 
+        elif topic_str == "game/stop":
+            logger.info("Stopping game due to control broker topic (returning to ABC mode)")
+            if self.game.running:
+                self.game.running = False
+                self.game.melt_effect = None
+                self.game.balloon_effects = []
+                self.game.input_devices = []
+                for rack in self.game.racks:
+                    rack.stop()
+            # Reset stars display
+            self.game.stars_display.reset()
+            # Mark game as not running in cubes_to_game so ABC re-activates
+            cubes_to_game.state.set_game_running(False)
+            cubes_to_game.state.reset_game_on_mode_ended()
+            cubes_to_game.state.abc_manager.reset()
+
         elif topic_str == "app/abort":
             events.trigger(GameAbortEvent())
 

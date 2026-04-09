@@ -124,6 +124,7 @@ async def main(args: argparse.Namespace, dictionary: Dictionary, block_words: py
                 if not args.replay:
                     await subscribe_client.subscribe("game/guess")
                     await subscribe_client.subscribe("game/start")
+                    await subscribe_client.subscribe("game/stop")
                     await subscribe_client.subscribe("game/final_score")
                     await subscribe_client.subscribe("game/ready")
 
