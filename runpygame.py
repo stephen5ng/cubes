@@ -394,7 +394,7 @@ def find_usb_audio_device() -> str:
     """
     try:
         result = subprocess.run(
-            ["aplay", "-l"],
+            ["/usr/bin/aplay", "-l"],
             capture_output=True,
             text=True,
             timeout=2,
@@ -424,7 +424,6 @@ def setup_environment():
     pythonpath_parts = [
         os.path.join(SCRIPT_DIR, "src"),
         os.path.join(SCRIPT_DIR, "../easing-functions"),
-        os.path.join(SCRIPT_DIR, "../rpi-rgb-led-matrix/bindings/python"),
     ]
     current_path = os.environ.get("PYTHONPATH", "")
     new_path = ":".join(pythonpath_parts)
